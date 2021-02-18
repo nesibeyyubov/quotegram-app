@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/start_nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        tools:layout="@layout/fragment_login"
+        android:id="@+id/loginFragment"
+        android:name="com.nesib.yourbooknotes.ui.on_boarding.fragments.LoginFragment"
+        android:label="Login" >
+        <action
+            android:id="@+id/action_loginFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_selectCategoriesFragment"
+            app:destination="@id/selectCategoriesFragment" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_signup"
+        android:id="@+id/signupFragment"
+        android:name="com.nesib.yourbooknotes.ui.on_boarding.fragments.SignupFragment"
+        android:label="Signup" >
+        <action
+            android:id="@+id/action_signupFragment_to_selectCategoriesFragment"
+            app:destination="@id/selectCategoriesFragment" />
+        <action
+            android:id="@+id/action_signupFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        tools:layout="@layout/fragment_select_categories"
+        android:id="@+id/selectCategoriesFragment"
+        android:name="com.nesib.yourbooknotes.ui.on_boarding.fragments.SelectCategoriesFragment"
+        android:label="SelectCategoriesFragment" />
+    <fragment
+        tools:layout="@layout/fragment_splash"
+        android:id="@+id/splashFragment"
+        android:name="com.nesib.yourbooknotes.ui.on_boarding.fragments.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_selectCategoriesFragment"
+            app:destination="@id/selectCategoriesFragment" />
+    </fragment>
+</navigation>

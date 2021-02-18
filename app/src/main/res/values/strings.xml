@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">YourBookNotes</string>
+
+    <!--  Book Genres  -->
+    <string name="genre_fantasy">Fantasy</string>
+    <string name="genre_drama">Drama</string>
+    <string name="genre_psycholgy">Psychology</string>
+    <string name="genre_adventure">Adventure</string>
+    <string name="genre_dystopian">Dystopian</string>
+    <string name="genre_mystery">Mystery</string>
+    <string name="genre_horror">Horror</string>
+    <string name="genre_thriller">Thriller</string>
+    <string name="genre_science_fiction">Science Fiction</string>
+    <string name="genre_historical_fiction">Historical Fiction</string>
+    <string name="genre_self_help">Self-help</string>
+    <string name="genre_motivational">Motivational</string>
+    <string name="genre_health">Health</string>
+    <string name="genre_history">History</string>
+    <string name="genre_children">Children\'s</string>
+    <string name="genre_art">Art</string>
+
+    <string-array name="book_genres">
+        <item>Fantasy</item>
+        <item>Drama</item>
+        <item>Psychology</item>
+        <item>Adventure</item>
+        <item>Dystopian</item>
+        <item>Mystery</item>
+        <item>Horror</item>
+        <item>Thriller</item>
+        <item>Science Fiction</item>
+        <item>Historical Fiction</item>
+        <item>Self-help</item>
+        <item>Motivational</item>
+        <item>Health</item>
+        <item>History</item>
+        <item>Children\'s</item>
+        <item>Art</item>
+    </string-array>
+</resources>

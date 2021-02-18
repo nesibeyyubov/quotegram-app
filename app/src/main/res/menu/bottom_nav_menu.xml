@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_filter"
+        android:title="Home" />
+    <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/ic_search"
+        android:title="Search" />
+    <item
+        android:visible="true"
+        android:id="@+id/empty"
+        android:title="Add quote" />
+    <item
+        android:id="@+id/bookmarkFragment"
+        android:icon="@drawable/ic_bookmark_outline"
+        android:title="Bookmark" />
+    <item
+        android:id="@+id/userProfileFragment"
+        android:icon="@drawable/ic_users"
+        android:title="Profile" />
+</menu>

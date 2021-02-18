@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="page_padding" type="dimen">18dp</item>
+</resources>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:elevation="1dp"
+        android:id="@+id/toolbar_searchFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:paddingRight="@dimen/page_padding"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_search"
+                    app:tint="@color/colorSecondaryText" />
+
+                <EditText
+                    android:textSize="14sp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:hint="Search books here..."
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <ImageButton
+                    android:scaleX="1.2"
+                    android:scaleY="1.2"
+                    android:src="@drawable/ic_filter"
+                    android:background="@android:color/transparent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:paddingTop="10dp"
+        android:clipToPadding="false"
+        android:layout_below="@id/toolbar_searchFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/search_book_layout"/>
+            <include layout="@layout/search_book_layout"/>
+            <include layout="@layout/search_book_layout"/>
+            <include layout="@layout/search_book_layout"/>
+            <include layout="@layout/search_book_layout"/>
+            <include layout="@layout/search_book_layout"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</RelativeLayout>

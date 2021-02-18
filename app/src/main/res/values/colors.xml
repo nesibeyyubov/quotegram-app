@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="gray_100">#EFEFEF</color>
+    <color name="gray_200">#ECECEC</color>
+    <color name="gray_300">#D6D6D6</color>
+    <color name="gray_500">#A5A5A5</color>
+    <color name="gray_900">#444444</color>
+
+    <color name="blue">#24A0FF</color>
+    <color name="blue_light">#3B24A0FF</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red_light">#FF7474</color>
+
+
+    <!--  Light theme  -->
+    <color name="colorBackground">@color/gray_100</color>
+    <color name="colorError">@color/red_light</color>
+    <color name="fullPostBackgroundColor">@color/white</color>
+    <color name="fullPostStrokeColor">@color/black</color>
+    <color name="inputBackgroundColor">@color/white</color>
+    <color name="inputStrokeColor">@color/black</color>
+    <color name="lineColor">@color/gray_200</color>
+
+    <!-- Widgets  -->
+    <color name="colorPrimaryText">@color/gray_900</color>
+    <color name="colorSecondaryText">@color/gray_500</color>
+    <color name="colorStroke">@color/gray_300</color>
+    <color name="editTextBackground">@color/white</color>
+    <color name="colorButton">@color/blue</color>
+    <color name="colorButtonDisabled">@color/blue_light</color>
+
+    <!-- Chip -->
+    <color name="unCheckedChipBackgroundColor">@color/gray_300</color>
+    <color name="unCheckedTextColor">@color/gray_900</color>
+    <color name="checkedChipBackgroundColor">@color/blue_light</color>
+    <color name="checkedChipStrokeColor">@color/blue</color>
+    <color name="checkedChipTextColor">@color/blue</color>
+
+</resources>

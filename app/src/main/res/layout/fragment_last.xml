@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:paddingBottom="50dp"
+    android:gravity="bottom"
+    android:paddingHorizontal="50dp"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/getStartedBtn"
+        android:text="Get Started"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:background="@drawable/follow_button_bg"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        />
+
+    <Button
+        android:id="@+id/skipButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="Skip"
+        android:textStyle="bold"
+        android:textColor="@color/blue" />
+
+</LinearLayout>

@@ -1,0 +1,23 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.YourBookNotes" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryVariant">@color/colorBackground</item>
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="chipBackgroundColor">@drawable/chip_bg_selector</item>
+        <item name="android:textColor">@drawable/chip_text_selector</item>
+        <item name="chipStrokeColor">@drawable/chip_stroke_selector</item>
+        <item name="iconTint">@color/checkedChipTextColor</item>
+        <item name="checkedIconTint">@color/checkedChipTextColor</item>
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+</resources>
