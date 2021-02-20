@@ -1,74 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/drawer_layout"
     tools:context=".ui.on_boarding.StartActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_mainActivity"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBackground"
-        android:elevation="1dp" />
+        android:layout_height="match_parent">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView_mainActivity"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_nav_view"
-        android:layout_below="@id/toolbar_mainActivity"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/main_nav_graph" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_mainActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBackground"
+            android:elevation="1dp" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView_mainActivity"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom_nav_view"
+            android:layout_below="@id/toolbar_mainActivity"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main_nav_graph" />
 
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:elevation="0dp"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_nav_menu" />
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:elevation="0dp"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_add_button"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="28dp"
-        android:src="@drawable/ic_add_single"
-        app:backgroundTint="@color/blue"
-        app:tint="@color/white" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="28dp"
+            android:src="@drawable/ic_add_single"
+            app:backgroundTint="@color/blue"
+            app:tint="@color/white" />
 
-    <Button
-        android:id="@+id/add_book_btn"
-        android:background="@drawable/follow_button_bg"
+        <Button
+            android:id="@+id/add_book_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_above="@id/fab_add_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/follow_button_bg"
+            android:includeFontPadding="false"
+            android:src="@drawable/ic_add_single"
+            android:text="Add new book "
+            android:textAllCaps="false"
+            android:visibility="invisible"
+            app:tint="@color/white" />
+
+        <Button
+            android:id="@+id/add_quote_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_above="@id/add_book_btn"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/follow_button_bg"
+            android:includeFontPadding="false"
+            android:src="@drawable/ic_add_single"
+            android:text="Add new quote"
+            android:textAllCaps="false"
+            android:visibility="invisible"
+            app:tint="@color/white" />
+    </RelativeLayout>
+
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/drawer_navigation_view"
+        app:menu="@menu/drawer_menu"
+        app:itemIconTint="@color/drawer_item_icon_selector"
+        app:itemBackground="@color/drawer_item_bg_selector"
+        app:itemTextColor="@color/drawer_item_text_selector"
+        app:headerLayout="@layout/drawer_header_layout"
+        android:layout_gravity="start"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="Add new book "
-        android:layout_marginVertical="10dp"
-        android:textAllCaps="false"
-        android:layout_above="@id/fab_add_button"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_add_single"
-        app:backgroundTint="@color/blue"
-        app:tint="@color/white" />
-    <Button
-        android:id="@+id/add_quote_btn"
-        android:background="@drawable/follow_button_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="Add new quote"
-        android:textAllCaps="false"
-        android:layout_above="@id/add_book_btn"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_add_single"
-        app:backgroundTint="@color/blue"
-        app:tint="@color/white" />
+        android:layout_height="match_parent"/>
 
 
-</RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeFragment"
-        android:icon="@drawable/ic_filter"
+        android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
         android:id="@+id/searchFragment"
@@ -11,13 +11,13 @@
     <item
         android:visible="true"
         android:id="@+id/empty"
-        android:title="Add quote" />
+        android:title="Add" />
     <item
         android:id="@+id/bookmarkFragment"
-        android:icon="@drawable/ic_bookmark_outline"
-        android:title="Bookmark" />
+        android:icon="@drawable/ic_notifications"
+        android:title="Notifications" />
     <item
         android:id="@+id/userProfileFragment"
-        android:icon="@drawable/ic_users"
+        android:icon="@drawable/ic_profile"
         android:title="Profile" />
 </menu>

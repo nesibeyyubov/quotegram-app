@@ -1,51 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:background="@color/colorBackground"
     android:padding="@dimen/page_padding">
 
     <ImageView
-        android:layout_width="95dp"
-        android:layout_height="125dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentStart="true"
+        android:id="@+id/book_image"
+        android:layout_width="65dp"
+        android:layout_height="90dp"
         android:src="@drawable/book" />
 
     <TextView
-        android:id="@+id/textView11"
+        android:layout_toRightOf="@+id/book_image"
+        android:id="@+id/book_name_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="A Tale of Two Cities"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
+        android:layout_toRightOf="@id/book_image"
+        android:layout_below="@id/book_name_textView"
+        android:id="@+id/book_author_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="Charles Dickens"
         android:textColor="@color/colorSecondaryText"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
 
     <EditText
+        android:id="@+id/quote_editText"
         android:hint="Your quote here..."
-        android:background="@drawable/add_edittext_bg"
+        android:layout_below="@id/book_image"
+        android:background="@color/inputBackgroundColor"
         android:layout_marginTop="20dp"
         android:gravity="start"
+        android:textSize="14sp"
         android:layout_width="match_parent"
         android:padding="10dp"
         android:minHeight="100dp"
         android:layout_height="wrap_content"/>
 
     <LinearLayout
+        android:layout_below="@id/quote_editText"
         android:clickable="true"
-        android:id="@+id/loginBtn"
+        android:id="@+id/add_quote_btn"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/blue_button_bg"
         android:gravity="center"
@@ -60,4 +71,4 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

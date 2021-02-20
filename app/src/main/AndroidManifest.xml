@@ -9,8 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YourBookNotes">
-        <activity android:name=".ui.main.MainActivity"></activity>
-        <activity android:name=".ui.on_boarding.StartActivity">
+        <activity android:name=".ui.on_boarding.StartActivity"></activity>
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

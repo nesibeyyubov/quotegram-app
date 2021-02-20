@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/homeFragment"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/bookmarkFragment"
+            android:icon="@drawable/ic_bookmark_filled"
+            android:title="Bookmark" />
+        <item
+            android:id="@+id/settingsFragment"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/drawer_login"
+            android:icon="@drawable/ic_login"
+            android:title="Login" />
+        <item
+            android:id="@+id/drawer_signup"
+            android:icon="@drawable/ic_signup"
+            android:title="Signup" />
+        <item
+            android:id="@+id/drawer_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Logout" />
+    </group>
+
+
+    <group>
+        <item android:title="Other">
+            <menu>
+                <item
+                    android:id="@+id/drawer_premium"
+                    android:icon="@drawable/ic_premium"
+                    android:title="Get Premium" />
+                <item
+                    android:id="@+id/drawer_review"
+                    android:icon="@drawable/ic_review"
+                    android:title="Review App" />
+                <item
+                    android:id="@+id/drawer_share"
+                    android:icon="@drawable/ic_share"
+                    android:title="Share" />
+                <item
+                    android:id="@+id/drawer_about"
+                    android:icon="@drawable/ic_about"
+                    android:title="About" />
+            </menu>
+        </item>
+    </group>
+</menu>

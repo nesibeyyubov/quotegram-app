@@ -147,15 +147,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view3" />
 
-    <ImageButton
-        android:id="@+id/commentBtn"
+    <TextView
+        android:id="@+id/like_count_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_comment"
-        android:tint="@color/colorPrimaryText"
+        android:text="27"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/colorPrimaryText"
+        app:layout_constraintBottom_toBottomOf="@+id/likeBtn"
         app:layout_constraintStart_toEndOf="@+id/likeBtn"
+        app:layout_constraintTop_toTopOf="@+id/likeBtn" />
+
+    <ImageButton
+        android:id="@+id/shareBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_share"
+        android:tint="@color/colorPrimaryText"
+        app:layout_constraintStart_toEndOf="@+id/like_count_textView"
         app:layout_constraintTop_toTopOf="@+id/likeBtn" />
 
     <ImageButton
@@ -165,7 +177,7 @@
         android:background="@android:color/transparent"
         android:src="@drawable/ic_download"
         android:tint="@color/colorPrimaryText"
-        app:layout_constraintStart_toEndOf="@+id/commentBtn"
+        app:layout_constraintStart_toEndOf="@+id/shareBtn"
         app:layout_constraintTop_toTopOf="@+id/likeBtn" />
 
     <ImageButton

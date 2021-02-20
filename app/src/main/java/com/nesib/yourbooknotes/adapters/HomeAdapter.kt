@@ -10,11 +10,13 @@ import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.FullPostLayoutBinding
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
-    var OnUsernameTextViewClickListener : (()->Unit)? = null
-    var OnUserImageViewClickListener : (()->Unit)? = null
-    var OnBookClickListener : (()->Unit)? = null
+    var OnUsernameTextViewClickListener: (() -> Unit)? = null
+    var OnUserImageViewClickListener: (() -> Unit)? = null
+    var OnBookClickListener: (() -> Unit)? = null
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),View.OnClickListener {
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
         init {
             val binding = FullPostLayoutBinding.bind(itemView)
             binding.usernameTextView.setOnClickListener(this)
@@ -23,12 +25,12 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
         }
 
         override fun onClick(v: View?) {
-            when(v?.id){
+            when (v?.id) {
                 R.id.username_textView -> {
                     Log.d("mytag", "onClick: ")
                     OnUsernameTextViewClickListener!!()
                 }
-                R.id.userphoto_imageView ->{
+                R.id.userphoto_imageView -> {
                     OnUserImageViewClickListener!!()
                 }
                 R.id.viewBookBtn -> {

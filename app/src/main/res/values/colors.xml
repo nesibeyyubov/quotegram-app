@@ -8,9 +8,11 @@
 
     <color name="blue">#24A0FF</color>
     <color name="blue_light">#3B24A0FF</color>
+    <color name="blue_dark">#0067B6</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red_light">#FF7474</color>
+    <color name="transparent">@android:color/transparent</color>
 
 
     <!--  Light theme  -->
@@ -21,6 +23,7 @@
     <color name="inputBackgroundColor">@color/white</color>
     <color name="inputStrokeColor">@color/black</color>
     <color name="lineColor">@color/gray_200</color>
+    <color name="quotePostBackgroundColor">@color/white</color>
 
     <!-- Widgets  -->
     <color name="colorPrimaryText">@color/gray_900</color>

@@ -20,7 +20,7 @@
     <string name="genre_art">Art</string>
 
     <string-array name="book_genres">
-        <item>Fantasy</item>
+        <item>@string/genre_fantasy</item>
         <item>Drama</item>
         <item>Psychology</item>
         <item>Adventure</item>

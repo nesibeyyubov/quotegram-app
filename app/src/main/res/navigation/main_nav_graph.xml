@@ -16,12 +16,6 @@
         <action
             android:id="@+id/action_homeFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_addQuoteFragment"
-            app:destination="@id/addQuoteFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_addBookFragment"
-            app:destination="@id/addBookFragment" />
     </fragment>
      <fragment
         tools:layout="@layout/fragment_user_profile"
@@ -32,12 +26,12 @@
             android:id="@+id/action_userProfileFragment_to_editUserFragment"
             app:destination="@id/editUserFragment" />
     </fragment>
-    <fragment
+    <dialog
         tools:layout="@layout/fragment_add_book"
         android:id="@+id/addBookFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.AddBookFragment"
         android:label="Add a new book" />
-    <fragment
+    <dialog
         tools:layout="@layout/fragment_add_quote"
         android:id="@+id/addQuoteFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.AddQuoteFragment"
@@ -64,5 +58,5 @@
         <action
             android:id="@+id/action_searchFragment_to_bookProfileFragment"
             app:destination="@id/bookProfileFragment" />
-    </fragment>
+    </fragment><action android:id="@+id/action_global_addQuoteFragment" app:destination="@id/addQuoteFragment"/><action android:id="@+id/action_global_addBookFragment" app:destination="@id/addBookFragment"/>
 </navigation>
