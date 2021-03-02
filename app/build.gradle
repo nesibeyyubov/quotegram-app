@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'androidx.navigation.safeargs'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -55,5 +57,11 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     implementation "com.airbnb.android:lottie:3.4.0"
+
+    implementation 'com.google.dagger:hilt-android:2.33-beta'
+    kapt 'com.google.dagger:hilt-compiler:2.33-beta'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
 }

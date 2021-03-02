@@ -107,7 +107,7 @@
                 />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
@@ -116,7 +116,7 @@
                 android:paddingLeft="20dp" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="15dp"
@@ -134,12 +134,20 @@
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/signupBtnTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Signup"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
+
+                <ProgressBar
+                    android:visibility="gone"
+                    android:indeterminateTint="@color/white"
+                    android:id="@+id/signupBtnProgressBar"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"/>
             </LinearLayout>
 
 

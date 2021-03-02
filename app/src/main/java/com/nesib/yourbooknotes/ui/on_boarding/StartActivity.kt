@@ -1,5 +1,7 @@
 package com.nesib.yourbooknotes.ui.on_boarding
 
+import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -17,6 +19,7 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setAppTheme()
 
         navController = (supportFragmentManager.findFragmentById(R.id.fragmentContainerView_startActivity) as NavHostFragment).navController
 
@@ -31,6 +34,11 @@ class StartActivity : AppCompatActivity() {
             else{
                 binding.toolbarStartActivity.visibility = View.VISIBLE
             }
+        }
+    }
+    private fun setAppTheme(){
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            window.statusBarColor = Color.BLACK
         }
     }
 

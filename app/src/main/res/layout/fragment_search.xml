@@ -52,7 +52,8 @@
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
-        android:paddingTop="10dp"
+        android:scrollbars="none"
+        android:padding="@dimen/page_padding"
         android:clipToPadding="false"
         android:layout_below="@id/toolbar_searchFragment"
         android:layout_width="match_parent"

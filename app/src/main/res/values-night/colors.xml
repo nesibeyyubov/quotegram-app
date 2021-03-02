@@ -1,23 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="gray_100">#EFEFEF</color>
-    <color name="gray_300">#D6D6D6</color>
+    <color name="gray_200">#ECECEC</color>
+    <color name="gray_300">#E6E6E6</color>
+    <color name="gray_400">#D6D6D6</color>
     <color name="gray_500">#A5A5A5</color>
+    <color name="gray_600">#777777</color>
     <color name="gray_900">#444444</color>
+
+    <color name="black_100">#464646</color>
+    <color name="black_200">#333333</color>
+    <color name="black_300">#212121</color>
+    <color name="black_400">#141414</color>
 
     <color name="blue">#24A0FF</color>
     <color name="blue_light">#3B24A0FF</color>
+    <color name="blue_dark">#0067B6</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red_light">#FF7474</color>
+    <color name="transparent">@android:color/transparent</color>
+
 
     <!--  Light theme  -->
+    <color name="colorBackground">@color/black_400</color>
+    <color name="colorError">@color/red_light</color>
+    <color name="fullPostBackgroundColor">@color/black_300</color>
+    <color name="fullPostStrokeColor">@color/black_200</color>
+    <color name="inputBackgroundColor">@color/black_300</color>
+    <color name="inputStrokeColor">@color/black_200</color>
+    <color name="lineColor">@color/black_200</color>
+    <color name="quotePostBackgroundColor">@color/fullPostBackgroundColor</color>
 
-    <!-- TextView  -->
-    <color name="colorPrimaryText">@color/gray_900</color>
-    <color name="colorSecondaryText">@color/gray_500</color>
+    <color name="activeTabDotColor">@color/gray_300</color>
+    <color name="inActiveTabDotColor">@color/gray_900</color>
 
-
-    <color name="colorBackground">@color/gray_100</color>
+    <!-- Widgets  -->
+    <color name="colorPrimaryText">@color/gray_300</color>
+    <color name="colorSecondaryText">@color/gray_600</color>
+    <color name="colorStroke">#464646</color>
+    <color name="editTextBackground">@color/inputBackgroundColor</color>
     <color name="colorButton">@color/blue</color>
+    <color name="colorButtonDisabled">@color/blue_light</color>
+
+
+    <!-- Chip -->
+    <color name="unCheckedChipBackgroundColor">@color/black_300</color>
+    <color name="unCheckedTextColor">@color/colorSecondaryText</color>
+    <color name="checkedChipBackgroundColor">@color/blue_light</color>
+    <color name="checkedChipStrokeColor">@color/blue</color>
+    <color name="checkedChipTextColor">@color/blue</color>
 
 </resources>

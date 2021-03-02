@@ -31,10 +31,11 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_view"
+            android:background="@color/colorBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            app:elevation="0dp"
+            app:elevation="2dp"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/bottom_nav_menu" />
 
@@ -82,6 +83,7 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/drawer_navigation_view"
+        android:background="@color/colorBackground"
         app:menu="@menu/drawer_menu"
         app:itemIconTint="@color/drawer_item_icon_selector"
         app:itemBackground="@color/drawer_item_bg_selector"

@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
-        android:background="@color/gray_200"
+        android:background="@color/lineColor"
         app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
 
     <TextView
@@ -68,7 +68,6 @@
         android:text="Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking."
         android:textColor="@color/colorPrimaryText"
         android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="15dp"
-        android:background="@color/gray_200"
+        android:background="@color/lineColor"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
         tools:layout_editor_absoluteX="10dp" />
 

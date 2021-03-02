@@ -1,7 +1,9 @@
 package com.nesib.yourbooknotes.ui.main
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.navigation.NavController
@@ -9,8 +11,10 @@ import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
+import com.google.android.material.navigation.NavigationView
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.ActivityMainBinding
+import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 
 class MainActivity : AppCompatActivity(),View.OnClickListener {
     private lateinit var binding: ActivityMainBinding
@@ -65,6 +69,13 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         binding.addBookBtn.setOnClickListener(this)
         binding.fabAddButton.setOnClickListener(this)
 
+        binding.drawerNavigationView.setNavigationItemSelectedListener{menuItem->
+            if(menuItem.itemId == R.id.drawer_logout){
+                startActivity(Intent(this@MainActivity,StartActivity::class.java))
+            }
+            true
+        }
+
         navController.addOnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
 //            if(navDestination.id == R.id.searchFragment){
 //                binding.toolbarMainActivity.visibility = View.INVISIBLE
@@ -77,14 +88,18 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
             if (navDestination.id == R.id.editUserFragment) {
                 binding.bottomNavView.visibility = View.GONE
                 binding.fabAddButton.hide()
-                binding.addQuoteBtn.visibility = View.GONE
-                binding.addBookBtn.visibility = View.GONE
+                if(binding.addQuoteBtn.visibility == View.VISIBLE){
+                    binding.addQuoteBtn.visibility = View.GONE
+                    binding.addBookBtn.visibility = View.GONE
+                }
             } else {
                 if (binding.bottomNavView.visibility == View.GONE) {
                     binding.bottomNavView.visibility = View.VISIBLE
                     binding.fabAddButton.show()
-                    binding.addQuoteBtn.visibility = View.VISIBLE
-                    binding.addBookBtn.visibility = View.VISIBLE
+                    if(binding.addQuoteBtn.visibility == View.GONE && fabExtended){
+                        binding.addQuoteBtn.visibility = View.VISIBLE
+                        binding.addBookBtn.visibility = View.VISIBLE
+                    }
                 }
             }
         }
