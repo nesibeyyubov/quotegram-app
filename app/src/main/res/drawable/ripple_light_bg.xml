@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/blue_dark"
+    android:color="@color/colorBackground"
     >
 
     <item>
         <shape>
-            <solid android:color="@color/colorButton"/>
-            <corners android:radius="5dp"/>
+            <solid android:color="@color/fullPostBackgroundColor"/>
         </shape>
     </item>
 

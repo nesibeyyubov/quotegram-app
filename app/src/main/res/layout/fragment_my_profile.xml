@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"/>
 
     <androidx.core.widget.NestedScrollView
-        android:visibility="gone"
         android:id="@+id/profileContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -173,14 +172,14 @@
                 android:layout_width="120dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/follow_button_bg"
+                android:background="@drawable/add_quote_from_this_book_bg"
                 android:gravity="center">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Follow"
-                    android:textColor="@color/white"
+                    android:text="Edit Profile"
+                    android:textColor="@color/blue"
                     android:textStyle="bold" />
             </LinearLayout>
 

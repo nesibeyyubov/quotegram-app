@@ -9,7 +9,7 @@
     android:layout_height="130dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView2"
+        android:id="@+id/headerProfileImage"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:src="@drawable/user"
@@ -17,24 +17,25 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/headerUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Jane Doe"
+        android:text="janedoe"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/circleImageView2"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageView2" />
+        app:layout_constraintStart_toStartOf="@+id/headerProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/headerProfileImage" />
 
     <TextView
+        android:id="@+id/headerEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="\@janedoe"
+        android:text="janedoe@gmail.com"
         android:textColor="@color/gray_300"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/textView18"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        app:layout_constraintStart_toStartOf="@+id/headerUsername"
+        app:layout_constraintTop_toBottomOf="@+id/headerUsername" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

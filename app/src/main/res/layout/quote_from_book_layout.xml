@@ -9,7 +9,7 @@
     android:padding="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView"
+        android:id="@+id/userImage"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:src="@drawable/user"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -25,9 +25,9 @@
         android:text="Jane Doe"
         android:textColor="@color/colorPrimaryText"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
-        app:layout_constraintStart_toEndOf="@+id/circleImageView"
-        app:layout_constraintTop_toTopOf="@+id/circleImageView" />
+        app:layout_constraintBottom_toBottomOf="@+id/userImage"
+        app:layout_constraintStart_toEndOf="@+id/userImage"
+        app:layout_constraintTop_toTopOf="@+id/userImage" />
 
     <View
         android:id="@+id/view"
@@ -35,21 +35,21 @@
         android:layout_height="3dp"
         android:layout_marginStart="15dp"
         android:background="@color/colorSecondaryText"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
+        app:layout_constraintBottom_toBottomOf="@+id/username"
+        app:layout_constraintStart_toEndOf="@+id/username"
+        app:layout_constraintTop_toTopOf="@+id/username" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/quotePostTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:text="1 min ago"
         android:textColor="@color/colorSecondaryText"
         android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintBottom_toBottomOf="@+id/username"
         app:layout_constraintStart_toEndOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/textView4" />
+        app:layout_constraintTop_toTopOf="@+id/username" />
 
     <View
         android:id="@+id/view2"
@@ -57,10 +57,10 @@
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
         android:background="@color/lineColor"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/userImage" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/bookQuoteTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -81,7 +81,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="15dp"
         android:background="@color/lineColor"
-        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/bookQuoteTextView"
         tools:layout_editor_absoluteX="10dp" />
 
 
@@ -97,6 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view3" />
 
     <TextView
+        android:id="@+id/quoteLikesCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="27"

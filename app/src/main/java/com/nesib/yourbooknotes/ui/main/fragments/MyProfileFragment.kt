@@ -2,37 +2,34 @@ package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
-import com.nesib.yourbooknotes.databinding.FragmentEditProfileBinding
-import com.nesib.yourbooknotes.databinding.FragmentUserProfileBinding
+import com.nesib.yourbooknotes.databinding.FragmentMyProfileBinding
 import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 
-class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
-    private lateinit var binding: FragmentUserProfileBinding
+class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
+    private lateinit var binding: FragmentMyProfileBinding
 
     private val adapter by lazy { HomeAdapter() }
     private val userViewModel: UserViewModel by viewModels()
-    private val args by navArgs<UserProfileFragmentArgs>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentUserProfileBinding.bind(view)
+        binding = FragmentMyProfileBinding.bind(view)
+        (activity as MainActivity).supportActionBar?.title = ""
 
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
 
-        userViewModel.getUser(args.userId)
+        userViewModel.getUser()
+
     }
 
     private fun subscribeObservers() {

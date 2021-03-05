@@ -1,8 +1,6 @@
 package com.nesib.yourbooknotes.data.network
 
-import com.nesib.yourbooknotes.models.AuthResponse
-import com.nesib.yourbooknotes.models.Quote
-import com.nesib.yourbooknotes.models.User
+import com.nesib.yourbooknotes.models.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -15,7 +13,7 @@ interface AuthApi {
     suspend fun signup(@Body signupBody: Map<String, String>): Response<AuthResponse>
 
     @GET("/users/{userId}")
-    suspend fun getUser(@Path("userId") userId: String): Response<User>
+    suspend fun getUser(@Path("userId") userId: String): Response<UserResponse>
 
     @GET("/users/{userId}/savedQuotes")
     suspend fun getSavedQuotes(@Path("userId") userId: String): Response<List<Quote>>
@@ -36,6 +34,9 @@ interface AuthApi {
     ): Response<User>
 
     @PATCH("/users/")
-    suspend fun saveFollowingGenres(@QueryMap genres: Map<String, String>): Response<User>
+    suspend fun saveFollowingGenres(
+        @Query("genres") genres: String,
+        @Header("Authorization") authHeader: String
+    ): Response<UserResponse>
 
 }

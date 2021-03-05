@@ -53,120 +53,140 @@ want to get quote from"
             app:singleSelection="false">
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_life"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_life" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_love"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_love" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_motivation"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_motivation" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_humor"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_humor" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_philosophy"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_philosophy" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_god"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_god" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_happiness"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_happiness" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_religion"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_religion" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_time"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_time" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_spirituality"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_spirituality" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_science"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_science" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_friendship"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_friendship" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_family"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_family" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_wealth"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_wealth" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_leadership"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_leadership" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_business"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_business" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_art"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_art" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_health"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_health" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_productiveness"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_productiveness" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parenting"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -175,13 +195,13 @@ want to get quote from"
         </com.google.android.material.chip.ChipGroup>
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/warning_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="You should select at least 3 items"
-            android:textColor="@color/colorError"
-            android:textSize="16sp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="14sp"
             />
 
 
@@ -190,17 +210,24 @@ want to get quote from"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="30dp"
-            android:background="@drawable/disabled_blue_button_bg"
+            android:background="@drawable/blue_button_bg"
             android:clickable="true"
             android:gravity="center">
 
             <TextView
+                android:id="@+id/nextTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Next"
-                android:textColor="@color/blue"
                 android:textSize="18sp"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/nextBtnProgressBar"
+                android:indeterminateTint="@color/white"
+                android:layout_width="25dp"
+                android:layout_height="25dp"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,39 +13,61 @@ import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentHomeBinding
 import com.nesib.yourbooknotes.databinding.FullPostLayoutBinding
 import com.nesib.yourbooknotes.ui.main.MainActivity
+import com.nesib.yourbooknotes.ui.viewmodels.MainViewModel
+import com.nesib.yourbooknotes.utils.DataState
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding:FragmentHomeBinding
-    private lateinit var fullPostLayoutBinding: FullPostLayoutBinding
+    private val mainViewModel:MainViewModel by viewModels()
+    private val adapter by lazy { HomeAdapter() }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
-        fullPostLayoutBinding = FullPostLayoutBinding.inflate(layoutInflater)
+        setupRecyclerView()
+        subscribeObservers()
 
+        mainViewModel.getQuotes()
+    }
 
-        val adapter = HomeAdapter()
-        adapter.OnBookClickListener = {
-            findNavController().navigate(R.id.action_homeFragment_to_bookProfileFragment)
+    private fun subscribeObservers(){
+        mainViewModel.quotes.observe(viewLifecycleOwner){
+            when (it) {
+                is DataState.Success -> {
+                    binding.shimmerLayout.hideShimmer()
+                    binding.shimmerLayout.visibility = View.GONE
+                    binding.homeRecyclerView.visibility = View.VISIBLE
+                    adapter.setData(it.data!!.quotes)
+                }
+                is DataState.Fail -> {
+                    binding.shimmerLayout.hideShimmer()
+                    binding.shimmerLayout.visibility = View.GONE
+                }
+                is DataState.Loading -> {
+                    binding.shimmerLayout.startShimmer()
+                }
+            }
         }
-        adapter.OnUserImageViewClickListener = {
-            findNavController().navigate(R.id.action_homeFragment_to_userProfileFragment)
+    }
+
+    private fun setupRecyclerView(){
+
+        adapter.OnBookClickListener = {bookId->
+            val action = HomeFragmentDirections.actionHomeFragmentToBookProfileFragment(bookId)
+            findNavController().navigate(action)
         }
-        adapter.OnUsernameTextViewClickListener = {
-            findNavController().navigate(R.id.action_homeFragment_to_userProfileFragment)
+        adapter.OnUserClickListener = {userId->
+            val action = HomeFragmentDirections.actionHomeFragmentToUserProfileFragment2(userId)
+            findNavController().navigate(action)
         }
         binding.homeRecyclerView.adapter = adapter
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(context)
 
-
-        binding.homeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if(dy>0){
-
-                }
-            }
-
-        })
-
-
+        //        binding.homeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                if(dy>0){
+//
+//                }
+//            }
+//        })
     }
 }

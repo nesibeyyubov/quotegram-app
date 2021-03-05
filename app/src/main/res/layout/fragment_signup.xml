@@ -11,35 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/image_container"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/image_outline"
-            app:layout_constraintEnd_toEndOf="@+id/textView2"
-            app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
-
-            <ImageButton
-                android:id="@+id/addPhoto_imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_add"
-                android:tint="@color/blue" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/userPhoto_imageView"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/default_user" />
-        </RelativeLayout>
-
-
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
@@ -95,40 +66,41 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/image_container">
+            app:layout_constraintTop_toBottomOf="@id/textView2">
 
             <EditText
                 android:id="@+id/username_editText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/edittext_bg"
+                style="@style/EditTextStyle"
                 android:hint="Username"
-                android:paddingLeft="20dp"
                 />
-
             <EditText
                 android:id="@+id/emailEditText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                style="@style/EditTextStyle"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/edittext_bg"
-                android:hint="Your email"
-                android:paddingLeft="20dp" />
+                android:hint="Your email"/>
 
             <EditText
+                android:inputType="textPassword"
                 android:id="@+id/passwordEditText"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                style="@style/EditTextStyle"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/edittext_bg"
-                android:hint="Password"
-                android:paddingLeft="20dp" />
+                android:hint="Password" />
+            <TextView
+                android:visibility="invisible"
+                android:id="@+id/signupErrorTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Error message"
+                android:textColor="@color/colorError"
+                android:textSize="14sp"
+                />
 
             <LinearLayout
                 android:id="@+id/signupBtn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/blue_button_bg"
                 android:clickable="true"
                 android:gravity="center">

@@ -1,15 +1,13 @@
 package com.nesib.yourbooknotes.ui.viewmodels
 
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.google.gson.Gson
+import com.nesib.yourbooknotes.data.local.SharedPreferencesRepository
 import com.nesib.yourbooknotes.data.repositories.UserRepository
-import com.nesib.yourbooknotes.models.AuthResponse
-import com.nesib.yourbooknotes.models.Quote
-import com.nesib.yourbooknotes.models.User
+import com.nesib.yourbooknotes.models.*
+import com.nesib.yourbooknotes.utils.Constants
 import com.nesib.yourbooknotes.utils.Constants.CODE_SERVER_ERROR
 import com.nesib.yourbooknotes.utils.Constants.CODE_SUCCESS
 import com.nesib.yourbooknotes.utils.Constants.CODE_VALIDATION_FAIL
@@ -18,10 +16,25 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class UserViewModel : ViewModel() {
-    private val _user = MutableLiveData<DataState<User>>()
-    val user: LiveData<DataState<User>>
+class UserViewModel(application: Application) : AndroidViewModel(application) {
+    private val _user = MutableLiveData<DataState<UserResponse>>()
+    val user: LiveData<DataState<UserResponse>>
         get() = _user
+
+    private val sharedPreferencesRepository = SharedPreferencesRepository(getApplication())
+
+    fun getUser(userId: String? = null) = viewModelScope.launch(Dispatchers.IO) {
+        if(_user.value == null){
+            _user.postValue(DataState.Loading())
+            val id = userId ?: sharedPreferencesRepository.getUser().userId!!
+            val response = UserRepository.getUser(id)
+            handleResponse(response)
+        }
+    }
+
+    fun clearUser() {
+        sharedPreferencesRepository.clearUser()
+    }
 
     fun followOrUnfollowUser(userId: String) {
 
@@ -41,16 +54,42 @@ class UserViewModel : ViewModel() {
 
     }
 
-    fun getUser(userId: String) {
 
-    }
 
     fun getSavedQuotes(userId: String) {
 
     }
 
-    fun postSavedQuote(quoteId: String){
+    fun postSavedQuote(quoteId: String) {
 
+    }
+
+    private fun handleResponse(response: Response<UserResponse>) {
+        when (response.code()) {
+            CODE_SUCCESS -> {
+                _user.postValue(DataState.Success(response.body()))
+            }
+            Constants.CODE_CREATION_SUCCESS -> {
+                _user.postValue(DataState.Success(response.body()))
+            }
+            CODE_VALIDATION_FAIL -> {
+                val authFailResponse = Gson().fromJson(
+                    response.errorBody()?.charStream(),
+                    BasicResponse::class.java
+                )
+                _user.postValue(DataState.Fail(message = authFailResponse.message))
+            }
+            CODE_SERVER_ERROR -> {
+                _user.postValue(DataState.Fail(message = "Server error"))
+            }
+            Constants.CODE_AUTHENTICATION_FAIL -> {
+                val authFailResponse = Gson().fromJson(
+                    response.errorBody()?.charStream(),
+                    BasicResponse::class.java
+                )
+                _user.postValue(DataState.Fail(message = authFailResponse.message))
+            }
+        }
     }
 
 }

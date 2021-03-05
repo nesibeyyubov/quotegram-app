@@ -2,9 +2,7 @@ package com.nesib.yourbooknotes.data.repositories
 
 import com.nesib.yourbooknotes.data.network.AuthApi
 import com.nesib.yourbooknotes.data.network.MainApi
-import com.nesib.yourbooknotes.models.AuthResponse
-import com.nesib.yourbooknotes.models.Quote
-import com.nesib.yourbooknotes.models.User
+import com.nesib.yourbooknotes.models.*
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -45,9 +43,7 @@ object UserRepository {
         return authApi.followOrUnfollowUser(userId)
     }
 
-    suspend fun saveFollowingGenres(genres: Map<String, String>): Response<User> {
-        return authApi.saveFollowingGenres(genres)
-    }
+    suspend fun saveFollowingGenres(genres: String,authHeader:String) = authApi.saveFollowingGenres(genres,authHeader)
 
     suspend fun updateUser(
         username: String?,
@@ -59,7 +55,7 @@ object UserRepository {
         return authApi.updateUser(username, fullname, email, password, bio)
     }
 
-    suspend fun getUser(userId: String): Response<User> {
+    suspend fun getUser(userId: String): Response<UserResponse> {
         return authApi.getUser(userId)
     }
 

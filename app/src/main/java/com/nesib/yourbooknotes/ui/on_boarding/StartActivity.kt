@@ -1,25 +1,32 @@
 package com.nesib.yourbooknotes.ui.on_boarding
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.ActivityStartBinding
+import com.nesib.yourbooknotes.ui.main.MainActivity
+import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 
 class StartActivity : AppCompatActivity() {
     private lateinit var binding:ActivityStartBinding
     private lateinit var navController: NavController
+    lateinit var authViewModel:AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setAppTheme()
+        authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
 
         navController = (supportFragmentManager.findFragmentById(R.id.fragmentContainerView_startActivity) as NavHostFragment).navController
 
@@ -35,6 +42,11 @@ class StartActivity : AppCompatActivity() {
                 binding.toolbarStartActivity.visibility = View.VISIBLE
             }
         }
+        if(authViewModel.isAuthenticated()){
+            startActivity(Intent(this,MainActivity::class.java))
+            finish()
+        }
+
     }
     private fun setAppTheme(){
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
