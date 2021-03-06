@@ -1,7 +1,6 @@
 package com.nesib.yourbooknotes.ui.viewmodels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.nesib.yourbooknotes.data.local.SharedPreferencesRepository
@@ -21,6 +20,10 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     val user: LiveData<DataState<UserResponse>>
         get() = _user
 
+    private val _users = MutableLiveData<DataState<UsersResponse>>()
+    val users: LiveData<DataState<UsersResponse>>
+        get() = _users
+
     private val sharedPreferencesRepository = SharedPreferencesRepository(getApplication())
 
     fun getUser(userId: String? = null) = viewModelScope.launch(Dispatchers.IO) {
@@ -28,8 +31,14 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             _user.postValue(DataState.Loading())
             val id = userId ?: sharedPreferencesRepository.getUser().userId!!
             val response = UserRepository.getUser(id)
-            handleResponse(response)
+            handleUserResponse(response)
         }
+    }
+
+    fun getUsers() = viewModelScope.launch(Dispatchers.IO) {
+            _users.postValue(DataState.Loading())
+            val response = UserRepository.getUsers()
+            handleUsersResponse(response)
     }
 
     fun clearUser() {
@@ -64,7 +73,18 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-    private fun handleResponse(response: Response<UserResponse>) {
+    private fun handleUsersResponse(response: Response<UsersResponse>) {
+        when (response.code()) {
+            CODE_SUCCESS -> {
+                _users.postValue(DataState.Success(response.body()))
+            }
+            CODE_SERVER_ERROR -> {
+                _users.postValue(DataState.Fail(message = "Server error"))
+            }
+        }
+    }
+
+    private fun handleUserResponse(response: Response<UserResponse>) {
         when (response.code()) {
             CODE_SUCCESS -> {
                 _user.postValue(DataState.Success(response.body()))

@@ -55,15 +55,11 @@ object UserRepository {
         return authApi.updateUser(username, fullname, email, password, bio)
     }
 
-    suspend fun getUser(userId: String): Response<UserResponse> {
-        return authApi.getUser(userId)
-    }
+    suspend fun getUser(userId: String) = authApi.getUser(userId)
 
-    suspend fun getSavedQuotes(userId: String): Response<List<Quote>> {
-        return authApi.getSavedQuotes(userId)
-    }
+    suspend fun getUsers() = authApi.getUsers()
 
-    suspend fun postSavedQuote(quoteId: String): Response<List<Quote>> {
-        return authApi.postSavedQuote(quoteId)
-    }
+    suspend fun getSavedQuotes(userId: String) = authApi.getSavedQuotes(userId)
+
+    suspend fun postSavedQuote(quoteId: String) = authApi.postSavedQuote(quoteId)
 }

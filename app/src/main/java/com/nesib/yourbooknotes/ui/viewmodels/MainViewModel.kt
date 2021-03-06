@@ -14,7 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class MainViewModel(application: Application) :AndroidViewModel(application) {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _quotes = MutableLiveData<DataState<QuotesResponse>>()
     val quotes: LiveData<DataState<QuotesResponse>>
         get() = _quotes
@@ -23,20 +23,30 @@ class MainViewModel(application: Application) :AndroidViewModel(application) {
     val book: LiveData<DataState<BookResponse>>
         get() = _book
 
+    private val _books = MutableLiveData<DataState<BooksResponse>>()
+    val books: LiveData<DataState<BooksResponse>>
+        get() = _books
+
     fun getQuotes() = viewModelScope.launch(Dispatchers.IO) {
-        if(_quotes.value==null){
+        if (_quotes.value == null) {
             _quotes.postValue(DataState.Loading())
             val response = MainRepository.getQuotes()
             handleQuoteResponse(response)
         }
     }
 
-    fun getBook(bookId:String) = viewModelScope.launch(Dispatchers.IO) {
-        if(_book.value == null){
+    fun getBook(bookId: String) = viewModelScope.launch(Dispatchers.IO) {
+        if (_book.value == null) {
             _book.postValue(DataState.Loading())
             val response = MainRepository.getBook(bookId)
             handleBookResponse(response)
         }
+    }
+
+    fun getBooks() = viewModelScope.launch(Dispatchers.IO) {
+        _books.postValue(DataState.Loading())
+        val response = MainRepository.getBooks()
+        handleBooksResponse(response)
     }
 
     private fun handleBookResponse(response: Response<BookResponse>) {
@@ -44,7 +54,31 @@ class MainViewModel(application: Application) :AndroidViewModel(application) {
             Constants.CODE_SUCCESS -> {
                 _book.postValue(DataState.Success(response.body()))
             }
-            Constants.CODE_CREATION_SUCCESS ->{
+            Constants.CODE_CREATION_SUCCESS -> {
+
+            }
+            Constants.CODE_VALIDATION_FAIL -> {
+
+            }
+            Constants.CODE_SERVER_ERROR -> {
+                _book.postValue(DataState.Fail(message = "Server error"))
+            }
+            Constants.CODE_AUTHENTICATION_FAIL -> {
+                val authFailResponse = Gson().fromJson(
+                    response.errorBody()?.charStream(),
+                    BasicResponse::class.java
+                )
+                _book.postValue(DataState.Fail(message = authFailResponse.message))
+            }
+        }
+    }
+
+    private fun handleBooksResponse(response: Response<BooksResponse>) {
+        when (response.code()) {
+            Constants.CODE_SUCCESS -> {
+                _books.postValue(DataState.Success(response.body()))
+            }
+            Constants.CODE_CREATION_SUCCESS -> {
 
             }
             Constants.CODE_VALIDATION_FAIL -> {
@@ -68,7 +102,7 @@ class MainViewModel(application: Application) :AndroidViewModel(application) {
             Constants.CODE_SUCCESS -> {
                 _quotes.postValue(DataState.Success(response.body()))
             }
-            Constants.CODE_CREATION_SUCCESS ->{
+            Constants.CODE_CREATION_SUCCESS -> {
 
             }
             Constants.CODE_VALIDATION_FAIL -> {

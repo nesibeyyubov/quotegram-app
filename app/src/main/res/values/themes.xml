@@ -15,6 +15,14 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="TabItemStyle" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabTextAppearance">@style/TabItemTextAppearance</item>
+    </style>
+
+    <style name="TabItemTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
     <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="chipBackgroundColor">@drawable/chip_bg_selector</item>
         <item name="android:textColor">@drawable/chip_text_selector</item>

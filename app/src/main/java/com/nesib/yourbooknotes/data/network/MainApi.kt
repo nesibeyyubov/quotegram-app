@@ -1,9 +1,6 @@
 package com.nesib.yourbooknotes.data.network
 
-import com.nesib.yourbooknotes.models.BookResponse
-import com.nesib.yourbooknotes.models.Quote
-import com.nesib.yourbooknotes.models.QuotesResponse
-import com.nesib.yourbooknotes.models.User
+import com.nesib.yourbooknotes.models.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -29,6 +26,9 @@ interface MainApi {
     suspend fun deleteQuote(@Path("quoteId") quoteId: String)
 
     // Books
+    @GET("/books/")
+    suspend fun getBooks():Response<BooksResponse>
+
     @GET("/books/{bookId}")
     suspend fun getBook(@Path("bookId") bookId: String): Response<BookResponse>
 

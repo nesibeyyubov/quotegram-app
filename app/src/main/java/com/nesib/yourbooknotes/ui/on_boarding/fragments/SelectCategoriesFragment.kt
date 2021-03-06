@@ -59,9 +59,15 @@ class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
         authViewModel.genres.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    val user = it.data?.user!!
+                    val user = it.data?.user
                     authViewModel.saveUser()
-                    authViewModel.saveExtraUserDetail(user.username!!,user.email!!,user.profileImage!!)
+                    if(user != null){
+                        authViewModel.saveExtraUserDetail(
+                            user.username!!,
+                            user.email!!,
+                            user.profileImage ?: ""
+                        )
+                    }
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()

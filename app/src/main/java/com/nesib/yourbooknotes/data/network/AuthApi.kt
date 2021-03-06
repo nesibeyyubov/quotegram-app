@@ -6,11 +6,16 @@ import retrofit2.http.*
 
 
 interface AuthApi {
+    // Authentication
     @POST("/auth/login/")
     suspend fun login(@Body loginBody: Map<String, String>): Response<AuthResponse>
 
     @POST("/auth/signup")
     suspend fun signup(@Body signupBody: Map<String, String>): Response<AuthResponse>
+
+    // Users
+    @GET("/users/")
+    suspend fun getUsers(@Query("search") search:String=""): Response<UsersResponse>
 
     @GET("/users/{userId}")
     suspend fun getUser(@Path("userId") userId: String): Response<UserResponse>

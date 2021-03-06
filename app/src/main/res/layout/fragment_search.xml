@@ -1,76 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/page_padding">
 
-    <androidx.appcompat.widget.Toolbar
-        android:elevation="1dp"
-        android:id="@+id/toolbar_searchFragment"
+    <LinearLayout
+        android:id="@+id/searchInputContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/inputBackgroundColor"
+        android:gravity="center_vertical">
 
-        <LinearLayout
-            android:paddingRight="@dimen/page_padding"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:scaleX="1.1"
+            android:scaleY="1.1"
+            android:src="@drawable/ic_search"
+            app:tint="@color/colorSecondaryText" />
+
+        <EditText
+            android:id="@+id/searchInput"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:hint="Search books here..."
+            android:textSize="14sp" />
 
-            <LinearLayout
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+    </LinearLayout>
 
-                <ImageView
-                    android:scaleX="1.2"
-                    android:scaleY="1.2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_search"
-                    app:tint="@color/colorSecondaryText" />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/searchTabLayout"
+        style="@style/TabItemStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
 
-                <EditText
-                    android:textSize="14sp"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
-                    android:hint="Search books here..."
-                    android:background="@android:color/transparent"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Books" />
 
-                <ImageButton
-                    android:scaleX="1.2"
-                    android:scaleY="1.2"
-                    android:src="@drawable/ic_filter"
-                    android:background="@android:color/transparent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Users" />
 
-        </LinearLayout>
+    </com.google.android.material.tabs.TabLayout>
 
-    </androidx.appcompat.widget.Toolbar>
 
-    <ScrollView
-        android:scrollbars="none"
-        android:padding="@dimen/page_padding"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:layout_below="@id/toolbar_searchFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include layout="@layout/search_book_layout"/>
-            <include layout="@layout/search_book_layout"/>
-            <include layout="@layout/search_book_layout"/>
-            <include layout="@layout/search_book_layout"/>
-            <include layout="@layout/search_book_layout"/>
-            <include layout="@layout/search_book_layout"/>
-        </LinearLayout>
-    </ScrollView>
+        android:paddingTop="10dp" />
 
 
-
-</RelativeLayout>
+</LinearLayout>

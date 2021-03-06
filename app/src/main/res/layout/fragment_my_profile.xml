@@ -1,16 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/notSignedinContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image_login"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="20dp"
+            android:alpha="0.2"
+            android:src="@drawable/ic_login" />
+
+        <TextView
+            android:id="@+id/text_not_signed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Not signed in"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_extra_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="You need to login to use all the features"
+            android:textColor="@color/colorSecondaryText" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="60dp"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You don't have an account? "
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/loginToSignupBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:padding="5dp"
+                android:text="Sign up now"
+                android:textColor="@color/blue"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:indeterminateTint="@color/blue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:visibility="gone" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/profileContent"
@@ -18,7 +86,8 @@
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:padding="@dimen/page_padding"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"

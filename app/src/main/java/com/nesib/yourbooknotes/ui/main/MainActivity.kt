@@ -1,12 +1,15 @@
 package com.nesib.yourbooknotes.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.core.view.marginBottom
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -18,7 +21,7 @@ import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 
-class MainActivity : AppCompatActivity(),View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -64,18 +67,17 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         setupDrawerNavChangeListener()
     }
 
-    private fun initViewModels(){
+    private fun initViewModels() {
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
     }
 
-    private fun setupDrawerUi(){
+    private fun setupDrawerUi() {
         val extraDetail = authViewModel.getExtraUserDetail().split(",")
-        Log.d("mytag", "setupDrawerUi: $extraDetail")
         val username = extraDetail[0]
         val email = extraDetail[1]
         val profileImage = extraDetail[2]
-        if(authViewModel.isAuthenticated()){
+        if (authViewModel.isAuthenticated()) {
             binding.apply {
                 val headerView = drawerNavigationView.getHeaderView(0)
                 headerView.findViewById<TextView>(R.id.headerUsername).text = username
@@ -84,7 +86,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
                 drawerMenu.findItem(R.id.drawer_login).isVisible = false
                 drawerMenu.findItem(R.id.drawer_signup).isVisible = false
             }
-        }else{
+        } else {
             binding.apply {
                 val bottomNavMenu = drawerNavigationView.menu
                 bottomNavMenu.findItem(R.id.drawer_logout).isVisible = false
@@ -92,17 +94,18 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         }
     }
 
-    private fun setupDrawerNavChangeListener(){
-        binding.drawerNavigationView.setNavigationItemSelectedListener{menuItem->
-            if(menuItem.itemId == R.id.drawer_logout){
+    private fun setupDrawerNavChangeListener() {
+        binding.drawerNavigationView.setNavigationItemSelectedListener { menuItem ->
+            if (menuItem.itemId == R.id.drawer_logout) {
                 userViewModel.clearUser()
-                startActivity(Intent(this@MainActivity,StartActivity::class.java))
+                startActivity(Intent(this@MainActivity, StartActivity::class.java))
             }
             true
         }
     }
 
-    private fun setupNavigation(){
+    @SuppressLint("RestrictedApi")
+    private fun setupNavigation() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView_mainActivity) as NavHostFragment
         navController = navHostFragment.navController
@@ -114,25 +117,24 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         binding.bottomNavView.menu.getItem(2).isEnabled = false
         binding.bottomNavView.setupWithNavController(navController)
         binding.drawerNavigationView.setupWithNavController(navController)
+        supportActionBar?.setShowHideAnimationEnabled(true)
     }
 
-    private fun setupBottomNavChangeListeners(){
+    private fun setupBottomNavChangeListeners() {
         navController.addOnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
-//            if(navDestination.id == R.id.searchFragment){
-//                binding.toolbarMainActivity.visibility = View.INVISIBLE
-//            }else{
-//                if(binding.toolbarMainActivity.visibility == View.INVISIBLE){
-//                    binding.toolbarMainActivity.visibility = View.VISIBLE
-//                }
-//            }
-            if(navDestination.id == R.id.userProfileFragment){
+            if (navDestination.id != R.id.searchFragment) {
+                if(binding.toolbarMainActivity.visibility == View.GONE){
+                    binding.toolbarMainActivity.visibility = View.VISIBLE
+                }
+            }
+            if (navDestination.id == R.id.userProfileFragment) {
                 supportActionBar?.title = ""
             }
 
             if (navDestination.id == R.id.editUserFragment) {
                 binding.bottomNavView.visibility = View.GONE
                 binding.fabAddButton.hide()
-                if(binding.addQuoteBtn.visibility == View.VISIBLE){
+                if (binding.addQuoteBtn.visibility == View.VISIBLE) {
                     binding.addQuoteBtn.visibility = View.GONE
                     binding.addBookBtn.visibility = View.GONE
                 }
@@ -140,7 +142,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
                 if (binding.bottomNavView.visibility == View.GONE) {
                     binding.bottomNavView.visibility = View.VISIBLE
                     binding.fabAddButton.show()
-                    if(binding.addQuoteBtn.visibility == View.GONE && fabExtended){
+                    if (binding.addQuoteBtn.visibility == View.GONE && fabExtended) {
                         binding.addQuoteBtn.visibility = View.VISIBLE
                         binding.addBookBtn.visibility = View.VISIBLE
                     }
@@ -149,7 +151,7 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
         }
     }
 
-    private fun setupClickListeners(){
+    private fun setupClickListeners() {
         binding.addQuoteBtn.setOnClickListener(this)
         binding.addBookBtn.setOnClickListener(this)
         binding.fabAddButton.setOnClickListener(this)
@@ -176,14 +178,14 @@ class MainActivity : AppCompatActivity(),View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.add_quote_btn->{
+        when (v?.id) {
+            R.id.add_quote_btn -> {
                 navController.navigate(R.id.action_global_addQuoteFragment)
             }
-            R.id.add_book_btn->{
+            R.id.add_book_btn -> {
                 navController.navigate(R.id.action_global_addBookFragment)
             }
-            R.id.fab_add_button->{
+            R.id.fab_add_button -> {
                 if (!fabExtended) {
                     startExtendedFabAnimation()
                     fabExtended = true
