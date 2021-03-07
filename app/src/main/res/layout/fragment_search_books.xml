@@ -4,15 +4,14 @@
     android:layout_height="match_parent">
 
     <ProgressBar
-        android:visibility="gone"
+        android:visibility="invisible"
         android:id="@+id/progressBar"
         android:layout_centerInParent="true"
         android:indeterminateTint="@color/blue"
-        android:layout_width="35dp"
-        android:layout_height="35dp"/>
+        android:layout_width="30dp"
+        android:layout_height="30dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/searchBooksRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

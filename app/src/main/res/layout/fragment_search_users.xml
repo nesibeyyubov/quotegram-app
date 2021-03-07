@@ -9,7 +9,7 @@
         android:layout_height="35dp"
         android:layout_centerInParent="true"
         android:indeterminateTint="@color/blue"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchUsersRecyclerView"

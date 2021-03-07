@@ -1,6 +1,8 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -20,6 +22,7 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books),IBooksNotif
     private lateinit var binding: FragmentSearchBooksBinding
     private val mainViewModel:MainViewModel by viewModels()
     private val adapter by lazy { SearchBooksAdapter() }
+    private var searchViewTextChanged = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Utils.booksNotifier = this
@@ -31,6 +34,7 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books),IBooksNotif
     }
 
     private fun setupRecyclerView(){
+        binding.searchBooksRecyclerView.itemAnimator = null
         binding.searchBooksRecyclerView.adapter = adapter
         binding.searchBooksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
@@ -38,27 +42,41 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books),IBooksNotif
     private fun subscribeObservers(){
         mainViewModel.books.observe(viewLifecycleOwner){
             when(it){
-                is DataState.Success->{
-                    toggleProgressBar(false)
+                is DataState.Success -> {
                     adapter.setData(it.data!!.books)
+                    toggleProgressBar(false)
                 }
                 is DataState.Fail->{
                     toggleProgressBar(false)
                 }
                 is DataState.Loading -> {
-                    toggleProgressBar(true)
+                    if(!searchViewTextChanged){
+                        toggleProgressBar(true)
+                    }
                 }
             }
         }
     }
 
     private fun toggleProgressBar(loading:Boolean){
-        binding.progressBar.visibility = if(loading) View.VISIBLE else View.GONE
-        binding.searchBooksRecyclerView.visibility = if(loading) View.GONE else View.VISIBLE
+        binding.progressBar.visibility = if(loading) View.VISIBLE else View.INVISIBLE
+        binding.searchBooksRecyclerView.visibility = if(loading) View.INVISIBLE else View.VISIBLE
     }
 
-    override fun notify(text: String) {
-        Log.d("mytag", "book notify: $text")
+    override fun onSearchViewTextChanged(text: String) {
+        if(text.isNotEmpty()){
+            searchViewTextChanged = true
+        }
+        Handler(Looper.getMainLooper())
+            .postDelayed({
+                mainViewModel.getBooks(text)
+
+            },300)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Utils.booksNotifier = null
     }
 
 

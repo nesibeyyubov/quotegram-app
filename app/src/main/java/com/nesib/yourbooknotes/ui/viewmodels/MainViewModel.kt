@@ -1,6 +1,7 @@
 package com.nesib.yourbooknotes.ui.viewmodels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -43,9 +44,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getBooks() = viewModelScope.launch(Dispatchers.IO) {
+    fun getBooks(searchText:String="") = viewModelScope.launch(Dispatchers.IO) {
         _books.postValue(DataState.Loading())
-        val response = MainRepository.getBooks()
+        Log.d("mytag", "getBooks: $searchText")
+        val response = MainRepository.getBooks(searchText)
         handleBooksResponse(response)
     }
 

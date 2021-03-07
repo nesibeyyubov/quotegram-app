@@ -4,17 +4,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.FullPostLayoutBinding
+import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.utils.Constants.API_URL
-import com.nesib.yourbooknotes.utils.DiffUtilCallback
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
-    var quoteList = emptyList<Quote>()
 
     var OnUserClickListener: ((String) -> Unit)? = null
     var OnBookClickListener: ((String) -> Unit)? = null
@@ -32,7 +32,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
         }
 
         fun bindData() {
-            val quote = quoteList[adapterPosition]
+            val quote = differ.currentList[adapterPosition]
             binding.apply {
                 usernameTextView.text = quote.creator!!.username
                 userphotoImageView.load(R.drawable.user)
@@ -49,14 +49,26 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
         override fun onClick(v: View?) {
             when (v?.id) {
                 R.id.username_textView, R.id.userphoto_imageView -> {
-                    OnUserClickListener!!(quoteList[adapterPosition].creator!!.id)
+                    OnUserClickListener!!(differ.currentList[adapterPosition].creator!!.id)
                 }
                 R.id.viewBookBtn, R.id.book_info_container -> {
-                    OnBookClickListener!!(quoteList[adapterPosition].book!!.id)
+                    OnBookClickListener!!(differ.currentList[adapterPosition].book!!.id)
                 }
             }
         }
     }
+    private val diffCallback = object: DiffUtil.ItemCallback<Quote>(){
+        override fun areItemsTheSame(oldItem: Quote, newItem: Quote): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Quote, newItem: Quote): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+
+    private val differ = AsyncListDiffer(this,diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.ViewHolder {
         val view =
@@ -65,16 +77,12 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: HomeAdapter.ViewHolder, position: Int) {
-        Log.d("mytag", "onBindViewHolder: ")
         holder.bindData()
     }
 
-    override fun getItemCount() = quoteList.size
+    override fun getItemCount() = differ.currentList.size
 
     fun setData(newQuoteList: List<Quote>) {
-        val callback = DiffUtilCallback(newQuoteList, quoteList)
-        val diffResult = DiffUtil.calculateDiff(callback)
-        quoteList = newQuoteList
-        diffResult.dispatchUpdatesTo(this)
+        differ.submitList(newQuoteList)
     }
 }

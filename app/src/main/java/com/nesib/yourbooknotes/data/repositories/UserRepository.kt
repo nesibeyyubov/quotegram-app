@@ -57,7 +57,7 @@ object UserRepository {
 
     suspend fun getUser(userId: String) = authApi.getUser(userId)
 
-    suspend fun getUsers() = authApi.getUsers()
+    suspend fun getUsers(searchQuery:String) = authApi.getUsers(searchQuery)
 
     suspend fun getSavedQuotes(userId: String) = authApi.getSavedQuotes(userId)
 

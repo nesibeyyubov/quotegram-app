@@ -1,21 +1,17 @@
 package com.nesib.yourbooknotes.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.nesib.yourbooknotes.R
-import com.nesib.yourbooknotes.databinding.FullPostLayoutBinding
 import com.nesib.yourbooknotes.databinding.QuoteFromBookLayoutBinding
 import com.nesib.yourbooknotes.models.Quote
-import com.nesib.yourbooknotes.utils.DiffUtilCallback
 
 class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
-    var quoteList = emptyList<Quote>()
-
     var OnUsernameTextViewClickListener: (() -> Unit)? = null
     var OnUserImageViewClickListener: (() -> Unit)? = null
 
@@ -29,7 +25,7 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
             binding.userImage.setOnClickListener(this)
         }
         fun bindData(){
-            val quote = quoteList[adapterPosition]
+            val quote = differ.currentList[adapterPosition]
             binding.apply {
                 username.text = quote.creator!!.username
                 userImage.load(R.drawable.user){
@@ -52,6 +48,19 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
         }
     }
 
+    private val diffCallback = object: DiffUtil.ItemCallback<Quote>(){
+        override fun areItemsTheSame(oldItem: Quote, newItem: Quote): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Quote, newItem: Quote): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+
+    private val differ = AsyncListDiffer(this,diffCallback)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookQuotesAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.quote_from_book_layout, parent, false)
         return ViewHolder(view)
@@ -61,12 +70,9 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
         holder.bindData()
     }
 
-    override fun getItemCount() = quoteList.size
+    override fun getItemCount() = differ.currentList.size
 
     fun setData(newQuoteList:List<Quote>){
-        val callback = DiffUtilCallback(newQuoteList,quoteList)
-        val diffResult = DiffUtil.calculateDiff(callback)
-        quoteList = newQuoteList
-        diffResult.dispatchUpdatesTo(this)
+        differ.submitList(newQuoteList)
     }
 }

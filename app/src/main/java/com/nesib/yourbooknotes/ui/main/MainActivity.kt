@@ -4,12 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
-import androidx.core.view.marginBottom
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -104,7 +101,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    @SuppressLint("RestrictedApi")
     private fun setupNavigation() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView_mainActivity) as NavHostFragment
@@ -117,7 +113,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.bottomNavView.menu.getItem(2).isEnabled = false
         binding.bottomNavView.setupWithNavController(navController)
         binding.drawerNavigationView.setupWithNavController(navController)
-        supportActionBar?.setShowHideAnimationEnabled(true)
     }
 
     private fun setupBottomNavChangeListeners() {
@@ -131,21 +126,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 supportActionBar?.title = ""
             }
 
-            if (navDestination.id == R.id.editUserFragment) {
+            if (navDestination.id == R.id.editUserFragment || navDestination.id == R.id.selectBookFragment) {
+                if (binding.addQuoteBtn.visibility == View.VISIBLE) {
+                    shrinkFabWithAnimation()
+                }
                 binding.bottomNavView.visibility = View.GONE
                 binding.fabAddButton.hide()
-                if (binding.addQuoteBtn.visibility == View.VISIBLE) {
-                    binding.addQuoteBtn.visibility = View.GONE
-                    binding.addBookBtn.visibility = View.GONE
-                }
+
             } else {
                 if (binding.bottomNavView.visibility == View.GONE) {
+                    if (binding.addQuoteBtn.visibility == View.GONE && fabExtended) {
+                        extendFabWithAnimation()
+                    }
                     binding.bottomNavView.visibility = View.VISIBLE
                     binding.fabAddButton.show()
-                    if (binding.addQuoteBtn.visibility == View.GONE && fabExtended) {
-                        binding.addQuoteBtn.visibility = View.VISIBLE
-                        binding.addBookBtn.visibility = View.VISIBLE
-                    }
+
                 }
             }
         }
@@ -157,20 +152,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.fabAddButton.setOnClickListener(this)
     }
 
-    private fun startExtendedFabAnimation() {
+    private fun extendFabWithAnimation() {
         binding.fabAddButton.startAnimation(extendedFabAnimation)
         binding.addBookBtn.visibility = View.VISIBLE
         binding.addQuoteBtn.visibility = View.VISIBLE
         binding.addQuoteBtn.startAnimation(fromBottomAnimation)
         binding.addBookBtn.startAnimation(fromBottomAnimation)
+        fabExtended = true
     }
 
-    private fun startNonExtendedFabAnimation() {
+    private fun shrinkFabWithAnimation() {
         binding.fabAddButton.startAnimation(nonExtendedFabAnimation)
         binding.addQuoteBtn.startAnimation(toBottomAnimation)
         binding.addBookBtn.startAnimation(toBottomAnimation)
         binding.addBookBtn.visibility = View.INVISIBLE
         binding.addQuoteBtn.visibility = View.INVISIBLE
+        fabExtended = false
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -180,18 +177,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.add_quote_btn -> {
-                navController.navigate(R.id.action_global_addQuoteFragment)
+                navController.navigate(R.id.action_global_selectBookFragment)
             }
             R.id.add_book_btn -> {
                 navController.navigate(R.id.action_global_addBookFragment)
             }
             R.id.fab_add_button -> {
                 if (!fabExtended) {
-                    startExtendedFabAnimation()
-                    fabExtended = true
+                    extendFabWithAnimation()
                 } else {
-                    startNonExtendedFabAnimation()
-                    fabExtended = false
+                    shrinkFabWithAnimation()
                 }
             }
         }

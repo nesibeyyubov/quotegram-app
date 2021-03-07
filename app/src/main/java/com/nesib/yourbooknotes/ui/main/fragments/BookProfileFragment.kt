@@ -22,6 +22,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private val mainViewModel:MainViewModel by viewModels()
     private val args by navArgs<BookProfileFragmentArgs>()
     private val adapter by lazy { BookQuotesAdapter() }
+    private var currentBook:Book? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBookProfileBinding.bind(view)
@@ -38,6 +39,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
                     binding.bookProfileContent.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
                     bindData(it.data!!.book!!)
+                    currentBook = it.data.book!!
                 }
                 is DataState.Fail->{
                     binding.bookProfileContent.visibility = View.VISIBLE
@@ -72,7 +74,9 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
 
     private fun setupClickListeners(){
         binding.addBookFromThisBookBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_bookProfileFragment_to_addQuoteFragment)
+            val action = BookProfileFragmentDirections.actionBookProfileFragmentToAddQuoteFragment()
+            action.book = currentBook
+            findNavController().navigate(action)
         }
     }
 }

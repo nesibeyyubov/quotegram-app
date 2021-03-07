@@ -27,7 +27,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     private val sharedPreferencesRepository = SharedPreferencesRepository(getApplication())
 
     fun getUser(userId: String? = null) = viewModelScope.launch(Dispatchers.IO) {
-        if(_user.value == null){
+        if (_user.value == null) {
             _user.postValue(DataState.Loading())
             val id = userId ?: sharedPreferencesRepository.getUser().userId!!
             val response = UserRepository.getUser(id)
@@ -35,10 +35,10 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getUsers() = viewModelScope.launch(Dispatchers.IO) {
-            _users.postValue(DataState.Loading())
-            val response = UserRepository.getUsers()
-            handleUsersResponse(response)
+    fun getUsers(searchQuery: String = "") = viewModelScope.launch(Dispatchers.IO) {
+        _users.postValue(DataState.Loading())
+        val response = UserRepository.getUsers(searchQuery)
+        handleUsersResponse(response)
     }
 
     fun clearUser() {
@@ -62,7 +62,6 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     ) {
 
     }
-
 
 
     fun getSavedQuotes(userId: String) {

@@ -1,6 +1,7 @@
 package com.nesib.yourbooknotes.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Book(
     @SerializedName("_id") val id:String,
@@ -11,4 +12,4 @@ data class Book(
     val creator: String?,
     val quotes: List<Quote>?,
     val followers: List<String>?
-)
+):Serializable

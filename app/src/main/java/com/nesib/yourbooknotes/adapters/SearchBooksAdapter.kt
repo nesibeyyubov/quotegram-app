@@ -3,29 +3,50 @@ package com.nesib.yourbooknotes.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.SearchBookLayoutBinding
+import com.nesib.yourbooknotes.databinding.SelectBookLayoutBinding
 import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.utils.Constants.API_URL
-import com.nesib.yourbooknotes.utils.DiffUtilCallback
 
-class SearchBooksAdapter : RecyclerView.Adapter<SearchBooksAdapter.ViewHolder>() {
-    private var bookList:List<Book> = emptyList()
+class SearchBooksAdapter(isSelectBookFragment: Boolean = false) :
+    RecyclerView.Adapter<SearchBooksAdapter.ViewHolder>() {
+    private var bookList = emptyList<Book>()
+    private val isSelectBookFragment = isSelectBookFragment
+
+    var onBookClickListener:((Book)->Unit)? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val binding = SearchBookLayoutBinding.bind(itemView)
-        fun bindData(book:Book){
-            binding.apply {
-                searchBookName.text = book.name
-                searchBookAuthor.text = book.author
-                searchBookGenre.text = book.genre
-                searchBookImage.load(API_URL+ book.image){
-                    crossfade(400)
+        private val searchLayoutBinding = SearchBookLayoutBinding.bind(itemView)
+        private val selectBookLayoutBinding = SelectBookLayoutBinding.bind(itemView)
+
+        fun bindData(book: Book) {
+            if(isSelectBookFragment){
+                selectBookLayoutBinding.apply {
+                    searchBookName.text = book.name
+                    searchBookAuthor.text = book.author
+                    searchBookGenre.text = book.genre
+                    searchBookImage.load(API_URL + book.image) {
+                        crossfade(400)
+                    }
+                    selectBookBtn.setOnClickListener {
+                        onBookClickListener!!(bookList[adapterPosition])
+                    }
                 }
             }
+            else{
+                searchLayoutBinding.apply {
+                    searchBookName.text = book.name
+                    searchBookAuthor.text = book.author
+                    searchBookGenre.text = book.genre
+                    searchBookImage.load(API_URL + book.image) {
+                        crossfade(400)
+                    }
+                }
+            }
+
         }
     }
 
@@ -33,8 +54,12 @@ class SearchBooksAdapter : RecyclerView.Adapter<SearchBooksAdapter.ViewHolder>()
         parent: ViewGroup,
         viewType: Int
     ): SearchBooksAdapter.ViewHolder {
-        val view =
+        val view = if (isSelectBookFragment)
+            LayoutInflater.from(parent.context).inflate(R.layout.select_book_layout, parent, false)
+        else
             LayoutInflater.from(parent.context).inflate(R.layout.search_book_layout, parent, false)
+
+
         return ViewHolder(view)
     }
 
@@ -42,11 +67,11 @@ class SearchBooksAdapter : RecyclerView.Adapter<SearchBooksAdapter.ViewHolder>()
         holder.bindData(bookList[position])
     }
 
-    fun setData(newBookList:List<Book>){
-        val diffResult = DiffUtil.calculateDiff(DiffUtilCallback(newBookList,bookList))
+    fun setData(newBookList: List<Book>) {
         bookList = newBookList
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount() = bookList.size
+
 }

@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/searchInputContainer"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:background="@color/inputBackgroundColor"
         android:gravity="center_vertical">
@@ -18,8 +18,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            android:scaleX="1.1"
-            android:scaleY="1.1"
             android:src="@drawable/ic_search"
             app:tint="@color/colorSecondaryText" />
 
@@ -28,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
-            android:hint="Search books here..."
+            android:hint="Search here..."
             android:textSize="14sp" />
 
     </LinearLayout>

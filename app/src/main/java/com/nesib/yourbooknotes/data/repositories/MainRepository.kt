@@ -30,6 +30,6 @@ object MainRepository {
 
     suspend fun getBook(bookId: String) = mainApi.getBook(bookId)
 
-    suspend fun getBooks() = mainApi.getBooks()
+    suspend fun getBooks(searchText:String) = mainApi.getBooks(searchText)
 
 }

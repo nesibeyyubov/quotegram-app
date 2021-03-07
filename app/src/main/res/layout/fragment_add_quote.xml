@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorBackground"
@@ -7,35 +8,44 @@
     android:orientation="vertical"
     android:padding="@dimen/page_padding">
 
-    <ImageView
-        android:id="@+id/book_image"
-        android:layout_width="65dp"
-        android:layout_height="90dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/book" />
 
-    <TextView
-        android:id="@+id/book_name_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/book_image"
-        android:text="A Tale of Two Cities"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+    <RelativeLayout
+        android:id="@+id/book_info_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/book_author_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/book_name_textView"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@id/book_image"
-        android:text="Charles Dickens"
-        android:textColor="@color/colorSecondaryText"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/book_image"
+            android:layout_width="65dp"
+            android:layout_height="90dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/book" />
+
+        <TextView
+            android:id="@+id/book_name_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/book_image"
+            android:text="A Tale of Two Cities"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/book_author_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/book_name_textView"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/book_image"
+            android:text="Charles Dickens"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
 
     <LinearLayout
         android:id="@+id/genre_spinner_container"
@@ -75,7 +85,6 @@
         android:id="@+id/quote_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/genre_spinner_container"
         android:layout_marginTop="10dp"
         android:background="@drawable/edittext_bg"
         android:gravity="start"
@@ -103,4 +112,4 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

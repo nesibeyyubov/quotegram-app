@@ -27,7 +27,7 @@ interface MainApi {
 
     // Books
     @GET("/books/")
-    suspend fun getBooks():Response<BooksResponse>
+    suspend fun getBooks(@Query("search") searchText:String):Response<BooksResponse>
 
     @GET("/books/{bookId}")
     suspend fun getBook(@Path("bookId") bookId: String): Response<BookResponse>

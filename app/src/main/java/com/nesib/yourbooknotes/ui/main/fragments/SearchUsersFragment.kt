@@ -1,6 +1,8 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -18,6 +20,7 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users),IUsersNotif
     private val adapter by lazy { SearchUserAdapter() }
     private lateinit var binding: FragmentSearchUsersBinding
     private val userViewModel:UserViewModel by viewModels()
+    private var searchViewTextChanged = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Utils.usersNotifier = this
         super.onViewCreated(view, savedInstanceState)
@@ -50,11 +53,22 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users),IUsersNotif
     }
 
     private fun toggleProgressBar(loading:Boolean){
-        binding.progressBar.visibility = if(loading) View.VISIBLE else View.GONE
-        binding.searchUsersRecyclerView.visibility = if(loading) View.GONE else View.VISIBLE
+        binding.progressBar.visibility = if(loading) View.VISIBLE else View.INVISIBLE
+        binding.searchUsersRecyclerView.visibility = if(loading) View.INVISIBLE else View.VISIBLE
     }
 
-    override fun notify(text: String) {
-        Log.d("mytag", "user notify: $text")
+    override fun onSearchViewTextChanged(text: String) {
+        if(text.isNotEmpty()){
+            searchViewTextChanged = true
+        }
+        Handler(Looper.getMainLooper())
+            .postDelayed({
+                userViewModel.getUsers(text)
+            },300)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Utils.usersNotifier = null
     }
 }

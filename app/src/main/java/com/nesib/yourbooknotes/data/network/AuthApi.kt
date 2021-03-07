@@ -15,7 +15,7 @@ interface AuthApi {
 
     // Users
     @GET("/users/")
-    suspend fun getUsers(@Query("search") search:String=""): Response<UsersResponse>
+    suspend fun getUsers(@Query("search") searchQuery:String): Response<UsersResponse>
 
     @GET("/users/{userId}")
     suspend fun getUser(@Path("userId") userId: String): Response<UserResponse>

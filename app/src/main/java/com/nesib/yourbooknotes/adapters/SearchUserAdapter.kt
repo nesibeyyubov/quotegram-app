@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.SearchUserLayoutBinding
-import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.models.User
-import com.nesib.yourbooknotes.utils.DiffUtilCallback
 
 class SearchUserAdapter : RecyclerView.Adapter<SearchUserAdapter.ViewHolder>() {
     private var userList: List<User> = emptyList()
@@ -41,9 +39,8 @@ class SearchUserAdapter : RecyclerView.Adapter<SearchUserAdapter.ViewHolder>() {
     }
 
     fun setData(newUserList: List<User>) {
-        val diffResult = DiffUtil.calculateDiff(DiffUtilCallback(newUserList, userList))
         userList = newUserList
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     override fun getItemCount() = userList.size

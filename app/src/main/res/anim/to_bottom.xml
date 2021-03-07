@@ -6,14 +6,10 @@
         android:fromYDelta="0%"
         android:toXDelta="0%"
         android:toYDelta="100%" />
-    <scale
-        android:startOffset="75"
-        android:fromXScale="1"
-        android:toXScale="0"
-        android:fromYScale="1"
-        android:toYScale="0"
-        android:pivotX="50%"
-        android:pivotY="50%"
+
+    <alpha
+        android:fromAlpha="1"
+        android:toAlpha="0"
         android:duration="150"
         />
 </set>

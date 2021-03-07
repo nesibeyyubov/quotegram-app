@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        tools:layout="@layout/fragment_home"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.HomeFragment"
-        android:label="Quotes" >
+        android:label="Quotes"
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_bookProfileFragment"
             app:destination="@id/bookProfileFragment" />
@@ -20,30 +20,36 @@
             android:id="@+id/action_homeFragment_to_userProfileFragment2"
             app:destination="@id/userProfileFragment2" />
     </fragment>
-     <fragment
-        tools:layout="@layout/fragment_user_profile"
+    <fragment
         android:id="@+id/userProfileFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.MyProfileFragment"
-        android:label="UserProfileFragment" >
+        android:label="UserProfileFragment"
+        tools:layout="@layout/fragment_user_profile">
         <action
             android:id="@+id/action_userProfileFragment_to_editUserFragment"
             app:destination="@id/editUserFragment" />
     </fragment>
     <dialog
-        tools:layout="@layout/fragment_add_book"
         android:id="@+id/addBookFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.AddBookFragment"
-        android:label="Add a new book" />
+        android:label="Add a new book"
+        tools:layout="@layout/fragment_add_book" />
     <dialog
-        tools:layout="@layout/fragment_add_quote"
         android:id="@+id/addQuoteFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.AddQuoteFragment"
-        android:label="Add new quote" />
+        android:label="Add new quote"
+        tools:layout="@layout/fragment_add_quote">
+        <argument
+            android:name="book"
+            android:defaultValue="@null"
+            app:argType="com.nesib.yourbooknotes.models.Book"
+            app:nullable="true" />
+    </dialog>
     <fragment
-        tools:layout="@layout/fragment_book_profile"
         android:id="@+id/bookProfileFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.BookProfileFragment"
-        android:label="Book Profile" >
+        android:label="Book Profile"
+        tools:layout="@layout/fragment_book_profile">
         <action
             android:id="@+id/action_bookProfileFragment_to_addQuoteFragment"
             app:destination="@id/addQuoteFragment" />
@@ -52,26 +58,41 @@
             app:argType="string" />
     </fragment>
     <fragment
-        tools:layout="@layout/fragment_edit_profile"
         android:id="@+id/editUserFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.EditUserFragment"
-        android:label="Edit profile" />
+        android:label="Edit profile"
+        tools:layout="@layout/fragment_edit_profile" />
     <fragment
-        tools:layout="@layout/fragment_search"
         android:id="@+id/searchFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.SearchFragment"
-        android:label="SearchFragment " >
+        android:label="SearchFragment "
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_bookProfileFragment"
             app:destination="@id/bookProfileFragment" />
-    </fragment><action android:id="@+id/action_global_addQuoteFragment" app:destination="@id/addQuoteFragment"/><action android:id="@+id/action_global_addBookFragment" app:destination="@id/addBookFragment"/>
+    </fragment>
+    <action
+        android:id="@+id/action_global_addBookFragment"
+        app:destination="@id/addBookFragment" />
     <fragment
-        tools:layout="@layout/fragment_user_profile"
         android:id="@+id/userProfileFragment2"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.UserProfileFragment"
-        android:label="UserProfileFragment" >
+        android:label="UserProfileFragment"
+        tools:layout="@layout/fragment_user_profile">
         <argument
             android:name="userId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/selectBookFragment"
+        android:name="com.nesib.yourbooknotes.ui.main.fragments.SelectBookFragment"
+        android:label="SelectBookFragment"
+        tools:layout="@layout/fragment_select_book">
+        <action
+            android:id="@+id/action_selectBookFragment_to_addQuoteFragment"
+            app:destination="@id/addQuoteFragment" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_selectBookFragment"
+        app:destination="@id/selectBookFragment" />
 </navigation>
