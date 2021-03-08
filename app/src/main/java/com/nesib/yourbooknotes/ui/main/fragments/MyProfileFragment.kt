@@ -77,7 +77,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
 
     private fun setupClickListeners() {
         binding.followButton.setOnClickListener {
-            findNavController().navigate(R.id.action_userProfileFragment_to_editUserFragment)
+            findNavController().navigate(R.id.action_myProfileFragment_to_editUserFragment)
         }
     }
 

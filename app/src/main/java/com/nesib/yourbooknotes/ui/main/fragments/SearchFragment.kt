@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.PagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.nesib.yourbooknotes.R
@@ -14,8 +15,7 @@ import com.nesib.yourbooknotes.utils.Utils
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
     private lateinit var binding: FragmentSearchBinding
-    private val pagerAdapter by lazy { SearchPagerAdapter(this) }
-
+    private lateinit var pagerAdapter:SearchPagerAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSearchBinding.bind(view)
@@ -41,6 +41,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
 
     private fun setupTabLayout(){
+        pagerAdapter = SearchPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
         TabLayoutMediator(
             binding.searchTabLayout,

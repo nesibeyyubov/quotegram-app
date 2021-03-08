@@ -17,8 +17,8 @@ import com.nesib.yourbooknotes.ui.viewmodels.MainViewModel
 import com.nesib.yourbooknotes.utils.DataState
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
-    private lateinit var binding:FragmentHomeBinding
-    private val mainViewModel:MainViewModel by viewModels()
+    private lateinit var binding: FragmentHomeBinding
+    private val mainViewModel: MainViewModel by viewModels()
     private val adapter by lazy { HomeAdapter() }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -29,8 +29,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         mainViewModel.getQuotes()
     }
 
-    private fun subscribeObservers(){
-        mainViewModel.quotes.observe(viewLifecycleOwner){
+    private fun subscribeObservers() {
+        mainViewModel.quotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
                     binding.shimmerLayout.hideShimmer()
@@ -49,25 +49,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    private fun setupRecyclerView(){
+    private fun setupRecyclerView() {
 
-        adapter.OnBookClickListener = {bookId->
+        adapter.OnBookClickListener = { bookId ->
             val action = HomeFragmentDirections.actionHomeFragmentToBookProfileFragment(bookId)
             findNavController().navigate(action)
         }
-        adapter.OnUserClickListener = {userId->
-            val action = HomeFragmentDirections.actionHomeFragmentToUserProfileFragment2(userId)
+        adapter.OnUserClickListener = { userId ->
+            val action = HomeFragmentDirections.actionHomeFragmentToUserProfileFragment(userId)
             findNavController().navigate(action)
         }
         binding.homeRecyclerView.adapter = adapter
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        //        binding.homeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                if(dy>0){
-//
-//                }
-//            }
-//        })
     }
 }

@@ -20,6 +20,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val quotes: LiveData<DataState<QuotesResponse>>
         get() = _quotes
 
+    private val _quote = MutableLiveData<DataState<QuoteResponse>>()
+    val quote: LiveData<DataState<QuoteResponse>>
+        get() = _quote
+
     private val _book = MutableLiveData<DataState<BookResponse>>()
     val book: LiveData<DataState<BookResponse>>
         get() = _book
@@ -28,12 +32,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val books: LiveData<DataState<BooksResponse>>
         get() = _books
 
+
+
     fun getQuotes() = viewModelScope.launch(Dispatchers.IO) {
         if (_quotes.value == null) {
             _quotes.postValue(DataState.Loading())
             val response = MainRepository.getQuotes()
-            handleQuoteResponse(response)
+            handleQuotesResponse(response)
         }
+    }
+
+    fun postQuote(quote:Map<String,String>) = viewModelScope.launch(Dispatchers.IO){
+        _quote.postValue(DataState.Loading())
+        val response = MainRepository.postQuote(quote)
+        handleQuoteResponse(response)
     }
 
     fun getBook(bookId: String) = viewModelScope.launch(Dispatchers.IO) {
@@ -99,7 +111,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun handleQuoteResponse(response: Response<QuotesResponse>) {
+    private fun handleQuotesResponse(response: Response<QuotesResponse>) {
         when (response.code()) {
             Constants.CODE_SUCCESS -> {
                 _quotes.postValue(DataState.Success(response.body()))
@@ -119,6 +131,34 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     BasicResponse::class.java
                 )
                 _quotes.postValue(DataState.Fail(message = authFailResponse.message))
+            }
+        }
+    }
+
+    private fun handleQuoteResponse(response: Response<QuoteResponse>) {
+        when (response.code()) {
+            Constants.CODE_SUCCESS -> {
+                _quote.postValue(DataState.Success(response.body()))
+            }
+            Constants.CODE_CREATION_SUCCESS -> {
+                _quote.postValue(DataState.Success(response.body()))
+            }
+            Constants.CODE_VALIDATION_FAIL -> {
+                val authFailResponse = Gson().fromJson(
+                    response.errorBody()?.charStream(),
+                    BasicResponse::class.java
+                )
+                _quote.postValue(DataState.Fail(message = authFailResponse.message))
+            }
+            Constants.CODE_SERVER_ERROR -> {
+                _quote.postValue(DataState.Fail(message = "Server error"))
+            }
+            Constants.CODE_AUTHENTICATION_FAIL -> {
+                val authFailResponse = Gson().fromJson(
+                    response.errorBody()?.charStream(),
+                    BasicResponse::class.java
+                )
+                _quote.postValue(DataState.Fail(message = authFailResponse.message))
             }
         }
     }

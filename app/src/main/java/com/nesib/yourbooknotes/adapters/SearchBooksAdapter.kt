@@ -11,20 +11,18 @@ import com.nesib.yourbooknotes.databinding.SelectBookLayoutBinding
 import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 
-class SearchBooksAdapter(isSelectBookFragment: Boolean = false) :
+class SearchBooksAdapter(val isSelectBookFragment: Boolean = false) :
     RecyclerView.Adapter<SearchBooksAdapter.ViewHolder>() {
     private var bookList = emptyList<Book>()
-    private val isSelectBookFragment = isSelectBookFragment
-
     var onBookClickListener:((Book)->Unit)? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val searchLayoutBinding = SearchBookLayoutBinding.bind(itemView)
-        private val selectBookLayoutBinding = SelectBookLayoutBinding.bind(itemView)
+        private val searchLayoutBinding = if(!isSelectBookFragment) SearchBookLayoutBinding.bind(itemView) else null
+        private val selectBookLayoutBinding = if(isSelectBookFragment) SelectBookLayoutBinding.bind(itemView) else null
 
         fun bindData(book: Book) {
             if(isSelectBookFragment){
-                selectBookLayoutBinding.apply {
+                selectBookLayoutBinding?.apply {
                     searchBookName.text = book.name
                     searchBookAuthor.text = book.author
                     searchBookGenre.text = book.genre
@@ -37,7 +35,10 @@ class SearchBooksAdapter(isSelectBookFragment: Boolean = false) :
                 }
             }
             else{
-                searchLayoutBinding.apply {
+                searchLayoutBinding?.apply {
+                    root.setOnClickListener {
+                        onBookClickListener!!(book)
+                    }
                     searchBookName.text = book.name
                     searchBookAuthor.text = book.author
                     searchBookGenre.text = book.genre

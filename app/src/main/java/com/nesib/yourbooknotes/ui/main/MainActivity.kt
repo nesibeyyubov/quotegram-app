@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView_mainActivity) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.homeFragment, R.id.userProfileFragment),
+            setOf(R.id.homeFragment, R.id.myProfileFragment),
             binding.drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -118,15 +118,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setupBottomNavChangeListeners() {
         navController.addOnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
             if (navDestination.id != R.id.searchFragment) {
-                if(binding.toolbarMainActivity.visibility == View.GONE){
+                if (binding.toolbarMainActivity.visibility == View.GONE) {
                     binding.toolbarMainActivity.visibility = View.VISIBLE
                 }
             }
-            if (navDestination.id == R.id.userProfileFragment) {
+            if (navDestination.id == R.id.myProfileFragment) {
                 supportActionBar?.title = ""
             }
 
-            if (navDestination.id == R.id.editUserFragment || navDestination.id == R.id.selectBookFragment) {
+            if (navDestination.id == R.id.editUserFragment
+                || navDestination.id == R.id.selectBookFragment
+                || navDestination.id == R.id.addQuoteFragment
+                || navDestination.id == R.id.addBookFragment
+            ) {
                 if (binding.addQuoteBtn.visibility == View.VISIBLE) {
                     shrinkFabWithAnimation()
                 }

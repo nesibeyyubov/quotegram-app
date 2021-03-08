@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.SearchUserAdapter
@@ -31,6 +32,10 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users),IUsersNotif
     }
 
     private fun setupRecyclerView(){
+        adapter.onUserClickListener = {user->
+            val action = SearchFragmentDirections.actionSearchFragmentToUserProfileFragment(user.id)
+            findNavController().navigate(action)
+        }
         binding.searchUsersRecyclerView.adapter = adapter
         binding.searchUsersRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }

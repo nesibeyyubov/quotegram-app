@@ -12,6 +12,7 @@ import com.nesib.yourbooknotes.models.User
 
 class SearchUserAdapter : RecyclerView.Adapter<SearchUserAdapter.ViewHolder>() {
     private var userList: List<User> = emptyList()
+    var onUserClickListener:((User)->Unit)? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = SearchUserLayoutBinding.bind(itemView)
@@ -20,6 +21,9 @@ class SearchUserAdapter : RecyclerView.Adapter<SearchUserAdapter.ViewHolder>() {
                 searchUserName.text = user.username
                 searchUserImage.load(R.drawable.user) {
                     crossfade(400)
+                }
+                root.setOnClickListener {
+                    onUserClickListener!!(user)
                 }
             }
         }

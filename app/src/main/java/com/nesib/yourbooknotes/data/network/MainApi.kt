@@ -11,23 +11,21 @@ interface MainApi {
 
     @POST("/quotes")
     suspend fun postQuote(
-        @Body quote: String,
-        @Body book: String,
-        @Body genre: String
-    ): Response<Quote>
+        @Body quote: Map<String, String>,
+    ): Response<QuoteResponse>
 
     @PATCH("/quotes/{quoteId}")
     suspend fun likeOrDislikeQuote(@Path("quoteId") quoteId: String)
 
     @PUT("/quotes/{quoteId}")
-    suspend fun updateQuote(@Path("quoteId") quoteId: String): Response<Quote>
+    suspend fun updateQuote(@Path("quoteId") quoteId: String): Response<QuotesResponse>
 
     @DELETE("/quotes/{quoteId}")
     suspend fun deleteQuote(@Path("quoteId") quoteId: String)
 
     // Books
     @GET("/books/")
-    suspend fun getBooks(@Query("search") searchText:String):Response<BooksResponse>
+    suspend fun getBooks(@Query("search") searchText: String): Response<BooksResponse>
 
     @GET("/books/{bookId}")
     suspend fun getBook(@Path("bookId") bookId: String): Response<BookResponse>

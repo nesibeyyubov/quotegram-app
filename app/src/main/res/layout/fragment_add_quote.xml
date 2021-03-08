@@ -103,7 +103,15 @@
         android:clickable="true"
         android:gravity="center">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            android:indeterminateTint="@color/white"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
         <TextView
+            android:id="@+id/addBtnTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add"

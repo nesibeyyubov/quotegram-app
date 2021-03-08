@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="@dimen/page_padding">
 
@@ -17,10 +17,10 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_below="@+id/textView5"
         android:id="@+id/searchInputContainer"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_below="@+id/textView5"
         android:layout_marginTop="10dp"
         android:background="@color/inputBackgroundColor"
         android:gravity="center_vertical">
@@ -43,31 +43,76 @@
     </LinearLayout>
 
     <ProgressBar
-        android:indeterminateTint="@color/blue"
-        android:visibility="invisible"
-        android:layout_centerInParent="true"
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/blue"
+        android:visibility="invisible" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:visibility="invisible"
-        android:layout_below="@id/searchInputContainer"
-        android:layout_above="@+id/addQuoteBtn"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
         android:id="@+id/selectBooksRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchInputContainer"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="invisible" />
 
-    <Button
-        android:id="@+id/addQuoteBtn"
-        android:text="Next"
-        android:textAllCaps="false"
-        android:textStyle="bold"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/blue_button_bg_with_state"
+    <LinearLayout
+        android:id="@+id/no_book_found_container"
+        android:visibility="invisible"
         android:layout_width="match_parent"
-        android:layout_height="45dp"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchInputContainer"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/not_fond_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:alpha="0.2"
+            android:src="@drawable/ic_not_found" />
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/not_fond_image"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:text="We could'nt find the book\n you searched for"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:id="@+id/addBookYourselfBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/textView3"
+            android:clickable="true"
+            android:background="@drawable/add_quote_from_this_book_bg"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="5dp"
+            android:text="Add book yourself"
+            android:textColor="@color/blue"
+            android:textSize="14sp"
+            android:textStyle="bold" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add book yourself"
+                android:textColor="@color/blue"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </LinearLayout>
+
 
 </RelativeLayout>

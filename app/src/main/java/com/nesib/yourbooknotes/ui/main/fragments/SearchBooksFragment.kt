@@ -7,12 +7,14 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.SearchBooksAdapter
 import com.nesib.yourbooknotes.databinding.FragmentSearchBinding
 import com.nesib.yourbooknotes.databinding.FragmentSearchBooksBinding
 import com.nesib.yourbooknotes.ui.main.MainActivity
+import com.nesib.yourbooknotes.ui.main.fragments.SearchFragmentDirections.actionSearchFragmentToBookProfileFragment
 import com.nesib.yourbooknotes.ui.viewmodels.MainViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.IBooksNotifer
@@ -34,6 +36,10 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books),IBooksNotif
     }
 
     private fun setupRecyclerView(){
+        adapter.onBookClickListener = {book->
+            val action = SearchFragmentDirections.actionSearchFragmentToBookProfileFragment(book.id)
+            findNavController().navigate(action)
+        }
         binding.searchBooksRecyclerView.itemAnimator = null
         binding.searchBooksRecyclerView.adapter = adapter
         binding.searchBooksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
