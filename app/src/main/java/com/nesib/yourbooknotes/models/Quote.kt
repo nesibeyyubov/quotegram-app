@@ -5,9 +5,9 @@ import java.io.Serializable
 
 data class Quote(
     @SerializedName("_id") val id:String,
-    val quote: String?,
-    val book: Book?,
-    val genre: String?,
-    val creator: User?,
-    val likes: List<String>?,
+    var quote: String?,
+    var book: Book?,
+    var genre: String?,
+    var creator: User?,
+    var likes: List<String>?,
 ):Serializable

@@ -31,6 +31,7 @@ class SelectBookFragment : Fragment(R.layout.fragment_select_book) {
         subscribeObservers()
         setupRecyclerView()
 
+
         binding.searchInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 

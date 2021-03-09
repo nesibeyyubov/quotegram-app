@@ -141,6 +141,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _quote.postValue(DataState.Success(response.body()))
             }
             Constants.CODE_CREATION_SUCCESS -> {
+                Log.d("mytag", "handleQuoteResponse: response.body=${response.body()}")
                 _quote.postValue(DataState.Success(response.body()))
             }
             Constants.CODE_VALIDATION_FAIL -> {

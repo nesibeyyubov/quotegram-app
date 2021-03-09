@@ -37,12 +37,12 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                 usernameTextView.text = quote.creator!!.username
                 userphotoImageView.load(R.drawable.user)
                 quoteTextView.text = quote.quote
-                bookAuthor.text = quote.book!!.author
-                bookImageView.load(API_URL + quote.book.image) {
+                bookAuthor.text = quote.book?.author
+                bookImageView.load(API_URL + quote.book?.image) {
                     crossfade(600)
                 }
                 likeCountTextView.text = quote.likes?.size.toString()
-                bookNameTextView.text = quote.book.name
+                bookNameTextView.text = quote.book?.name
             }
         }
 

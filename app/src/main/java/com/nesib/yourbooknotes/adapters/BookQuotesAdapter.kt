@@ -1,5 +1,6 @@
 package com.nesib.yourbooknotes.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.nesib.yourbooknotes.models.Quote
 class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
     var OnUsernameTextViewClickListener: (() -> Unit)? = null
     var OnUserImageViewClickListener: (() -> Unit)? = null
+    var onReachBottom: (()->Unit)? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
