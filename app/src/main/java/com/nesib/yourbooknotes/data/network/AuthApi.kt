@@ -15,10 +15,16 @@ interface AuthApi {
 
     // Users
     @GET("/users/")
-    suspend fun getUsers(@Query("search") searchQuery:String): Response<UsersResponse>
+    suspend fun getUsers(@Query("search") searchQuery: String): Response<UsersResponse>
 
     @GET("/users/{userId}")
     suspend fun getUser(@Path("userId") userId: String): Response<UserResponse>
+
+    @GET("/users/{userId}")
+    suspend fun getMoreUserQuotes(
+        @Path("userId") userId: String,
+        @Query("page") page: Int
+    ): Response<QuotesResponse>
 
     @GET("/users/{userId}/savedQuotes")
     suspend fun getSavedQuotes(@Path("userId") userId: String): Response<List<Quote>>

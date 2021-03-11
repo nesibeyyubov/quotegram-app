@@ -11,6 +11,7 @@ import com.nesib.yourbooknotes.di.MyApplication
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.QuotesResponse
 import com.nesib.yourbooknotes.models.User
+import com.nesib.yourbooknotes.utils.Constants.API_URL
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -29,7 +30,7 @@ object MainRepository {
             .addInterceptor(loggingInterceptor)
             .build()
         retrofit =
-            Retrofit.Builder().baseUrl("http://10.0.2.2:4000")
+            Retrofit.Builder().baseUrl(API_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build()
@@ -37,7 +38,7 @@ object MainRepository {
 
     private val mainApi = retrofit.create(MainApi::class.java)
 
-    suspend fun getQuotes() = mainApi.getQuotes()
+    suspend fun getQuotes(page:Int) = mainApi.getQuotes(page)
 
     suspend fun postQuote(quote:Map<String,String>) =
         mainApi.postQuote(quote)
@@ -49,6 +50,8 @@ object MainRepository {
     suspend fun deleteQuote(quoteId: String) = mainApi.deleteQuote(quoteId)
 
     suspend fun getBook(bookId: String) = mainApi.getBook(bookId)
+
+    suspend fun getMoreBookQuotes(bookId: String, page:Int) = mainApi.getMoreBookQuotes(bookId,page)
 
     suspend fun getBooks(searchText:String) = mainApi.getBooks(searchText)
 

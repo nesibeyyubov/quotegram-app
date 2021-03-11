@@ -25,12 +25,29 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
+        android:visibility="invisible"
         android:id="@+id/home_recyclerView"
         android:paddingTop="20dp"
         android:clipToPadding="false"
         android:layout_width="match_parent"
+        android:paddingBottom="30dp"
         android:layout_height="match_parent"/>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/paginationProgressBar"
+        android:visibility="invisible"
+        android:background="@color/colorBackground"
+        android:gravity="center"
+        app:shimmer_base_alpha="0.5"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:background="@color/fullPostBackgroundColor"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 
 </RelativeLayout>

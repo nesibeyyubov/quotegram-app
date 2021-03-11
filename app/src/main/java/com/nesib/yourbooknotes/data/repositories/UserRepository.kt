@@ -3,6 +3,7 @@ package com.nesib.yourbooknotes.data.repositories
 import com.nesib.yourbooknotes.data.network.AuthApi
 import com.nesib.yourbooknotes.data.network.MainApi
 import com.nesib.yourbooknotes.models.*
+import com.nesib.yourbooknotes.utils.Constants.API_URL
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -10,7 +11,7 @@ import java.util.HashMap
 
 object UserRepository {
     private val retrofit =
-        Retrofit.Builder().baseUrl("http://10.0.2.2:4000")
+        Retrofit.Builder().baseUrl(API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     private val authApi = retrofit.create(AuthApi::class.java)
@@ -56,6 +57,8 @@ object UserRepository {
     }
 
     suspend fun getUser(userId: String) = authApi.getUser(userId)
+
+    suspend fun getMoreUserQuotes(userId:String,page:Int) = authApi.getMoreUserQuotes(userId,page)
 
     suspend fun getUsers(searchQuery:String) = authApi.getUsers(searchQuery)
 

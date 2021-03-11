@@ -7,7 +7,7 @@ import retrofit2.http.*
 interface MainApi {
     // Quotes
     @GET("/quotes")
-    suspend fun getQuotes(): Response<QuotesResponse>
+    suspend fun getQuotes(@Query("page") page:Int): Response<QuotesResponse>
 
     @POST("/quotes")
     suspend fun postQuote(
@@ -29,6 +29,12 @@ interface MainApi {
 
     @GET("/books/{bookId}")
     suspend fun getBook(@Path("bookId") bookId: String): Response<BookResponse>
+
+    @GET("/books/{bookId}")
+    suspend fun getMoreBookQuotes(
+        @Path("bookId") bookId: String,
+        @Query("page") page: Int
+    ): Response<QuotesResponse>
 
     @GET("/books/{bookToFollowId}")
     suspend fun followOrUnfollowBook(@Path("bookToFollowId") bookId: String): Response<BookResponse>

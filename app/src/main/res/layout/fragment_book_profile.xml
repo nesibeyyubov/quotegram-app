@@ -16,13 +16,15 @@
         android:visibility="gone" />
 
     <androidx.core.widget.NestedScrollView
+        android:visibility="invisible"
         android:id="@+id/bookProfileContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingTop="@dimen/page_padding"
+        android:layout_above="@id/paginationProgressBar"
         android:scrollbars="none"
-        android:visibility="gone">
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -187,11 +189,43 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:paddingBottom="30dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/add_book_from_this_book_btn" />
+
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/paginationProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorBackground"
+                android:gravity="center"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:shimmer_base_alpha="0.5">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@color/fullPostBackgroundColor" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
+<!--    <ProgressBar-->
+
+<!--        android:id="@+id/paginationProgressBar"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginVertical="10dp"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:indeterminateTint="@color/blue"-->
+<!--         />-->
 
 </RelativeLayout>

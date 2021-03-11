@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:indeterminateTint="@color/blue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:visibility="gone" />
 
     <androidx.core.widget.NestedScrollView
-        android:visibility="gone"
         android:id="@+id/profileContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:padding="@dimen/page_padding"
-        android:scrollbars="none">
+        android:paddingTop="@dimen/page_padding"
+        android:paddingHorizontal="@dimen/page_padding"
+        android:scrollbars="none"
+        android:visibility="invisible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,8 +31,8 @@
 
             <RelativeLayout
                 android:id="@+id/image_container"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/image_outline">
 
@@ -187,8 +189,26 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/user_quotes_recyclerView"
                 android:layout_width="match_parent"
+                android:clipToPadding="false"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/paginationProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBackground"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:shimmer_base_alpha="0.5">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@color/fullPostBackgroundColor" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

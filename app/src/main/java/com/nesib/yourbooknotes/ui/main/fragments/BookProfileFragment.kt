@@ -1,14 +1,14 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.BookQuotesAdapter
@@ -16,6 +16,7 @@ import com.nesib.yourbooknotes.databinding.FragmentBookProfileBinding
 import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.viewmodels.MainViewModel
+import com.nesib.yourbooknotes.utils.Constants.API_URL
 import com.nesib.yourbooknotes.utils.DataState
 
 class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
@@ -25,11 +26,13 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private val bookQuotesAdapter by lazy { BookQuotesAdapter() }
     private var currentBook: Book? = null
     private var currentBookQuotes: MutableList<Quote>? = null
+    private var paginationLoading = false
+    private var currentPage = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBookProfileBinding.bind(view)
-        mainViewModel.getBook(args.bookId)
+        mainViewModel.getBook(args.bookId,currentPage)
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
@@ -70,6 +73,24 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
                 }
             }
         }
+
+        mainViewModel.quotes.observe(viewLifecycleOwner){
+            when(it){
+                is DataState.Success->{
+                    binding.paginationProgressBar.visibility = View.GONE
+                    paginationLoading = false
+                    bookQuotesAdapter.setData(it.data!!.quotes)
+                }
+                is DataState.Fail->{
+                    Toast.makeText(requireContext(),"Failed....",Toast.LENGTH_SHORT).show()
+                    paginationLoading = false
+                }
+                is DataState.Loading->{
+                    paginationLoading = true
+                    binding.paginationProgressBar.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
 
@@ -80,19 +101,21 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             isNestedScrollingEnabled = false
             layoutManager = mLayoutManager
         }
-
-
-
-
-
-
-
+        binding.bookProfileContent.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY > oldScrollY) {
+                val notReachedBottom = v.canScrollVertically(1)
+                if (!notReachedBottom && !paginationLoading) {
+                    currentPage++
+                    mainViewModel.getMoreBookQuotes(currentBook!!.id,currentPage)
+                }
+            }
+        })
 
     }
 
     private fun bindData(book: Book) {
         binding.apply {
-            bookImage.load("http://10.0.2.2:4000/" + book.image) {
+            bookImage.load(API_URL + book.image) {
                 crossfade(400)
             }
             bookName.text = book.name

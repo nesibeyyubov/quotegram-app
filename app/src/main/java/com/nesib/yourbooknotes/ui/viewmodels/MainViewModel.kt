@@ -9,13 +9,18 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.nesib.yourbooknotes.data.repositories.MainRepository
 import com.nesib.yourbooknotes.models.*
-import com.nesib.yourbooknotes.utils.Constants
+import com.nesib.yourbooknotes.utils.Constants.CODE_AUTHENTICATION_FAIL
+import com.nesib.yourbooknotes.utils.Constants.CODE_CREATION_SUCCESS
+import com.nesib.yourbooknotes.utils.Constants.CODE_SERVER_ERROR
+import com.nesib.yourbooknotes.utils.Constants.CODE_SUCCESS
+import com.nesib.yourbooknotes.utils.Constants.CODE_VALIDATION_FAIL
 import com.nesib.yourbooknotes.utils.DataState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
+    private var quoteList = mutableListOf<Quote>()
     private val _quotes = MutableLiveData<DataState<QuotesResponse>>()
     val quotes: LiveData<DataState<QuotesResponse>>
         get() = _quotes
@@ -33,22 +38,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         get() = _books
 
 
-
-    fun getQuotes() = viewModelScope.launch(Dispatchers.IO) {
+    fun getQuotes(page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
         if (_quotes.value == null) {
             _quotes.postValue(DataState.Loading())
-            val response = MainRepository.getQuotes()
+            val response = MainRepository.getQuotes(page)
             handleQuotesResponse(response)
         }
     }
 
-    fun postQuote(quote:Map<String,String>) = viewModelScope.launch(Dispatchers.IO){
+    fun getMoreQuotes(page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
+        _quotes.postValue(DataState.Loading())
+        val response = MainRepository.getQuotes(page)
+        handleQuotesResponse(response)
+    }
+
+    fun postQuote(quote: Map<String, String>) = viewModelScope.launch(Dispatchers.IO) {
         _quote.postValue(DataState.Loading())
         val response = MainRepository.postQuote(quote)
         handleQuoteResponse(response)
     }
 
-    fun getBook(bookId: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun getBook(bookId: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
         if (_book.value == null) {
             _book.postValue(DataState.Loading())
             val response = MainRepository.getBook(bookId)
@@ -56,28 +66,34 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getBooks(searchText:String="") = viewModelScope.launch(Dispatchers.IO) {
+    fun getMoreBookQuotes(bookId: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
+        _quotes.postValue(DataState.Loading())
+        val response = MainRepository.getMoreBookQuotes(bookId, page)
+        handleQuotesResponse(response)
+    }
+
+    fun getBooks(searchText: String = "") = viewModelScope.launch(Dispatchers.IO) {
         _books.postValue(DataState.Loading())
-        Log.d("mytag", "getBooks: $searchText")
         val response = MainRepository.getBooks(searchText)
         handleBooksResponse(response)
     }
 
     private fun handleBookResponse(response: Response<BookResponse>) {
         when (response.code()) {
-            Constants.CODE_SUCCESS -> {
+            CODE_SUCCESS -> {
+                quoteList = response.body()!!.book!!.quotes!!.toMutableList()
                 _book.postValue(DataState.Success(response.body()))
             }
-            Constants.CODE_CREATION_SUCCESS -> {
+            CODE_CREATION_SUCCESS -> {
 
             }
-            Constants.CODE_VALIDATION_FAIL -> {
+            CODE_VALIDATION_FAIL -> {
 
             }
-            Constants.CODE_SERVER_ERROR -> {
+            CODE_SERVER_ERROR -> {
                 _book.postValue(DataState.Fail(message = "Server error"))
             }
-            Constants.CODE_AUTHENTICATION_FAIL -> {
+            CODE_AUTHENTICATION_FAIL -> {
                 val authFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java
@@ -89,19 +105,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun handleBooksResponse(response: Response<BooksResponse>) {
         when (response.code()) {
-            Constants.CODE_SUCCESS -> {
+            CODE_SUCCESS -> {
                 _books.postValue(DataState.Success(response.body()))
             }
-            Constants.CODE_CREATION_SUCCESS -> {
+            CODE_CREATION_SUCCESS -> {
 
             }
-            Constants.CODE_VALIDATION_FAIL -> {
+            CODE_VALIDATION_FAIL -> {
 
             }
-            Constants.CODE_SERVER_ERROR -> {
+            CODE_SERVER_ERROR -> {
                 _book.postValue(DataState.Fail(message = "Server error"))
             }
-            Constants.CODE_AUTHENTICATION_FAIL -> {
+            CODE_AUTHENTICATION_FAIL -> {
                 val authFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java
@@ -113,19 +129,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun handleQuotesResponse(response: Response<QuotesResponse>) {
         when (response.code()) {
-            Constants.CODE_SUCCESS -> {
-                _quotes.postValue(DataState.Success(response.body()))
-            }
-            Constants.CODE_CREATION_SUCCESS -> {
+            CODE_SUCCESS -> {
+                // Check when there is not any quote
+                if (quoteList.isEmpty()) {
+                    quoteList = response.body()!!.quotes.toMutableList()
+                } else {
+                    response.body()!!.quotes.forEach { quote -> quoteList.add(quote) }
+                }
+                _quotes.postValue(DataState.Success(QuotesResponse(quoteList.toList())))
 
             }
-            Constants.CODE_VALIDATION_FAIL -> {
-
-            }
-            Constants.CODE_SERVER_ERROR -> {
+            CODE_SERVER_ERROR -> {
                 _quotes.postValue(DataState.Fail(message = "Server error"))
             }
-            Constants.CODE_AUTHENTICATION_FAIL -> {
+            CODE_AUTHENTICATION_FAIL -> {
                 val authFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java
@@ -137,24 +154,24 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun handleQuoteResponse(response: Response<QuoteResponse>) {
         when (response.code()) {
-            Constants.CODE_SUCCESS -> {
+            CODE_SUCCESS -> {
                 _quote.postValue(DataState.Success(response.body()))
             }
-            Constants.CODE_CREATION_SUCCESS -> {
+            CODE_CREATION_SUCCESS -> {
                 Log.d("mytag", "handleQuoteResponse: response.body=${response.body()}")
                 _quote.postValue(DataState.Success(response.body()))
             }
-            Constants.CODE_VALIDATION_FAIL -> {
+            CODE_VALIDATION_FAIL -> {
                 val authFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java
                 )
                 _quote.postValue(DataState.Fail(message = authFailResponse.message))
             }
-            Constants.CODE_SERVER_ERROR -> {
+            CODE_SERVER_ERROR -> {
                 _quote.postValue(DataState.Fail(message = "Server error"))
             }
-            Constants.CODE_AUTHENTICATION_FAIL -> {
+            CODE_AUTHENTICATION_FAIL -> {
                 val authFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java

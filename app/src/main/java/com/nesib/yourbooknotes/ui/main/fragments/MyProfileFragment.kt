@@ -2,6 +2,8 @@ package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -22,6 +24,9 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     private val adapter by lazy { HomeAdapter() }
     private val userViewModel: UserViewModel by viewModels()
     private lateinit var authViewModel:AuthViewModel
+
+    private var paginationLoading = false
+    private var currentPage = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,6 +62,26 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 }
             }
         }
+        userViewModel.userQuotes.observe(viewLifecycleOwner) {
+            when (it) {
+                is DataState.Success -> {
+                    binding.paginationProgressBar.visibility = View.INVISIBLE
+                    paginationLoading = false
+                    adapter.setData(it.data!!.quotes)
+                }
+                is DataState.Fail -> {
+                    binding.paginationProgressBar.visibility = View.INVISIBLE
+                    Toast.makeText(requireContext(), "Failed :${it.message}", Toast.LENGTH_SHORT)
+                        .show()
+                    paginationLoading = false
+                }
+                is DataState.Loading -> {
+                    binding.paginationProgressBar.visibility = View.VISIBLE
+                    paginationLoading = true
+
+                }
+            }
+        }
     }
 
     private fun toggleProgressBar(loading:Boolean){
@@ -84,6 +109,15 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     private fun setupRecyclerView() {
         binding.userQuotesRecyclerView.adapter = adapter
         binding.userQuotesRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.profileContent.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY > oldScrollY) {
+                val notReachedBottom = v.canScrollVertically(1)
+                if (!notReachedBottom && !paginationLoading) {
+                    currentPage++
+                    userViewModel.getMoreUserQuotes(page = currentPage)
+                }
+            }
+        })
     }
 
 
