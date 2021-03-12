@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">YourBookNotes</string>
 
-    <!--  Book Genres  -->
+    <!--  Quote Genres  -->
     <string name="genre_love">Love</string>
     <string name="genre_life">Life</string>
     <string name="genre_motivation">Motivation</string>
@@ -23,7 +23,7 @@
     <string name="genre_productiveness">Productiveness</string>
     <string name="genre_parenting">Parenting</string>
 
-    <string-array name="book_genres">
+    <string-array name="quote_genres">
         <item>Select category</item>
         <item>@string/genre_love</item>
         <item>@string/genre_life</item>
@@ -45,5 +45,58 @@
         <item>@string/genre_science</item>
         <item>@string/genre_spirituality</item>
         <item>@string/genre_time</item>
+    </string-array>
+
+
+    <!--  Quote Genres  -->
+    <string name="book_genre_fantasy">Fantasy</string>
+    <string name="book_genre_adventure">Adventure</string>
+    <string name="book_genre_romance">Romance</string>
+    <string name="book_genre_dystpoian">Dystopian</string>
+    <string name="book_genre_historical_fiction">Historical Fiction</string>
+    <string name="book_genre_science_fiction">Science Fiction</string>
+    <string name="book_genre_art">Art</string>
+    <string name="book_genre_self_help">Self-help</string>
+    <string name="book_genre_motivational">Motivational</string>
+    <string name="book_genre_health">Health</string>
+    <string name="book_genre_spirituality">Spirituality</string>
+    <string name="book_genre_humor">Humor</string>
+    <string name="book_genre_relationship">Relationship</string>
+    <string name="book_genre_wealth">Wealth</string>
+    <string name="book_genre_leadership">Leadership</string>
+    <string name="book_genre_business">Business</string>
+    <string name="book_genre_psychology">Psychology</string>
+    <string name="book_genre_productiveness">Productiveness</string>
+    <string name="book_genre_parenting">Parenting</string>
+    <string name="book_genre_classic">Classic</string>
+    <string name="book_genre_biography">Biography</string>
+    <string name="book_genre_religion">Religion</string>
+    <string name="book_genre_children">Children</string>
+
+    <string-array name="book_genres">
+        <item>Select book genre</item>
+        <item>@string/book_genre_fantasy</item>
+        <item>@string/book_genre_adventure</item>
+        <item>@string/book_genre_romance</item>
+        <item>@string/book_genre_dystpoian</item>
+        <item>@string/book_genre_historical_fiction</item>
+        <item>@string/book_genre_science_fiction</item>
+        <item>@string/book_genre_art</item>
+        <item>@string/book_genre_self_help</item>
+        <item>@string/book_genre_motivational</item>
+        <item>@string/book_genre_health</item>
+        <item>@string/book_genre_spirituality</item>
+        <item>@string/book_genre_humor</item>
+        <item>@string/book_genre_relationship</item>
+        <item>@string/book_genre_wealth</item>
+        <item>@string/book_genre_leadership</item>
+        <item>@string/book_genre_business</item>
+        <item>@string/book_genre_psychology</item>
+        <item>@string/book_genre_productiveness</item>
+        <item>@string/book_genre_parenting</item>
+        <item>@string/book_genre_classic</item>
+        <item>@string/book_genre_biography</item>
+        <item>@string/book_genre_religion</item>
+        <item>@string/book_genre_children</item>
     </string-array>
 </resources>
