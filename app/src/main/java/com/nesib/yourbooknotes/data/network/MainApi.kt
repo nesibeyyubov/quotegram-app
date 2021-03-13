@@ -1,13 +1,18 @@
 package com.nesib.yourbooknotes.data.network
 
 import com.nesib.yourbooknotes.models.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
 interface MainApi {
     // Quotes
     @GET("/quotes")
-    suspend fun getQuotes(@Query("page") page:Int): Response<QuotesResponse>
+    suspend fun getQuotes(
+        @Query("page") page: Int,
+        @Query("genres") genres: String
+    ): Response<QuotesResponse>
 
     @POST("/quotes")
     suspend fun postQuote(
@@ -29,6 +34,15 @@ interface MainApi {
 
     @GET("/books/{bookId}")
     suspend fun getBook(@Path("bookId") bookId: String): Response<BookResponse>
+
+    @Multipart
+    @POST("/books")
+    suspend fun postBook(
+        @Part("name") name: RequestBody,
+        @Part("author") author: RequestBody,
+        @Part("genre") genre: RequestBody,
+        @Part image: MultipartBody.Part
+    ): Response<BookResponse>
 
     @GET("/books/{bookId}")
     suspend fun getMoreBookQuotes(

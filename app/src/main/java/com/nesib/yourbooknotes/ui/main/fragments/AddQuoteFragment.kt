@@ -19,6 +19,7 @@ import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.viewmodels.MainViewModel
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 import com.nesib.yourbooknotes.utils.DataState
+import java.util.*
 
 class AddQuoteFragment : BottomSheetDialogFragment() {
     private val args by navArgs<AddQuoteFragmentArgs>()
@@ -53,6 +54,7 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                 addQuoteBtn.setOnClickListener {
                     val quote = quoteEditText.text.toString()
                     val selectedGenre = binding.genreSpinner.selectedItem.toString()
+                        .toLowerCase(Locale.ROOT)
                     val newQuote =
                         mapOf("book" to book.id, "quote" to quote, "genre" to selectedGenre)
                     mainViewModel.postQuote(newQuote)

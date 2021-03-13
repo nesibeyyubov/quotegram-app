@@ -5,27 +5,40 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.FragmentAddBookBinding
+import com.nesib.yourbooknotes.ui.viewmodels.MainViewModel
+import com.nesib.yourbooknotes.utils.DataState
 import com.theartofdev.edmodo.cropper.CropImage
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 
 class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
     private lateinit var binding: FragmentAddBookBinding
     private lateinit var imagePickLauncher: ActivityResultLauncher<Intent>
+    private val mainViewModel: MainViewModel by viewModels()
+
+    private var selectedBookImage: File? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +60,32 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setOnClickListeners()
+        subscribeObservers()
+    }
+
+    private fun subscribeObservers() {
+        mainViewModel.book.observe(viewLifecycleOwner) {
+            when (it) {
+                is DataState.Success -> {
+                    toggleProgressBar(false)
+                    findNavController().popBackStack()
+                    Toast.makeText(requireContext(), "Book is added successfully", Toast.LENGTH_SHORT)
+                        .show()
+                }
+                is DataState.Fail -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    toggleProgressBar(false)
+                }
+                is DataState.Loading -> {
+                    toggleProgressBar(true)
+                }
+            }
+        }
+    }
+
+    private fun toggleProgressBar(loading: Boolean) {
+        binding.addBtnTextView.visibility = if (loading) View.GONE else View.VISIBLE
+        binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     private fun setOnClickListeners() {
@@ -56,27 +95,12 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
     }
 
     private fun pickImage() {
-        val intent = Intent(
-            Intent.ACTION_PICK,
-            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.setDataAndType(
+            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            "image/*"
         )
         imagePickLauncher.launch(intent)
-//        ImagePicker.with(requireActivity())
-//            .compress(100)
-//            .crop(5f, 8f)
-//            .galleryOnly()
-//            .start { resultCode, data ->
-//                Log.d("mytag", "pickImage: resultCode:${resultCode} ")
-//                if(resultCode == RESULT_OK){
-//                    val uri = data!!.data!!
-//                    val file = File(uri.path!!)
-//                    val fileSize = file.length().toFloat() / 1024
-//                    Log.d("mytag", "fileSize: $fileSize")
-//
-//                    binding.bookImageView.visibility = View.VISIBLE
-//                    binding.bookImageView.setImageURI(uri)
-//                }
-//            }
     }
 
 
@@ -86,6 +110,10 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 pickImage()
             }
             binding.addBookButton.id -> {
+                val name = binding.bookTitle.text.toString()
+                val author = binding.bookAuthor.text.toString()
+                val genre = binding.bookGenreSpinner.selectedItem.toString()
+                mainViewModel.postBook(name, author, genre, selectedBookImage!!)
             }
         }
     }
@@ -97,11 +125,19 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
             if (resultCode == RESULT_OK) {
                 val resultUri: Uri = result.uri
                 binding.bookImageView.visibility = View.VISIBLE
-                binding.bookImageView.setImageURI(resultUri)
+                binding.bookPhotoHereTextView.visibility = View.INVISIBLE
                 val file = File(resultUri.path!!)
                 lifecycleScope.launch(Dispatchers.IO) {
-                    val compressedFile = Compressor.compress(requireContext(),file)
-                    Log.d("mytag", "file after compression: size = ${(compressedFile.length()/1024).toInt()} kb ")
+                    selectedBookImage = Compressor.compress(requireContext(), file) {
+                        quality(20)
+                    }
+                    withContext(Dispatchers.Main) {
+                        binding.bookImageView.setImageURI(selectedBookImage?.toUri())
+                    }
+                    Log.d(
+                        "mytag",
+                        "file after compression: size = ${(selectedBookImage?.length()!! / 1024).toInt()} kb "
+                    )
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error

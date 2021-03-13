@@ -13,7 +13,6 @@ import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentMyProfileBinding
 import com.nesib.yourbooknotes.models.User
-import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
@@ -21,7 +20,7 @@ import com.nesib.yourbooknotes.utils.DataState
 class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     private lateinit var binding: FragmentMyProfileBinding
 
-    private val adapter by lazy { HomeAdapter() }
+    private val homeAdapter by lazy { HomeAdapter() }
     private val userViewModel: UserViewModel by viewModels()
     private lateinit var authViewModel:AuthViewModel
 
@@ -67,7 +66,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 is DataState.Success -> {
                     binding.paginationProgressBar.visibility = View.INVISIBLE
                     paginationLoading = false
-                    adapter.setData(it.data!!.quotes)
+                    homeAdapter.setData(it.data!!.quotes)
                 }
                 is DataState.Fail -> {
                     binding.paginationProgressBar.visibility = View.INVISIBLE
@@ -97,7 +96,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         binding.followingCountTextView.text =
             (user.followingUsers!!.size + user.followingBooks!!.size).toString()
         binding.quoteCountTextView.text = user.quotes!!.size.toString()
-        adapter.setData(user.quotes)
+        homeAdapter.setData(user.quotes)
     }
 
     private fun setupClickListeners() {
@@ -107,7 +106,11 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     }
 
     private fun setupRecyclerView() {
-        binding.userQuotesRecyclerView.adapter = adapter
+        homeAdapter.OnBookClickListener = {
+            val action = MyProfileFragmentDirections.actionMyProfileFragmentToBookProfileFragment(it)
+            findNavController().navigate(action)
+        }
+        binding.userQuotesRecyclerView.adapter = homeAdapter
         binding.userQuotesRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.profileContent.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (scrollY > oldScrollY) {

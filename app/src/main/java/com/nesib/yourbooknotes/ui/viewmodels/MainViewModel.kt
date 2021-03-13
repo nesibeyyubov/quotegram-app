@@ -18,6 +18,7 @@ import com.nesib.yourbooknotes.utils.DataState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.File
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var quoteList = mutableListOf<Quote>()
@@ -78,6 +79,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         handleBooksResponse(response)
     }
 
+    fun postBook(name:String,author:String,genre:String,image:File) = viewModelScope.launch(Dispatchers.IO) {
+        _book.postValue(DataState.Loading())
+        val response = MainRepository.postBook(name,author,genre,image)
+        handleBookResponse(response)
+    }
+
     private fun handleBookResponse(response: Response<BookResponse>) {
         when (response.code()) {
             CODE_SUCCESS -> {
@@ -85,10 +92,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _book.postValue(DataState.Success(response.body()))
             }
             CODE_CREATION_SUCCESS -> {
-
+                _book.postValue(DataState.Success())
             }
             CODE_VALIDATION_FAIL -> {
-
+                val validationFailResponse = Gson().fromJson(
+                    response.errorBody()?.charStream(),
+                    BasicResponse::class.java
+                )
+                _book.postValue(DataState.Fail(message = validationFailResponse.message))
             }
             CODE_SERVER_ERROR -> {
                 _book.postValue(DataState.Fail(message = "Server error"))

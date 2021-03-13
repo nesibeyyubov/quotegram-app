@@ -94,6 +94,7 @@ class SelectBookFragment : Fragment(R.layout.fragment_select_book) {
     }
 
     private fun toggleProgressBar(loading: Boolean) {
+        Log.d("mytag", "toggleProgressBar: loading:$loading, loadedBooks:${loadedBooks.size}")
         if (loading || loadedBooks.isNotEmpty()) {
             binding.noBookFoundContainer.visibility = View.INVISIBLE
         } else if (!loading && loadedBooks.isEmpty()) {

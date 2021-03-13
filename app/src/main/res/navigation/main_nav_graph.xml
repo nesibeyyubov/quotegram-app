@@ -44,6 +44,9 @@
         <argument
             android:name="bookId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_bookProfileFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/editUserFragment"
@@ -88,6 +91,12 @@
         <action
             android:id="@+id/action_myProfileFragment_to_editUserFragment"
             app:destination="@id/editUserFragment" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_myProfileFragment_to_bookProfileFragment"
+            app:destination="@id/bookProfileFragment" />
     </fragment>
     <fragment
         tools:layout="@layout/fragment_user_profile"

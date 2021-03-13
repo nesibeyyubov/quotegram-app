@@ -49,10 +49,14 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
         override fun onClick(v: View?) {
             when (v?.id) {
                 R.id.username_textView, R.id.userphoto_imageView -> {
-                    OnUserClickListener!!(differ.currentList[adapterPosition].creator!!.id)
+                    OnUserClickListener?.let{
+                        it((differ.currentList[adapterPosition].creator!!.id))
+                    }
                 }
                 R.id.viewBookBtn, R.id.book_info_container -> {
-                    OnBookClickListener!!(differ.currentList[adapterPosition].book!!.id)
+                    OnBookClickListener?.let{
+                        it(differ.currentList[adapterPosition].book!!.id)
+                    }
                 }
             }
         }

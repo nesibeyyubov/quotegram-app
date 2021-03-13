@@ -48,6 +48,7 @@ class SharedPreferencesRepository(context: Context) {
 
     fun saveFollowingGenres(genres: String) {
         editor.putString("genres", genres)
+        editor.commit()
     }
 
     fun getFollowingGenres(): String {

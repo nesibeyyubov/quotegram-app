@@ -32,7 +32,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBookProfileBinding.bind(view)
-        mainViewModel.getBook(args.bookId,currentPage)
+        mainViewModel.getBook(args.bookId, currentPage)
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
@@ -74,18 +74,18 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             }
         }
 
-        mainViewModel.quotes.observe(viewLifecycleOwner){
-            when(it){
-                is DataState.Success->{
+        mainViewModel.quotes.observe(viewLifecycleOwner) {
+            when (it) {
+                is DataState.Success -> {
                     binding.paginationProgressBar.visibility = View.GONE
                     paginationLoading = false
                     bookQuotesAdapter.setData(it.data!!.quotes)
                 }
-                is DataState.Fail->{
-                    Toast.makeText(requireContext(),"Failed....",Toast.LENGTH_SHORT).show()
+                is DataState.Fail -> {
+                    Toast.makeText(requireContext(), "Failed....", Toast.LENGTH_SHORT).show()
                     paginationLoading = false
                 }
-                is DataState.Loading->{
+                is DataState.Loading -> {
                     paginationLoading = true
                     binding.paginationProgressBar.visibility = View.VISIBLE
                 }
@@ -95,6 +95,12 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
 
 
     private fun setupRecyclerView() {
+        bookQuotesAdapter.onUserClickListener = { user ->
+            user?.let {
+                val action = BookProfileFragmentDirections.actionBookProfileFragmentToUserProfileFragment(it.id)
+                findNavController().navigate(action)
+            }
+        }
         val mLayoutManager = LinearLayoutManager(requireContext())
         binding.bookQuotesRecyclerView.apply {
             adapter = bookQuotesAdapter
@@ -106,7 +112,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
                 val notReachedBottom = v.canScrollVertically(1)
                 if (!notReachedBottom && !paginationLoading) {
                     currentPage++
-                    mainViewModel.getMoreBookQuotes(currentBook!!.id,currentPage)
+                    mainViewModel.getMoreBookQuotes(currentBook!!.id, currentPage)
                 }
             }
         })

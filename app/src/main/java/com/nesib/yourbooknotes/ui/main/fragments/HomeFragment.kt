@@ -27,7 +27,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding = FragmentHomeBinding.bind(view)
         setupRecyclerView()
         subscribeObservers()
-        Log.d("mytag", "onViewCreated: ")
 
         mainViewModel.getQuotes()
     }

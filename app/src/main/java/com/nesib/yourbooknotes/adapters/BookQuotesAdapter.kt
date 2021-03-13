@@ -11,11 +11,10 @@ import coil.load
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.QuoteFromBookLayoutBinding
 import com.nesib.yourbooknotes.models.Quote
+import com.nesib.yourbooknotes.models.User
 
 class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
-    var OnUsernameTextViewClickListener: (() -> Unit)? = null
-    var OnUserImageViewClickListener: (() -> Unit)? = null
-    var onReachBottom: (()->Unit)? = null
+    var onUserClickListener: ((User?) -> Unit)? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -23,7 +22,7 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
         private var binding:QuoteFromBookLayoutBinding = QuoteFromBookLayoutBinding.bind(itemView)
 
         init {
-            binding.userImage.setOnClickListener(this)
+            binding.username.setOnClickListener(this)
             binding.userImage.setOnClickListener(this)
         }
         fun bindData(){
@@ -40,11 +39,8 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
 
         override fun onClick(v: View?) {
             when (v?.id) {
-                R.id.username -> {
-                    OnUsernameTextViewClickListener!!()
-                }
-                R.id.userImage -> {
-                    OnUserImageViewClickListener!!()
+                R.id.username,R.id.userImage -> {
+                    onUserClickListener!!(differ.currentList[adapterPosition].creator)
                 }
             }
         }

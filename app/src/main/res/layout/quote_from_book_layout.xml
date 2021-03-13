@@ -20,7 +20,7 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:paddingStart="10dp"
         android:includeFontPadding="false"
         android:text="Jane Doe"
         android:textColor="@color/colorPrimaryText"
