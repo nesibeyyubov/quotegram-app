@@ -53,11 +53,28 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/selectBooksRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:layout_below="@id/searchInputContainer"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:paddingBottom="30dp"
         android:visibility="invisible" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/paginationProgressBar"
+        android:visibility="invisible"
+        android:background="@color/colorBackground"
+        android:gravity="center"
+        app:shimmer_base_alpha="0.5"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:background="@color/fullPostBackgroundColor"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"/>
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <LinearLayout
         android:id="@+id/no_book_found_container"

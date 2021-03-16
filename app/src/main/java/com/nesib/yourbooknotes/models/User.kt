@@ -15,5 +15,6 @@ data class User(
     val followingGenres: List<String>?,
     val quotes: List<Quote>?,
     val savedQuotes: List<String>?,
-    val profileImage: String?
+    val profileImage: String?,
+    val totalQuoteCount:Int?
 ):Serializable

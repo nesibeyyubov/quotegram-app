@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -20,11 +21,12 @@ import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.IBooksNotifer
 import com.nesib.yourbooknotes.utils.Utils
 
-class SearchBooksFragment : Fragment(R.layout.fragment_search_books),IBooksNotifer {
+class SearchBooksFragment : Fragment(R.layout.fragment_search_books), IBooksNotifer {
     private lateinit var binding: FragmentSearchBooksBinding
-    private val mainViewModel:MainViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels({ requireParentFragment() })
     private val adapter by lazy { SearchBooksAdapter() }
     private var searchViewTextChanged = false
+    private var currentSearchText = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Utils.booksNotifier = this
@@ -32,11 +34,10 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books),IBooksNotif
         subscribeObservers()
         setupRecyclerView()
 
-        mainViewModel.getBooks()
     }
 
-    private fun setupRecyclerView(){
-        adapter.onBookClickListener = {book->
+    private fun setupRecyclerView() {
+        adapter.onBookClickListener = { book ->
             val action = SearchFragmentDirections.actionSearchFragmentToBookProfileFragment(book.id)
             findNavController().navigate(action)
         }
@@ -45,18 +46,19 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books),IBooksNotif
         binding.searchBooksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun subscribeObservers(){
-        mainViewModel.books.observe(viewLifecycleOwner){
-            when(it){
+    private fun subscribeObservers() {
+        mainViewModel.books.observe(viewLifecycleOwner) {
+            when (it) {
                 is DataState.Success -> {
                     adapter.setData(it.data!!.books)
                     toggleProgressBar(false)
                 }
-                is DataState.Fail->{
+                is DataState.Fail -> {
+                    Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
                     toggleProgressBar(false)
                 }
                 is DataState.Loading -> {
-                    if(!searchViewTextChanged){
+                    if (!searchViewTextChanged) {
                         toggleProgressBar(true)
                     }
                 }
@@ -64,20 +66,23 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books),IBooksNotif
         }
     }
 
-    private fun toggleProgressBar(loading:Boolean){
-        binding.progressBar.visibility = if(loading) View.VISIBLE else View.INVISIBLE
-        binding.searchBooksRecyclerView.visibility = if(loading) View.INVISIBLE else View.VISIBLE
+    private fun toggleProgressBar(loading: Boolean) {
+        binding.progressBar.visibility = if (loading) View.VISIBLE else View.INVISIBLE
+        binding.searchBooksRecyclerView.visibility = if (loading) View.INVISIBLE else View.VISIBLE
     }
 
     override fun onSearchViewTextChanged(text: String) {
-        if(text.isNotEmpty()){
+        if(currentSearchText == text){
+            return
+        }
+        if (text.isNotEmpty()) {
             searchViewTextChanged = true
         }
         Handler(Looper.getMainLooper())
             .postDelayed({
-                mainViewModel.getBooks(text)
-
-            },300)
+                mainViewModel.discoverBooks(text)
+            }, 300)
+        currentSearchText = text
     }
 
     override fun onDestroyView() {

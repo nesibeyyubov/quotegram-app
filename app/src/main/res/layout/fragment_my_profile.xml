@@ -262,6 +262,7 @@
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/paginationProgressBar"
                 android:layout_width="match_parent"
+                android:visibility="invisible"
                 android:layout_height="wrap_content"
                 android:background="@color/colorBackground"
                 app:shimmer_base_alpha="0.5">

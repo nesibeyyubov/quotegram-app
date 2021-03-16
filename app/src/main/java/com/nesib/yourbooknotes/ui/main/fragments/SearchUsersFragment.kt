@@ -20,7 +20,7 @@ import com.nesib.yourbooknotes.utils.Utils
 class SearchUsersFragment : Fragment(R.layout.fragment_search_users),IUsersNotifer {
     private val adapter by lazy { SearchUserAdapter() }
     private lateinit var binding: FragmentSearchUsersBinding
-    private val userViewModel:UserViewModel by viewModels()
+    private val userViewModel:UserViewModel by viewModels({requireParentFragment()})
     private var searchViewTextChanged = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Utils.usersNotifier = this

@@ -127,11 +127,14 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 binding.bookImageView.visibility = View.VISIBLE
                 binding.bookPhotoHereTextView.visibility = View.INVISIBLE
                 val file = File(resultUri.path!!)
+
+                toggleLoadingImageProgressBar(true)
                 lifecycleScope.launch(Dispatchers.IO) {
                     selectedBookImage = Compressor.compress(requireContext(), file) {
                         quality(20)
                     }
                     withContext(Dispatchers.Main) {
+                        toggleLoadingImageProgressBar(false)
                         binding.bookImageView.setImageURI(selectedBookImage?.toUri())
                     }
                     Log.d(
@@ -143,6 +146,11 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 val error = result.error
             }
         }
+    }
+
+    private fun toggleLoadingImageProgressBar(loading: Boolean){
+        binding.addImageIcon.visibility = if(loading) View.INVISIBLE else View.VISIBLE
+        binding.loadingImageProgressBar.visibility = if(loading) View.VISIBLE else View.INVISIBLE
     }
 
 

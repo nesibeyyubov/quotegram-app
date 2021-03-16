@@ -197,6 +197,7 @@
                 android:id="@+id/paginationProgressBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="invisible"
                 android:background="@color/colorBackground"
                 android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"

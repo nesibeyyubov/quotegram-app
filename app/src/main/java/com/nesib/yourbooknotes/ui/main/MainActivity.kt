@@ -1,12 +1,12 @@
 package com.nesib.yourbooknotes.ui.main
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.ActivityMainBinding
+import com.nesib.yourbooknotes.databinding.NotAuthenticatedLayoutBinding
 import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
@@ -24,6 +25,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var userViewModel: UserViewModel
     private lateinit var authViewModel: AuthViewModel
+
+    private val dialog by lazy {
+        val notAuthenticatedBinding = NotAuthenticatedLayoutBinding.bind(
+            layoutInflater.inflate(
+                R.layout.not_authenticated_layout,
+                binding.root,
+                false
+            )
+        )
+        val dialog = AlertDialog.Builder(this)
+            .setView(notAuthenticatedBinding.root)
+            .create()
+        notAuthenticatedBinding.notNowBtn.setOnClickListener { dialog.dismiss() }
+        notAuthenticatedBinding.signInBtn.setOnClickListener {
+            startActivity(
+                Intent(
+                    this,
+                    StartActivity::class.java
+                )
+            )
+        }
+        dialog
+    }
+
     private val toBottomAnimation by lazy {
         AnimationUtils.loadAnimation(
             this@MainActivity,
@@ -181,10 +206,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.add_quote_btn -> {
-                navController.navigate(R.id.action_global_selectBookFragment)
+                if(authViewModel.isAuthenticated()){
+                    navController.navigate(R.id.action_global_selectBookFragment)
+                }else{
+                    dialog.show()
+                }
             }
             R.id.add_book_btn -> {
-                navController.navigate(R.id.action_global_addBookFragment)
+                if(authViewModel.isAuthenticated()){
+                    navController.navigate(R.id.action_global_addBookFragment)
+                }else{
+                    dialog.show()
+                }
             }
             R.id.fab_add_button -> {
                 if (!fabExtended) {
@@ -199,7 +232,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
     }
-
 
 
 }

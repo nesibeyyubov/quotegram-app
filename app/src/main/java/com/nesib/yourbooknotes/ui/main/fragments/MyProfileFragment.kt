@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentMyProfileBinding
+import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
@@ -26,6 +27,8 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
 
     private var paginationLoading = false
     private var currentPage = 1
+    private var paginationFinished = false
+    private var currentUserQuotes:MutableList<Quote>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,6 +54,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 is DataState.Success -> {
                     toggleProgressBar(false)
                     val user = it.data!!.user!!
+                    currentUserQuotes = user.quotes!!.toMutableList()
                     bindData(user)
                 }
                 is DataState.Fail -> {
@@ -64,9 +68,13 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         userViewModel.userQuotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    if(currentUserQuotes?.size == it.data!!.quotes.size){
+                        paginationFinished = true
+                    }
                     binding.paginationProgressBar.visibility = View.INVISIBLE
                     paginationLoading = false
-                    homeAdapter.setData(it.data!!.quotes)
+                    homeAdapter.setData(it.data.quotes)
+                    currentUserQuotes = it.data.quotes.toMutableList()
                 }
                 is DataState.Fail -> {
                     binding.paginationProgressBar.visibility = View.INVISIBLE
@@ -95,8 +103,8 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         binding.followerCountTextView.text = user.followers!!.size.toString()
         binding.followingCountTextView.text =
             (user.followingUsers!!.size + user.followingBooks!!.size).toString()
-        binding.quoteCountTextView.text = user.quotes!!.size.toString()
-        homeAdapter.setData(user.quotes)
+        binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toString()
+        homeAdapter.setData(user.quotes!!)
     }
 
     private fun setupClickListeners() {
@@ -115,7 +123,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         binding.profileContent.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (scrollY > oldScrollY) {
                 val notReachedBottom = v.canScrollVertically(1)
-                if (!notReachedBottom && !paginationLoading) {
+                if (!notReachedBottom && !paginationLoading && !paginationFinished) {
                     currentPage++
                     userViewModel.getMoreUserQuotes(page = currentPage)
                 }

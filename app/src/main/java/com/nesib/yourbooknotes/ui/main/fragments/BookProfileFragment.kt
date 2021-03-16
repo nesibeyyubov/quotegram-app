@@ -1,6 +1,7 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
@@ -28,6 +29,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private var currentBookQuotes: MutableList<Quote>? = null
     private var paginationLoading = false
     private var currentPage = 1
+    private var paginatingFinished = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,10 +47,11 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             "newQuote",
             viewLifecycleOwner
         ) { requestKey: String, newQuote: Bundle ->
+            Log.d("mytag", "setFragmentResultListener: ")
 
             currentBookQuotes?.add(0, newQuote["newQuote"] as Quote)
             val newList = currentBookQuotes?.toList()
-            bookQuotesAdapter.setData(newList!!)
+            newList?.let { bookQuotesAdapter.setData(it) }
         }
     }
 
@@ -77,9 +80,13 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         mainViewModel.quotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    if(currentBookQuotes?.size == it.data!!.quotes.size){
+                        paginatingFinished = true
+                    }
                     binding.paginationProgressBar.visibility = View.GONE
                     paginationLoading = false
-                    bookQuotesAdapter.setData(it.data!!.quotes)
+                    bookQuotesAdapter.setData(it.data.quotes)
+                    currentBookQuotes = it.data.quotes.toMutableList()
                 }
                 is DataState.Fail -> {
                     Toast.makeText(requireContext(), "Failed....", Toast.LENGTH_SHORT).show()
@@ -97,20 +104,20 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private fun setupRecyclerView() {
         bookQuotesAdapter.onUserClickListener = { user ->
             user?.let {
-                val action = BookProfileFragmentDirections.actionBookProfileFragmentToUserProfileFragment(it.id)
+                val action =
+                    BookProfileFragmentDirections.actionBookProfileFragmentToUserProfileFragment(it.id)
                 findNavController().navigate(action)
             }
         }
         val mLayoutManager = LinearLayoutManager(requireContext())
         binding.bookQuotesRecyclerView.apply {
             adapter = bookQuotesAdapter
-            isNestedScrollingEnabled = false
             layoutManager = mLayoutManager
         }
         binding.bookProfileContent.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (scrollY > oldScrollY) {
                 val notReachedBottom = v.canScrollVertically(1)
-                if (!notReachedBottom && !paginationLoading) {
+                if (!notReachedBottom && !paginationLoading && !paginatingFinished) {
                     currentPage++
                     mainViewModel.getMoreBookQuotes(currentBook!!.id, currentPage)
                 }
@@ -127,7 +134,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             bookName.text = book.name
             bookAuthor.text = book.author
             bookGenre.text = book.genre
-            bookQuoteCount.text = book.quotes?.size.toString()
+            bookQuoteCount.text = (book.totalQuoteCount ?: 0).toString()
             bookFollowerCount.text = book.followers?.size.toString()
         }
         bookQuotesAdapter.setData(currentBookQuotes!!.toList())

@@ -41,7 +41,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:src="@drawable/book"
             android:visibility="invisible" />
 
         <TextView
@@ -65,11 +64,20 @@
             android:background="@drawable/follow_button_bg">
 
             <ImageView
+                android:id="@+id/addImageIcon"
                 android:layout_centerInParent="true"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/ic_add_single"
                 app:tint="@color/white" />
+
+            <ProgressBar
+                android:visibility="invisible"
+                android:id="@+id/loadingImageProgressBar"
+                android:indeterminateTint="@color/white"
+                android:layout_centerInParent="true"
+                android:layout_width="10dp"
+                android:layout_height="10dp"/>
 
         </RelativeLayout>
     </RelativeLayout>

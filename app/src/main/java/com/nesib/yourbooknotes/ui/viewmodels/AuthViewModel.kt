@@ -39,6 +39,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         return user.userId != null && user.token != null
     }
 
+    fun getUserId() = sharedPreferencesRepository.getUser().userId
+
 
     fun login(email: String, password: String) {
         _auth.value = DataState.Loading()

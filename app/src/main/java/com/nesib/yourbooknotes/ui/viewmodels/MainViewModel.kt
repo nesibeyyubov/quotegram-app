@@ -22,6 +22,7 @@ import java.io.File
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var quoteList = mutableListOf<Quote>()
+    private var bookList = mutableListOf<Book>()
     private val _quotes = MutableLiveData<DataState<QuotesResponse>>()
     val quotes: LiveData<DataState<QuotesResponse>>
         get() = _quotes
@@ -73,10 +74,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         handleQuotesResponse(response)
     }
 
-    fun getBooks(searchText: String = "") = viewModelScope.launch(Dispatchers.IO) {
+    fun getBooks(searchText: String?=null,page:Int = 1,searchTextChanged:Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
         _books.postValue(DataState.Loading())
-        val response = MainRepository.getBooks(searchText)
-        handleBooksResponse(response)
+        val response = MainRepository.getBooks(searchText,page)
+        handleBooksResponse(response,searchTextChanged)
+    }
+
+    fun discoverBooks(searchText: String ) = viewModelScope.launch(Dispatchers.IO) {
+        _books.postValue(DataState.Loading())
+        val response = MainRepository.getBooks(searchText,1)
+        handleBooksResponse(response,false)
     }
 
     fun postBook(name:String,author:String,genre:String,image:File) = viewModelScope.launch(Dispatchers.IO) {
@@ -114,26 +121,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun handleBooksResponse(response: Response<BooksResponse>) {
+    private fun handleBooksResponse(response: Response<BooksResponse>,searchTextChanged: Boolean) {
         when (response.code()) {
             CODE_SUCCESS -> {
-                _books.postValue(DataState.Success(response.body()))
-            }
-            CODE_CREATION_SUCCESS -> {
-
-            }
-            CODE_VALIDATION_FAIL -> {
-
+                if(bookList.isEmpty() || searchTextChanged){
+                    bookList = response.body()?.books!!.toMutableList()
+                }else{
+                    response.body()?.books!!.forEach { book->bookList.add(book) }
+                }
+                _books.postValue(DataState.Success(BooksResponse(books = bookList.toList())))
             }
             CODE_SERVER_ERROR -> {
-                _book.postValue(DataState.Fail(message = "Server error"))
+                _books.postValue(DataState.Fail(message = "Server error"))
             }
             CODE_AUTHENTICATION_FAIL -> {
                 val authFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java
                 )
-                _book.postValue(DataState.Fail(message = authFailResponse.message))
+                _books.postValue(DataState.Fail(message = authFailResponse.message))
             }
         }
     }

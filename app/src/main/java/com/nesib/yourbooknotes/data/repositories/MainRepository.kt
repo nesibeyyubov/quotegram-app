@@ -30,10 +30,10 @@ object MainRepository {
 
     init {
         sharedPreferencesRepository = SharedPreferencesRepository(MyApplication.context)
-        val token = sharedPreferencesRepository.getUser().token
+
         val loggingInterceptor = LoggingInterceptor.Builder().build()
         val httpClient = OkHttpClient.Builder()
-            .addInterceptor(MyOkHttpClientInterceptor(token))
+            .addInterceptor(MyOkHttpClientInterceptor())
             .addInterceptor(loggingInterceptor)
             .build()
         retrofit =
@@ -45,10 +45,10 @@ object MainRepository {
 
     private val mainApi = retrofit.create(MainApi::class.java)
 
-    suspend fun getQuotes(page: Int):Response<QuotesResponse>{
-        val genres = sharedPreferencesRepository.getFollowingGenres()
-        Log.d("mytag", "getQuotes: $genres")
-        return mainApi.getQuotes(page,genres)
+    suspend fun getQuotes(page: Int): Response<QuotesResponse> {
+        val userId = sharedPreferencesRepository.getUser().userId
+        val genres = if (userId != null) null else sharedPreferencesRepository.getFollowingGenres()
+        return mainApi.getQuotes(page, genres, userId)
     }
 
     suspend fun postQuote(quote: Map<String, String>) =
@@ -65,7 +65,7 @@ object MainRepository {
     suspend fun getMoreBookQuotes(bookId: String, page: Int) =
         mainApi.getMoreBookQuotes(bookId, page)
 
-    suspend fun getBooks(searchText: String) = mainApi.getBooks(searchText)
+    suspend fun getBooks(searchText: String? = null,page:Int) = mainApi.getBooks(searchText,page)
 
     suspend fun postBook(
         name: String,
@@ -75,7 +75,7 @@ object MainRepository {
     ): Response<BookResponse> {
         val imageMimeType = "image/${image.name.split(".")[1]}"
         val imageRequestBody = image.asRequestBody(imageMimeType.toMediaTypeOrNull())
-        val imageBodyPart = MultipartBody.Part.createFormData("image",image.name,imageRequestBody)
+        val imageBodyPart = MultipartBody.Part.createFormData("image", image.name, imageRequestBody)
 
         val nameRequestBody = name.toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val authorRequestBody = author.toRequestBody("multipart/form-data".toMediaTypeOrNull())
@@ -83,6 +83,6 @@ object MainRepository {
 
         Log.d("mytag", "postBook: ${imageBodyPart.body}")
 
-        return mainApi.postBook(nameRequestBody,authorRequestBody,genreRequestBody,imageBodyPart)
+        return mainApi.postBook(nameRequestBody, authorRequestBody, genreRequestBody, imageBodyPart)
     }
 }

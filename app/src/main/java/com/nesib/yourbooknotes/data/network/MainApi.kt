@@ -11,7 +11,8 @@ interface MainApi {
     @GET("/quotes")
     suspend fun getQuotes(
         @Query("page") page: Int,
-        @Query("genres") genres: String
+        @Query("genres") genres: String? = null,
+        @Query("userId") userId: String? = null
     ): Response<QuotesResponse>
 
     @POST("/quotes")
@@ -30,7 +31,7 @@ interface MainApi {
 
     // Books
     @GET("/books/")
-    suspend fun getBooks(@Query("search") searchText: String): Response<BooksResponse>
+    suspend fun getBooks(@Query("search") searchText: String?,@Query("page") page:Int): Response<BooksResponse>
 
     @GET("/books/{bookId}")
     suspend fun getBook(@Path("bookId") bookId: String): Response<BookResponse>
