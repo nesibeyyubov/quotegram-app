@@ -18,6 +18,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     var OnUserClickListener: ((String) -> Unit)? = null
     var OnBookClickListener: ((String) -> Unit)? = null
+    var onQuoteOptionsClickListener: ((Quote)->Unit)? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -29,6 +30,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
             binding.userphotoImageView.setOnClickListener(this)
             binding.viewBookBtn.setOnClickListener(this)
             binding.bookInfoContainer.setOnClickListener(this)
+            binding.postOptionsBtn.setOnClickListener(this)
         }
 
         fun bindData() {
@@ -57,6 +59,9 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                     OnBookClickListener?.let{
                         it(differ.currentList[adapterPosition].book!!.id)
                     }
+                }
+                R.id.postOptionsBtn->{
+                    onQuoteOptionsClickListener!!(differ.currentList[adapterPosition])
                 }
             }
         }

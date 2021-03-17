@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentMyProfileBinding
@@ -29,6 +30,12 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     private var currentPage = 1
     private var paginationFinished = false
     private var currentUserQuotes:MutableList<Quote>? = null
+
+    private val quoteOptionsBottomSheet by lazy {
+        val dialog = BottomSheetDialog(requireContext())
+        dialog.setContentView(R.layout.post_options_layout)
+        dialog
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -114,6 +121,9 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     }
 
     private fun setupRecyclerView() {
+        homeAdapter.onQuoteOptionsClickListener = { quote ->
+            quoteOptionsBottomSheet.show()
+        }
         homeAdapter.OnBookClickListener = {
             val action = MyProfileFragmentDirections.actionMyProfileFragmentToBookProfileFragment(it)
             findNavController().navigate(action)

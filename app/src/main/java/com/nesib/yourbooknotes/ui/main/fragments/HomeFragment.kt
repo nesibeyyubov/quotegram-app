@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentHomeBinding
@@ -26,6 +27,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var currentPage = 1
     private var paginationLoading = false
     private var paginatingFinished = false
+    private val quoteOptionsBottomSheet by lazy {
+        val dialog = BottomSheetDialog(requireContext())
+        dialog.setContentView(R.layout.post_options_layout)
+        dialog
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
@@ -80,6 +86,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setupRecyclerView() {
+        homeAdapter.onQuoteOptionsClickListener = { quote ->
+            quoteOptionsBottomSheet.show()
+        }
 
         homeAdapter.OnBookClickListener = { bookId ->
             val action = HomeFragmentDirections.actionHomeFragmentToBookProfileFragment(bookId)

@@ -10,7 +10,7 @@
     android:padding="@dimen/page_padding">
 
     <View
-        android:background="@color/blue"
+        android:background="@color/colorSecondaryText"
         android:layout_width="60dp"
         android:layout_height="3dp"/>
 

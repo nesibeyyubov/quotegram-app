@@ -41,7 +41,7 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books), IBooksNoti
             val action = SearchFragmentDirections.actionSearchFragmentToBookProfileFragment(book.id)
             findNavController().navigate(action)
         }
-        binding.searchBooksRecyclerView.itemAnimator = null
+//        binding.searchBooksRecyclerView.itemAnimator = null
         binding.searchBooksRecyclerView.adapter = adapter
         binding.searchBooksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }

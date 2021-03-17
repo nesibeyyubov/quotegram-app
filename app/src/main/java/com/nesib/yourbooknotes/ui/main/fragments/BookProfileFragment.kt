@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.BookQuotesAdapter
 import com.nesib.yourbooknotes.databinding.FragmentBookProfileBinding
@@ -30,6 +31,12 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private var paginationLoading = false
     private var currentPage = 1
     private var paginatingFinished = false
+
+    private val quoteOptionsBottomSheet by lazy {
+        val dialog = BottomSheetDialog(requireContext())
+        dialog.setContentView(R.layout.post_options_layout)
+        dialog
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -102,6 +109,9 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
 
 
     private fun setupRecyclerView() {
+        bookQuotesAdapter.onQuoteOptionsClicked = {quote->
+            quoteOptionsBottomSheet.show()
+        }
         bookQuotesAdapter.onUserClickListener = { user ->
             user?.let {
                 val action =

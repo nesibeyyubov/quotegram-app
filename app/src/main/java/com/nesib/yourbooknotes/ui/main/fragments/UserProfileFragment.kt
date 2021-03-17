@@ -3,28 +3,24 @@ package com.nesib.yourbooknotes.ui.main.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
-import com.nesib.yourbooknotes.databinding.FragmentEditProfileBinding
 import com.nesib.yourbooknotes.databinding.FragmentUserProfileBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
-import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 
 class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private lateinit var binding: FragmentUserProfileBinding
 
-    private val adapter by lazy { HomeAdapter() }
+    private val homeAdapter by lazy { HomeAdapter() }
     private val userViewModel: UserViewModel by viewModels()
     private val args by navArgs<UserProfileFragmentArgs>()
 
@@ -32,6 +28,12 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private var paginationLoading = false
     private var currentPage = 1
     private var currentUserQuotes = mutableListOf<Quote>()
+
+    private val quoteOptionsBottomSheet by lazy {
+        val dialog = BottomSheetDialog(requireContext())
+        dialog.setContentView(R.layout.post_options_layout)
+        dialog
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,7 +53,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         binding.followingCountTextView.text =
             (user.followingUsers!!.size + user.followingBooks!!.size).toString()
         binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toString()
-        adapter.setData(user.quotes!!)
+        homeAdapter.setData(user.quotes!!)
     }
 
     private fun subscribeObservers() {
@@ -82,7 +84,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                     }
                     binding.paginationProgressBar.visibility = View.INVISIBLE
                     paginationLoading = false
-                    adapter.setData(it.data.quotes)
+                    homeAdapter.setData(it.data.quotes)
                     currentUserQuotes = it.data.quotes.toMutableList()
 
                 }
@@ -108,7 +110,10 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     }
 
     private fun setupRecyclerView() {
-        binding.userQuotesRecyclerView.adapter = adapter
+        homeAdapter.onQuoteOptionsClickListener = {quote->
+            quoteOptionsBottomSheet.show()
+        }
+        binding.userQuotesRecyclerView.adapter = homeAdapter
         binding.userQuotesRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.profileContent.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (scrollY > oldScrollY) {

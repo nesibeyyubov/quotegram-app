@@ -15,6 +15,7 @@ import com.nesib.yourbooknotes.models.User
 
 class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
     var onUserClickListener: ((User?) -> Unit)? = null
+    var onQuoteOptionsClicked:((Quote)->Unit)? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -24,6 +25,7 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
         init {
             binding.username.setOnClickListener(this)
             binding.userImage.setOnClickListener(this)
+            binding.postOptionsBtn.setOnClickListener(this)
         }
         fun bindData(){
             val quote = differ.currentList[adapterPosition]
@@ -41,6 +43,9 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
             when (v?.id) {
                 R.id.username,R.id.userImage -> {
                     onUserClickListener!!(differ.currentList[adapterPosition].creator)
+                }
+                R.id.postOptionsBtn->{
+                    onQuoteOptionsClicked!!(differ.currentList[adapterPosition])
                 }
             }
         }
