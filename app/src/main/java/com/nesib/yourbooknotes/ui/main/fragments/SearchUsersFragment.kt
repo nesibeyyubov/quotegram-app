@@ -16,7 +16,9 @@ import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.IUsersNotifer
 import com.nesib.yourbooknotes.utils.Utils
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchUsersFragment : Fragment(R.layout.fragment_search_users),IUsersNotifer {
     private val adapter by lazy { SearchUserAdapter() }
     private lateinit var binding: FragmentSearchUsersBinding

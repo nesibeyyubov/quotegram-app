@@ -18,7 +18,9 @@ import com.nesib.yourbooknotes.models.User
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     private lateinit var binding: FragmentMyProfileBinding
 
@@ -48,7 +50,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         getUser()
     }
     private fun getUser(){
-        if(authViewModel.isAuthenticated()){
+        if(authViewModel.isAuthenticated){
             userViewModel.getUser()
         }else{
             binding.notSignedinContainer.visibility = View.VISIBLE

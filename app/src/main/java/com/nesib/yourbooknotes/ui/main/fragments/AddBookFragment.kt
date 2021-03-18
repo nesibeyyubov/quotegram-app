@@ -1,12 +1,9 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
-import android.R.attr
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,12 +16,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.snackbar.Snackbar
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.FragmentAddBookBinding
-import com.nesib.yourbooknotes.ui.viewmodels.MainViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import com.theartofdev.edmodo.cropper.CropImage
+import dagger.hilt.android.AndroidEntryPoint
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.quality
 import kotlinx.coroutines.Dispatchers
@@ -32,11 +29,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-
+@AndroidEntryPoint
 class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
     private lateinit var binding: FragmentAddBookBinding
     private lateinit var imagePickLauncher: ActivityResultLauncher<Intent>
-    private val mainViewModel: MainViewModel by viewModels()
+    private val bookViewModel: BookViewModel by viewModels()
 
     private var selectedBookImage: File? = null
 
@@ -64,7 +61,7 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
     }
 
     private fun subscribeObservers() {
-        mainViewModel.book.observe(viewLifecycleOwner) {
+        bookViewModel.book.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
                     toggleProgressBar(false)
@@ -113,7 +110,7 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 val name = binding.bookTitle.text.toString()
                 val author = binding.bookAuthor.text.toString()
                 val genre = binding.bookGenreSpinner.selectedItem.toString()
-                mainViewModel.postBook(name, author, genre, selectedBookImage!!)
+                bookViewModel.postBook(name, author, genre, selectedBookImage!!)
             }
         }
     }

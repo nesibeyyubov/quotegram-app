@@ -12,7 +12,9 @@ import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.SearchPagerAdapter
 import com.nesib.yourbooknotes.databinding.FragmentSearchBinding
 import com.nesib.yourbooknotes.utils.Utils
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment(R.layout.fragment_search) {
     private lateinit var binding: FragmentSearchBinding
     private lateinit var pagerAdapter:SearchPagerAdapter

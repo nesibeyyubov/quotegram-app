@@ -9,23 +9,27 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.nesib.yourbooknotes.models.AuthResponse
 import com.nesib.yourbooknotes.models.User
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class SharedPreferencesRepository(context: Context) {
+class SharedPreferencesRepository @Inject constructor(@ApplicationContext context: Context) {
     private val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
 
     fun saveUser(userId: String, token: String) {
         editor.putString("userId", userId)
         editor.putString("token", token)
-        editor.commit()
+        editor.apply()
     }
 
-    fun saveExtraUserDetail(username:String,email:String,profileImage:String){
+    fun saveExtraUserDetail(username: String, email: String, profileImage: String) {
         editor.putString("username", username)
         editor.putString("email", email)
         editor.putString("profileImage", profileImage)
-        editor.commit()
+        editor.apply()
     }
+
     fun getExtraUserDetail(): String {
         val username = sharedPreferences.getString("username", "")
         val email = sharedPreferences.getString("email", "")
@@ -39,16 +43,16 @@ class SharedPreferencesRepository(context: Context) {
         return AuthResponse(userId, token)
     }
 
-    fun clearUser(){
+    fun clearUser() {
         editor.remove("userId")
         editor.remove("token")
         editor.remove("genres")
-        editor.commit()
+        editor.apply()
     }
 
     fun saveFollowingGenres(genres: String) {
         editor.putString("genres", genres)
-        editor.commit()
+        editor.apply()
     }
 
     fun getFollowingGenres(): String {

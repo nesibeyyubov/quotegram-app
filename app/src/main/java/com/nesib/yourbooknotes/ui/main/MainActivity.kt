@@ -18,12 +18,13 @@ import com.nesib.yourbooknotes.databinding.NotAuthenticatedLayoutBinding
 import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var userViewModel: UserViewModel
     private lateinit var authViewModel: AuthViewModel
 
     private val dialog by lazy {
@@ -90,7 +91,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun initViewModels() {
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
     }
 
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val username = extraDetail[0]
         val email = extraDetail[1]
         val profileImage = extraDetail[2]
-        if (authViewModel.isAuthenticated()) {
+        if (authViewModel.isAuthenticated) {
             binding.apply {
                 val headerView = drawerNavigationView.getHeaderView(0)
                 headerView.findViewById<TextView>(R.id.headerUsername).text = username
@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setupDrawerNavChangeListener() {
         binding.drawerNavigationView.setNavigationItemSelectedListener { menuItem ->
             if (menuItem.itemId == R.id.drawer_logout) {
-                userViewModel.clearUser()
+                authViewModel.logout()
                 startActivity(Intent(this@MainActivity, StartActivity::class.java))
             }
             true
@@ -206,14 +206,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.add_quote_btn -> {
-                if(authViewModel.isAuthenticated()){
+                if(authViewModel.isAuthenticated){
                     navController.navigate(R.id.action_global_selectBookFragment)
                 }else{
                     dialog.show()
                 }
             }
             R.id.add_book_btn -> {
-                if(authViewModel.isAuthenticated()){
+                if(authViewModel.isAuthenticated){
                     navController.navigate(R.id.action_global_addBookFragment)
                 }else{
                     dialog.show()

@@ -5,7 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,12 +15,14 @@ import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.SearchBooksAdapter
 import com.nesib.yourbooknotes.databinding.FragmentSelectBookBinding
 import com.nesib.yourbooknotes.models.Book
-import com.nesib.yourbooknotes.ui.viewmodels.MainViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SelectBookFragment : Fragment(R.layout.fragment_select_book) {
     private lateinit var binding: FragmentSelectBookBinding
-    private val mainViewModel: MainViewModel by viewModels()
+    private val bookViewModel: BookViewModel by viewModels()
     private val searchAdapter by lazy { SearchBooksAdapter(true) }
     private var searchViewTextChanged = false
     private var loadedBooks = emptyList<Book>()
@@ -51,7 +52,7 @@ class SelectBookFragment : Fragment(R.layout.fragment_select_book) {
                     currentSearchText = s.toString()
                     if (currentSearchText.isNotEmpty()) {
                         currentPage = 1
-                        mainViewModel.getBooks(currentSearchText,currentPage,true)
+                        bookViewModel.getBooks(currentSearchText,currentPage,true)
                     }
                 }, 300)
             }
@@ -84,7 +85,7 @@ class SelectBookFragment : Fragment(R.layout.fragment_select_book) {
                             currentPage++
                             if(currentSearchText.isNotEmpty()){
                                 paginationLoading = true
-                                mainViewModel.getBooks(currentSearchText,currentPage)
+                                bookViewModel.getBooks(currentSearchText,currentPage)
                             }
                         }
                     }
@@ -94,7 +95,7 @@ class SelectBookFragment : Fragment(R.layout.fragment_select_book) {
     }
 
     private fun subscribeObservers() {
-        mainViewModel.books.observe(viewLifecycleOwner) {
+        bookViewModel.books.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
                     paginationLoading = false

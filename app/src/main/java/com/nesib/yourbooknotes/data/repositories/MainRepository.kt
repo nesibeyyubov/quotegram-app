@@ -13,6 +13,7 @@ import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.QuotesResponse
 import com.nesib.yourbooknotes.models.User
 import com.nesib.yourbooknotes.utils.Constants.API_URL
+import dagger.hilt.android.scopes.ActivityScoped
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -23,28 +24,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Multipart
 import retrofit2.http.Part
 import java.io.File
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object MainRepository {
-    private var sharedPreferencesRepository: SharedPreferencesRepository
-    private var retrofit: Retrofit
-
-    init {
-        sharedPreferencesRepository = SharedPreferencesRepository(MyApplication.context)
-
-        val loggingInterceptor = LoggingInterceptor.Builder().build()
-        val httpClient = OkHttpClient.Builder()
-            .addInterceptor(MyOkHttpClientInterceptor())
-            .addInterceptor(loggingInterceptor)
-            .build()
-        retrofit =
-            Retrofit.Builder().baseUrl(API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient)
-                .build()
-    }
-
-    private val mainApi = retrofit.create(MainApi::class.java)
-
+@Singleton
+class MainRepository @Inject constructor(
+    val sharedPreferencesRepository: SharedPreferencesRepository,
+    val mainApi: MainApi
+) {
     suspend fun getQuotes(page: Int): Response<QuotesResponse> {
         val userId = sharedPreferencesRepository.getUser().userId
         val genres = if (userId != null) null else sharedPreferencesRepository.getFollowingGenres()
@@ -65,7 +52,7 @@ object MainRepository {
     suspend fun getMoreBookQuotes(bookId: String, page: Int) =
         mainApi.getMoreBookQuotes(bookId, page)
 
-    suspend fun getBooks(searchText: String? = null,page:Int) = mainApi.getBooks(searchText,page)
+    suspend fun getBooks(searchText: String? = null, page: Int) = mainApi.getBooks(searchText, page)
 
     suspend fun postBook(
         name: String,

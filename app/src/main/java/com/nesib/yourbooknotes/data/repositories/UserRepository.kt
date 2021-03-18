@@ -8,14 +8,11 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.HashMap
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object UserRepository {
-    private val retrofit =
-        Retrofit.Builder().baseUrl(API_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    private val authApi = retrofit.create(AuthApi::class.java)
-
+@Singleton
+class UserRepository @Inject constructor(val authApi: AuthApi) {
 
     suspend fun signup(
         email: String,

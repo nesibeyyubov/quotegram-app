@@ -17,13 +17,15 @@ import com.nesib.yourbooknotes.adapters.BookQuotesAdapter
 import com.nesib.yourbooknotes.databinding.FragmentBookProfileBinding
 import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.models.Quote
-import com.nesib.yourbooknotes.ui.viewmodels.MainViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 import com.nesib.yourbooknotes.utils.DataState
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private lateinit var binding: FragmentBookProfileBinding
-    private val mainViewModel: MainViewModel by viewModels()
+    private val bookViewModel: BookViewModel by viewModels()
     private val args by navArgs<BookProfileFragmentArgs>()
     private val bookQuotesAdapter by lazy { BookQuotesAdapter() }
     private var currentBook: Book? = null
@@ -41,7 +43,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBookProfileBinding.bind(view)
-        mainViewModel.getBook(args.bookId, currentPage)
+        bookViewModel.getBook(args.bookId, currentPage)
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
@@ -63,7 +65,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     }
 
     private fun subscribeObservers() {
-        mainViewModel.book.observe(viewLifecycleOwner) {
+        bookViewModel.book.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
                     binding.bookProfileContent.visibility = View.VISIBLE
@@ -84,7 +86,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             }
         }
 
-        mainViewModel.quotes.observe(viewLifecycleOwner) {
+        bookViewModel.quotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
                     if(currentBookQuotes?.size == it.data!!.quotes.size){
@@ -129,7 +131,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
                 val notReachedBottom = v.canScrollVertically(1)
                 if (!notReachedBottom && !paginationLoading && !paginatingFinished) {
                     currentPage++
-                    mainViewModel.getMoreBookQuotes(currentBook!!.id, currentPage)
+                    bookViewModel.getMoreBookQuotes(currentBook!!.id, currentPage)
                 }
             }
         })

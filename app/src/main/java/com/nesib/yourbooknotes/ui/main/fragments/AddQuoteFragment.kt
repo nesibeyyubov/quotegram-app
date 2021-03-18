@@ -1,13 +1,10 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -15,16 +12,16 @@ import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.FragmentAddQuoteBinding
-import com.nesib.yourbooknotes.models.Quote
-import com.nesib.yourbooknotes.ui.viewmodels.MainViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 import com.nesib.yourbooknotes.utils.DataState
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
-
+@AndroidEntryPoint
 class AddQuoteFragment : BottomSheetDialogFragment() {
     private val args by navArgs<AddQuoteFragmentArgs>()
     private lateinit var binding: FragmentAddQuoteBinding
-    private val mainViewModel: MainViewModel by viewModels()
+    private val quoteViewModel: QuoteViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,7 +54,7 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                         .toLowerCase(Locale.ROOT)
                     val newQuote =
                         mapOf("book" to book.id, "quote" to quote, "genre" to selectedGenre)
-                    mainViewModel.postQuote(newQuote)
+                    quoteViewModel.postQuote(newQuote)
                 }
             }
         }
@@ -65,7 +62,7 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
 
 
     private fun subscribeObservers() {
-        mainViewModel.quote.observe(viewLifecycleOwner) {
+        quoteViewModel.quote.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
                     parentFragmentManager.setFragmentResult(

@@ -3,7 +3,6 @@ package com.nesib.yourbooknotes.ui.main.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -12,18 +11,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.SearchBooksAdapter
-import com.nesib.yourbooknotes.databinding.FragmentSearchBinding
 import com.nesib.yourbooknotes.databinding.FragmentSearchBooksBinding
-import com.nesib.yourbooknotes.ui.main.MainActivity
-import com.nesib.yourbooknotes.ui.main.fragments.SearchFragmentDirections.actionSearchFragmentToBookProfileFragment
-import com.nesib.yourbooknotes.ui.viewmodels.MainViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.IBooksNotifer
 import com.nesib.yourbooknotes.utils.Utils
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchBooksFragment : Fragment(R.layout.fragment_search_books), IBooksNotifer {
     private lateinit var binding: FragmentSearchBooksBinding
-    private val mainViewModel: MainViewModel by viewModels({ requireParentFragment() })
+    private val bookViewModel: BookViewModel by viewModels({ requireParentFragment() })
     private val adapter by lazy { SearchBooksAdapter() }
     private var searchViewTextChanged = false
     private var currentSearchText = ""
@@ -47,7 +45,7 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books), IBooksNoti
     }
 
     private fun subscribeObservers() {
-        mainViewModel.books.observe(viewLifecycleOwner) {
+        bookViewModel.books.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
                     adapter.setData(it.data!!.books)
@@ -80,7 +78,7 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books), IBooksNoti
         }
         Handler(Looper.getMainLooper())
             .postDelayed({
-                mainViewModel.discoverBooks(text)
+                bookViewModel.discoverBooks(text)
             }, 300)
         currentSearchText = text
     }

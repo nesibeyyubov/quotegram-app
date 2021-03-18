@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.nesib.yourbooknotes.data.local.SharedPreferencesRepository
+import com.nesib.yourbooknotes.data.network.AuthApi
 import com.nesib.yourbooknotes.data.repositories.UserRepository
 import com.nesib.yourbooknotes.models.BasicResponse
 import com.nesib.yourbooknotes.models.AuthResponse
@@ -16,13 +17,23 @@ import com.nesib.yourbooknotes.utils.Constants.CODE_SERVER_ERROR
 import com.nesib.yourbooknotes.utils.Constants.CODE_SUCCESS
 import com.nesib.yourbooknotes.utils.Constants.CODE_VALIDATION_FAIL
 import com.nesib.yourbooknotes.utils.DataState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import javax.inject.Inject
 
-class AuthViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    val sharedPreferencesRepository: SharedPreferencesRepository,
+    val userRepository: UserRepository
+) : ViewModel() {
     var hasSignupError = false
     var hasLoginError = false
+
+    private var _isAuthenticated = false
+    val isAuthenticated
+        get() = _isAuthenticated
 
     private val _auth = MutableLiveData<DataState<AuthResponse>>()
     val auth: LiveData<DataState<AuthResponse>>
@@ -32,20 +43,28 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     val genres: LiveData<DataState<UserResponse>>
         get() = _genres
 
-    private val sharedPreferencesRepository = SharedPreferencesRepository(getApplication())
-
-    fun isAuthenticated(): Boolean {
-        val user = sharedPreferencesRepository.getUser()
-        return user.userId != null && user.token != null
+    init {
+        checkAuthentication()
     }
+
+
+    private fun checkAuthentication() {
+        val user = sharedPreferencesRepository.getUser()
+        _isAuthenticated = user.userId != null && user.token != null
+    }
+
 
     fun getUserId() = sharedPreferencesRepository.getUser().userId
 
 
+    fun logout() {
+        sharedPreferencesRepository.clearUser()
+    }
+
     fun login(email: String, password: String) {
         _auth.value = DataState.Loading()
         viewModelScope.launch(Dispatchers.IO) {
-            val response = UserRepository.login(email, password)
+            val response = userRepository.login(email, password)
             if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
                 hasLoginError = true
             }
@@ -61,7 +80,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     ) {
         _auth.value = DataState.Loading()
         viewModelScope.launch(Dispatchers.IO) {
-            val response = UserRepository.signup(email, password, fullname, username)
+            val response = userRepository.signup(email, password, fullname, username)
             if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
                 hasSignupError = true
             }
@@ -70,7 +89,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun saveExtraUserDetail(username: String, email: String, profileImage: String) =
-        sharedPreferencesRepository.saveExtraUserDetail(username,email,profileImage)
+        sharedPreferencesRepository.saveExtraUserDetail(username, email, profileImage)
 
     fun getExtraUserDetail() = sharedPreferencesRepository.getExtraUserDetail()
 
@@ -120,7 +139,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         }
         viewModelScope.launch(Dispatchers.IO) {
             val response =
-                UserRepository.saveFollowingGenres(genres, "Bearer " + auth.value!!.data!!.token)
+                userRepository.saveFollowingGenres(genres, "Bearer " + auth.value!!.data!!.token)
             when (response.code()) {
                 CODE_SERVER_ERROR -> {
                     _genres.postValue(DataState.Fail(message = "Something went wrong in server"))
