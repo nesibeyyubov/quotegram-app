@@ -2,10 +2,7 @@ package com.nesib.yourbooknotes.ui.viewmodels
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.nesib.yourbooknotes.data.repositories.MainRepository
 import com.nesib.yourbooknotes.models.*
@@ -20,9 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class QuoteViewModel @Inject constructor(
-    application: Application,
     val mainRepository: MainRepository
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private var quoteList = mutableListOf<Quote>()
     private val _quotes = MutableLiveData<DataState<QuotesResponse>>()
@@ -51,6 +47,12 @@ class QuoteViewModel @Inject constructor(
     fun postQuote(quote: Map<String, String>) = viewModelScope.launch(Dispatchers.IO) {
         _quote.postValue(DataState.Loading())
         val response = mainRepository.postQuote(quote)
+        handleQuoteResponse(response)
+    }
+
+    fun toggleLike(quoteId:String) = viewModelScope.launch(Dispatchers.IO) {
+        _quote.postValue(DataState.Loading())
+        val response = mainRepository.likeOrDislikeQuote(quoteId)
         handleQuoteResponse(response)
     }
 

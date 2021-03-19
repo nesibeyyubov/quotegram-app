@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookViewModel @Inject constructor(
-    application: Application,
     val mainRepository: MainRepository
 ) : ViewModel() {
     private var quoteList = mutableListOf<Quote>()

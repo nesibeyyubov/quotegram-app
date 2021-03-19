@@ -49,12 +49,14 @@ object NetworkModule {
     }
 
     @Provides
+    @Singleton
     fun provideMainApi(retrofit: Retrofit):MainApi{
         return retrofit.create(MainApi::class.java)
     }
 
 
     @Provides
+    @Singleton
     fun provideAuthApi(retrofit: Retrofit):AuthApi{
         return retrofit.create(AuthApi::class.java)
     }

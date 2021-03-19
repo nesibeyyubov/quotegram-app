@@ -1,7 +1,9 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,6 +14,7 @@ import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentHomeBinding
 import com.nesib.yourbooknotes.models.Quote
+import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
     private val quoteViewModel: QuoteViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
     private val homeAdapter by lazy { HomeAdapter() }
     private var quotes = mutableListOf<Quote>()
     private var currentPage = 1
@@ -30,6 +34,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         dialog.setContentView(R.layout.post_options_layout)
         dialog
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
@@ -80,13 +85,29 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         }
+
+        quoteViewModel.quote.observe(viewLifecycleOwner) {
+            when (it) {
+                is DataState.Success -> {
+                }
+                is DataState.Fail -> {
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                }
+                is DataState.Loading -> {
+                    Log.d("mytag", "like is loading...")
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {
+        homeAdapter.currentUserId = authViewModel.currentUserId
         homeAdapter.onQuoteOptionsClickListener = { quote ->
             quoteOptionsBottomSheet.show()
         }
-
+        homeAdapter.onLikeClickListener = { quoteId ->
+            quoteViewModel.toggleLike(quoteId)
+        }
         homeAdapter.OnBookClickListener = { bookId ->
             val action = HomeFragmentDirections.actionHomeFragmentToBookProfileFragment(bookId)
             findNavController().navigate(action)

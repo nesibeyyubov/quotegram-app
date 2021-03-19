@@ -16,6 +16,7 @@ import com.nesib.yourbooknotes.databinding.FragmentMyProfileBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,12 +27,13 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
 
     private val homeAdapter by lazy { HomeAdapter() }
     private val userViewModel: UserViewModel by viewModels()
-    private lateinit var authViewModel:AuthViewModel
+    private val quoteViewModel: QuoteViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
 
     private var paginationLoading = false
     private var currentPage = 1
     private var paginationFinished = false
-    private var currentUserQuotes:MutableList<Quote>? = null
+    private var currentUserQuotes: MutableList<Quote>? = null
 
     private val quoteOptionsBottomSheet by lazy {
         val dialog = BottomSheetDialog(requireContext())
@@ -42,17 +44,17 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMyProfileBinding.bind(view)
-        authViewModel = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
 
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
         getUser()
     }
-    private fun getUser(){
-        if(authViewModel.isAuthenticated){
+
+    private fun getUser() {
+        if (authViewModel.isAuthenticated) {
             userViewModel.getUser()
-        }else{
+        } else {
             binding.notSignedinContainer.visibility = View.VISIBLE
         }
     }
@@ -77,7 +79,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         userViewModel.userQuotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    if(currentUserQuotes?.size == it.data!!.quotes.size){
+                    if (currentUserQuotes?.size == it.data!!.quotes.size) {
                         paginationFinished = true
                     }
                     binding.paginationProgressBar.visibility = View.INVISIBLE
@@ -100,13 +102,13 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         }
     }
 
-    private fun toggleProgressBar(loading:Boolean){
-        binding.progressBar.visibility = if(loading) View.VISIBLE else View.GONE
-        binding.profileContent.visibility = if(loading) View.GONE else View.VISIBLE
+    private fun toggleProgressBar(loading: Boolean) {
+        binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.profileContent.visibility = if (loading) View.GONE else View.VISIBLE
         binding.notSignedinContainer.visibility = View.GONE
     }
 
-    private fun bindData(user:User){
+    private fun bindData(user: User) {
         binding.usernameTextView.text = user.username
         binding.bioTextView.text = if (user.bio!!.isNotEmpty()) user.bio else "No bio"
         binding.followerCountTextView.text = user.followers!!.size.toString()
@@ -123,11 +125,16 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     }
 
     private fun setupRecyclerView() {
+        homeAdapter.currentUserId = authViewModel.currentUserId
+        homeAdapter.onLikeClickListener = { quoteId ->
+            quoteViewModel.toggleLike(quoteId)
+        }
         homeAdapter.onQuoteOptionsClickListener = { quote ->
             quoteOptionsBottomSheet.show()
         }
         homeAdapter.OnBookClickListener = {
-            val action = MyProfileFragmentDirections.actionMyProfileFragmentToBookProfileFragment(it)
+            val action =
+                MyProfileFragmentDirections.actionMyProfileFragmentToBookProfileFragment(it)
             findNavController().navigate(action)
         }
         binding.userQuotesRecyclerView.adapter = homeAdapter

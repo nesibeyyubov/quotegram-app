@@ -14,6 +14,8 @@ import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentUserProfileBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
+import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +26,8 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
 
     private val homeAdapter by lazy { HomeAdapter() }
     private val userViewModel: UserViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels({requireActivity()})
+    private val quoteViewModel: QuoteViewModel by viewModels()
     private val args by navArgs<UserProfileFragmentArgs>()
 
     private var paginatingFinished = false
@@ -112,6 +116,10 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     }
 
     private fun setupRecyclerView() {
+        homeAdapter.currentUserId = authViewModel.currentUserId
+        homeAdapter.onLikeClickListener = { quoteId ->
+            quoteViewModel.toggleLike(quoteId)
+        }
         homeAdapter.onQuoteOptionsClickListener = {quote->
             quoteOptionsBottomSheet.show()
         }

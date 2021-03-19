@@ -17,7 +17,9 @@ import com.nesib.yourbooknotes.adapters.BookQuotesAdapter
 import com.nesib.yourbooknotes.databinding.FragmentBookProfileBinding
 import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.models.Quote
+import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 import com.nesib.yourbooknotes.utils.DataState
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private lateinit var binding: FragmentBookProfileBinding
     private val bookViewModel: BookViewModel by viewModels()
+    private val quoteViewModel: QuoteViewModel by viewModels()
+    private val authViewModel:AuthViewModel by viewModels()
     private val args by navArgs<BookProfileFragmentArgs>()
     private val bookQuotesAdapter by lazy { BookQuotesAdapter() }
     private var currentBook: Book? = null
@@ -111,6 +115,10 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
 
 
     private fun setupRecyclerView() {
+        bookQuotesAdapter.currentUserId = authViewModel.currentUserId
+        bookQuotesAdapter.onLikeClickListener={quoteId->
+            quoteViewModel.toggleLike(quoteId)
+        }
         bookQuotesAdapter.onQuoteOptionsClicked = {quote->
             quoteOptionsBottomSheet.show()
         }

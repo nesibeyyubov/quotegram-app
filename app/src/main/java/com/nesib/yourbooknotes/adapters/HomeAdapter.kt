@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,10 +16,11 @@ import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
-
+    var currentUserId: String? = null
     var OnUserClickListener: ((String) -> Unit)? = null
     var OnBookClickListener: ((String) -> Unit)? = null
-    var onQuoteOptionsClickListener: ((Quote)->Unit)? = null
+    var onQuoteOptionsClickListener: ((Quote) -> Unit)? = null
+    var onLikeClickListener: ((String) -> Unit)? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -31,6 +33,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
             binding.viewBookBtn.setOnClickListener(this)
             binding.bookInfoContainer.setOnClickListener(this)
             binding.postOptionsBtn.setOnClickListener(this)
+            binding.likeBtn.setOnClickListener(this)
         }
 
         fun bindData() {
@@ -45,28 +48,53 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                 }
                 likeCountTextView.text = quote.likes?.size.toString()
                 bookNameTextView.text = quote.book?.name
+                if(quote.likes!!.contains(currentUserId)){
+                    likeBtn.setImageResource(R.drawable.ic_like_blue)
+                }else{
+                    likeBtn.setImageResource(R.drawable.ic_like)
+                }
+
             }
         }
 
         override fun onClick(v: View?) {
             when (v?.id) {
+                R.id.likeBtn -> {
+                    val quote = differ.currentList[adapterPosition]
+                    val likes = quote.likes!!.toMutableList()
+                    if(!likes.contains(currentUserId)){
+                        binding.likeBtn.setImageResource(R.drawable.ic_like_blue)
+                        likes.add(currentUserId!!)
+                    }else{
+                        binding.likeBtn.setImageResource(R.drawable.ic_like)
+                        likes.remove(currentUserId)
+                    }
+                    quote.likes = likes.toList()
+                    binding.likeCountTextView.text = quote.likes!!.size.toString()
+                    onLikeClickListener?.let{
+                        it(quote.id)
+                    }
+                }
                 R.id.username_textView, R.id.userphoto_imageView -> {
-                    OnUserClickListener?.let{
+                    OnUserClickListener?.let {
                         it((differ.currentList[adapterPosition].creator!!.id))
                     }
                 }
                 R.id.viewBookBtn, R.id.book_info_container -> {
-                    OnBookClickListener?.let{
+                    OnBookClickListener?.let {
                         it(differ.currentList[adapterPosition].book!!.id)
                     }
                 }
-                R.id.postOptionsBtn->{
-                    onQuoteOptionsClickListener!!(differ.currentList[adapterPosition])
+                R.id.postOptionsBtn -> {
+                    onQuoteOptionsClickListener?.let {
+                        it((differ.currentList[adapterPosition]))
+                    }
                 }
             }
         }
     }
-    private val diffCallback = object: DiffUtil.ItemCallback<Quote>(){
+
+    private val diffCallback = object : DiffUtil.ItemCallback<Quote>() {
         override fun areItemsTheSame(oldItem: Quote, newItem: Quote): Boolean {
             return oldItem.id == newItem.id
         }
@@ -77,7 +105,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     }
 
-    private val differ = AsyncListDiffer(this,diffCallback)
+    private val differ = AsyncListDiffer(this, diffCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.ViewHolder {
         val view =

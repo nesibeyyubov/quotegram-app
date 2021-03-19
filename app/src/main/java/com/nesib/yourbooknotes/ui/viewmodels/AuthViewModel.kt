@@ -35,6 +35,10 @@ class AuthViewModel @Inject constructor(
     val isAuthenticated
         get() = _isAuthenticated
 
+    private var _currentUserId:String? = null
+    val currentUserId
+        get() = _currentUserId
+
     private val _auth = MutableLiveData<DataState<AuthResponse>>()
     val auth: LiveData<DataState<AuthResponse>>
         get() = _auth
@@ -45,6 +49,7 @@ class AuthViewModel @Inject constructor(
 
     init {
         checkAuthentication()
+        getUserId()
     }
 
 
@@ -54,7 +59,9 @@ class AuthViewModel @Inject constructor(
     }
 
 
-    fun getUserId() = sharedPreferencesRepository.getUser().userId
+    fun getUserId(){
+        _currentUserId = sharedPreferencesRepository.getUser().userId
+    }
 
 
     fun logout() {
