@@ -17,7 +17,7 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
     var onUserClickListener: ((User?) -> Unit)? = null
     var onQuoteOptionsClicked:((Quote)->Unit)? = null
     var currentUserId:String? = null
-    var onLikeClickListener:((String)->Unit)? = null
+    var onLikeClickListener:((Quote)->Unit)? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -52,7 +52,9 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
                 R.id.likeBtn->{
                     val quote = differ.currentList[adapterPosition]
                     val likes = quote.likes!!.toMutableList()
+                    var likedQuote = false
                     if(!likes.contains(currentUserId)){
+                        likedQuote = true
                         binding.likeBtn.setImageResource(R.drawable.ic_like_blue)
                         likes.add(currentUserId!!)
                     }else{
@@ -61,7 +63,7 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
                     }
                     quote.likes = likes.toList()
                     binding.quoteLikesCount.text = quote.likes!!.size.toString()
-                    onLikeClickListener!!(quote.id)
+                    onLikeClickListener!!(quote)
                 }
                 R.id.username,R.id.userImage -> {
                     onUserClickListener!!(differ.currentList[adapterPosition].creator)

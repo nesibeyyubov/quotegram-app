@@ -15,6 +15,7 @@ import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentMyProfileBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
+import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
@@ -25,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     private lateinit var binding: FragmentMyProfileBinding
 
-    private val homeAdapter by lazy { HomeAdapter() }
+    private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val userViewModel: UserViewModel by viewModels()
     private val quoteViewModel: QuoteViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })

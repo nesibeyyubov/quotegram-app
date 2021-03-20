@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -28,7 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private lateinit var binding: FragmentBookProfileBinding
     private val bookViewModel: BookViewModel by viewModels()
-    private val quoteViewModel: QuoteViewModel by viewModels()
+    private val quoteViewModel: QuoteViewModel by viewModels({requireActivity()})
     private val authViewModel:AuthViewModel by viewModels()
     private val args by navArgs<BookProfileFragmentArgs>()
     private val bookQuotesAdapter by lazy { BookQuotesAdapter() }
@@ -60,8 +62,6 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             "newQuote",
             viewLifecycleOwner
         ) { requestKey: String, newQuote: Bundle ->
-            Log.d("mytag", "setFragmentResultListener: ")
-
             currentBookQuotes?.add(0, newQuote["newQuote"] as Quote)
             val newList = currentBookQuotes?.toList()
             newList?.let { bookQuotesAdapter.setData(it) }
@@ -116,8 +116,8 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
 
     private fun setupRecyclerView() {
         bookQuotesAdapter.currentUserId = authViewModel.currentUserId
-        bookQuotesAdapter.onLikeClickListener={quoteId->
-            quoteViewModel.toggleLike(quoteId)
+        bookQuotesAdapter.onLikeClickListener={quote->
+            quoteViewModel.toggleLike(quote)
         }
         bookQuotesAdapter.onQuoteOptionsClicked = {quote->
             quoteOptionsBottomSheet.show()
@@ -167,5 +167,9 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             findNavController().navigate(action)
         }
     }
+
+
+
+
 
 }

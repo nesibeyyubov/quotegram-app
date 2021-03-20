@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var authViewModel: AuthViewModel
 
-    private val dialog by lazy {
+    val dialog by lazy {
         val notAuthenticatedBinding = NotAuthenticatedLayoutBinding.bind(
             layoutInflater.inflate(
                 R.layout.not_authenticated_layout,

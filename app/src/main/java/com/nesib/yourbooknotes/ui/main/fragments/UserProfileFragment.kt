@@ -3,6 +3,7 @@ package com.nesib.yourbooknotes.ui.main.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,19 +15,21 @@ import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentUserProfileBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
+import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.internal.userAgent
 
 @AndroidEntryPoint
 class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private lateinit var binding: FragmentUserProfileBinding
 
-    private val homeAdapter by lazy { HomeAdapter() }
+    private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val userViewModel: UserViewModel by viewModels()
-    private val authViewModel: AuthViewModel by viewModels({requireActivity()})
+    private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
     private val quoteViewModel: QuoteViewModel by viewModels()
     private val args by navArgs<UserProfileFragmentArgs>()
 
@@ -34,6 +37,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private var paginationLoading = false
     private var currentPage = 1
     private var currentUserQuotes = mutableListOf<Quote>()
+    private var currentUser: User? = null
 
     private val quoteOptionsBottomSheet by lazy {
         val dialog = BottomSheetDialog(requireContext())
@@ -59,7 +63,25 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         binding.followingCountTextView.text =
             (user.followingUsers!!.size + user.followingBooks!!.size).toString()
         binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toString()
+        toggleFollowButtonStyle(user.followers!!.contains(authViewModel.currentUserId))
+
         homeAdapter.setData(user.quotes!!)
+    }
+
+    private fun toggleFollowButtonStyle(following: Boolean) {
+        binding.apply {
+            followButton.setBackgroundResource(if (following) R.drawable.add_quote_from_this_book_bg else R.drawable.follow_button_bg)
+            followButtonTextView.text = if (following) "Following" else "Follow"
+            followButtonTextView.setTextColor(
+                if (following) ContextCompat.getColor(
+                    requireContext(),
+                    R.color.blue
+                ) else ContextCompat.getColor(requireContext(), R.color.white)
+            )
+
+        }
+
+
     }
 
     private fun subscribeObservers() {
@@ -69,6 +91,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                     binding.progressBar.visibility = View.GONE
                     binding.profileContent.visibility = View.VISIBLE
                     val user = it.data!!.user!!
+                    currentUser = user
                     bindData(user)
                     currentUserQuotes = user.quotes!!.toMutableList()
                 }
@@ -107,20 +130,48 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                 }
             }
         }
+        userViewModel.userFollow.observe(viewLifecycleOwner) {
+            when (it) {
+                is DataState.Success -> {
+
+                }
+                is DataState.Fail -> {
+                }
+                is DataState.Loading -> {
+                }
+            }
+
+        }
     }
 
     private fun setupClickListeners() {
         binding.followButton.setOnClickListener {
+            currentUser?.let { user ->
+                val followers = user.followers!!.toMutableList()
+                if (!user.followers!!.contains(authViewModel.currentUserId)) {
+                    followers.add(authViewModel.currentUserId!!)
+                    toggleFollowButtonStyle(true)
+                    binding.followerCountTextView.text = (binding.followerCountTextView.text.toString()
+                        .toInt() + 1).toString()
+                } else {
+                    followers.remove(authViewModel.currentUserId!!)
+                    toggleFollowButtonStyle(false)
+                    binding.followerCountTextView.text = (binding.followerCountTextView.text.toString()
+                        .toInt() - 1).toString()
+                }
+                user.followers = followers.toList()
+                userViewModel.followOrUnFollowUser(user)
+            }
 
         }
     }
 
     private fun setupRecyclerView() {
         homeAdapter.currentUserId = authViewModel.currentUserId
-        homeAdapter.onLikeClickListener = { quoteId ->
-            quoteViewModel.toggleLike(quoteId)
+        homeAdapter.onLikeClickListener = { quote ->
+            quoteViewModel.toggleLike(quote)
         }
-        homeAdapter.onQuoteOptionsClickListener = {quote->
+        homeAdapter.onQuoteOptionsClickListener = { quote ->
             quoteOptionsBottomSheet.show()
         }
         binding.userQuotesRecyclerView.adapter = homeAdapter

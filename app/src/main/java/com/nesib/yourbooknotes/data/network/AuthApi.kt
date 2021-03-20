@@ -33,7 +33,7 @@ interface AuthApi {
     suspend fun postSavedQuote(@Body quoteId: String): Response<List<Quote>>
 
     @POST("/users/{userId}/followers")
-    suspend fun followOrUnfollowUser(@Path("userId") userId: String)
+    suspend fun followOrUnFollowUser(@Path("userId") userId: String):Response<UserResponse>
 
     @PUT("/users/")
     suspend fun updateUser(

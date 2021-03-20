@@ -1,53 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/colorBackground"
     android:layout_marginHorizontal="@dimen/page_padding"
-    tools:context=".ui.on_boarding.StartActivity">
+    >
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerLayout"
-        android:paddingTop="20dp"
-        app:shimmer_base_alpha="0.5"
+    <RelativeLayout
+        android:background="@color/colorBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <include layout="@layout/full_post_shimmer_layout"/>
-            <include layout="@layout/full_post_shimmer_layout"/>
-            <include layout="@layout/full_post_shimmer_layout"/>
-        </LinearLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
+            android:layout_height="match_parent"
+            android:paddingTop="20dp"
+            app:shimmer_base_alpha="0.5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/full_post_shimmer_layout" />
+
+                <include layout="@layout/full_post_shimmer_layout" />
+
+                <include layout="@layout/full_post_shimmer_layout" />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:visibility="invisible"
-        android:id="@+id/home_recyclerView"
-        android:paddingTop="20dp"
-        android:clipToPadding="false"
-        android:layout_width="match_parent"
-        android:paddingBottom="30dp"
-        android:layout_height="match_parent"/>
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/paginationProgressBar"
-        android:visibility="invisible"
-        android:background="@color/colorBackground"
-        android:gravity="center"
-        app:shimmer_base_alpha="0.5"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <View
-            android:background="@color/fullPostBackgroundColor"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_recyclerView"
+            android:background="@color/colorBackground"
             android:layout_width="match_parent"
-            android:layout_height="30dp"/>
-    </com.facebook.shimmer.ShimmerFrameLayout>
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="20dp"
+            android:paddingBottom="30dp"
+            android:visibility="invisible" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/paginationProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorBackground"
+            android:gravity="center"
+            android:visibility="invisible"
+            app:shimmer_base_alpha="0.5">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/fullPostBackgroundColor" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
+    </RelativeLayout>
 
 
-</RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

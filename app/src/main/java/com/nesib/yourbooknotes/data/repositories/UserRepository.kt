@@ -1,13 +1,8 @@
 package com.nesib.yourbooknotes.data.repositories
 
 import com.nesib.yourbooknotes.data.network.AuthApi
-import com.nesib.yourbooknotes.data.network.MainApi
 import com.nesib.yourbooknotes.models.*
-import com.nesib.yourbooknotes.utils.Constants.API_URL
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.HashMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -37,9 +32,7 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
         return authApi.login(map)
     }
 
-    suspend fun followOrUnfollowUser(userId: String) {
-        return authApi.followOrUnfollowUser(userId)
-    }
+    suspend fun followOrUnFollowUser(userId: String) = authApi.followOrUnFollowUser(userId)
 
     suspend fun saveFollowingGenres(genres: String,authHeader:String) = authApi.saveFollowingGenres(genres,authHeader)
 

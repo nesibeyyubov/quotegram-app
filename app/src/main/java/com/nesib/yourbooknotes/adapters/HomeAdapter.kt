@@ -1,26 +1,33 @@
 package com.nesib.yourbooknotes.adapters
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.FullPostLayoutBinding
+import com.nesib.yourbooknotes.databinding.NotAuthenticatedLayoutBinding
 import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.models.Quote
+import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.utils.Constants.API_URL
+import dagger.hilt.android.qualifiers.ApplicationContext
 
-class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(val dialog:AlertDialog) :
+    RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     var currentUserId: String? = null
     var OnUserClickListener: ((String) -> Unit)? = null
     var OnBookClickListener: ((String) -> Unit)? = null
     var onQuoteOptionsClickListener: ((Quote) -> Unit)? = null
-    var onLikeClickListener: ((String) -> Unit)? = null
+    var onLikeClickListener: ((Quote) -> Unit)? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -48,9 +55,9 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
                 }
                 likeCountTextView.text = quote.likes?.size.toString()
                 bookNameTextView.text = quote.book?.name
-                if(quote.likes!!.contains(currentUserId)){
+                if (quote.likes!!.contains(currentUserId)) {
                     likeBtn.setImageResource(R.drawable.ic_like_blue)
-                }else{
+                } else {
                     likeBtn.setImageResource(R.drawable.ic_like)
                 }
 
@@ -60,20 +67,26 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
         override fun onClick(v: View?) {
             when (v?.id) {
                 R.id.likeBtn -> {
-                    val quote = differ.currentList[adapterPosition]
-                    val likes = quote.likes!!.toMutableList()
-                    if(!likes.contains(currentUserId)){
-                        binding.likeBtn.setImageResource(R.drawable.ic_like_blue)
-                        likes.add(currentUserId!!)
+                    if(currentUserId != null){
+                        val quote = differ.currentList[adapterPosition]
+                        val likes = quote.likes!!.toMutableList()
+                        if (!likes.contains(currentUserId)) {
+                            binding.likeBtn.setImageResource(R.drawable.ic_like_blue)
+                            likes.add(currentUserId!!)
+                        } else {
+                            binding.likeBtn.setImageResource(R.drawable.ic_like)
+                            likes.remove(currentUserId)
+                        }
+                        quote.likes = likes.toList()
+                        binding.likeCountTextView.text = quote.likes!!.size.toString()
+                        onLikeClickListener?.let {
+                            it(quote)
+                        }
                     }else{
-                        binding.likeBtn.setImageResource(R.drawable.ic_like)
-                        likes.remove(currentUserId)
+                        dialog.show()
                     }
-                    quote.likes = likes.toList()
-                    binding.likeCountTextView.text = quote.likes!!.size.toString()
-                    onLikeClickListener?.let{
-                        it(quote.id)
-                    }
+
+
                 }
                 R.id.username_textView, R.id.userphoto_imageView -> {
                     OnUserClickListener?.let {

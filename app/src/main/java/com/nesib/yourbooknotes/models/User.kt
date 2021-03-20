@@ -9,7 +9,7 @@ data class User(
     val fullname: String?,
     val email: String?,
     val bio: String?,
-    val followers: List<String>?,
+    var followers: List<String>?,
     val followingBooks: List<String>?,
     val followingUsers: List<String>?,
     val followingGenres: List<String>?,

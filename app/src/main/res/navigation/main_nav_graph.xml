@@ -106,5 +106,5 @@
         <argument
             android:name="userId"
             app:argType="string" />
-    </fragment>
+    </fragment><action android:id="@+id/action_global_myProfileFragment" app:destination="@id/myProfileFragment"/>
 </navigation>

@@ -29,12 +29,16 @@ class QuoteViewModel @Inject constructor(
     val quote: LiveData<DataState<QuoteResponse>>
         get() = _quote
 
+    private val _likeQuote = MutableLiveData<DataState<QuoteResponse>>()
+    val likeQuote: LiveData<DataState<QuoteResponse>>
+        get() = _likeQuote
 
-    fun getQuotes(page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
-        if (_quotes.value == null) {
+
+    fun getQuotes(page: Int = 1,forced:Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
+        if (_quotes.value == null || forced) {
             _quotes.postValue(DataState.Loading())
             val response = mainRepository.getQuotes(page)
-            handleQuotesResponse(response)
+            handleQuotesResponse(response,forced)
         }
     }
 
@@ -47,20 +51,23 @@ class QuoteViewModel @Inject constructor(
     fun postQuote(quote: Map<String, String>) = viewModelScope.launch(Dispatchers.IO) {
         _quote.postValue(DataState.Loading())
         val response = mainRepository.postQuote(quote)
-        handleQuoteResponse(response)
+        val handledResponse = handleQuoteResponse(response)
+        _quote.postValue(handledResponse)
     }
 
-    fun toggleLike(quoteId:String) = viewModelScope.launch(Dispatchers.IO) {
-        _quote.postValue(DataState.Loading())
-        val response = mainRepository.likeOrDislikeQuote(quoteId)
-        handleQuoteResponse(response)
+    fun toggleLike(quote:Quote) = viewModelScope.launch(Dispatchers.IO) {
+        _likeQuote.postValue(DataState.Loading())
+        _quotes.value?.data?.quotes?.find { q->q.id == quote.id }?.likes = quote.likes
+        val response = mainRepository.likeOrDislikeQuote(quote.id)
+        val handledResponse = handleQuoteResponse(response)
+        _likeQuote.postValue(handledResponse)
     }
 
-    private fun handleQuotesResponse(response: Response<QuotesResponse>) {
+    private fun handleQuotesResponse(response: Response<QuotesResponse>,forced:Boolean = false) {
         when (response.code()) {
             Constants.CODE_SUCCESS -> {
                 // Check when there is not any quote
-                if (quoteList.isEmpty()) {
+                if (quoteList.isEmpty() || forced) {
                     quoteList = response.body()!!.quotes.toMutableList()
                 } else {
                     response.body()!!.quotes.forEach { quote -> quoteList.add(quote) }
@@ -81,32 +88,32 @@ class QuoteViewModel @Inject constructor(
         }
     }
 
-    private fun handleQuoteResponse(response: Response<QuoteResponse>) {
+    private fun handleQuoteResponse(response: Response<QuoteResponse>): DataState<QuoteResponse> {
         when (response.code()) {
             Constants.CODE_SUCCESS -> {
-                _quote.postValue(DataState.Success(response.body()))
+                return DataState.Success(response.body())
             }
             Constants.CODE_CREATION_SUCCESS -> {
-                Log.d("mytag", "handleQuoteResponse: response.body=${response.body()}")
-                _quote.postValue(DataState.Success(response.body()))
+                return DataState.Success(response.body())
             }
             Constants.CODE_VALIDATION_FAIL -> {
                 val authFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java
                 )
-                _quote.postValue(DataState.Fail(message = authFailResponse.message))
+                return DataState.Fail(message = authFailResponse.message)
             }
             Constants.CODE_SERVER_ERROR -> {
-                _quote.postValue(DataState.Fail(message = "Server error"))
+                return DataState.Fail(message = "Server error")
             }
             Constants.CODE_AUTHENTICATION_FAIL -> {
                 val authFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java
                 )
-                _quote.postValue(DataState.Fail(message = authFailResponse.message))
+                return DataState.Fail(message = authFailResponse.message)
             }
         }
+        return DataState.Fail(message = "No error code provided")
     }
 }

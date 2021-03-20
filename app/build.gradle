@@ -70,6 +70,10 @@ dependencies {
 
     implementation("io.coil-kt:coil:1.1.1")
 
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.github.Jamshid-M:IGRefreshLayout:1.0.3'
+
+
 
     // Logging interceptor
     implementation('com.github.ihsanbal:LoggingInterceptor:3.1.0') {

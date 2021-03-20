@@ -1,10 +1,8 @@
 package com.nesib.yourbooknotes.ui.viewmodels
 
-import android.app.Application
 import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.nesib.yourbooknotes.data.local.SharedPreferencesRepository
-import com.nesib.yourbooknotes.data.network.MainApi
 import com.nesib.yourbooknotes.data.repositories.UserRepository
 import com.nesib.yourbooknotes.models.*
 import com.nesib.yourbooknotes.utils.Constants
@@ -26,9 +24,14 @@ class UserViewModel @Inject constructor(
     val userRepository: UserRepository
 ) : ViewModel() {
     private var userQuoteList = mutableListOf<Quote>()
+
     private val _user = MutableLiveData<DataState<UserResponse>>()
     val user: LiveData<DataState<UserResponse>>
         get() = _user
+
+    private val _userFollow = MutableLiveData<DataState<UserResponse>>()
+    val userFollow: LiveData<DataState<UserResponse>>
+        get() = _userFollow
 
     private val _userQuotes = MutableLiveData<DataState<QuotesResponse>>()
     val userQuotes: LiveData<DataState<QuotesResponse>>
@@ -51,7 +54,8 @@ class UserViewModel @Inject constructor(
             _user.postValue(DataState.Loading())
             val id = userId ?: sharedPreferencesRepository.getUser().userId!!
             val response = userRepository.getUser(id)
-            handleUserResponse(response)
+            val handledResponse = handleUserResponse(response)
+            _user.postValue(handledResponse)
         }
     }
 
@@ -62,8 +66,11 @@ class UserViewModel @Inject constructor(
     }
 
 
-    fun followOrUnfollowUser(userId: String) {
-
+    fun followOrUnFollowUser(user: User) = viewModelScope.launch(Dispatchers.IO) {
+        _userFollow.postValue(DataState.Loading())
+        val response = userRepository.followOrUnFollowUser(user.id)
+        val handledResponse = handleUserResponse(response)
+        _userFollow.postValue(handledResponse)
     }
 
     fun saveFollowingGenres(genres: Map<String, String>) {
@@ -125,33 +132,34 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    private fun handleUserResponse(response: Response<UserResponse>) {
+    private fun handleUserResponse(response: Response<UserResponse>):DataState<UserResponse> {
         when (response.code()) {
             CODE_SUCCESS -> {
                 userQuoteList = response.body()!!.user!!.quotes!!.toMutableList()
-                _user.postValue(DataState.Success(response.body()))
+                return DataState.Success(response.body())
             }
             CODE_CREATION_SUCCESS -> {
-                _user.postValue(DataState.Success(response.body()))
+                return DataState.Success(response.body())
             }
             CODE_VALIDATION_FAIL -> {
                 val authFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java
                 )
-                _user.postValue(DataState.Fail(message = authFailResponse.message))
+                return DataState.Fail(message = authFailResponse.message)
             }
             CODE_SERVER_ERROR -> {
-                _user.postValue(DataState.Fail(message = "Server error"))
+                return DataState.Fail(message = "Server error")
             }
-            Constants.CODE_AUTHENTICATION_FAIL -> {
+            CODE_AUTHENTICATION_FAIL -> {
                 val authFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java
                 )
-                _user.postValue(DataState.Fail(message = authFailResponse.message))
+                return DataState.Fail(message = authFailResponse.message)
             }
         }
+        return DataState.Fail(message = "No error code provided")
     }
 
 }

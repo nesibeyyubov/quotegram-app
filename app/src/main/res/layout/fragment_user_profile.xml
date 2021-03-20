@@ -14,6 +14,7 @@
         android:visibility="gone" />
 
     <androidx.core.widget.NestedScrollView
+        android:visibility="invisible"
         android:id="@+id/profileContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,7 @@
         android:paddingTop="@dimen/page_padding"
         android:paddingHorizontal="@dimen/page_padding"
         android:scrollbars="none"
-        android:visibility="invisible">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -172,13 +173,15 @@
 
             <LinearLayout
                 android:id="@+id/followButton"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
+                android:paddingHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/follow_button_bg"
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/followButtonTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Follow"
