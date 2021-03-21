@@ -107,4 +107,14 @@
             android:name="userId"
             app:argType="string" />
     </fragment><action android:id="@+id/action_global_myProfileFragment" app:destination="@id/myProfileFragment"/>
+    <dialog
+        tools:layout="@layout/quote_options_layout"
+        android:id="@+id/quoteOptionsFragment"
+        android:name="com.nesib.yourbooknotes.ui.main.fragments.QuoteOptionsFragment"
+        android:label="QuoteOptionsFragment" >
+        <argument
+            android:name="quote"
+            app:argType="com.nesib.yourbooknotes.models.Quote" />
+    </dialog>
+    <action android:id="@+id/action_global_quoteOptionsFragment" app:destination="@id/quoteOptionsFragment" />
 </navigation>

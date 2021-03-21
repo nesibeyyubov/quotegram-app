@@ -140,6 +140,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.drawerNavigationView.setupWithNavController(navController)
     }
 
+    fun showAuthenticationDialog(){
+        dialog.show()
+    }
+
     private fun setupBottomNavChangeListeners() {
         navController.addOnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
             if (navDestination.id != R.id.searchFragment) {

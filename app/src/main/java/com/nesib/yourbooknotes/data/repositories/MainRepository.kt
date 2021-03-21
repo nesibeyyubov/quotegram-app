@@ -72,4 +72,6 @@ class MainRepository @Inject constructor(
 
         return mainApi.postBook(nameRequestBody, authorRequestBody, genreRequestBody, imageBodyPart)
     }
+
+    suspend fun toggleBookFollow(bookId:String) = mainApi.followOrUnfollowBook(bookId)
 }

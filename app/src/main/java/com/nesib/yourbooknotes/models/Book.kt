@@ -11,6 +11,6 @@ data class Book(
     val image: String?,
     val creator: String?,
     val quotes: List<Quote>?,
-    val followers: List<String>?,
+    var followers: List<String>?,
     val totalQuoteCount: Int?
 ) : Serializable

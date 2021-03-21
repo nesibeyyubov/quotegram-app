@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -36,17 +35,12 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     private var paginationFinished = false
     private var currentUserQuotes: MutableList<Quote>? = null
 
-    private val quoteOptionsBottomSheet by lazy {
-        val dialog = BottomSheetDialog(requireContext())
-        dialog.setContentView(R.layout.post_options_layout)
-        dialog
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMyProfileBinding.bind(view)
 
         setupClickListeners()
+        setFragmentResultListener()
         setupRecyclerView()
         subscribeObservers()
         getUser()
@@ -124,6 +118,14 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
             findNavController().navigate(R.id.action_myProfileFragment_to_editUserFragment)
         }
     }
+    private fun setFragmentResultListener() {
+        parentFragmentManager.setFragmentResultListener(
+            "deletedQuote",
+            viewLifecycleOwner
+        ) { requestKey: String, deletedQuote: Bundle ->
+            userViewModel.notifyQuoteRemoved(deletedQuote["deletedQuote"] as Quote)
+        }
+    }
 
     private fun setupRecyclerView() {
         homeAdapter.currentUserId = authViewModel.currentUserId
@@ -131,7 +133,8 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
             quoteViewModel.toggleLike(quoteId)
         }
         homeAdapter.onQuoteOptionsClickListener = { quote ->
-            quoteOptionsBottomSheet.show()
+            val action = MyProfileFragmentDirections.actionGlobalQuoteOptionsFragment(quote)
+            findNavController().navigate(action)
         }
         homeAdapter.OnBookClickListener = {
             val action =

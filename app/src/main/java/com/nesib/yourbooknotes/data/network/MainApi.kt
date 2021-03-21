@@ -27,7 +27,7 @@ interface MainApi {
     suspend fun updateQuote(@Path("quoteId") quoteId: String): Response<QuotesResponse>
 
     @DELETE("/quotes/{quoteId}")
-    suspend fun deleteQuote(@Path("quoteId") quoteId: String)
+    suspend fun deleteQuote(@Path("quoteId") quoteId: String): Response<QuoteResponse>
 
     // Books
     @GET("/books/")
@@ -51,7 +51,7 @@ interface MainApi {
         @Query("page") page: Int
     ): Response<QuotesResponse>
 
-    @GET("/books/{bookToFollowId}")
+    @POST("/books/{bookToFollowId}/followers")
     suspend fun followOrUnfollowBook(@Path("bookToFollowId") bookId: String): Response<BookResponse>
 
 

@@ -132,6 +132,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/bookImage" />
 
             <LinearLayout
+                android:id="@+id/bookFollowButton"
+                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:layout_marginRight="15dp"
@@ -143,6 +145,8 @@
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
+                    android:id="@+id/bookFollowButtonText"
+                    android:includeFontPadding="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Follow Book"

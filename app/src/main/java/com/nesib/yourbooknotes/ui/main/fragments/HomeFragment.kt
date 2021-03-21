@@ -1,5 +1,6 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -17,11 +18,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentHomeBinding
+import com.nesib.yourbooknotes.databinding.MakeSureDialogLayoutBinding
+import com.nesib.yourbooknotes.databinding.QuoteOptionsLayoutBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,12 +34,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
     private val authenticationDialog by lazy { (activity as MainActivity).dialog }
     private val homeAdapter by lazy { HomeAdapter(authenticationDialog) }
-    private val quoteOptionsBottomSheet by lazy {
-        val dialog = BottomSheetDialog(requireContext())
-        dialog.setContentView(R.layout.post_options_layout)
-        dialog
-    }
-
 
     private lateinit var binding: FragmentHomeBinding
     private var quotes = mutableListOf<Quote>()
@@ -97,7 +95,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     if (currentPage == 1 && !binding.refreshLayout.isRefreshing) {
                         binding.shimmerLayout.visibility = View.VISIBLE
                         binding.shimmerLayout.startShimmer()
-                    } else if(currentPage != 1 && !binding.refreshLayout.isRefreshing) {
+                    } else if (currentPage != 1 && !binding.refreshLayout.isRefreshing) {
                         binding.paginationProgressBar.visibility = View.VISIBLE
                         paginationLoading = true
                     }
@@ -117,6 +115,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         }
+
+
+
     }
 
     private fun setupRecyclerView() {
@@ -127,7 +128,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         homeAdapter.currentUserId = authViewModel.currentUserId
         homeAdapter.onQuoteOptionsClickListener = { quote ->
-            quoteOptionsBottomSheet.show()
+            val action = HomeFragmentDirections.actionGlobalQuoteOptionsFragment(quote)
+            findNavController().navigate(action)
         }
         homeAdapter.onLikeClickListener = { quote ->
             quoteViewModel.toggleLike(quote)
@@ -137,10 +139,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             findNavController().navigate(action)
         }
         homeAdapter.OnUserClickListener = { userId ->
-            if(userId != authViewModel.currentUserId){
+            if (userId != authViewModel.currentUserId) {
                 val action = HomeFragmentDirections.actionHomeFragmentToUserProfileFragment(userId)
                 findNavController().navigate(action)
-            }else{
+            } else {
                 findNavController().navigate(R.id.action_global_myProfileFragment)
             }
         }

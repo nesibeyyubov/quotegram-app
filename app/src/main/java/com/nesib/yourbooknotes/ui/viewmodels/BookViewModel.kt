@@ -33,23 +33,27 @@ class BookViewModel @Inject constructor(
     val book: LiveData<DataState<BookResponse>>
         get() = _book
 
+    private val _bookFollow = MutableLiveData<DataState<BookResponse>>()
+    val bookFollow: LiveData<DataState<BookResponse>>
+        get() = _bookFollow
+
     private val _books = MutableLiveData<DataState<BooksResponse>>()
     val books: LiveData<DataState<BooksResponse>>
         get() = _books
 
 
-    fun postQuote(quote: Map<String, String>) = viewModelScope.launch(Dispatchers.IO) {
-        _quote.postValue(DataState.Loading())
-        val response = mainRepository.postQuote(quote)
-        handleQuoteResponse(response)
-    }
-
     fun getBook(bookId: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
         if (_book.value == null) {
             _book.postValue(DataState.Loading())
             val response = mainRepository.getBook(bookId)
-            handleBookResponse(response)
+            val handledResponse = handleBookResponse(response)
+            _book.postValue(handledResponse)
         }
+    }
+
+    fun notifyQuoteRemoved(quote:Quote){
+        quoteList.remove(quote)
+        _quotes.postValue(DataState.Success(data = QuotesResponse(quoteList.toList())))
     }
 
     fun getMoreBookQuotes(bookId: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
@@ -78,36 +82,49 @@ class BookViewModel @Inject constructor(
     ) {
         _book.postValue(DataState.Loading())
         val response = mainRepository.postBook(name, author, genre, image)
-        handleBookResponse(response)
+        val handledResponse = handleBookResponse(response)
+        _book.postValue(handledResponse)
     }
 
-    private fun handleBookResponse(response: Response<BookResponse>) {
+    fun toggleBookFollow(book: Book) = viewModelScope.launch(Dispatchers.IO) {
+        _bookFollow.postValue(DataState.Loading())
+        val response = mainRepository.toggleBookFollow(book.id)
+        val handledResponse = handleBookResponse(response)
+        _book.value!!.data?.book?.followers = book.followers
+        _bookFollow.postValue(handledResponse)
+    }
+
+
+    private fun handleBookResponse(response: Response<BookResponse>):DataState<BookResponse> {
         when (response.code()) {
             Constants.CODE_SUCCESS -> {
-                quoteList = response.body()?.book!!.quotes!!.toMutableList()
-                _book.postValue(DataState.Success(response.body()))
+                response.body()?.book?.let {
+                    quoteList = it.quotes!!.toMutableList()
+                }
+                return DataState.Success(response.body())
             }
             Constants.CODE_CREATION_SUCCESS -> {
-                _book.postValue(DataState.Success())
+                return DataState.Success()
             }
             Constants.CODE_VALIDATION_FAIL -> {
                 val validationFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java
                 )
-                _book.postValue(DataState.Fail(message = validationFailResponse.message))
+                return DataState.Fail(message = validationFailResponse.message)
             }
             Constants.CODE_SERVER_ERROR -> {
-                _book.postValue(DataState.Fail(message = "Server error"))
+                return DataState.Fail(message = "Server error")
             }
             Constants.CODE_AUTHENTICATION_FAIL -> {
                 val authFailResponse = Gson().fromJson(
                     response.errorBody()?.charStream(),
                     BasicResponse::class.java
                 )
-                _book.postValue(DataState.Fail(message = authFailResponse.message))
+                return DataState.Fail(message = authFailResponse.message)
             }
         }
+        return DataState.Fail(message = "No error code provided")
     }
 
     private fun handleBooksResponse(response: Response<BooksResponse>, searchTextChanged: Boolean) {

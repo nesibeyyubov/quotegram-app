@@ -13,6 +13,7 @@
         android:layout_marginBottom="15dp"/>
 
     <LinearLayout
+        android:id="@+id/reportQuote"
         android:clickable="true"
         android:background="@drawable/light_gray_border_bottom_bg"
         android:gravity="center"
@@ -37,6 +38,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/editQuote"
         android:clickable="true"
         android:background="@drawable/light_gray_border_bottom_bg"
         android:gravity="center"
@@ -60,6 +62,7 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/deleteQuote"
         android:clickable="true"
         android:background="@drawable/light_gray_border_bottom_bg"
         android:gravity="center"

@@ -1,5 +1,6 @@
 package com.nesib.yourbooknotes.ui.viewmodels
 
+import android.app.AlertDialog
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
@@ -33,13 +34,32 @@ class QuoteViewModel @Inject constructor(
     val likeQuote: LiveData<DataState<QuoteResponse>>
         get() = _likeQuote
 
+    private val _deleteQuote = MutableLiveData<DataState<QuoteResponse>>()
+    val deleteQuote: LiveData<DataState<QuoteResponse>>
+        get() = _deleteQuote
 
-    fun getQuotes(page: Int = 1,forced:Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
+
+    fun getQuotes(page: Int = 1, forced: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
         if (_quotes.value == null || forced) {
             _quotes.postValue(DataState.Loading())
             val response = mainRepository.getQuotes(page)
-            handleQuotesResponse(response,forced)
+            handleQuotesResponse(response, forced)
         }
+    }
+
+    fun deleteQuote(quote: Quote) = viewModelScope.launch(Dispatchers.IO) {
+        _deleteQuote.postValue(DataState.Loading())
+        val response = mainRepository.deleteQuote(quote.id)
+        val handledResponse = handleQuoteResponse(response)
+        if(handledResponse is DataState.Success){
+            Log.d("mytag", "deleteQuote: quoteList.size: ${quoteList.size}")
+            quoteList.remove(quote)
+            _quotes.postValue(DataState.Success(data = QuotesResponse(quoteList.toList())))
+        }
+        _deleteQuote.postValue(handledResponse)
+    }
+    fun clearDeleteQuote(){
+        _deleteQuote.value = null
     }
 
     fun getMoreQuotes(page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
@@ -55,15 +75,15 @@ class QuoteViewModel @Inject constructor(
         _quote.postValue(handledResponse)
     }
 
-    fun toggleLike(quote:Quote) = viewModelScope.launch(Dispatchers.IO) {
+    fun toggleLike(quote: Quote) = viewModelScope.launch(Dispatchers.IO) {
         _likeQuote.postValue(DataState.Loading())
-        _quotes.value?.data?.quotes?.find { q->q.id == quote.id }?.likes = quote.likes
+        _quotes.value?.data?.quotes?.find { q -> q.id == quote.id }?.likes = quote.likes
         val response = mainRepository.likeOrDislikeQuote(quote.id)
         val handledResponse = handleQuoteResponse(response)
         _likeQuote.postValue(handledResponse)
     }
 
-    private fun handleQuotesResponse(response: Response<QuotesResponse>,forced:Boolean = false) {
+    private fun handleQuotesResponse(response: Response<QuotesResponse>, forced: Boolean = false) {
         when (response.code()) {
             Constants.CODE_SUCCESS -> {
                 // Check when there is not any quote

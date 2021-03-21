@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -21,7 +22,6 @@ import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.internal.userAgent
 
 @AndroidEntryPoint
 class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
@@ -39,22 +39,26 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private var currentUserQuotes = mutableListOf<Quote>()
     private var currentUser: User? = null
 
-    private val quoteOptionsBottomSheet by lazy {
-        val dialog = BottomSheetDialog(requireContext())
-        dialog.setContentView(R.layout.post_options_layout)
-        dialog
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentUserProfileBinding.bind(view)
 
+        setFragmentResultListener()
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
 
         userViewModel.getUser(args.userId)
     }
+
+     private fun setFragmentResultListener() {
+         parentFragmentManager.setFragmentResultListener(
+             "deletedQuote",
+             viewLifecycleOwner
+         ) { requestKey: String, deletedQuote: Bundle ->
+             userViewModel.notifyQuoteRemoved(deletedQuote["deletedQuote"] as Quote)
+         }
+     }
 
     private fun bindData(user: User) {
         binding.usernameTextView.text = user.username
@@ -80,8 +84,6 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
             )
 
         }
-
-
     }
 
     private fun subscribeObservers() {
@@ -146,6 +148,10 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
 
     private fun setupClickListeners() {
         binding.followButton.setOnClickListener {
+            if(authViewModel.currentUserId == null){
+                (activity as MainActivity).showAuthenticationDialog()
+                return@setOnClickListener
+            }
             currentUser?.let { user ->
                 val followers = user.followers!!.toMutableList()
                 if (!user.followers!!.contains(authViewModel.currentUserId)) {
@@ -172,7 +178,8 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
             quoteViewModel.toggleLike(quote)
         }
         homeAdapter.onQuoteOptionsClickListener = { quote ->
-            quoteOptionsBottomSheet.show()
+            val action = UserProfileFragmentDirections.actionGlobalQuoteOptionsFragment(quote)
+            findNavController().navigate(action)
         }
         binding.userQuotesRecyclerView.adapter = homeAdapter
         binding.userQuotesRecyclerView.layoutManager = LinearLayoutManager(context)

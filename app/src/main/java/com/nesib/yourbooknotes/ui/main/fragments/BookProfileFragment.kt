@@ -1,11 +1,9 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.activity.addCallback
-import androidx.core.os.bundleOf
+import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -28,23 +26,19 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
-    private lateinit var binding: FragmentBookProfileBinding
     private val bookViewModel: BookViewModel by viewModels()
     private val quoteViewModel: QuoteViewModel by viewModels({requireActivity()})
     private val authViewModel:AuthViewModel by viewModels()
     private val args by navArgs<BookProfileFragmentArgs>()
     private val bookQuotesAdapter by lazy { BookQuotesAdapter() }
+
+    private lateinit var binding: FragmentBookProfileBinding
     private var currentBook: Book? = null
     private var currentBookQuotes: MutableList<Quote>? = null
     private var paginationLoading = false
     private var currentPage = 1
     private var paginatingFinished = false
 
-    private val quoteOptionsBottomSheet by lazy {
-        val dialog = BottomSheetDialog(requireContext())
-        dialog.setContentView(R.layout.post_options_layout)
-        dialog
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,6 +59,13 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             currentBookQuotes?.add(0, newQuote["newQuote"] as Quote)
             val newList = currentBookQuotes?.toList()
             newList?.let { bookQuotesAdapter.setData(it) }
+        }
+
+        parentFragmentManager.setFragmentResultListener(
+            "deletedQuote",
+            viewLifecycleOwner
+        ) { requestKey: String, deletedQuote: Bundle ->
+            bookViewModel.notifyQuoteRemoved(deletedQuote["deletedQuote"] as Quote)
         }
     }
 
@@ -113,14 +114,14 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         }
     }
 
-
     private fun setupRecyclerView() {
         bookQuotesAdapter.currentUserId = authViewModel.currentUserId
         bookQuotesAdapter.onLikeClickListener={quote->
             quoteViewModel.toggleLike(quote)
         }
         bookQuotesAdapter.onQuoteOptionsClicked = {quote->
-            quoteOptionsBottomSheet.show()
+            val action = BookProfileFragmentDirections.actionGlobalQuoteOptionsFragment(quote)
+            findNavController().navigate(action)
         }
         bookQuotesAdapter.onUserClickListener = { user ->
             user?.let {
@@ -156,8 +157,23 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             bookGenre.text = book.genre
             bookQuoteCount.text = (book.totalQuoteCount ?: 0).toString()
             bookFollowerCount.text = book.followers?.size.toString()
+            toggleFollowButtonStyle(book.followers!!.contains(authViewModel.currentUserId))
         }
         bookQuotesAdapter.setData(currentBookQuotes!!.toList())
+    }
+
+    private fun toggleFollowButtonStyle(following: Boolean) {
+        binding.apply {
+            bookFollowButton.setBackgroundResource(if (following) R.drawable.add_quote_from_this_book_bg else R.drawable.follow_button_bg)
+            bookFollowButtonText.text = if (following) "Following" else "Follow Book"
+            bookFollowButtonText.setTextColor(
+                if (following) ContextCompat.getColor(
+                    requireContext(),
+                    R.color.blue
+                ) else ContextCompat.getColor(requireContext(), R.color.white)
+            )
+
+        }
     }
 
     private fun setupClickListeners() {
@@ -165,6 +181,25 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             val action = BookProfileFragmentDirections.actionBookProfileFragmentToAddQuoteFragment()
             action.book = currentBook
             findNavController().navigate(action)
+        }
+
+        binding.bookFollowButton.setOnClickListener {
+            currentBook?.let {book->
+                val followers = book.followers!!.toMutableList()
+                if (!book.followers!!.contains(authViewModel.currentUserId)) {
+                    followers.add(authViewModel.currentUserId!!)
+                    toggleFollowButtonStyle(true)
+                    binding.bookFollowerCount.text = (binding.bookFollowerCount.text.toString()
+                        .toInt() + 1).toString()
+                } else {
+                    followers.remove(authViewModel.currentUserId!!)
+                    toggleFollowButtonStyle(false)
+                    binding.bookFollowerCount.text = (binding.bookFollowerCount.text.toString()
+                        .toInt() - 1).toString()
+                }
+                book.followers = followers.toList()
+                bookViewModel.toggleBookFollow(book)
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package com.nesib.yourbooknotes.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.nesib.yourbooknotes.data.local.SharedPreferencesRepository
@@ -57,6 +58,12 @@ class UserViewModel @Inject constructor(
             val handledResponse = handleUserResponse(response)
             _user.postValue(handledResponse)
         }
+    }
+
+    fun notifyQuoteRemoved(quote:Quote){
+        userQuoteList.remove(quote)
+        Log.d("mytag", "notifyQuoteRemoved: ${userQuoteList.size}")
+        _userQuotes.postValue(DataState.Success(data = QuotesResponse(userQuoteList.toList())))
     }
 
     fun getUsers(searchQuery: String = "") = viewModelScope.launch(Dispatchers.IO) {
