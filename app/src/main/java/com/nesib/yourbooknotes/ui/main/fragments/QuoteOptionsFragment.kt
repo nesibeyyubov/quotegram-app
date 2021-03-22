@@ -49,12 +49,17 @@ class QuoteOptionsFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupUi()
         subscribeObservers()
+        setFragmentResultListeners()
     }
 
     private fun setupUi(){
         if (authViewModel.currentUserId != null) {
             if (args.quote.creator!!.id == authViewModel.currentUserId) {
-                binding.editQuote.setOnClickListener { }
+                binding.editQuote.setOnClickListener {
+                    val action = QuoteOptionsFragmentDirections.actionGlobalAddQuoteFragment()
+                    action.quote = args.quote
+                    findNavController().navigate(action)
+                }
                 binding.deleteQuote.setOnClickListener { showMakeSureDialog(args.quote) }
             } else {
                 binding.deleteQuote.visibility = View.GONE
@@ -84,13 +89,17 @@ class QuoteOptionsFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun setFragmentResultListeners(){
+        parentFragmentManager.setFragmentResultListener("updatedQuote",viewLifecycleOwner){_,_->
+            findNavController().popBackStack()
+        }
+    }
+
     private fun showMakeSureDialog(quote: Quote) {
         val view = layoutInflater.inflate(R.layout.make_sure_dialog_layout, null, false)
         val binding = MakeSureDialogLayoutBinding.bind(view)
         makeSureDialog = AlertDialog.Builder(requireContext()).setView(binding.root).create()
         makeSureDialog!!.show()
-
-        Log.d("mytag", "showMakeSureDialog: ")
 
         binding.apply {
             notDeleteButton.setOnClickListener { makeSureDialog!!.dismiss() }
@@ -108,7 +117,7 @@ class QuoteOptionsFragment : BottomSheetDialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        quoteViewModel.clearDeleteQuote()
+        quoteViewModel.clearLiveDataValues()
     }
 
 

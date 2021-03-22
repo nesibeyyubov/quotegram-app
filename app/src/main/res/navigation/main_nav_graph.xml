@@ -32,6 +32,11 @@
             android:defaultValue="@null"
             app:argType="com.nesib.yourbooknotes.models.Book"
             app:nullable="true" />
+        <argument
+            android:name="quote"
+            app:argType="com.nesib.yourbooknotes.models.Quote"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </dialog>
     <fragment
         android:id="@+id/bookProfileFragment"
@@ -116,5 +121,5 @@
             android:name="quote"
             app:argType="com.nesib.yourbooknotes.models.Quote" />
     </dialog>
-    <action android:id="@+id/action_global_quoteOptionsFragment" app:destination="@id/quoteOptionsFragment" />
+    <action android:id="@+id/action_global_quoteOptionsFragment" app:destination="@id/quoteOptionsFragment" /><action android:id="@+id/action_global_addQuoteFragment" app:destination="@id/addQuoteFragment"/>
 </navigation>

@@ -24,7 +24,7 @@ interface MainApi {
     suspend fun likeOrDislikeQuote(@Path("quoteId") quoteId: String):Response<QuoteResponse>
 
     @PUT("/quotes/{quoteId}")
-    suspend fun updateQuote(@Path("quoteId") quoteId: String): Response<QuotesResponse>
+    suspend fun updateQuote(@Path("quoteId") quoteId: String,@Body quote:Map<String,String>): Response<QuoteResponse>
 
     @DELETE("/quotes/{quoteId}")
     suspend fun deleteQuote(@Path("quoteId") quoteId: String): Response<QuoteResponse>

@@ -43,7 +43,7 @@ class MainRepository @Inject constructor(
 
     suspend fun likeOrDislikeQuote(quoteId: String) = mainApi.likeOrDislikeQuote(quoteId)
 
-    suspend fun updateQuote(quoteId: String) = mainApi.updateQuote(quoteId)
+    suspend fun updateQuote(quoteId: String,quote: Map<String,String>) = mainApi.updateQuote(quoteId,quote)
 
     suspend fun deleteQuote(quoteId: String) = mainApi.deleteQuote(quoteId)
 

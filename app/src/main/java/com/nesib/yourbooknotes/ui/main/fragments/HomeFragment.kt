@@ -1,6 +1,5 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,23 +8,17 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentHomeBinding
-import com.nesib.yourbooknotes.databinding.MakeSureDialogLayoutBinding
-import com.nesib.yourbooknotes.databinding.QuoteOptionsLayoutBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.utils.DataState
-import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,6 +33,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var currentPage = 1
     private var paginationLoading = false
     private var paginatingFinished = false
+    private var fetchingData = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,7 +43,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         quoteViewModel.getQuotes()
     }
-
 
     private fun subscribeObservers() {
         quoteViewModel.quotes.observe(viewLifecycleOwner) {
@@ -65,11 +58,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         binding.paginationProgressBar.visibility = View.INVISIBLE
                         paginationLoading = false
                     }
-                    if (quotes.size == it.data!!.quotes.size && !binding.refreshLayout.isRefreshing) {
+                    if (quotes.size == it.data!!.quotes.size && !binding.refreshLayout.isRefreshing && fetchingData) {
                         paginatingFinished = true
                         Log.d("mytag", "pagination finished")
                     }
                     quotes = it.data.quotes.toMutableList()
+
 
                     homeAdapter.setData(it.data.quotes)
 
@@ -79,6 +73,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                             binding.homeRecyclerView.smoothScrollToPosition(0)
                         }, 200)
                     }
+                    fetchingData = false
 
                 }
                 is DataState.Fail -> {
@@ -90,8 +85,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         binding.paginationProgressBar.visibility = View.INVISIBLE
                         paginationLoading = false
                     }
+                    fetchingData = false
                 }
                 is DataState.Loading -> {
+                    fetchingData = true
                     if (currentPage == 1 && !binding.refreshLayout.isRefreshing) {
                         binding.shimmerLayout.visibility = View.VISIBLE
                         binding.shimmerLayout.startShimmer()
@@ -115,7 +112,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             }
         }
-
 
 
     }

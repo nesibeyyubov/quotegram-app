@@ -34,6 +34,10 @@ class QuoteViewModel @Inject constructor(
     val likeQuote: LiveData<DataState<QuoteResponse>>
         get() = _likeQuote
 
+    private val _updateQuote = MutableLiveData<DataState<QuoteResponse>>()
+    val updateQuote: LiveData<DataState<QuoteResponse>>
+        get() = _updateQuote
+
     private val _deleteQuote = MutableLiveData<DataState<QuoteResponse>>()
     val deleteQuote: LiveData<DataState<QuoteResponse>>
         get() = _deleteQuote
@@ -47,19 +51,33 @@ class QuoteViewModel @Inject constructor(
         }
     }
 
+    fun updateQuote(oldQuote:Quote,newQuote: Map<String,String>) = viewModelScope.launch(Dispatchers.IO) {
+        _updateQuote.postValue(DataState.Loading())
+        val response = mainRepository.updateQuote(oldQuote.id, newQuote)
+        val handledResponse = handleQuoteResponse(response)
+        val index = quoteList.indexOf(oldQuote)
+        quoteList.removeAt(index)
+        val newQuoteModel = oldQuote.copy(quote = newQuote["quote"],genre=newQuote["genre"])
+        quoteList.add(index,newQuoteModel)
+        _quotes.postValue(DataState.Success(QuotesResponse(quoteList.toList())))
+        _updateQuote.postValue(handledResponse)
+    }
+
     fun deleteQuote(quote: Quote) = viewModelScope.launch(Dispatchers.IO) {
         _deleteQuote.postValue(DataState.Loading())
         val response = mainRepository.deleteQuote(quote.id)
         val handledResponse = handleQuoteResponse(response)
-        if(handledResponse is DataState.Success){
+        if (handledResponse is DataState.Success) {
             Log.d("mytag", "deleteQuote: quoteList.size: ${quoteList.size}")
             quoteList.remove(quote)
             _quotes.postValue(DataState.Success(data = QuotesResponse(quoteList.toList())))
         }
         _deleteQuote.postValue(handledResponse)
     }
-    fun clearDeleteQuote(){
+
+    fun clearLiveDataValues() {
         _deleteQuote.value = null
+        _updateQuote.value = null
     }
 
     fun getMoreQuotes(page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
