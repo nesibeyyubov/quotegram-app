@@ -58,6 +58,7 @@ class QuoteOptionsFragment : BottomSheetDialogFragment() {
                 binding.editQuote.setOnClickListener {
                     val action = QuoteOptionsFragmentDirections.actionGlobalAddQuoteFragment()
                     action.quote = args.quote
+                    findNavController().popBackStack(R.id.quoteOptionsFragment,true)
                     findNavController().navigate(action)
                 }
                 binding.deleteQuote.setOnClickListener { showMakeSureDialog(args.quote) }
@@ -65,6 +66,9 @@ class QuoteOptionsFragment : BottomSheetDialogFragment() {
                 binding.deleteQuote.visibility = View.GONE
                 binding.editQuote.visibility = View.GONE
             }
+        }else{
+            binding.deleteQuote.visibility = View.GONE
+            binding.editQuote.visibility = View.GONE
         }
     }
 
@@ -90,9 +94,9 @@ class QuoteOptionsFragment : BottomSheetDialogFragment() {
     }
 
     private fun setFragmentResultListeners(){
-        parentFragmentManager.setFragmentResultListener("updatedQuote",viewLifecycleOwner){_,_->
-            findNavController().popBackStack()
-        }
+//        parentFragmentManager.setFragmentResultListener("updatedQuote",viewLifecycleOwner){ s: String, updatedQuote: Bundle ->
+//            findNavController().popBackStack()
+//        }
     }
 
     private fun showMakeSureDialog(quote: Quote) {

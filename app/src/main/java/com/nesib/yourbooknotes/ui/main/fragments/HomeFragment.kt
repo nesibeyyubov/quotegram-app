@@ -60,7 +60,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                     if (quotes.size == it.data!!.quotes.size && !binding.refreshLayout.isRefreshing && fetchingData) {
                         paginatingFinished = true
-                        Log.d("mytag", "pagination finished")
                     }
                     quotes = it.data.quotes.toMutableList()
 

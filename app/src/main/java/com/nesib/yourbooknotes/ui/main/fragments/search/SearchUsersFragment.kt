@@ -1,9 +1,8 @@
-package com.nesib.yourbooknotes.ui.main.fragments
+package com.nesib.yourbooknotes.ui.main.fragments.search
 
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels

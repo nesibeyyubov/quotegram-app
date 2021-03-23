@@ -113,7 +113,6 @@ class HomeAdapter(val dialog:AlertDialog) :
         }
 
         override fun areContentsTheSame(oldItem: Quote, newItem: Quote): Boolean {
-            Log.d("mytag", "areContentsTheSame: ${oldItem.quote} #===# ${newItem.quote}  --> ${oldItem == newItem}")
             return oldItem == newItem
         }
 

@@ -1,6 +1,7 @@
-package com.nesib.yourbooknotes.ui.main.fragments
+package com.nesib.yourbooknotes.ui.main.fragments.add
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,6 @@ import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 import com.nesib.yourbooknotes.utils.DataState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.selects.select
 import java.util.*
 
 @AndroidEntryPoint
@@ -146,6 +146,7 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        quoteViewModel.clearLiveDataValues()
 
     }
 }

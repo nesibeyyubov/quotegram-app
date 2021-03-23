@@ -5,12 +5,12 @@ import java.io.Serializable
 
 data class Book(
     @SerializedName("_id") val id: String,
-    val name: String?,
-    val genre: String?,
-    val author: String?,
-    val image: String?,
-    val creator: String?,
-    val quotes: List<Quote>?,
-    var followers: List<String>?,
-    val totalQuoteCount: Int?
+    val name: String? = null,
+    val genre: String? = null,
+    val author: String? = null,
+    val image: String? = null,
+    val creator: String? = null,
+    val quotes: List<Quote>? = null,
+    var followers: List<String>? = null,
+    val totalQuoteCount: Int? = null
 ) : Serializable

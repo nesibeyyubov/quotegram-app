@@ -56,9 +56,11 @@ class QuoteViewModel @Inject constructor(
         val response = mainRepository.updateQuote(oldQuote.id, newQuote)
         val handledResponse = handleQuoteResponse(response)
         val index = quoteList.indexOf(oldQuote)
-        quoteList.removeAt(index)
-        val newQuoteModel = oldQuote.copy(quote = newQuote["quote"],genre=newQuote["genre"])
-        quoteList.add(index,newQuoteModel)
+        if(index != -1) {
+            quoteList.removeAt(index)
+            val newQuoteModel = oldQuote.copy(quote = newQuote["quote"],genre=newQuote["genre"])
+            quoteList.add(index,newQuoteModel)
+        }
         _quotes.postValue(DataState.Success(QuotesResponse(quoteList.toList())))
         _updateQuote.postValue(handledResponse)
     }
@@ -68,7 +70,6 @@ class QuoteViewModel @Inject constructor(
         val response = mainRepository.deleteQuote(quote.id)
         val handledResponse = handleQuoteResponse(response)
         if (handledResponse is DataState.Success) {
-            Log.d("mytag", "deleteQuote: quoteList.size: ${quoteList.size}")
             quoteList.remove(quote)
             _quotes.postValue(DataState.Success(data = QuotesResponse(quoteList.toList())))
         }
@@ -78,6 +79,7 @@ class QuoteViewModel @Inject constructor(
     fun clearLiveDataValues() {
         _deleteQuote.value = null
         _updateQuote.value = null
+        _quote.value = null
     }
 
     fun getMoreQuotes(page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {

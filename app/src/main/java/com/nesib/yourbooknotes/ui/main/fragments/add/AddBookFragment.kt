@@ -1,4 +1,4 @@
-package com.nesib.yourbooknotes.ui.main.fragments
+package com.nesib.yourbooknotes.ui.main.fragments.add
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent

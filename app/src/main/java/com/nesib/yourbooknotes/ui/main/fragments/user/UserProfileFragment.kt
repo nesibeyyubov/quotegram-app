@@ -1,4 +1,4 @@
-package com.nesib.yourbooknotes.ui.main.fragments
+package com.nesib.yourbooknotes.ui.main.fragments.user
 
 import android.os.Bundle
 import android.view.View
@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentUserProfileBinding
@@ -43,7 +42,6 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentUserProfileBinding.bind(view)
 
-        setFragmentResultListener()
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
@@ -51,14 +49,6 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         userViewModel.getUser(args.userId)
     }
 
-     private fun setFragmentResultListener() {
-         parentFragmentManager.setFragmentResultListener(
-             "deletedQuote",
-             viewLifecycleOwner
-         ) { requestKey: String, deletedQuote: Bundle ->
-             userViewModel.notifyQuoteRemoved(deletedQuote["deletedQuote"] as Quote)
-         }
-     }
 
     private fun bindData(user: User) {
         binding.usernameTextView.text = user.username

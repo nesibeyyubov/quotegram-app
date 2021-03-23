@@ -1,6 +1,7 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -27,8 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private val bookViewModel: BookViewModel by viewModels()
-    private val quoteViewModel: QuoteViewModel by viewModels({requireActivity()})
-    private val authViewModel:AuthViewModel by viewModels()
+    private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
+    private val authViewModel: AuthViewModel by viewModels()
     private val args by navArgs<BookProfileFragmentArgs>()
     private val bookQuotesAdapter by lazy { BookQuotesAdapter() }
 
@@ -67,6 +68,13 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         ) { requestKey: String, deletedQuote: Bundle ->
             bookViewModel.notifyQuoteRemoved(deletedQuote["deletedQuote"] as Quote)
         }
+
+        parentFragmentManager.setFragmentResultListener(
+            "updatedQuote",
+            viewLifecycleOwner
+        ) { s: String, updatedQuote: Bundle ->
+            bookViewModel.notifyQuoteUpdated((updatedQuote["updatedQuote"] as Quote))
+        }
     }
 
     private fun subscribeObservers() {
@@ -94,7 +102,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         bookViewModel.quotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    if(currentBookQuotes?.size == it.data!!.quotes.size){
+                    if (currentBookQuotes?.size == it.data!!.quotes.size) {
                         paginatingFinished = true
                     }
                     binding.paginationProgressBar.visibility = View.GONE
@@ -116,10 +124,16 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
 
     private fun setupRecyclerView() {
         bookQuotesAdapter.currentUserId = authViewModel.currentUserId
-        bookQuotesAdapter.onLikeClickListener={quote->
+        bookQuotesAdapter.onLikeClickListener = { quote ->
             quoteViewModel.toggleLike(quote)
         }
-        bookQuotesAdapter.onQuoteOptionsClicked = {quote->
+        bookQuotesAdapter.onQuoteOptionsClicked = { quote ->
+            quote.book = Book(
+                id = currentBook!!.id,
+                name = currentBook!!.name,
+                author = currentBook!!.author,
+                image = currentBook!!.image,
+            )
             val action = BookProfileFragmentDirections.actionGlobalQuoteOptionsFragment(quote)
             findNavController().navigate(action)
         }
@@ -184,7 +198,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         }
 
         binding.bookFollowButton.setOnClickListener {
-            currentBook?.let {book->
+            currentBook?.let { book ->
                 val followers = book.followers!!.toMutableList()
                 if (!book.followers!!.contains(authViewModel.currentUserId)) {
                     followers.add(authViewModel.currentUserId!!)
@@ -202,9 +216,6 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             }
         }
     }
-
-
-
 
 
 }

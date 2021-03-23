@@ -1,4 +1,4 @@
-package com.nesib.yourbooknotes.ui.main.fragments
+package com.nesib.yourbooknotes.ui.main.fragments.user
 
 import android.os.Bundle
 import android.view.View
@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentMyProfileBinding
@@ -124,6 +123,12 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
             viewLifecycleOwner
         ) { requestKey: String, deletedQuote: Bundle ->
             userViewModel.notifyQuoteRemoved(deletedQuote["deletedQuote"] as Quote)
+        }
+        parentFragmentManager.setFragmentResultListener(
+            "updatedQuote",
+            viewLifecycleOwner
+        ) { s: String, updatedQuote: Bundle ->
+            userViewModel.notifyQuoteUpdated((updatedQuote["updatedQuote"] as Quote))
         }
     }
 

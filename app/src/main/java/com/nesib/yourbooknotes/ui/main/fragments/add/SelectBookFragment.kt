@@ -1,4 +1,4 @@
-package com.nesib.yourbooknotes.ui.main.fragments
+package com.nesib.yourbooknotes.ui.main.fragments.add
 
 import android.os.Bundle
 import android.os.Handler

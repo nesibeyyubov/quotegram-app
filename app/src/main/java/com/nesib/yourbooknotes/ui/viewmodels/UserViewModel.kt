@@ -62,8 +62,16 @@ class UserViewModel @Inject constructor(
 
     fun notifyQuoteRemoved(quote:Quote){
         userQuoteList.remove(quote)
-        Log.d("mytag", "notifyQuoteRemoved: ${userQuoteList.size}")
         _userQuotes.postValue(DataState.Success(data = QuotesResponse(userQuoteList.toList())))
+    }
+    fun notifyQuoteUpdated(quote:Quote) = viewModelScope.launch(Dispatchers.Default) {
+        val quoteToDelete = userQuoteList.find{q -> q.id == quote.id}
+        val index = userQuoteList.indexOf(quoteToDelete)
+        if(index != -1){
+            userQuoteList.remove(quoteToDelete)
+            userQuoteList.add(index,quote)
+        }
+        _userQuotes.postValue(DataState.Success(QuotesResponse(userQuoteList.toList())))
     }
 
     fun getUsers(searchQuery: String = "") = viewModelScope.launch(Dispatchers.IO) {

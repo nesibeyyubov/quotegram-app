@@ -51,9 +51,20 @@ class BookViewModel @Inject constructor(
         }
     }
 
-    fun notifyQuoteRemoved(quote:Quote){
+    fun notifyQuoteRemoved(quote:Quote)= viewModelScope.launch(Dispatchers.Default){
         quoteList.remove(quote)
         _quotes.postValue(DataState.Success(data = QuotesResponse(quoteList.toList())))
+    }
+    fun notifyQuoteUpdated(quote:Quote) = viewModelScope.launch(Dispatchers.Default) {
+        val quoteToDelete = quoteList.find{q -> q.id == quote.id}
+        val index = quoteList.indexOf(quoteToDelete)
+        Log.d("mytag", "index: $index")
+        if(index != -1){
+            quoteList.remove(quoteToDelete)
+            quoteList.add(index,quote)
+            Log.d("mytag", "quote updated !")
+        }
+        _quotes.postValue(DataState.Success(QuotesResponse(quoteList.toList())))
     }
 
     fun getMoreBookQuotes(bookId: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {

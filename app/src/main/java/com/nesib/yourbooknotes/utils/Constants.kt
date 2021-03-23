@@ -8,5 +8,5 @@ object Constants {
     const val CODE_AUTHENTICATION_FAIL = 401
     const val CODE_SERVER_ERROR = 500
 
-    const val API_URL = "http://10.0.2.2:4000/"
+    const val API_URL = "http://192.168.0.106:4000/"
 }
