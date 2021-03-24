@@ -55,7 +55,7 @@ class HomeAdapter(val dialog:AlertDialog) :
                 }
                 likeCountTextView.text = quote.likes?.size.toString()
                 bookNameTextView.text = quote.book?.name
-                if (quote.likes!!.contains(currentUserId)) {
+                if (quote.liked) {
                     likeBtn.setImageResource(R.drawable.ic_like_blue)
                 } else {
                     likeBtn.setImageResource(R.drawable.ic_like)
@@ -70,13 +70,14 @@ class HomeAdapter(val dialog:AlertDialog) :
                     if(currentUserId != null){
                         val quote = differ.currentList[adapterPosition]
                         val likes = quote.likes!!.toMutableList()
-                        if (!likes.contains(currentUserId)) {
+                        if (!quote.liked) {
                             binding.likeBtn.setImageResource(R.drawable.ic_like_blue)
                             likes.add(currentUserId!!)
                         } else {
                             binding.likeBtn.setImageResource(R.drawable.ic_like)
                             likes.remove(currentUserId)
                         }
+                        quote.liked = !quote.liked
                         quote.likes = likes.toList()
                         binding.likeCountTextView.text = quote.likes!!.size.toString()
                         onLikeClickListener?.let {

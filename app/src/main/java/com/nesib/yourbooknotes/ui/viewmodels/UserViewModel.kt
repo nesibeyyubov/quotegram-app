@@ -45,7 +45,7 @@ class UserViewModel @Inject constructor(
     fun getMoreUserQuotes(userId: String? = null, page: Int) =
         viewModelScope.launch(Dispatchers.IO) {
             _userQuotes.postValue(DataState.Loading())
-            val id = userId ?: sharedPreferencesRepository.getUser().userId!!
+            val id = userId ?: sharedPreferencesRepository.getCurrentUser()?.userId!!
             val response = userRepository.getMoreUserQuotes(id, page)
             handleQuotesResponse(response)
         }
@@ -53,7 +53,7 @@ class UserViewModel @Inject constructor(
     fun getUser(userId: String? = null) = viewModelScope.launch(Dispatchers.IO) {
         if (_user.value == null) {
             _user.postValue(DataState.Loading())
-            val id = userId ?: sharedPreferencesRepository.getUser().userId!!
+            val id = userId ?: sharedPreferencesRepository.getCurrentUser()?.userId!!
             val response = userRepository.getUser(id)
             val handledResponse = handleUserResponse(response)
             _user.postValue(handledResponse)

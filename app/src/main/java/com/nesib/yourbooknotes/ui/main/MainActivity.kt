@@ -14,10 +14,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.ActivityMainBinding
+import com.nesib.yourbooknotes.databinding.DrawerHeaderLayoutBinding
 import com.nesib.yourbooknotes.databinding.NotAuthenticatedLayoutBinding
 import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
-import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -95,15 +95,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupDrawerUi() {
-        val extraDetail = authViewModel.getExtraUserDetail().split(",")
-        val username = extraDetail[0]
-        val email = extraDetail[1]
-        val profileImage = extraDetail[2]
+        val extraDetail = authViewModel.getUser()
         if (authViewModel.isAuthenticated) {
             binding.apply {
                 val headerView = drawerNavigationView.getHeaderView(0)
-                headerView.findViewById<TextView>(R.id.headerUsername).text = username
-                headerView.findViewById<TextView>(R.id.headerEmail).text = email
+                val headerBinding = DrawerHeaderLayoutBinding.bind(headerView)
+                headerBinding.headerUsername.text = extraDetail!!.username
+                headerBinding.headerEmail.text = extraDetail.email
                 val drawerMenu = drawerNavigationView.menu
                 drawerMenu.findItem(R.id.drawer_login).isVisible = false
                 drawerMenu.findItem(R.id.drawer_signup).isVisible = false

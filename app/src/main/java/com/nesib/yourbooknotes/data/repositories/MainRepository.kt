@@ -33,9 +33,9 @@ class MainRepository @Inject constructor(
     val mainApi: MainApi
 ) {
     suspend fun getQuotes(page: Int): Response<QuotesResponse> {
-        val userId = sharedPreferencesRepository.getUser().userId
-        val genres = if (userId != null) null else sharedPreferencesRepository.getFollowingGenres()
-        return mainApi.getQuotes(page, genres, userId)
+        val userId = sharedPreferencesRepository.getCurrentUser()?.userId ?: ""
+        val genres = sharedPreferencesRepository.getCurrentUser()?.followingGenres
+        return mainApi.getQuotes(page, genres)
     }
 
     suspend fun postQuote(quote: Map<String, String>) =

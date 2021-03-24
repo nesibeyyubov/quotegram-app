@@ -26,7 +26,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
 
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val userViewModel: UserViewModel by viewModels()
-    private val quoteViewModel: QuoteViewModel by viewModels()
+    private val quoteViewModel: QuoteViewModel by viewModels({requireActivity()})
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
 
     private var paginationLoading = false
@@ -134,8 +134,8 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
 
     private fun setupRecyclerView() {
         homeAdapter.currentUserId = authViewModel.currentUserId
-        homeAdapter.onLikeClickListener = { quoteId ->
-            quoteViewModel.toggleLike(quoteId)
+        homeAdapter.onLikeClickListener = { quote ->
+            quoteViewModel.toggleLike(quote)
         }
         homeAdapter.onQuoteOptionsClickListener = { quote ->
             val action = MyProfileFragmentDirections.actionGlobalQuoteOptionsFragment(quote)

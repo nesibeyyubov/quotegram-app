@@ -29,7 +29,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val userViewModel: UserViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
-    private val quoteViewModel: QuoteViewModel by viewModels()
+    private val quoteViewModel: QuoteViewModel by viewModels({requireActivity()})
     private val args by navArgs<UserProfileFragmentArgs>()
 
     private var paginatingFinished = false

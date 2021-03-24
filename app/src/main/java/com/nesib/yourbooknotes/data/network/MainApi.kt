@@ -12,7 +12,6 @@ interface MainApi {
     suspend fun getQuotes(
         @Query("page") page: Int,
         @Query("genres") genres: String? = null,
-        @Query("userId") userId: String? = null
     ): Response<QuotesResponse>
 
     @POST("/quotes")

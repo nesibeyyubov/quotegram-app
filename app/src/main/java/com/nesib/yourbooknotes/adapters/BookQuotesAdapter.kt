@@ -39,7 +39,7 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
                 }
                 bookQuoteTextView.text = quote.quote
                 quoteLikesCount.text = quote.likes?.size.toString()
-                if(quote.likes!!.contains(currentUserId)){
+                if(quote.liked){
                     likeBtn.setImageResource(R.drawable.ic_like_blue)
                 }else{
                     likeBtn.setImageResource(R.drawable.ic_like)
@@ -49,18 +49,17 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
 
         override fun onClick(v: View?) {
             when (v?.id) {
-                R.id.likeBtn->{
+                R.id.likeBtn -> {
                     val quote = differ.currentList[adapterPosition]
                     val likes = quote.likes!!.toMutableList()
-                    var likedQuote = false
-                    if(!likes.contains(currentUserId)){
-                        likedQuote = true
+                    if (!quote.liked) {
                         binding.likeBtn.setImageResource(R.drawable.ic_like_blue)
                         likes.add(currentUserId!!)
-                    }else{
+                    } else {
                         binding.likeBtn.setImageResource(R.drawable.ic_like)
                         likes.remove(currentUserId)
                     }
+                    quote.liked = !quote.liked
                     quote.likes = likes.toList()
                     binding.quoteLikesCount.text = quote.likes!!.size.toString()
                     onLikeClickListener!!(quote)

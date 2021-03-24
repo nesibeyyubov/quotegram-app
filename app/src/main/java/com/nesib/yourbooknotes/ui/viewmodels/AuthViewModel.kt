@@ -1,15 +1,11 @@
 package com.nesib.yourbooknotes.ui.viewmodels
 
-import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.nesib.yourbooknotes.data.local.SharedPreferencesRepository
-import com.nesib.yourbooknotes.data.network.AuthApi
 import com.nesib.yourbooknotes.data.repositories.UserRepository
 import com.nesib.yourbooknotes.models.BasicResponse
 import com.nesib.yourbooknotes.models.AuthResponse
-import com.nesib.yourbooknotes.models.User
 import com.nesib.yourbooknotes.models.UserResponse
 import com.nesib.yourbooknotes.utils.Constants.CODE_AUTHENTICATION_FAIL
 import com.nesib.yourbooknotes.utils.Constants.CODE_CREATION_SUCCESS
@@ -48,21 +44,15 @@ class AuthViewModel @Inject constructor(
         get() = _genres
 
     init {
-        checkAuthentication()
-        getUserId()
+        initAuthentication()
     }
 
 
-    private fun checkAuthentication() {
-        val user = sharedPreferencesRepository.getUser()
-        _isAuthenticated = user.userId != null && user.token != null
+    private fun initAuthentication() {
+        val user = sharedPreferencesRepository.getCurrentUser()
+        _currentUserId = user?.userId
+        _isAuthenticated = user?.userId != null
     }
-
-
-    fun getUserId(){
-        _currentUserId = sharedPreferencesRepository.getUser().userId
-    }
-
 
     fun logout() {
         sharedPreferencesRepository.clearUser()
@@ -98,7 +88,7 @@ class AuthViewModel @Inject constructor(
     fun saveExtraUserDetail(username: String, email: String, profileImage: String) =
         sharedPreferencesRepository.saveExtraUserDetail(username, email, profileImage)
 
-    fun getExtraUserDetail() = sharedPreferencesRepository.getExtraUserDetail()
+    fun getUser() = sharedPreferencesRepository.getCurrentUser()
 
     fun saveUser() {
         val userId = auth.value?.data?.userId

@@ -97,7 +97,11 @@ class QuoteViewModel @Inject constructor(
 
     fun toggleLike(quote: Quote) = viewModelScope.launch(Dispatchers.IO) {
         _likeQuote.postValue(DataState.Loading())
-        _quotes.value?.data?.quotes?.find { q -> q.id == quote.id }?.likes = quote.likes
+        _quotes.value?.data?.quotes?.find { q -> q.id == quote.id }?.let {
+            it.likes = quote.likes
+            it.liked = quote.liked
+            Log.d("mytag", "toggleLike: ${it.quote}")
+        }
         val response = mainRepository.likeOrDislikeQuote(quote.id)
         val handledResponse = handleQuoteResponse(response)
         _likeQuote.postValue(handledResponse)
