@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.SearchUserAdapter
 import com.nesib.yourbooknotes.databinding.FragmentSearchUsersBinding
+import com.nesib.yourbooknotes.ui.viewmodels.SharedViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.IUsersNotifer
@@ -18,13 +19,13 @@ import com.nesib.yourbooknotes.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchUsersFragment : Fragment(R.layout.fragment_search_users),IUsersNotifer {
+class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
     private val adapter by lazy { SearchUserAdapter() }
     private lateinit var binding: FragmentSearchUsersBinding
     private val userViewModel:UserViewModel by viewModels({requireParentFragment()})
+    private val sharedViewModel:SharedViewModel by viewModels({requireActivity()})
     private var searchViewTextChanged = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Utils.usersNotifier = this
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSearchUsersBinding.bind(view)
         setupRecyclerView()
@@ -56,6 +57,14 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users),IUsersNotif
                 }
             }
         }
+        sharedViewModel.searchTextUser.observe(viewLifecycleOwner){text->
+            if(text.isNotEmpty()){
+                Handler(Looper.getMainLooper())
+                    .postDelayed({
+                        userViewModel.getUsers(text)
+                    },300)
+            }
+        }
     }
 
     private fun toggleProgressBar(loading:Boolean){
@@ -63,18 +72,18 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users),IUsersNotif
         binding.searchUsersRecyclerView.visibility = if(loading) View.INVISIBLE else View.VISIBLE
     }
 
-    override fun onSearchViewTextChanged(text: String) {
-        if(text.isNotEmpty()){
-            searchViewTextChanged = true
-        }
-        Handler(Looper.getMainLooper())
-            .postDelayed({
-                userViewModel.getUsers(text)
-            },300)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Utils.usersNotifier = null
-    }
+//    override fun onSearchViewTextChanged(text: String) {
+//        if(text.isNotEmpty()){
+//            searchViewTextChanged = true
+//        }
+//        Handler(Looper.getMainLooper())
+//            .postDelayed({
+//                userViewModel.getUsers(text)
+//            },300)
+//    }
+//
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        Utils.usersNotifier = null
+//    }
 }

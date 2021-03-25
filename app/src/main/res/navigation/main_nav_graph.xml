@@ -69,6 +69,9 @@
         <action
             android:id="@+id/action_searchFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_searchQuotesFragment"
+            app:destination="@id/searchQuotesFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_addBookFragment"
@@ -122,4 +125,13 @@
             app:argType="com.nesib.yourbooknotes.models.Quote" />
     </dialog>
     <action android:id="@+id/action_global_quoteOptionsFragment" app:destination="@id/quoteOptionsFragment" /><action android:id="@+id/action_global_addQuoteFragment" app:destination="@id/addQuoteFragment"/>
+    <fragment
+        tools:layout="@layout/fragment_search_quotes"
+        android:id="@+id/searchQuotesFragment"
+        android:name="com.nesib.yourbooknotes.ui.main.fragments.search.SearchQuotesFragment"
+        android:label="SearchQuotesFragment" >
+        <argument
+            android:name="genre"
+            app:argType="string" />
+    </fragment>
 </navigation>

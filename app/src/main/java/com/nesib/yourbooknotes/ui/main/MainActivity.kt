@@ -3,9 +3,11 @@ package com.nesib.yourbooknotes.ui.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -18,6 +20,7 @@ import com.nesib.yourbooknotes.databinding.DrawerHeaderLayoutBinding
 import com.nesib.yourbooknotes.databinding.NotAuthenticatedLayoutBinding
 import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -26,6 +29,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var authViewModel: AuthViewModel
+    private val sharedViewModel: SharedViewModel by viewModels()
 
     val dialog by lazy {
         val notAuthenticatedBinding = NotAuthenticatedLayoutBinding.bind(
@@ -80,14 +84,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbarMainActivity)
 
         initViewModels()
-        setSupportActionBar(binding.toolbarMainActivity)
         setupDrawerUi()
         setupNavigation()
         setupClickListeners()
         setupBottomNavChangeListeners()
         setupDrawerNavChangeListener()
+        addSearchInputTextChangeListener()
     }
 
     private fun initViewModels() {
@@ -136,18 +141,45 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.bottomNavView.menu.getItem(2).isEnabled = false
         binding.bottomNavView.setupWithNavController(navController)
         binding.drawerNavigationView.setupWithNavController(navController)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
-    fun showAuthenticationDialog(){
+    fun showAuthenticationDialog() {
         dialog.show()
     }
 
     private fun setupBottomNavChangeListeners() {
         navController.addOnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
-            if (navDestination.id != R.id.searchFragment) {
-                if (binding.toolbarMainActivity.visibility == View.GONE) {
-                    binding.toolbarMainActivity.visibility = View.VISIBLE
+            supportActionBar?.title = ""
+
+            when (navDestination.id) {
+                R.id.homeFragment -> {
+                    binding.toolbarText.text = "Quotes"
                 }
+                R.id.searchFragment -> {
+                    binding.toolbarMainActivity.navigationIcon = null
+                    binding.toolbarText.text = "Discover"
+                    binding.searchInputContainer.visibility = View.VISIBLE
+                    binding.toolbarText.visibility = View.GONE
+                }
+                R.id.editUserFragment -> {
+                    binding.toolbarText.text = "Edit User"
+                }
+                R.id.selectBookFragment -> {
+                    binding.toolbarText.text = "Select Book"
+                }
+                R.id.addQuoteFragment -> {
+                }
+                R.id.addBookFragment -> {
+                }
+                R.id.myProfileFragment -> {
+                    binding.toolbarText.text = ""
+                }
+            }
+            if (navDestination.id != R.id.searchFragment) {
+                binding.searchInputContainer.visibility = View.GONE
+                binding.toolbarText.visibility = View.VISIBLE
+                setSupportActionBar(binding.toolbarMainActivity)
             }
             if (navDestination.id == R.id.myProfileFragment) {
                 supportActionBar?.title = ""
@@ -175,6 +207,22 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun addSearchInputTextChangeListener() {
+        binding.searchInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                sharedViewModel.setChangedText(s.toString())
+            }
+
+        })
     }
 
     private fun setupClickListeners() {
@@ -208,16 +256,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.add_quote_btn -> {
-                if(authViewModel.isAuthenticated){
+                if (authViewModel.isAuthenticated) {
                     navController.navigate(R.id.action_global_selectBookFragment)
-                }else{
+                } else {
                     dialog.show()
                 }
             }
             R.id.add_book_btn -> {
-                if(authViewModel.isAuthenticated){
+                if (authViewModel.isAuthenticated) {
                     navController.navigate(R.id.action_global_addBookFragment)
-                }else{
+                } else {
                     dialog.show()
                 }
             }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:paddingHorizontal="@dimen/page_padding"
+    android:background="@drawable/transparent_border_bottom_bg"
+    android:paddingVertical="10dp"
+    android:layout_height="wrap_content"
+    >
+
+    <View
+        android:id="@+id/searchUserImage"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/light_dot_bg"
+        android:src="@drawable/ic_book"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/genreName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="A Tale of Two Cities"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintStart_toEndOf="@+id/searchUserImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/followingGenre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Following"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/genreName"
+        app:layout_constraintTop_toBottomOf="@+id/genreName" />
+
+    <ImageButton
+        app:tint="@color/colorPrimaryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_arrow_right"
+        android:text="View"
+        android:textColor="@color/blue"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/genreName" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,21 +13,23 @@ import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.SearchBooksAdapter
 import com.nesib.yourbooknotes.databinding.FragmentSearchBooksBinding
 import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.SharedViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.IBooksNotifer
 import com.nesib.yourbooknotes.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchBooksFragment : Fragment(R.layout.fragment_search_books), IBooksNotifer {
+class SearchBooksFragment : Fragment(R.layout.fragment_search_books) {
     private lateinit var binding: FragmentSearchBooksBinding
     private val bookViewModel: BookViewModel by viewModels({ requireParentFragment() })
+    private val sharedViewModel: SharedViewModel by viewModels({ requireActivity() })
+
     private val adapter by lazy { SearchBooksAdapter() }
     private var searchViewTextChanged = false
     private var currentSearchText = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Utils.booksNotifier = this
         binding = FragmentSearchBooksBinding.bind(view)
         subscribeObservers()
         setupRecyclerView()
@@ -52,7 +54,7 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books), IBooksNoti
                     toggleProgressBar(false)
                 }
                 is DataState.Fail -> {
-                    Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     toggleProgressBar(false)
                 }
                 is DataState.Loading -> {
@@ -62,6 +64,15 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books), IBooksNoti
                 }
             }
         }
+        sharedViewModel.searchTextBook.observe(viewLifecycleOwner) { text ->
+            if (text.isNotEmpty() && currentSearchText != text) {
+                Handler(Looper.getMainLooper())
+                    .postDelayed({
+                        bookViewModel.discoverBooks(text)
+                    }, 300)
+                currentSearchText = text
+            }
+        }
     }
 
     private fun toggleProgressBar(loading: Boolean) {
@@ -69,24 +80,7 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books), IBooksNoti
         binding.searchBooksRecyclerView.visibility = if (loading) View.INVISIBLE else View.VISIBLE
     }
 
-    override fun onSearchViewTextChanged(text: String) {
-        if(currentSearchText == text){
-            return
-        }
-        if (text.isNotEmpty()) {
-            searchViewTextChanged = true
-        }
-        Handler(Looper.getMainLooper())
-            .postDelayed({
-                bookViewModel.discoverBooks(text)
-            }, 300)
-        currentSearchText = text
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Utils.booksNotifier = null
-    }
 
 
 }

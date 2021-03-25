@@ -17,7 +17,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorBackground"
-            android:elevation="1dp" />
+            android:elevation="1dp" >
+            <TextView
+                android:id="@+id/toolbarText"
+                android:includeFontPadding="false"
+                android:textSize="18sp"
+                android:textColor="@color/colorPrimaryText"
+                android:layout_gravity="center"
+                android:text="Discover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:id="@+id/searchInputContainer"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginHorizontal="@dimen/page_padding"
+                android:background="@color/inputBackgroundColor"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:src="@drawable/ic_search"
+                    app:tint="@color/colorSecondaryText" />
+
+                <EditText
+                    android:id="@+id/searchInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="Search here..."
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView_mainActivity"

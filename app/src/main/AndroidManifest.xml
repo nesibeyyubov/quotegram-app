@@ -7,14 +7,14 @@
     <application
         android:name=".di.MyApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.YourBookNotes">
-        <activity android:name=".ui.main.MainActivity"></activity>
-        <activity android:name=".ui.on_boarding.StartActivity">
+        <activity android:name=".ui.main.MainActivity" android:label=""></activity>
+        <activity android:name=".ui.on_boarding.StartActivity" android:label="">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
