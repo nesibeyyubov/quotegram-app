@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Menu
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
@@ -175,14 +176,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.myProfileFragment -> {
                     binding.toolbarText.text = ""
                 }
+                R.id.searchQuotesFragment -> {
+                    binding.toolbarText.text = sharedViewModel.toolbarText
+                }
             }
             if (navDestination.id != R.id.searchFragment) {
                 binding.searchInputContainer.visibility = View.GONE
                 binding.toolbarText.visibility = View.VISIBLE
                 setSupportActionBar(binding.toolbarMainActivity)
-            }
-            if (navDestination.id == R.id.myProfileFragment) {
-                supportActionBar?.title = ""
             }
 
             if (navDestination.id == R.id.editUserFragment
@@ -282,6 +283,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
     }
+
 
 
 }

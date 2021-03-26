@@ -1,30 +1,44 @@
 package com.nesib.yourbooknotes.ui.main.fragments.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.GenresAdapter
 import com.nesib.yourbooknotes.databinding.FragmentSelectQuoteGenresBinding
+import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.SharedViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
+@AndroidEntryPoint
 class SelectGenresFragment:Fragment(R.layout.fragment_select_quote_genres) {
     private lateinit var binding: FragmentSelectQuoteGenresBinding
     private lateinit var genresAdapter:GenresAdapter
+    private val authViewModel:AuthViewModel by viewModels({requireActivity()})
+    private val sharedViewModel:SharedViewModel by viewModels({requireActivity()})
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSelectQuoteGenresBinding.bind(view)
         val genreList = resources.getStringArray(R.array.quote_genres).toMutableList()
         genreList.removeAt(0)
-        genresAdapter = GenresAdapter(genreList)
+        val followingGenres = authViewModel.getFollowingGenres().split(",")
+        genresAdapter = GenresAdapter(genreList,followingGenres)
+
         binding.genreRecyclerView.apply {
             adapter = genresAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
 
         genresAdapter.onGenreClickListener = { genre->
-            val action = SearchFragmentDirections.actionSearchFragmentToSearchQuotesFragment(genre)
+            sharedViewModel.toolbarText = "#${genre}"
+            val action = SearchFragmentDirections.actionSearchFragmentToSearchQuotesFragment(
+                genre.toLowerCase(
+                    Locale.ROOT))
             findNavController().navigate(action)
         }
     }

@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.GenreItemLayoutBinding
+import java.util.*
 
-class GenresAdapter(val genres: List<String>) : RecyclerView.Adapter<GenresAdapter.ViewHolder>() {
+class GenresAdapter(val genres: List<String>,val followingGenres:List<String>) : RecyclerView.Adapter<GenresAdapter.ViewHolder>() {
     var onGenreClickListener:((String)->Unit)? = null
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = GenreItemLayoutBinding.bind(itemView)
@@ -17,7 +18,8 @@ class GenresAdapter(val genres: List<String>) : RecyclerView.Adapter<GenresAdapt
             }
         }
         fun bindData(genre: String) {
-            binding.genreName.text = genre
+            binding.genreName.text = "#$genre"
+            binding.followingGenre.text = if(followingGenres.contains(genre.toLowerCase(Locale.ROOT))) "Following" else "Not Following"
         }
     }
 

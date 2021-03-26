@@ -22,6 +22,7 @@
                 android:id="@+id/toolbarText"
                 android:includeFontPadding="false"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:textColor="@color/colorPrimaryText"
                 android:layout_gravity="center"
                 android:text="Discover"

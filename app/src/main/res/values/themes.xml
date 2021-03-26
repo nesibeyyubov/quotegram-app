@@ -12,7 +12,15 @@
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:navigationBarColor">@color/colorBackground</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="actionMenuTextAppearance">@style/ActionMenuTextAppearance</item>
+        <item name="actionMenuTextColor">@color/blue</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="ActionMenuTextAppearance">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TabItemStyle" parent="Widget.MaterialComponents.TabLayout">

@@ -27,6 +27,7 @@ class SharedPreferencesRepository @Inject constructor(@ApplicationContext contex
         val token = sharedPreferences.getString("token", null)
         val followingGenres = sharedPreferences.getString("genres", "") ?: ""
         _currentUser = UserAuth(username, email, profileImage, userId, token, followingGenres)
+        Log.d("mytag", "getCurrentUser: $_currentUser")
         return _currentUser
     }
 
@@ -34,6 +35,10 @@ class SharedPreferencesRepository @Inject constructor(@ApplicationContext contex
         editor.putString("userId", userId)
         editor.putString("token", token)
         editor.apply()
+    }
+
+    fun getFollowingGenres():String {
+        return sharedPreferences.getString("genres", "")!!
     }
 
     fun saveExtraUserDetail(username: String, email: String, profileImage: String) {

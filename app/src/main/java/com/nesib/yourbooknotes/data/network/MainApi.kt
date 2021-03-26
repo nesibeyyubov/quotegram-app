@@ -14,6 +14,12 @@ interface MainApi {
         @Query("genres") genres: String? = null,
     ): Response<QuotesResponse>
 
+    @GET("/quotes/by-genre")
+    suspend fun getQuotesByGenre(
+        @Query("genre") genre:String,
+        @Query("page") page:Int
+    ):Response<QuotesResponse>
+
     @POST("/quotes")
     suspend fun postQuote(
         @Body quote: Map<String, String>,

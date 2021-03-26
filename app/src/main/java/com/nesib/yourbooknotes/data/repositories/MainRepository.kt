@@ -33,17 +33,19 @@ class MainRepository @Inject constructor(
     val mainApi: MainApi
 ) {
     suspend fun getQuotes(page: Int): Response<QuotesResponse> {
-        val userId = sharedPreferencesRepository.getCurrentUser()?.userId ?: ""
-        val genres = sharedPreferencesRepository.getCurrentUser()?.followingGenres
+        val genres = sharedPreferencesRepository.getFollowingGenres()
         return mainApi.getQuotes(page, genres)
     }
+
+    suspend fun getQuotesByGenre(genre: String, page: Int) = mainApi.getQuotesByGenre(genre, page)
 
     suspend fun postQuote(quote: Map<String, String>) =
         mainApi.postQuote(quote)
 
     suspend fun likeOrDislikeQuote(quoteId: String) = mainApi.likeOrDislikeQuote(quoteId)
 
-    suspend fun updateQuote(quoteId: String,quote: Map<String,String>) = mainApi.updateQuote(quoteId,quote)
+    suspend fun updateQuote(quoteId: String, quote: Map<String, String>) =
+        mainApi.updateQuote(quoteId, quote)
 
     suspend fun deleteQuote(quoteId: String) = mainApi.deleteQuote(quoteId)
 
@@ -73,5 +75,5 @@ class MainRepository @Inject constructor(
         return mainApi.postBook(nameRequestBody, authorRequestBody, genreRequestBody, imageBodyPart)
     }
 
-    suspend fun toggleBookFollow(bookId:String) = mainApi.followOrUnfollowBook(bookId)
+    suspend fun toggleBookFollow(bookId: String) = mainApi.followOrUnfollowBook(bookId)
 }

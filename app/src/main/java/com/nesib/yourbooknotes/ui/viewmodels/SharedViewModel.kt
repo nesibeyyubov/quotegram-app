@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 
 class SharedViewModel : ViewModel() {
     var currentTabIndex = 0
+    var toolbarText = ""
 
     private val _searchTextBook = MutableLiveData<String>()
     val searchTextBook
@@ -22,5 +23,7 @@ class SharedViewModel : ViewModel() {
             _searchTextUser.value = text
         }
     }
+
+
 
 }

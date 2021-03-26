@@ -26,6 +26,10 @@ class QuoteViewModel @Inject constructor(
     val quotes: LiveData<DataState<QuotesResponse>>
         get() = _quotes
 
+    private val _quotesByGenre = MutableLiveData<DataState<QuotesResponse>>()
+    val quotesByGenre: LiveData<DataState<QuotesResponse>>
+        get() = _quotesByGenre
+
     private val _quote = MutableLiveData<DataState<QuoteResponse>>()
     val quote: LiveData<DataState<QuoteResponse>>
         get() = _quote
@@ -41,6 +45,15 @@ class QuoteViewModel @Inject constructor(
     private val _deleteQuote = MutableLiveData<DataState<QuoteResponse>>()
     val deleteQuote: LiveData<DataState<QuoteResponse>>
         get() = _deleteQuote
+
+
+    fun getQuotesByGenre(genre:String,page:Int=1) = viewModelScope.launch(Dispatchers.IO){
+        if (_quotes.value == null || page>1) {
+            _quotes.postValue(DataState.Loading())
+            val response = mainRepository.getQuotesByGenre(genre,page)
+            handleQuotesResponse(response)
+        }
+    }
 
 
     fun getQuotes(page: Int = 1, forced: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
