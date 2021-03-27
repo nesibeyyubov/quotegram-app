@@ -14,11 +14,12 @@ interface MainApi {
         @Query("genres") genres: String? = null,
     ): Response<QuotesResponse>
 
+
     @GET("/quotes/by-genre")
     suspend fun getQuotesByGenre(
-        @Query("genre") genre:String,
-        @Query("page") page:Int
-    ):Response<QuotesResponse>
+        @Query("genre") genre: String,
+        @Query("page") page: Int
+    ): Response<QuotesResponse>
 
     @POST("/quotes")
     suspend fun postQuote(
@@ -26,17 +27,29 @@ interface MainApi {
     ): Response<QuoteResponse>
 
     @PATCH("/quotes/{quoteId}")
-    suspend fun likeOrDislikeQuote(@Path("quoteId") quoteId: String):Response<QuoteResponse>
+    suspend fun likeOrDislikeQuote(@Path("quoteId") quoteId: String): Response<QuoteResponse>
 
     @PUT("/quotes/{quoteId}")
-    suspend fun updateQuote(@Path("quoteId") quoteId: String,@Body quote:Map<String,String>): Response<QuoteResponse>
+    suspend fun updateQuote(
+        @Path("quoteId") quoteId: String,
+        @Body quote: Map<String, String>
+    ): Response<QuoteResponse>
 
     @DELETE("/quotes/{quoteId}")
     suspend fun deleteQuote(@Path("quoteId") quoteId: String): Response<QuoteResponse>
 
     // Books
     @GET("/books/")
-    suspend fun getBooks(@Query("search") searchText: String?,@Query("page") page:Int): Response<BooksResponse>
+    suspend fun getBooks(
+        @Query("search") searchText: String?,
+        @Query("page") page: Int
+    ): Response<BooksResponse>
+
+    @GET("/books/discover")
+    suspend fun discoverBooks(
+        @Query("genre") genre: String,
+        @Query("page") page: Int
+    ): Response<BooksResponse>
 
     @GET("/books/{bookId}")
     suspend fun getBook(@Path("bookId") bookId: String): Response<BookResponse>

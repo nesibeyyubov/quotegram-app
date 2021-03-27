@@ -82,6 +82,15 @@ class BookViewModel @Inject constructor(
             handleBooksResponse(response, searchTextChanged)
         }
 
+    fun getBooks(genre: String, page: Int = 1) =
+        viewModelScope.launch(
+            Dispatchers.IO
+        ) {
+            _books.postValue(DataState.Loading())
+            val response = mainRepository.discoverBooks(genre, page)
+            handleBooksResponse(response,false)
+        }
+
     fun discoverBooks(searchText: String) = viewModelScope.launch(Dispatchers.IO) {
         _books.postValue(DataState.Loading())
         val response = mainRepository.getBooks(searchText, 1)
@@ -101,9 +110,12 @@ class BookViewModel @Inject constructor(
         _bookFollow.postValue(DataState.Loading())
         val response = mainRepository.toggleBookFollow(book.id)
         val handledResponse = handleBookResponse(response)
-        _book.value!!.data?.book?.followers = book.followers
+        _book.value?.data?.book?.followers = book.followers
+        _book.value?.data?.book?.following = book.following
         _bookFollow.postValue(handledResponse)
     }
+
+
 
 
     private fun handleBookResponse(response: Response<BookResponse>):DataState<BookResponse> {

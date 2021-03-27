@@ -42,8 +42,8 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books) {
             findNavController().navigate(action)
         }
 //        binding.searchBooksRecyclerView.itemAnimator = null
-        binding.searchBooksRecyclerView.adapter = adapter
-        binding.searchBooksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+//        binding.searchBooksRecyclerView.adapter = adapter
+//        binding.searchBooksRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun subscribeObservers() {
@@ -76,8 +76,8 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books) {
     }
 
     private fun toggleProgressBar(loading: Boolean) {
-        binding.progressBar.visibility = if (loading) View.VISIBLE else View.INVISIBLE
-        binding.searchBooksRecyclerView.visibility = if (loading) View.INVISIBLE else View.VISIBLE
+//        binding.progressBar.visibility = if (loading) View.VISIBLE else View.INVISIBLE
+//        binding.searchBooksRecyclerView.visibility = if (loading) View.INVISIBLE else View.VISIBLE
     }
 
 

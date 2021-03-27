@@ -171,7 +171,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             bookGenre.text = book.genre
             bookQuoteCount.text = (book.totalQuoteCount ?: 0).toString()
             bookFollowerCount.text = book.followers?.size.toString()
-            toggleFollowButtonStyle(book.followers!!.contains(authViewModel.currentUserId))
+            toggleFollowButtonStyle(book.following)
         }
         bookQuotesAdapter.setData(currentBookQuotes!!.toList())
     }
@@ -200,7 +200,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         binding.bookFollowButton.setOnClickListener {
             currentBook?.let { book ->
                 val followers = book.followers!!.toMutableList()
-                if (!book.followers!!.contains(authViewModel.currentUserId)) {
+                if (!book.following) {
                     followers.add(authViewModel.currentUserId!!)
                     toggleFollowButtonStyle(true)
                     binding.bookFollowerCount.text = (binding.bookFollowerCount.text.toString()
@@ -212,6 +212,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
                         .toInt() - 1).toString()
                 }
                 book.followers = followers.toList()
+                book.following = !book.following
                 bookViewModel.toggleBookFollow(book)
             }
         }

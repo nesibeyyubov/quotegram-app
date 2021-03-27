@@ -1,19 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/page_padding"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ProgressBar
-        android:visibility="invisible"
-        android:id="@+id/progressBar"
-        android:layout_centerInParent="true"
-        android:indeterminateTint="@color/blue"
-        android:layout_width="30dp"
-        android:layout_height="30dp"/>
+<!--    <ProgressBar-->
+<!--        android:visibility="invisible"-->
+<!--        android:id="@+id/progressBar"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:indeterminateTint="@color/blue"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="30dp"/>-->
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchBooksRecyclerView"
+
+
+    <HorizontalScrollView
+        android:id="@+id/bookGenreScrollView"
+        android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content">
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/bookChipGroup"
+            android:layout_width="match_parent"
+            app:selectionRequired="true"
+            app:checkedChip="@id/chip_top"
+            android:layout_height="wrap_content"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_top"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_adventure"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_adventure" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_motivation"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/genre_motivation" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_art"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_art" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_biography"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_biography" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_business"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_business" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_children"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_children" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_classic"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_classic" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_dystpoian"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_dystpoian" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_fantasy"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_fantasy" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_health"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_health" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_historical_fiction"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_historical_fiction" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_humor"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_humor" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_leadership"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_leadership" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_motivational"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_motivational" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parenting"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_parenting" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_productiveness"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_productiveness" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_psychology"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_psychology" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_relationship"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_relationship" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_religion"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_religion" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_romance"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_romance" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_science_fiction"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_science_fiction" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_self_help"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_self_help" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_spirituality"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_spirituality" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_wealth"
+                style="@style/CustomChipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_genre_wealth" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@id/bookGenreScrollView"
+            android:id="@+id/searchBooksRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
 
 </RelativeLayout>
