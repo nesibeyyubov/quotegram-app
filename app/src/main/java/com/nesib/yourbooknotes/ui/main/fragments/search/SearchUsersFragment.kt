@@ -30,7 +30,6 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
         binding = FragmentSearchUsersBinding.bind(view)
         setupRecyclerView()
         subscribeObservers()
-        userViewModel.getUsers()
     }
 
     private fun setupRecyclerView(){
@@ -46,19 +45,20 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
         userViewModel.users.observe(viewLifecycleOwner){
             when(it){
                 is DataState.Success->{
-                    toggleProgressBar(false)
+//                    toggleProgressBar(false)
                     adapter.setData(it.data!!.users)
                 }
                 is DataState.Fail->{
-                    toggleProgressBar(false)
+//                    toggleProgressBar(false)
                 }
                 is DataState.Loading -> {
-                    toggleProgressBar(true)
+//                    toggleProgressBar(true)
                 }
             }
         }
         sharedViewModel.searchTextUser.observe(viewLifecycleOwner){text->
             if(text.isNotEmpty()){
+                searchViewTextChanged = true
                 Handler(Looper.getMainLooper())
                     .postDelayed({
                         userViewModel.getUsers(text)
@@ -72,18 +72,4 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
         binding.searchUsersRecyclerView.visibility = if(loading) View.INVISIBLE else View.VISIBLE
     }
 
-//    override fun onSearchViewTextChanged(text: String) {
-//        if(text.isNotEmpty()){
-//            searchViewTextChanged = true
-//        }
-//        Handler(Looper.getMainLooper())
-//            .postDelayed({
-//                userViewModel.getUsers(text)
-//            },300)
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        Utils.usersNotifier = null
-//    }
 }

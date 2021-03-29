@@ -56,7 +56,7 @@ class MainRepository @Inject constructor(
 
     suspend fun getBooks(searchText: String? = null, page: Int) = mainApi.getBooks(searchText, page)
 
-    suspend fun discoverBooks(genre: String,page:Int) = mainApi.getBooks(genre,page)
+    suspend fun discoverBooks(genre: String,page:Int,search:String) = mainApi.discoverBooks(genre,page,search)
 
     suspend fun postBook(
         name: String,

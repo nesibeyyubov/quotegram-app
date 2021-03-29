@@ -73,29 +73,26 @@ class BookViewModel @Inject constructor(
         handleQuotesResponse(response)
     }
 
-    fun getBooks(searchText: String? = null, page: Int = 1, searchTextChanged: Boolean = false) =
+    fun getBooks(searchText: String? = null, page: Int = 1, notPaginated: Boolean = true) =
         viewModelScope.launch(
             Dispatchers.IO
         ) {
             _books.postValue(DataState.Loading())
             val response = mainRepository.getBooks(searchText, page)
-            handleBooksResponse(response, searchTextChanged)
+            handleBooksResponse(response, notPaginated)
         }
 
-    fun getBooks(genre: String, page: Int = 1) =
-        viewModelScope.launch(
-            Dispatchers.IO
-        ) {
+    fun discoverBooks(genre: String="all", page: Int = 1,notPaginated: Boolean = true,searchText:String="") = viewModelScope.launch(Dispatchers.IO) {
             _books.postValue(DataState.Loading())
-            val response = mainRepository.discoverBooks(genre, page)
-            handleBooksResponse(response,false)
-        }
-
-    fun discoverBooks(searchText: String) = viewModelScope.launch(Dispatchers.IO) {
-        _books.postValue(DataState.Loading())
-        val response = mainRepository.getBooks(searchText, 1)
-        handleBooksResponse(response, false)
+            val response = mainRepository.discoverBooks(genre, page, searchText)
+            handleBooksResponse(response,notPaginated)
     }
+//
+//    fun discoverBooks(searchText: String) = viewModelScope.launch(Dispatchers.IO) {
+//        _books.postValue(DataState.Loading())
+//        val response = mainRepository.getBooks(searchText, 1)
+//        handleBooksResponse(response, false)
+//    }
 
     fun postBook(name: String, author: String, genre: String, image: File) = viewModelScope.launch(
         Dispatchers.IO
@@ -150,10 +147,10 @@ class BookViewModel @Inject constructor(
         return DataState.Fail(message = "No error code provided")
     }
 
-    private fun handleBooksResponse(response: Response<BooksResponse>, searchTextChanged: Boolean) {
+    private fun handleBooksResponse(response: Response<BooksResponse>, notPaginated: Boolean) {
         when (response.code()) {
             Constants.CODE_SUCCESS -> {
-                if (bookList.isEmpty() || searchTextChanged) {
+                if (bookList.isEmpty() || notPaginated) {
                     bookList = response.body()?.books!!.toMutableList()
                 } else {
                     response.body()?.books!!.forEach { book -> bookList.add(book) }

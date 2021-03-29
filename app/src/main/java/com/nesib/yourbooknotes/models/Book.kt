@@ -13,5 +13,6 @@ data class Book(
     val quotes: List<Quote>? = null,
     var followers: List<String>? = null,
     val totalQuoteCount: Int? = null,
-    var following:Boolean = false
+    var following:Boolean = false,
+    var followerCount:Int = 0
 ) : Serializable

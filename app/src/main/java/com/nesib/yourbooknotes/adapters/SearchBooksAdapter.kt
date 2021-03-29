@@ -46,6 +46,7 @@ class SearchBooksAdapter(val isSelectBookFragment: Boolean = false) :
                     searchBookImage.load(API_URL + book.image) {
                         crossfade(400)
                     }
+                    searchBookFollowerCount.text = book.followerCount.toString()
                 }
             }
 

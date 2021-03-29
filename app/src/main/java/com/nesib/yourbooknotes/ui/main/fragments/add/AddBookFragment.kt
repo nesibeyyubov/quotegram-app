@@ -28,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.*
 
 @AndroidEntryPoint
 class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
@@ -109,7 +110,7 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
             binding.addBookButton.id -> {
                 val name = binding.bookTitle.text.toString()
                 val author = binding.bookAuthor.text.toString()
-                val genre = binding.bookGenreSpinner.selectedItem.toString()
+                val genre = binding.bookGenreSpinner.selectedItem.toString().toLowerCase(Locale.ROOT)
                 bookViewModel.postBook(name, author, genre, selectedBookImage!!)
             }
         }

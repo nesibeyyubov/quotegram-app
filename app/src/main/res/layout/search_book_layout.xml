@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/ripple_card_bg"
+    android:background="@drawable/transparent_border_bottom_bg"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
     android:padding="5dp">
@@ -20,7 +20,7 @@
         android:paddingVertical="2dp"
         android:text="Drama"
         android:textColor="@color/colorSecondaryText"
-        android:textSize="6sp"
+        android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/searchBookImage"
         app:layout_constraintStart_toStartOf="@+id/searchBookAuthor" />
@@ -49,30 +49,37 @@
 
     <ImageView
         android:id="@+id/searchBookImage"
-        android:layout_width="40dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="70dp"
         android:src="@drawable/book"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <LinearLayout
+        android:text="View"
+        android:textAllCaps="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View"
-        android:paddingLeft="20dp"
+        android:gravity="center"
         android:textColor="@color/blue"
-        android:textSize="12sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_users"
+            app:tint="@color/colorSecondaryText"
+            android:layout_width="16dp"
+            android:layout_height="16dp"/>
+        <TextView
+            android:id="@+id/searchBookFollowerCount"
+            android:text="2.5k"
+            android:textSize="12dp"
+            android:includeFontPadding="false"
+            android:textStyle="bold"
+            android:textColor="@color/colorSecondaryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/lineColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchBookImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,9 +16,9 @@ class SharedPreferencesRepository @Inject constructor(@ApplicationContext contex
         Log.d("mytag", "SharedPreferencesRepository is initialized")
 
     }
-    fun getCurrentUser(): UserAuth? {
+    fun getCurrentUser(): UserAuth {
         if(_currentUser != null){
-            return _currentUser
+            return _currentUser as UserAuth
         }
         val username = sharedPreferences.getString("username", "")
         val email = sharedPreferences.getString("email", "")
@@ -27,8 +27,11 @@ class SharedPreferencesRepository @Inject constructor(@ApplicationContext contex
         val token = sharedPreferences.getString("token", null)
         val followingGenres = sharedPreferences.getString("genres", "") ?: ""
         _currentUser = UserAuth(username, email, profileImage, userId, token, followingGenres)
-        Log.d("mytag", "getCurrentUser: $_currentUser")
-        return _currentUser
+        Log.d("mytag", "getCurrentUser[after if]: $_currentUser")
+        return _currentUser!!
+    }
+    fun getToken():String?{
+        return sharedPreferences.getString("token",null)
     }
 
     fun saveUser(userId: String, token: String) {

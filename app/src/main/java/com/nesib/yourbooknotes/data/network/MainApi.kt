@@ -48,7 +48,8 @@ interface MainApi {
     @GET("/books/discover")
     suspend fun discoverBooks(
         @Query("genre") genre: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("search") search:String
     ): Response<BooksResponse>
 
     @GET("/books/{bookId}")

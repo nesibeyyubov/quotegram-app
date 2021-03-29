@@ -13,7 +13,7 @@ class MyOkHttpClientInterceptor @Inject constructor(val sharedPreferencesReposit
     Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
-        val token = sharedPreferencesRepository.getCurrentUser()?.token
+        val token = sharedPreferencesRepository.getToken()
         val updatedRequest = request.newBuilder()
             .addHeader("Authorization", "Bearer ${token ?: ""}")
             .build()
