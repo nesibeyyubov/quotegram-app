@@ -10,5 +10,6 @@ data class Quote(
     var genre: String?,
     var creator: User?,
     var likes: List<String>?,
-    var liked: Boolean = false
+    var liked: Boolean = false,
+    var saved: Boolean = false
 ):Serializable

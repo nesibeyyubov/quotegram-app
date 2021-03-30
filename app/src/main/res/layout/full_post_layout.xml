@@ -189,35 +189,40 @@
         app:layout_constraintTop_toTopOf="@+id/likeBtn" />
 
     <ImageButton
+        android:layout_marginLeft="20dp"
         android:id="@+id/shareBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_share"
         android:tint="@color/colorPrimaryText"
+        app:layout_constraintBottom_toBottomOf="@+id/like_count_textView"
         app:layout_constraintStart_toEndOf="@+id/like_count_textView"
-        app:layout_constraintTop_toTopOf="@+id/likeBtn" />
+        app:layout_constraintTop_toTopOf="@+id/like_count_textView" />
 
     <ImageButton
+        android:layout_marginLeft="15dp"
+        android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_download"
         android:tint="@color/colorPrimaryText"
+        app:layout_constraintBottom_toBottomOf="@+id/shareBtn"
         app:layout_constraintStart_toEndOf="@+id/shareBtn"
-        app:layout_constraintTop_toTopOf="@+id/likeBtn" />
+        app:layout_constraintTop_toTopOf="@+id/shareBtn" />
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_bookmark_outline"
-        android:tint="@color/colorPrimaryText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/likeBtn" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/saveButton"-->
+<!--        android:paddingLeft="10dp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="10dp"-->
+<!--        android:background="@android:color/transparent"-->
+<!--        android:src="@drawable/ic_bookmark_outline"-->
+<!--        android:tint="@color/colorPrimaryText"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/likeBtn" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

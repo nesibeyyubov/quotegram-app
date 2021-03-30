@@ -1,6 +1,8 @@
 package com.nesib.yourbooknotes.ui.main.fragments.user
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -45,6 +47,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
+        setHasOptionsMenu(true)
 
         userViewModel.getUser(args.userId)
     }
@@ -184,6 +187,11 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                 }
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.user_profile_menu,menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
 

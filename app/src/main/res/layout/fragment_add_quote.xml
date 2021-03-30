@@ -63,7 +63,7 @@
             android:layout_marginLeft="2dp"
             android:layout_weight="1"
             android:background="@color/inputBackgroundColor"
-            android:entries="@array/quote_genres" />
+             />
 
         <View
             android:layout_width="1dp"

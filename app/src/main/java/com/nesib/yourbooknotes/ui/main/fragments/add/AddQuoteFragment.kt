@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nesib.yourbooknotes.R
+import com.nesib.yourbooknotes.adapters.SpinnerAdapter
 import com.nesib.yourbooknotes.databinding.FragmentAddQuoteBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
@@ -62,6 +63,8 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                         mapOf("book" to book.id, "quote" to quote, "genre" to selectedGenre)
                     quoteViewModel.postQuote(newQuote)
                 }
+                val genres = resources.getStringArray(R.array.quote_genres).toList()
+                genreSpinner.adapter = SpinnerAdapter(requireContext(),genres)
             }
         }
         if (args.quote != null) {

@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nesib.yourbooknotes.R
+import com.nesib.yourbooknotes.adapters.SpinnerAdapter
 import com.nesib.yourbooknotes.databinding.FragmentAddBookBinding
 import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
 import com.nesib.yourbooknotes.utils.DataState
@@ -87,6 +88,8 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
     }
 
     private fun setOnClickListeners() {
+        val genres = resources.getStringArray(R.array.book_genres).toList()
+        binding.bookGenreSpinner.adapter = SpinnerAdapter(requireContext(),genres)
         binding.addBookImageButton.setOnClickListener(this)
         binding.addBookImageContainer.setOnClickListener(this)
         binding.addBookButton.setOnClickListener(this)

@@ -2,6 +2,8 @@ package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -46,6 +48,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         binding = FragmentBookProfileBinding.bind(view)
         bookViewModel.getBook(args.bookId, currentPage)
         setupClickListeners()
+        setHasOptionsMenu(true)
         setupRecyclerView()
         subscribeObservers()
         setFragmentResultListener()
@@ -216,6 +219,11 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
                 bookViewModel.toggleBookFollow(book)
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.book_profile_menu,menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
 

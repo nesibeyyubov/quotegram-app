@@ -61,6 +61,8 @@ class HomeAdapter(val dialog:AlertDialog) :
                     likeBtn.setImageResource(R.drawable.ic_like)
                 }
 
+
+
             }
         }
 
