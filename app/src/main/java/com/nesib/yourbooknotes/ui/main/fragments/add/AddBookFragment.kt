@@ -15,6 +15,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.security.crypto.EncryptedSharedPreferences
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.SpinnerAdapter
@@ -60,6 +61,7 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         setOnClickListeners()
         subscribeObservers()
+
     }
 
     private fun subscribeObservers() {

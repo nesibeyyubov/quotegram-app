@@ -13,6 +13,12 @@ interface AuthApi {
     @POST("/auth/signup")
     suspend fun signup(@Body signupBody: Map<String, String>): Response<AuthResponse>
 
+    @POST("/auth/google-login")
+    suspend fun signInWithGoogle(@Body loginBody: Map<String, String>): Response<AuthResponse>
+
+    @POST("/auth/google-signup")
+    suspend fun signupWithGoogle(@Body signupBody: Map<String, String>): Response<AuthResponse>
+
     // Users
     @GET("/users/")
     suspend fun getUsers(@Query("search") searchQuery: String): Response<UsersResponse>

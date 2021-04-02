@@ -25,7 +25,7 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
     var hasSignupError = false
     var hasLoginError = false
-    var currentUser: UserAuth?=null
+    var currentUser: UserAuth? = null
 
     private var _isAuthenticated = false
     val isAuthenticated
@@ -76,7 +76,7 @@ class AuthViewModel @Inject constructor(
         email: String,
         password: String,
         fullname: String,
-        username: String
+        username: String,
     ) {
         _auth.value = DataState.Loading()
         viewModelScope.launch(Dispatchers.IO) {
@@ -87,6 +87,38 @@ class AuthViewModel @Inject constructor(
             handleResponse(response)
         }
     }
+
+    fun signupWithGoogle(
+        email: String,
+        fullname: String,
+        username: String,
+        profileImage: String
+    ) {
+        _auth.value = DataState.Loading()
+        viewModelScope.launch(Dispatchers.IO) {
+            val response =
+                userRepository.signupWithGoogle(email, fullname, username, profileImage)
+            if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
+                hasSignupError = true
+            }
+            handleResponse(response)
+        }
+    }
+    fun signInWithGoogle(
+        email: String,
+        profileImage: String
+    ) {
+        _auth.value = DataState.Loading()
+        viewModelScope.launch(Dispatchers.IO) {
+            val response =
+                userRepository.signInWithGoogle(email,profileImage)
+            if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
+                hasLoginError = true
+            }
+            handleResponse(response)
+        }
+    }
+
 
     fun saveExtraUserDetail(username: String, email: String, profileImage: String) =
         sharedPreferencesRepository.saveExtraUserDetail(username, email, profileImage)
@@ -135,7 +167,7 @@ class AuthViewModel @Inject constructor(
         sharedPreferencesRepository.saveFollowingGenres(genres)
         if (auth.value?.data?.userId == null && currentUser?.token == null) {
             _genres.postValue(DataState.Success())
-        }else{
+        } else {
             val token = auth.value?.data?.token ?: currentUser!!.token!!
             val response =
                 userRepository.saveFollowingGenres(genres, "Bearer $token")

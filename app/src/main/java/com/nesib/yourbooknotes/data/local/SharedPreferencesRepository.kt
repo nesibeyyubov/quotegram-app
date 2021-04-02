@@ -1,14 +1,14 @@
 package com.nesib.yourbooknotes.data.local
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import com.nesib.yourbooknotes.models.UserAuth
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-class SharedPreferencesRepository @Inject constructor(@ApplicationContext context: Context) {
-    private val sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
+class SharedPreferencesRepository @Inject constructor(@ApplicationContext context: Context,val sharedPreferences: SharedPreferences) {
     private val editor = sharedPreferences.edit()
     private var _currentUser: UserAuth? = null
 

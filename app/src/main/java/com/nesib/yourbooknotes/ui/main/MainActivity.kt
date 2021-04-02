@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
+import coil.load
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.ActivityMainBinding
 import com.nesib.yourbooknotes.databinding.DrawerHeaderLayoutBinding
@@ -108,6 +109,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val headerBinding = DrawerHeaderLayoutBinding.bind(headerView)
                 headerBinding.headerUsername.text = extraDetail!!.username
                 headerBinding.headerEmail.text = extraDetail.email
+                headerBinding.headerProfileImage.load(extraDetail.profileImage)
                 val drawerMenu = drawerNavigationView.menu
                 drawerMenu.findItem(R.id.drawer_login).isVisible = false
                 drawerMenu.findItem(R.id.drawer_signup).isVisible = false

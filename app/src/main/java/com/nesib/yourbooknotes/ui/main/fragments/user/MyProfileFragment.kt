@@ -1,6 +1,7 @@
 package com.nesib.yourbooknotes.ui.main.fragments.user
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.NestedScrollView
@@ -8,6 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
+import coil.memory.MemoryCache
+import coil.request.CachePolicy
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentMyProfileBinding
@@ -109,6 +115,9 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         binding.followingCountTextView.text =
             (user.followingUsers!!.size + user.followingBooks!!.size).toString()
         binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toString()
+        user.profileImage?.let {
+            binding.userPhotoImageView.load(it)
+        }
         homeAdapter.setData(user.quotes!!)
     }
 

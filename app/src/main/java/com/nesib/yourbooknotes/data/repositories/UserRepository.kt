@@ -1,5 +1,7 @@
 package com.nesib.yourbooknotes.data.repositories
 
+import android.util.Log
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nesib.yourbooknotes.data.network.AuthApi
 import com.nesib.yourbooknotes.models.*
 import retrofit2.Response
@@ -13,17 +15,37 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
         email: String,
         password: String,
         fullname: String,
-        username: String
+        username: String,
     ): Response<AuthResponse> {
         val map = mapOf(
             "email" to email,
             "password" to password,
             "fullname" to fullname,
-            "username" to username
+            "username" to username,
         )
         return authApi.signup(map)
     }
 
+    suspend fun signupWithGoogle(
+        email: String,
+        fullname: String,
+        username: String,
+        profileImage: String,
+    ): Response<AuthResponse> {
+        val map = mapOf(
+            "email" to email,
+            "fullname" to fullname,
+            "username" to username,
+            "profileImage" to profileImage
+        )
+        return authApi.signupWithGoogle(map)
+    }
+
+    suspend fun signInWithGoogle(email:String,profileImage: String): Response<AuthResponse> {
+        val map = mapOf("email" to email,"profileImage" to profileImage)
+        Log.d("mytag", "signInWithGoogle: ${profileImage}")
+        return authApi.signInWithGoogle(map)
+    }
     suspend fun login(email: String, password: String): Response<AuthResponse> {
         val map = mapOf(
             "email" to email,
@@ -34,7 +56,8 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
 
     suspend fun followOrUnFollowUser(userId: String) = authApi.followOrUnFollowUser(userId)
 
-    suspend fun saveFollowingGenres(genres: String,authHeader:String) = authApi.saveFollowingGenres(genres,authHeader)
+    suspend fun saveFollowingGenres(genres: String, authHeader: String) =
+        authApi.saveFollowingGenres(genres, authHeader)
 
     suspend fun updateUser(
         username: String?,
@@ -48,9 +71,10 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
 
     suspend fun getUser(userId: String) = authApi.getUser(userId)
 
-    suspend fun getMoreUserQuotes(userId:String,page:Int) = authApi.getMoreUserQuotes(userId,page)
+    suspend fun getMoreUserQuotes(userId: String, page: Int) =
+        authApi.getMoreUserQuotes(userId, page)
 
-    suspend fun getUsers(searchQuery:String) = authApi.getUsers(searchQuery)
+    suspend fun getUsers(searchQuery: String) = authApi.getUsers(searchQuery)
 
     suspend fun getSavedQuotes(userId: String) = authApi.getSavedQuotes(userId)
 

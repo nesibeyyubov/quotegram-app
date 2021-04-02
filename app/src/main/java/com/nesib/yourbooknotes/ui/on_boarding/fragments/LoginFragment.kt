@@ -1,31 +1,65 @@
 package com.nesib.yourbooknotes.ui.on_boarding.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.FragmentLoginBinding
 import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginFragment : Fragment(R.layout.fragment_login) {
+    @Inject
+    lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var googleSignInActivityLauncher: ActivityResultLauncher<Intent>
+
     private lateinit var binding: FragmentLoginBinding
     private lateinit var authViewModel:AuthViewModel
+
+    private var signingInWithGoogle = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentLoginBinding.bind(view)
         authViewModel = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
 
+        registerActivityResult()
         subscribeObserver()
         setupClickListeners()
     }
-
+    private fun registerActivityResult(){
+        googleSignInActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+            if(task.isSuccessful){
+                val account = task.result
+                val email = account?.email
+                val profileImage = account?.photoUrl?.toString() ?: ""
+                // do login operation here
+                if(email != null){
+                    googleSignInClient.signOut()
+                    signingInWithGoogle = true
+                    authViewModel.signInWithGoogle(email,profileImage)
+                }
+                else{
+                    signingInWithGoogle = false
+                    // show something useful for user
+                }
+            }
+        }
+    }
 
     private fun setupClickListeners() {
         binding.loginBtn.setOnClickListener {
@@ -37,6 +71,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding.loginToSignupBtn.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_signupFragment)
         }
+        binding.signInWithGoogleButton.setOnClickListener {
+            val googleSignInIntent = googleSignInClient.signInIntent
+            googleSignInActivityLauncher.launch(googleSignInIntent)
+        }
+
     }
 
     private fun subscribeObserver() {
@@ -47,18 +86,27 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     findNavController().navigate(R.id.action_loginFragment_to_selectCategoriesFragment)
                 }
                 is DataState.Fail -> {
+                    signingInWithGoogle = false
                     if(authViewModel.hasLoginError){
                         binding.loginErrorTextView.visibility = View.VISIBLE
                         binding.loginErrorTextView.text = it.message
                         binding.loginBtn.isEnabled = true
                         binding.loginBtnProgressBar.visibility = View.GONE
                         binding.loginBtnTextView.visibility = View.VISIBLE
+                        binding.signInGoogleProgressBar.visibility = View.INVISIBLE
+                        binding.signInGoogleTextView.visibility = View.VISIBLE
                     }
                 }
                 is DataState.Loading -> {
                     binding.loginBtn.isEnabled = false
-                    binding.loginBtnProgressBar.visibility = View.VISIBLE
-                    binding.loginBtnTextView.visibility = View.GONE
+                    if(signingInWithGoogle){
+                        binding.signInGoogleProgressBar.visibility = View.VISIBLE
+                        binding.signInGoogleTextView.visibility = View.GONE
+                    }
+                    else{
+                        binding.loginBtnProgressBar.visibility = View.VISIBLE
+                        binding.loginBtnTextView.visibility = View.GONE
+                    }
                 }
             }
         }

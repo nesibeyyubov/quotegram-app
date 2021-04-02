@@ -61,7 +61,8 @@ class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
                 is DataState.Success -> {
                     val user = it.data?.user
                     authViewModel.saveUser()
-                    if(user != null){
+                    if (user != null) {
+                        Log.d("mytag", "your profile image: ${user.profileImage}")
                         authViewModel.saveExtraUserDetail(
                             user.username!!,
                             user.email!!,
