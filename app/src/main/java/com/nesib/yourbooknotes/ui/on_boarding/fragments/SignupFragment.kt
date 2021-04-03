@@ -97,7 +97,9 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                 is DataState.Success -> {
                     binding.signupErrorTextView.visibility = View.INVISIBLE
                     binding.signupBtnTextView.visibility = View.VISIBLE
-                    findNavController().navigate(R.id.action_signupFragment_to_selectCategoriesFragment)
+                    authViewModel.saveUser()
+                    val action = SignupFragmentDirections.actionSignupFragmentToSelectCategoriesFragment(it.data!!.userId)
+                    findNavController().navigate(action)
                 }
                 is DataState.Fail -> {
                     signingWithGoogle = false

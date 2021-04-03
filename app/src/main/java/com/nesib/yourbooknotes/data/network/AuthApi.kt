@@ -8,16 +8,16 @@ import retrofit2.http.*
 interface AuthApi {
     // Authentication
     @POST("/auth/login/")
-    suspend fun login(@Body loginBody: Map<String, String>): Response<AuthResponse>
+    suspend fun login(@Body loginBody: Map<String, String>): Response<UserAuth>
 
     @POST("/auth/signup")
-    suspend fun signup(@Body signupBody: Map<String, String>): Response<AuthResponse>
+    suspend fun signup(@Body signupBody: Map<String, String>): Response<UserAuth>
 
     @POST("/auth/google-login")
-    suspend fun signInWithGoogle(@Body loginBody: Map<String, String>): Response<AuthResponse>
+    suspend fun signInWithGoogle(@Body loginBody: Map<String, String>): Response<UserAuth>
 
     @POST("/auth/google-signup")
-    suspend fun signupWithGoogle(@Body signupBody: Map<String, String>): Response<AuthResponse>
+    suspend fun signupWithGoogle(@Body signupBody: Map<String, String>): Response<UserAuth>
 
     // Users
     @GET("/users/")
@@ -39,7 +39,7 @@ interface AuthApi {
     suspend fun postSavedQuote(@Body quoteId: String): Response<List<Quote>>
 
     @POST("/users/{userId}/followers")
-    suspend fun followOrUnFollowUser(@Path("userId") userId: String):Response<UserResponse>
+    suspend fun followOrUnFollowUser(@Path("userId") userId: String): Response<UserResponse>
 
     @PUT("/users/")
     suspend fun updateUser(
@@ -53,7 +53,6 @@ interface AuthApi {
     @PATCH("/users/")
     suspend fun saveFollowingGenres(
         @Query("genres") genres: String,
-        @Header("Authorization") authHeader: String
-    ): Response<UserResponse>
+    ): Response<UserAuth>
 
 }

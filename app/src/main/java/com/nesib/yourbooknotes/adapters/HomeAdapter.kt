@@ -6,8 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageButton
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -84,6 +87,9 @@ class HomeAdapter(val dialog:AlertDialog) :
                         binding.likeCountTextView.text = quote.likes!!.size.toString()
                         onLikeClickListener?.let {
                             it(quote)
+                        }
+                        if(quote.liked){
+                            binding.likeBtn.startAnimation(AnimationUtils.loadAnimation(binding.likeBtn.context,R.anim.bouncing_anim))
                         }
                     }else{
                         dialog.show()

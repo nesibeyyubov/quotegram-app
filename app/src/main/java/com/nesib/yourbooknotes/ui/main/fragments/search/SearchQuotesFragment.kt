@@ -157,7 +157,7 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
             }
             if(genresChanged){
                 val genresText = genres.toCustomizedString()
-                authViewModel.saveFollowingGenres(genresText)
+                authViewModel.saveFollowingGenres(genresText,authViewModel.currentUserId)
             }
             return true
         }

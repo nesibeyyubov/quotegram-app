@@ -16,7 +16,7 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
         password: String,
         fullname: String,
         username: String,
-    ): Response<AuthResponse> {
+    ): Response<UserAuth> {
         val map = mapOf(
             "email" to email,
             "password" to password,
@@ -31,7 +31,7 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
         fullname: String,
         username: String,
         profileImage: String,
-    ): Response<AuthResponse> {
+    ): Response<UserAuth> {
         val map = mapOf(
             "email" to email,
             "fullname" to fullname,
@@ -41,12 +41,12 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
         return authApi.signupWithGoogle(map)
     }
 
-    suspend fun signInWithGoogle(email:String,profileImage: String): Response<AuthResponse> {
+    suspend fun signInWithGoogle(email:String,profileImage: String): Response<UserAuth> {
         val map = mapOf("email" to email,"profileImage" to profileImage)
         Log.d("mytag", "signInWithGoogle: ${profileImage}")
         return authApi.signInWithGoogle(map)
     }
-    suspend fun login(email: String, password: String): Response<AuthResponse> {
+    suspend fun login(email: String, password: String): Response<UserAuth> {
         val map = mapOf(
             "email" to email,
             "password" to password,
@@ -56,8 +56,8 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
 
     suspend fun followOrUnFollowUser(userId: String) = authApi.followOrUnFollowUser(userId)
 
-    suspend fun saveFollowingGenres(genres: String, authHeader: String) =
-        authApi.saveFollowingGenres(genres, authHeader)
+    suspend fun saveFollowingGenres(genres: String) =
+        authApi.saveFollowingGenres(genres)
 
     suspend fun updateUser(
         username: String?,

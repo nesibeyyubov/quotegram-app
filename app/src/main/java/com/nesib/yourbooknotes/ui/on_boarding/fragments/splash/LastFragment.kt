@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.FragmentLastBinding
+import com.nesib.yourbooknotes.ui.on_boarding.fragments.SplashFragmentDirections
 import javax.inject.Inject
 
 class LastFragment : Fragment(R.layout.fragment_last) {
@@ -26,7 +27,8 @@ class LastFragment : Fragment(R.layout.fragment_last) {
             findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
         }
         binding.skipButton.setOnClickListener {
-            findNavController().navigate(R.id.action_splashFragment_to_selectCategoriesFragment)
+            val action = SplashFragmentDirections.actionSplashFragmentToSelectCategoriesFragment(null)
+            findNavController().navigate(action)
         }
 
     }

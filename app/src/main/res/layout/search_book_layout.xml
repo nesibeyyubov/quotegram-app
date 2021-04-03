@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:background="@drawable/transparent_border_bottom_bg"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    android:padding="5dp">
+    android:paddingHorizontal="@dimen/page_padding"
+    android:paddingVertical="10dp">
 
 
     <TextView

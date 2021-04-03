@@ -1,10 +1,11 @@
 package com.nesib.yourbooknotes.models
 
 data class UserAuth(
-    val username:String?,
+    val message:String?=null,
     val email:String?,
-    val profileImage:String?,
     val userId:String?,
     val token:String?,
-    val followingGenres:String?
+    val profileImage:String?,
+    val username:String?,
+    val followingGenres:List<String>?
 )

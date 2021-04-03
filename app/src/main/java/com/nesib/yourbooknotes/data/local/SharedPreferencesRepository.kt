@@ -1,14 +1,19 @@
 package com.nesib.yourbooknotes.data.local
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.util.Log
 import com.nesib.yourbooknotes.models.UserAuth
+import com.nesib.yourbooknotes.utils.toJoinedString
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
-class SharedPreferencesRepository @Inject constructor(@ApplicationContext context: Context,val sharedPreferences: SharedPreferences) {
+class SharedPreferencesRepository @Inject constructor(
+    @ApplicationContext context: Context,
+) {
+    private val sharedPreferences = context.getSharedPreferences("user",MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
     private var _currentUser: UserAuth? = null
 
@@ -16,8 +21,9 @@ class SharedPreferencesRepository @Inject constructor(@ApplicationContext contex
         Log.d("mytag", "SharedPreferencesRepository is initialized")
 
     }
+
     fun getCurrentUser(): UserAuth {
-        if(_currentUser != null){
+        if (_currentUser != null) {
             return _currentUser as UserAuth
         }
         val username = sharedPreferences.getString("username", "")
@@ -26,29 +32,35 @@ class SharedPreferencesRepository @Inject constructor(@ApplicationContext contex
         val userId = sharedPreferences.getString("userId", null)
         val token = sharedPreferences.getString("token", null)
         val followingGenres = sharedPreferences.getString("genres", "") ?: ""
-        _currentUser = UserAuth(username, email, profileImage, userId, token, followingGenres)
-        Log.d("mytag", "getCurrentUser[after if]: $_currentUser")
+        _currentUser = UserAuth(
+            username = username,
+            email = email,
+            profileImage = profileImage,
+            userId = userId,
+            token = token,
+            followingGenres = followingGenres.split(",").toList()
+        )
         return _currentUser!!
     }
-    fun getToken():String?{
-        return sharedPreferences.getString("token",null)
+
+    fun getToken(): String? {
+        return sharedPreferences.getString("token", null)
     }
 
-    fun saveUser(userId: String, token: String) {
-        editor.putString("userId", userId)
-        editor.putString("token", token)
+    fun saveUser(user: UserAuth) {
+        editor.putString("userId", user.userId)
+        editor.putString("token", user.token)
+        editor.putString("username", user.username)
+        editor.putString("email", user.email)
+        editor.putString("profileImage", user.profileImage)
+        if(user.followingGenres!!.isNotEmpty()){
+            editor.putString("genres", user.followingGenres.toJoinedString())
+        }
         editor.apply()
     }
 
-    fun getFollowingGenres():String {
+    fun getFollowingGenres(): String {
         return sharedPreferences.getString("genres", "")!!
-    }
-
-    fun saveExtraUserDetail(username: String, email: String, profileImage: String) {
-        editor.putString("username", username)
-        editor.putString("email", email)
-        editor.putString("profileImage", profileImage)
-        editor.apply()
     }
 
     fun clearUser() {
@@ -65,10 +77,6 @@ class SharedPreferencesRepository @Inject constructor(@ApplicationContext contex
         editor.putString("genres", genres)
         editor.apply()
     }
-
-//    private fun getFollowingGenres(): String {
-//        return sharedPreferences.getString("genres", "")!!
-//    }
 
 
 }

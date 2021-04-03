@@ -14,10 +14,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.FragmentLoginBinding
+import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.toJoinedString
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -83,7 +85,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             when (it) {
                 is DataState.Success -> {
                     binding.loginErrorTextView.visibility = View.INVISIBLE
-                    findNavController().navigate(R.id.action_loginFragment_to_selectCategoriesFragment)
+                    authViewModel.saveUser()
+                    startActivity(Intent(requireActivity(), MainActivity::class.java))
+                    requireActivity().finish()
                 }
                 is DataState.Fail -> {
                     signingInWithGoogle = false

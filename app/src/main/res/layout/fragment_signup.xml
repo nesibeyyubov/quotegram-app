@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_marginHorizontal="@dimen/page_padding"
-    android:gravity="center">
+    >
 
-
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView"
@@ -46,22 +53,22 @@
             <EditText
                 android:id="@+id/username_editText"
                 style="@style/EditTextStyle"
-                android:hint="Username"
-                />
+                android:hint="Username" />
+
             <EditText
                 android:id="@+id/emailEditText"
                 style="@style/EditTextStyle"
                 android:layout_marginTop="15dp"
-                android:hint="Your email"/>
+                android:hint="Your email" />
 
             <EditText
-                android:inputType="textPassword"
                 android:id="@+id/passwordEditText"
                 style="@style/EditTextStyle"
                 android:layout_marginTop="15dp"
-                android:hint="Password" />
+                android:hint="Password"
+                android:inputType="textPassword" />
+
             <TextView
-                android:visibility="invisible"
                 android:id="@+id/signupErrorTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,7 +76,7 @@
                 android:text="Error message"
                 android:textColor="@color/colorError"
                 android:textSize="14sp"
-                />
+                android:visibility="invisible" />
 
             <LinearLayout
                 android:id="@+id/signupBtn"
@@ -90,17 +97,18 @@
                     android:textStyle="bold" />
 
                 <ProgressBar
-                    android:visibility="gone"
-                    android:indeterminateTint="@color/white"
                     android:id="@+id/signupBtnProgressBar"
                     android:layout_width="25dp"
-                    android:layout_height="25dp"/>
+                    android:layout_height="25dp"
+                    android:indeterminateTint="@color/white"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
                 <TextView
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
@@ -125,47 +133,48 @@
                     app:layout_constraintStart_toEndOf="@+id/textView3"
                     app:layout_constraintTop_toTopOf="@+id/textView3" />
             </LinearLayout>
-
-            <RelativeLayout
-                android:layout_marginBottom="15dp"
-                android:id="@+id/signUpWithGoogleButton"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/ripple_white_bg"
-                android:clickable="true"
-                android:elevation="1dp"
-                android:paddingHorizontal="10dp"
-                >
-
-                <ImageView
-                    android:layout_centerVertical="true"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_google" />
-
-                <TextView
-                    android:id="@+id/signUpGoogleTextView"
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Sign Up With Google"
-                    android:textAlignment="center"
-                    android:textColor="@color/colorSecondaryText"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-                <ProgressBar
-                    android:visibility="invisible"
-                    android:indeterminateTint="@color/blue"
-                    android:layout_centerInParent="true"
-                    android:id="@+id/signupGoogleProgressBar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
-            </RelativeLayout>
-
-
         </LinearLayout>
+    </LinearLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_marginBottom="30dp"
+        android:id="@+id/signUpWithGoogleButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/ripple_white_bg"
+        android:clickable="true"
+        android:elevation="1dp"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_google" />
+
+        <TextView
+            android:id="@+id/signUpGoogleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_weight="1"
+            android:text="Sign Up With Google"
+            android:textAlignment="center"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/signupGoogleProgressBar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/blue"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

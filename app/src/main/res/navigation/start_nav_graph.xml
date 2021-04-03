@@ -33,7 +33,12 @@
         tools:layout="@layout/fragment_select_categories"
         android:id="@+id/selectCategoriesFragment"
         android:name="com.nesib.yourbooknotes.ui.on_boarding.fragments.SelectCategoriesFragment"
-        android:label="SelectCategoriesFragment" />
+        android:label="SelectCategoriesFragment" >
+        <argument
+            android:name="userId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         tools:layout="@layout/fragment_splash"
         android:id="@+id/splashFragment"

@@ -35,12 +35,12 @@ class AuthViewModel @Inject constructor(
     val currentUserId
         get() = _currentUserId
 
-    private val _auth = MutableLiveData<DataState<AuthResponse>>()
-    val auth: LiveData<DataState<AuthResponse>>
+    private val _auth = MutableLiveData<DataState<UserAuth>>()
+    val auth: LiveData<DataState<UserAuth>>
         get() = _auth
 
-    private val _genres = MutableLiveData<DataState<UserResponse>>()
-    val genres: LiveData<DataState<UserResponse>>
+    private val _genres = MutableLiveData<DataState<UserAuth>>()
+    val genres: LiveData<DataState<UserAuth>>
         get() = _genres
 
     init {
@@ -104,6 +104,7 @@ class AuthViewModel @Inject constructor(
             handleResponse(response)
         }
     }
+
     fun signInWithGoogle(
         email: String,
         profileImage: String
@@ -111,7 +112,7 @@ class AuthViewModel @Inject constructor(
         _auth.value = DataState.Loading()
         viewModelScope.launch(Dispatchers.IO) {
             val response =
-                userRepository.signInWithGoogle(email,profileImage)
+                userRepository.signInWithGoogle(email, profileImage)
             if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
                 hasLoginError = true
             }
@@ -119,21 +120,15 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-
-    fun saveExtraUserDetail(username: String, email: String, profileImage: String) =
-        sharedPreferencesRepository.saveExtraUserDetail(username, email, profileImage)
-
     fun getUser() = sharedPreferencesRepository.getCurrentUser()
 
     fun saveUser() {
-        val userId = auth.value?.data?.userId
-        val token = auth.value?.data?.token
-        if (userId != null && token != null) {
-            sharedPreferencesRepository.saveUser(userId, token)
+        if(auth.value?.data != null){
+            sharedPreferencesRepository.saveUser(auth.value?.data!!)
         }
     }
 
-    private fun handleResponse(response: Response<AuthResponse>) {
+    private fun handleResponse(response: Response<UserAuth>) {
         when (response.code()) {
             CODE_SUCCESS -> {
                 _auth.postValue(DataState.Success(response.body()))
@@ -161,29 +156,28 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun saveFollowingGenres(genres: String) = viewModelScope.launch(Dispatchers.IO) {
-        Log.d("mytag", "saveFollowingGenres: $genres")
-        _genres.postValue(DataState.Loading())
-        sharedPreferencesRepository.saveFollowingGenres(genres)
-        if (auth.value?.data?.userId == null && currentUser?.token == null) {
-            _genres.postValue(DataState.Success())
-        } else {
-            val token = auth.value?.data?.token ?: currentUser!!.token!!
-            val response =
-                userRepository.saveFollowingGenres(genres, "Bearer $token")
-            when (response.code()) {
-                CODE_SERVER_ERROR -> {
-                    _genres.postValue(DataState.Fail(message = "Something went wrong in server"))
-                }
-                CODE_AUTHENTICATION_FAIL -> {
-                    _genres.postValue(DataState.Fail(message = "You are not authenticated"))
-                }
-                CODE_SUCCESS -> {
-                    _genres.postValue(DataState.Success(response.body()))
-                }
+    fun saveFollowingGenres(genres: String, userId: String? = null) =
+        viewModelScope.launch(Dispatchers.IO) {
+            _genres.postValue(DataState.Loading())
+            sharedPreferencesRepository.saveFollowingGenres(genres)
+            if (userId == null) {
+                _genres.postValue(DataState.Success())
+            } else {
+                Log.d("mytag", "saving genres in backend...")
+                val response = userRepository.saveFollowingGenres(genres)
+                when (response.code()) {
+                    CODE_SERVER_ERROR -> {
+                        _genres.postValue(DataState.Fail(message = "Something went wrong in server"))
+                    }
+                    CODE_AUTHENTICATION_FAIL -> {
+                        _genres.postValue(DataState.Fail(message = "You are not authenticated"))
+                    }
+                    CODE_SUCCESS -> {
+                        _genres.postValue(DataState.Success(response.body()))
+                    }
 
+                }
             }
-        }
 
-    }
+        }
 }

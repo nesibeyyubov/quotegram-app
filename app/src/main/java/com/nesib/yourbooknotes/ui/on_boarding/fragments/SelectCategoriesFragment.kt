@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.nesib.yourbooknotes.R
@@ -22,16 +23,15 @@ import java.util.*
 
 class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
     private lateinit var binding: FragmentSelectCategoriesBinding
-    private lateinit var authViewModel: AuthViewModel
+    private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
+    private val args by navArgs<SelectCategoriesFragmentArgs>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSelectCategoriesBinding.bind(view)
-        authViewModel = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
         binding.selectGenreNextBtn.setOnClickListener {
             saveGenres()
         }
         subscribeObservers()
-
     }
 
     private fun saveGenres() {
@@ -49,7 +49,7 @@ class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
                 }
                 index++
             }
-            authViewModel.saveFollowingGenres(genres)
+            authViewModel.saveFollowingGenres(genres, args.userId)
         }
 
 
@@ -59,16 +59,7 @@ class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
         authViewModel.genres.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    val user = it.data?.user
                     authViewModel.saveUser()
-                    if (user != null) {
-                        Log.d("mytag", "your profile image: ${user.profileImage}")
-                        authViewModel.saveExtraUserDetail(
-                            user.username!!,
-                            user.email!!,
-                            user.profileImage ?: ""
-                        )
-                    }
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()

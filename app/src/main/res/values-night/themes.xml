@@ -46,7 +46,7 @@
     </style>
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">45dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">@drawable/edittext_bg</item>
         <item name="android:textSize">16sp</item>

@@ -176,7 +176,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.addBookFragment -> {
                 }
                 R.id.myProfileFragment -> {
-                    binding.toolbarText.text = ""
+                    binding.toolbarText.text = "Your Profile"
                 }
                 R.id.searchQuotesFragment -> {
                     binding.toolbarText.text = sharedViewModel.toolbarText
