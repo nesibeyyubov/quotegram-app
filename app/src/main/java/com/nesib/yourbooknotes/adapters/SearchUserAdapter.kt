@@ -19,8 +19,8 @@ class SearchUserAdapter : RecyclerView.Adapter<SearchUserAdapter.ViewHolder>() {
         fun bindData(user: User) {
             binding.apply {
                 searchUserName.text = user.username
-                searchUserImage.load(R.drawable.user) {
-                    crossfade(400)
+                searchUserImage.load(user.profileImage){
+                    error(R.drawable.user)
                 }
                 root.setOnClickListener {
                     onUserClickListener!!(user)

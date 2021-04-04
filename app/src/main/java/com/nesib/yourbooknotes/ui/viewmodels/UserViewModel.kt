@@ -1,5 +1,8 @@
 package com.nesib.yourbooknotes.ui.viewmodels
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
@@ -14,15 +17,18 @@ import com.nesib.yourbooknotes.utils.Constants.CODE_SUCCESS
 import com.nesib.yourbooknotes.utils.Constants.CODE_VALIDATION_FAIL
 import com.nesib.yourbooknotes.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
     val sharedPreferencesRepository: SharedPreferencesRepository,
-    val userRepository: UserRepository
+    val userRepository: UserRepository,
+    @ApplicationContext val application: Context
 ) : ViewModel() {
     private var userQuoteList = mutableListOf<Quote>()
 
@@ -42,50 +48,97 @@ class UserViewModel @Inject constructor(
     val users: LiveData<DataState<UsersResponse>>
         get() = _users
 
+
     fun getMoreUserQuotes(userId: String? = null, page: Int) =
         viewModelScope.launch(Dispatchers.IO) {
-            _userQuotes.postValue(DataState.Loading())
-            val id = userId ?: sharedPreferencesRepository.getCurrentUser()?.userId!!
-            val response = userRepository.getMoreUserQuotes(id, page)
-            handleQuotesResponse(response)
+            if (hasInternetConnection()) {
+                try {
+                    _userQuotes.postValue(DataState.Loading())
+                    val id = userId ?: sharedPreferencesRepository.getCurrentUser()?.userId!!
+                    val response = userRepository.getMoreUserQuotes(id, page)
+                    handleQuotesResponse(response)
+                } catch (e: Exception) {
+                    _userQuotes.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                }
+            } else {
+                _userQuotes.postValue(DataState.Fail(message = "No internet connection"))
+            }
+
         }
 
     fun getUser(userId: String? = null) = viewModelScope.launch(Dispatchers.IO) {
-        if (_user.value == null) {
-            _user.postValue(DataState.Loading())
-            val id = userId ?: sharedPreferencesRepository.getCurrentUser()?.userId!!
-            val response = userRepository.getUser(id)
-            val handledResponse = handleUserResponse(response)
-            _user.postValue(handledResponse)
+        if (hasInternetConnection()) {
+            try {
+                if (_user.value == null) {
+                    _user.postValue(DataState.Loading())
+                    val id = userId ?: sharedPreferencesRepository.getCurrentUser()?.userId!!
+                    val response = userRepository.getUser(id)
+                    val handledResponse = handleUserResponse(response)
+                    _user.postValue(handledResponse)
+                }
+            } catch (e: Exception) {
+                _user.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+            }
+        } else {
+            _user.postValue(DataState.Fail(message = "No internet connection"))
         }
+
     }
 
-    fun notifyQuoteRemoved(quote:Quote){
+    fun notifyQuoteRemoved(quote: Quote) {
         userQuoteList.remove(quote)
         _userQuotes.postValue(DataState.Success(data = QuotesResponse(userQuoteList.toList())))
     }
-    fun notifyQuoteUpdated(quote:Quote) = viewModelScope.launch(Dispatchers.Default) {
-        val quoteToDelete = userQuoteList.find{q -> q.id == quote.id}
-        val index = userQuoteList.indexOf(quoteToDelete)
-        if(index != -1){
-            userQuoteList.remove(quoteToDelete)
-            userQuoteList.add(index,quote)
+
+    fun notifyQuoteUpdated(quote: Quote) = viewModelScope.launch(Dispatchers.Default) {
+        if (hasInternetConnection()) {
+            try {
+                val quoteToDelete = userQuoteList.find { q -> q.id == quote.id }
+                val index = userQuoteList.indexOf(quoteToDelete)
+                if (index != -1) {
+                    userQuoteList.remove(quoteToDelete)
+                    userQuoteList.add(index, quote)
+                }
+                _userQuotes.postValue(DataState.Success(QuotesResponse(userQuoteList.toList())))
+            } catch (e: Exception) {
+                _userQuotes.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+            }
+        } else {
+            _userQuotes.postValue(DataState.Fail(message = "No internet connection"))
         }
-        _userQuotes.postValue(DataState.Success(QuotesResponse(userQuoteList.toList())))
+
     }
 
     fun getUsers(searchQuery: String = "") = viewModelScope.launch(Dispatchers.IO) {
-        _users.postValue(DataState.Loading())
-        val response = userRepository.getUsers(searchQuery)
-        handleUsersResponse(response)
+        if (hasInternetConnection()) {
+            try {
+                _users.postValue(DataState.Loading())
+                val response = userRepository.getUsers(searchQuery)
+                handleUsersResponse(response)
+            } catch (e: Exception) {
+                _users.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+            }
+        } else {
+            _users.postValue(DataState.Fail(message = "No internet connection"))
+        }
+
     }
 
 
     fun followOrUnFollowUser(user: User) = viewModelScope.launch(Dispatchers.IO) {
-        _userFollow.postValue(DataState.Loading())
-        val response = userRepository.followOrUnFollowUser(user.id)
-        val handledResponse = handleUserResponse(response)
-        _userFollow.postValue(handledResponse)
+        if (hasInternetConnection()) {
+            try {
+                _userFollow.postValue(DataState.Loading())
+                val response = userRepository.followOrUnFollowUser(user.id)
+                val handledResponse = handleUserResponse(response)
+                _userFollow.postValue(handledResponse)
+            } catch (e: Exception) {
+                _userFollow.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+            }
+        } else {
+            _userFollow.postValue(DataState.Fail(message = "No internet connection"))
+        }
+
     }
 
     fun saveFollowingGenres(genres: Map<String, String>) {
@@ -99,15 +152,6 @@ class UserViewModel @Inject constructor(
         password: String?,
         bio: String?
     ) {
-
-    }
-
-
-    fun getSavedQuotes(userId: String) {
-
-    }
-
-    fun postSavedQuote(quoteId: String) {
 
     }
 
@@ -147,7 +191,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    private fun handleUserResponse(response: Response<UserResponse>):DataState<UserResponse> {
+    private fun handleUserResponse(response: Response<UserResponse>): DataState<UserResponse> {
         when (response.code()) {
             CODE_SUCCESS -> {
                 userQuoteList = response.body()!!.user!!.quotes!!.toMutableList()
@@ -175,6 +219,20 @@ class UserViewModel @Inject constructor(
             }
         }
         return DataState.Fail(message = "No error code provided")
+    }
+
+    private fun hasInternetConnection(): Boolean {
+        val connectivityManager = application.getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+        return when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
     }
 
 }

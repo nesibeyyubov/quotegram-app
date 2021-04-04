@@ -7,25 +7,18 @@ import android.util.Log
 import com.nesib.yourbooknotes.models.UserAuth
 import com.nesib.yourbooknotes.utils.toJoinedString
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 import javax.inject.Singleton
 
 class SharedPreferencesRepository @Inject constructor(
     @ApplicationContext context: Context,
+    val sharedPreferences: SharedPreferences
 ) {
-    private val sharedPreferences = context.getSharedPreferences("user",MODE_PRIVATE)
     private val editor = sharedPreferences.edit()
     private var _currentUser: UserAuth? = null
 
-    init {
-        Log.d("mytag", "SharedPreferencesRepository is initialized")
-
-    }
-
     fun getCurrentUser(): UserAuth {
-        if (_currentUser != null) {
-            return _currentUser as UserAuth
-        }
         val username = sharedPreferences.getString("username", "")
         val email = sharedPreferences.getString("email", "")
         val profileImage = sharedPreferences.getString("profileImage", "")
@@ -53,7 +46,7 @@ class SharedPreferencesRepository @Inject constructor(
         editor.putString("username", user.username)
         editor.putString("email", user.email)
         editor.putString("profileImage", user.profileImage)
-        if(user.followingGenres!!.isNotEmpty()){
+        if (user.followingGenres!!.isNotEmpty()) {
             editor.putString("genres", user.followingGenres.toJoinedString())
         }
         editor.apply()

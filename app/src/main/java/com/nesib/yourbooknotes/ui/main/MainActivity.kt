@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -102,14 +103,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupDrawerUi() {
-        val extraDetail = authViewModel.getUser()
+        val currentUser = authViewModel.getUser()
         if (authViewModel.isAuthenticated) {
             binding.apply {
                 val headerView = drawerNavigationView.getHeaderView(0)
                 val headerBinding = DrawerHeaderLayoutBinding.bind(headerView)
-                headerBinding.headerUsername.text = extraDetail!!.username
-                headerBinding.headerEmail.text = extraDetail.email
-                headerBinding.headerProfileImage.load(extraDetail.profileImage)
+                headerBinding.headerUsername.text = currentUser.username
+                headerBinding.headerEmail.text = currentUser.email
+                Log.d("mytag", "setupDrawerUi: ${currentUser.profileImage}")
+                headerBinding.headerProfileImage.load(currentUser.profileImage){
+                    error(R.drawable.user)
+                }
                 val drawerMenu = drawerNavigationView.menu
                 drawerMenu.findItem(R.id.drawer_login).isVisible = false
                 drawerMenu.findItem(R.id.drawer_signup).isVisible = false

@@ -33,9 +33,9 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
         fun bindData(){
             val quote = differ.currentList[adapterPosition]
             binding.apply {
-                username.text = quote.creator!!.username
-                userImage.load(R.drawable.user){
-                    crossfade(600)
+                username.text = quote.creator?.username
+                userImage.load(quote.creator?.profileImage){
+                    error(R.drawable.user)
                 }
                 bookQuoteTextView.text = quote.quote
                 quoteLikesCount.text = quote.likes?.size.toString()

@@ -115,8 +115,13 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         binding.followingCountTextView.text =
             (user.followingUsers!!.size + user.followingBooks!!.size).toString()
         binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toString()
-        user.profileImage?.let {
-            binding.userPhotoImageView.load(it)
+        binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toString()
+        if (user.profileImage != null && user.profileImage != "") {
+            binding.userPhotoImageView.load(user.profileImage) {
+                error(R.drawable.user)
+            }
+        }else{
+            binding.userPhotoImageView.load(R.drawable.user)
         }
         homeAdapter.setData(user.quotes!!)
     }

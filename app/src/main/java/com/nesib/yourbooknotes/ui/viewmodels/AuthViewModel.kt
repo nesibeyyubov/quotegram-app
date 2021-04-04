@@ -1,5 +1,8 @@
 package com.nesib.yourbooknotes.ui.viewmodels
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
@@ -13,15 +16,18 @@ import com.nesib.yourbooknotes.utils.Constants.CODE_SUCCESS
 import com.nesib.yourbooknotes.utils.Constants.CODE_VALIDATION_FAIL
 import com.nesib.yourbooknotes.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     val sharedPreferencesRepository: SharedPreferencesRepository,
-    val userRepository: UserRepository
+    val userRepository: UserRepository,
+    @ApplicationContext val application: Context
 ) : ViewModel() {
     var hasSignupError = false
     var hasLoginError = false
@@ -47,29 +53,36 @@ class AuthViewModel @Inject constructor(
         initAuthentication()
     }
 
-
     private fun initAuthentication() {
         val user = sharedPreferencesRepository.getCurrentUser()
-        _currentUserId = user?.userId
-        _isAuthenticated = user?.userId != null
+        _currentUserId = user.userId
+        _isAuthenticated = user.userId != null && user.token != null
         currentUser = user
     }
 
     fun getFollowingGenres() = sharedPreferencesRepository.getFollowingGenres()
 
-    fun logout() {
-        sharedPreferencesRepository.clearUser()
-    }
+    fun logout() = sharedPreferencesRepository.clearUser()
+
 
     fun login(email: String, password: String) {
-        _auth.value = DataState.Loading()
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = userRepository.login(email, password)
-            if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
-                hasLoginError = true
+        if (hasInternetConnection()) {
+            try {
+                viewModelScope.launch(Dispatchers.IO) {
+                    _auth.postValue(DataState.Loading())
+                    val response = userRepository.login(email, password)
+                    if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
+                        hasLoginError = true
+                    }
+                    handleResponse(response)
+                }
+            } catch (e: Exception) {
+                _auth.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
             }
-            handleResponse(response)
+        } else {
+            _auth.postValue(DataState.Fail(message = "No internet connection"))
         }
+
     }
 
     fun signup(
@@ -78,14 +91,23 @@ class AuthViewModel @Inject constructor(
         fullname: String,
         username: String,
     ) {
-        _auth.value = DataState.Loading()
-        viewModelScope.launch(Dispatchers.IO) {
-            val response = userRepository.signup(email, password, fullname, username)
-            if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
-                hasSignupError = true
+        if (hasInternetConnection()) {
+            try {
+                viewModelScope.launch(Dispatchers.IO) {
+                    _auth.postValue(DataState.Loading())
+                    val response = userRepository.signup(email, password, fullname, username)
+                    if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
+                        hasSignupError = true
+                    }
+                    handleResponse(response)
+                }
+            } catch (e: Exception) {
+                _auth.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
             }
-            handleResponse(response)
+        } else {
+            _auth.postValue(DataState.Fail(message = "No internet connection"))
         }
+
     }
 
     fun signupWithGoogle(
@@ -94,36 +116,54 @@ class AuthViewModel @Inject constructor(
         username: String,
         profileImage: String
     ) {
-        _auth.value = DataState.Loading()
-        viewModelScope.launch(Dispatchers.IO) {
-            val response =
-                userRepository.signupWithGoogle(email, fullname, username, profileImage)
-            if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
-                hasSignupError = true
+        if (hasInternetConnection()) {
+            try {
+                viewModelScope.launch(Dispatchers.IO) {
+                    _auth.postValue(DataState.Loading())
+                    val response =
+                        userRepository.signupWithGoogle(email, fullname, username, profileImage)
+                    if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
+                        hasSignupError = true
+                    }
+                    handleResponse(response)
+                }
+            } catch (e: Exception) {
+                _auth.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
             }
-            handleResponse(response)
+        } else {
+            _auth.postValue(DataState.Fail(message = "No internet connection"))
         }
+
     }
 
     fun signInWithGoogle(
         email: String,
         profileImage: String
     ) {
-        _auth.value = DataState.Loading()
-        viewModelScope.launch(Dispatchers.IO) {
-            val response =
-                userRepository.signInWithGoogle(email, profileImage)
-            if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
-                hasLoginError = true
+        if (hasInternetConnection()) {
+            try {
+                viewModelScope.launch(Dispatchers.IO) {
+                    _auth.postValue(DataState.Loading())
+                    val response =
+                        userRepository.signInWithGoogle(email, profileImage)
+                    if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
+                        hasLoginError = true
+                    }
+                    handleResponse(response)
+                }
+            } catch (e: Exception) {
+                _auth.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
             }
-            handleResponse(response)
+        } else {
+            _auth.postValue(DataState.Fail(message = "No internet connection"))
         }
+
     }
 
     fun getUser() = sharedPreferencesRepository.getCurrentUser()
 
     fun saveUser() {
-        if(auth.value?.data != null){
+        if (auth.value?.data != null) {
             sharedPreferencesRepository.saveUser(auth.value?.data!!)
         }
     }
@@ -158,26 +198,47 @@ class AuthViewModel @Inject constructor(
 
     fun saveFollowingGenres(genres: String, userId: String? = null) =
         viewModelScope.launch(Dispatchers.IO) {
-            _genres.postValue(DataState.Loading())
-            sharedPreferencesRepository.saveFollowingGenres(genres)
-            if (userId == null) {
-                _genres.postValue(DataState.Success())
-            } else {
-                Log.d("mytag", "saving genres in backend...")
-                val response = userRepository.saveFollowingGenres(genres)
-                when (response.code()) {
-                    CODE_SERVER_ERROR -> {
-                        _genres.postValue(DataState.Fail(message = "Something went wrong in server"))
-                    }
-                    CODE_AUTHENTICATION_FAIL -> {
-                        _genres.postValue(DataState.Fail(message = "You are not authenticated"))
-                    }
-                    CODE_SUCCESS -> {
-                        _genres.postValue(DataState.Success(response.body()))
-                    }
+            if (hasInternetConnection()) {
+                try {
+                    _genres.postValue(DataState.Loading())
+                    sharedPreferencesRepository.saveFollowingGenres(genres)
+                    if (userId == null) {
+                        _genres.postValue(DataState.Success())
+                    } else {
+                        val response = userRepository.saveFollowingGenres(genres)
+                        when (response.code()) {
+                            CODE_SERVER_ERROR -> {
+                                _genres.postValue(DataState.Fail(message = "Something went wrong in server"))
+                            }
+                            CODE_AUTHENTICATION_FAIL -> {
+                                _genres.postValue(DataState.Fail(message = "You are not authenticated"))
+                            }
+                            CODE_SUCCESS -> {
+                                _genres.postValue(DataState.Success(response.body()))
+                            }
 
+                        }
+                    }
+                } catch (e: Exception) {
+                    _genres.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
                 }
+            } else {
+                _genres.postValue(DataState.Fail(message = "No internet connection"))
             }
 
         }
+
+    private fun hasInternetConnection(): Boolean {
+        val connectivityManager = application.getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+        return when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
+    }
 }

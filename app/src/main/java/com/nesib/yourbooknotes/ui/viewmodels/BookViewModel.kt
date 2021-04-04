@@ -1,6 +1,9 @@
 package com.nesib.yourbooknotes.ui.viewmodels
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
@@ -9,15 +12,18 @@ import com.nesib.yourbooknotes.models.*
 import com.nesib.yourbooknotes.utils.Constants
 import com.nesib.yourbooknotes.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.File
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class BookViewModel @Inject constructor(
-    val mainRepository: MainRepository
+    val mainRepository: MainRepository,
+    @ApplicationContext val application: Context
 ) : ViewModel() {
     private var quoteList = mutableListOf<Quote>()
     private var bookList = mutableListOf<Book>()
@@ -41,81 +47,151 @@ class BookViewModel @Inject constructor(
     val books: LiveData<DataState<BooksResponse>>
         get() = _books
 
+    fun something() {
+        if (hasInternetConnection()) {
+            try {
 
-    fun getBook(bookId: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
-        if (_book.value == null) {
-            _book.postValue(DataState.Loading())
-            val response = mainRepository.getBook(bookId)
-            val handledResponse = handleBookResponse(response)
-            _book.postValue(handledResponse)
+            } catch (e: Exception) {
+                _book.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+            }
+        } else {
+            _book.postValue(DataState.Fail(message = "No internet connection"))
         }
     }
 
-    fun notifyQuoteRemoved(quote:Quote)= viewModelScope.launch(Dispatchers.Default){
+    fun getBook(bookId: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
+        if (hasInternetConnection()) {
+            try {
+                if (_book.value == null) {
+                    _book.postValue(DataState.Loading())
+                    val response = mainRepository.getBook(bookId)
+                    val handledResponse = handleBookResponse(response)
+                    _book.postValue(handledResponse)
+                }
+            } catch (e: Exception) {
+                _book.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+            }
+        } else {
+            _book.postValue(DataState.Fail(message = "No internet connection"))
+        }
+
+    }
+
+    fun notifyQuoteRemoved(quote: Quote) = viewModelScope.launch(Dispatchers.Default) {
         quoteList.remove(quote)
         _quotes.postValue(DataState.Success(data = QuotesResponse(quoteList.toList())))
     }
-    fun notifyQuoteUpdated(quote:Quote) = viewModelScope.launch(Dispatchers.Default) {
-        val quoteToDelete = quoteList.find{q -> q.id == quote.id}
-        val index = quoteList.indexOf(quoteToDelete)
-        Log.d("mytag", "index: $index")
-        if(index != -1){
-            quoteList.remove(quoteToDelete)
-            quoteList.add(index,quote)
-            Log.d("mytag", "quote updated !")
+
+    fun notifyQuoteUpdated(quote: Quote) = viewModelScope.launch(Dispatchers.Default) {
+        if (hasInternetConnection()) {
+            try {
+                val quoteToDelete = quoteList.find { q -> q.id == quote.id }
+                val index = quoteList.indexOf(quoteToDelete)
+                if (index != -1) {
+                    quoteList.remove(quoteToDelete)
+                    quoteList.add(index, quote)
+                }
+                _quotes.postValue(DataState.Success(QuotesResponse(quoteList.toList())))
+            } catch (e: Exception) {
+                _book.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+            }
+        } else {
+            _book.postValue(DataState.Fail(message = "No internet connection"))
         }
-        _quotes.postValue(DataState.Success(QuotesResponse(quoteList.toList())))
+
     }
 
     fun getMoreBookQuotes(bookId: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
-        _quotes.postValue(DataState.Loading())
-        val response = mainRepository.getMoreBookQuotes(bookId, page)
-        handleQuotesResponse(response)
+        if (hasInternetConnection()) {
+            try {
+                _quotes.postValue(DataState.Loading())
+                val response = mainRepository.getMoreBookQuotes(bookId, page)
+                handleQuotesResponse(response)
+            } catch (e: Exception) {
+                _quotes.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+            }
+        } else {
+            _quotes.postValue(DataState.Fail(message = "No internet connection"))
+        }
+
     }
 
     fun getBooks(searchText: String? = null, page: Int = 1, notPaginated: Boolean = true) =
         viewModelScope.launch(
             Dispatchers.IO
         ) {
-            _books.postValue(DataState.Loading())
-            val response = mainRepository.getBooks(searchText, page)
-            handleBooksResponse(response, notPaginated)
+            if (hasInternetConnection()) {
+                try {
+                    _books.postValue(DataState.Loading())
+                    val response = mainRepository.getBooks(searchText, page)
+                    handleBooksResponse(response, notPaginated)
+                } catch (e: Exception) {
+                    _books.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                }
+            } else {
+                _books.postValue(DataState.Fail(message = "No internet connection"))
+            }
         }
 
-    fun discoverBooks(genre: String="all", page: Int = 1,notPaginated: Boolean = true,searchText:String="") = viewModelScope.launch(Dispatchers.IO) {
-            _books.postValue(DataState.Loading())
-            val response = mainRepository.discoverBooks(genre, page, searchText)
-            handleBooksResponse(response,notPaginated)
+    fun discoverBooks(
+        genre: String = "all",
+        page: Int = 1,
+        notPaginated: Boolean = true,
+        searchText: String = ""
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        if (hasInternetConnection()) {
+            try {
+                _books.postValue(DataState.Loading())
+                val response = mainRepository.discoverBooks(genre, page, searchText)
+                handleBooksResponse(response, notPaginated)
+            } catch (e: Exception) {
+                _books.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+            }
+        } else {
+            _books.postValue(DataState.Fail(message = "No internet connection"))
+        }
+
+
     }
-//
-//    fun discoverBooks(searchText: String) = viewModelScope.launch(Dispatchers.IO) {
-//        _books.postValue(DataState.Loading())
-//        val response = mainRepository.getBooks(searchText, 1)
-//        handleBooksResponse(response, false)
-//    }
 
     fun postBook(name: String, author: String, genre: String, image: File) = viewModelScope.launch(
         Dispatchers.IO
     ) {
-        _book.postValue(DataState.Loading())
-        val response = mainRepository.postBook(name, author, genre, image)
-        val handledResponse = handleBookResponse(response)
-        _book.postValue(handledResponse)
+        if (hasInternetConnection()) {
+            try {
+                _book.postValue(DataState.Loading())
+                val response = mainRepository.postBook(name, author, genre, image)
+                val handledResponse = handleBookResponse(response)
+                _book.postValue(handledResponse)
+            } catch (e: Exception) {
+                _book.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+            }
+        } else {
+            _book.postValue(DataState.Fail(message = "No internet connection"))
+        }
+
     }
 
     fun toggleBookFollow(book: Book) = viewModelScope.launch(Dispatchers.IO) {
-        _bookFollow.postValue(DataState.Loading())
-        val response = mainRepository.toggleBookFollow(book.id)
-        val handledResponse = handleBookResponse(response)
-        _book.value?.data?.book?.followers = book.followers
-        _book.value?.data?.book?.following = book.following
-        _bookFollow.postValue(handledResponse)
+        if (hasInternetConnection()) {
+            try {
+                _bookFollow.postValue(DataState.Loading())
+                val response = mainRepository.toggleBookFollow(book.id)
+                val handledResponse = handleBookResponse(response)
+                _book.value?.data?.book?.followers = book.followers
+                _book.value?.data?.book?.following = book.following
+                _bookFollow.postValue(handledResponse)
+            } catch (e: Exception) {
+                _bookFollow.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+            }
+        } else {
+            _bookFollow.postValue(DataState.Fail(message = "No internet connection"))
+        }
+
     }
 
 
-
-
-    private fun handleBookResponse(response: Response<BookResponse>):DataState<BookResponse> {
+    private fun handleBookResponse(response: Response<BookResponse>): DataState<BookResponse> {
         when (response.code()) {
             Constants.CODE_SUCCESS -> {
                 response.body()?.book?.let {
@@ -222,4 +298,19 @@ class BookViewModel @Inject constructor(
             }
         }
     }
+
+    private fun hasInternetConnection(): Boolean {
+        val connectivityManager = application.getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork ?: return false
+        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+        return when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
+    }
+
 }

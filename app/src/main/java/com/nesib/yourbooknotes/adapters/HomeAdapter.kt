@@ -49,8 +49,12 @@ class HomeAdapter(val dialog:AlertDialog) :
         fun bindData() {
             val quote = differ.currentList[adapterPosition]
             binding.apply {
-                usernameTextView.text = quote.creator!!.username
-                userphotoImageView.load(R.drawable.user)
+                usernameTextView.text = quote.creator?.username
+                if(quote.creator?.profileImage != "" && quote.creator?.profileImage != null){
+                    userphotoImageView.load(quote.creator?.profileImage)
+                }else{
+                    userphotoImageView.load(R.drawable.user)
+                }
                 quoteTextView.text = quote.quote
                 bookAuthor.text = quote.book?.author
                 bookImageView.load(API_URL + quote.book?.image) {

@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentUserProfileBinding
@@ -31,7 +32,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val userViewModel: UserViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
-    private val quoteViewModel: QuoteViewModel by viewModels({requireActivity()})
+    private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
     private val args by navArgs<UserProfileFragmentArgs>()
 
     private var paginatingFinished = false
@@ -60,6 +61,13 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         binding.followingCountTextView.text =
             (user.followingUsers!!.size + user.followingBooks!!.size).toString()
         binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toString()
+        if (user.profileImage != null && user.profileImage != "") {
+            binding.userPhotoImageView.load(user.profileImage) {
+                error(R.drawable.user)
+            }
+        }else{
+            binding.userPhotoImageView.load(R.drawable.user)
+        }
         toggleFollowButtonStyle(user.followers!!.contains(authViewModel.currentUserId))
 
         homeAdapter.setData(user.quotes!!)
@@ -141,7 +149,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
 
     private fun setupClickListeners() {
         binding.followButton.setOnClickListener {
-            if(authViewModel.currentUserId == null){
+            if (authViewModel.currentUserId == null) {
                 (activity as MainActivity).showAuthenticationDialog()
                 return@setOnClickListener
             }
@@ -150,13 +158,15 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                 if (!user.followers!!.contains(authViewModel.currentUserId)) {
                     followers.add(authViewModel.currentUserId!!)
                     toggleFollowButtonStyle(true)
-                    binding.followerCountTextView.text = (binding.followerCountTextView.text.toString()
-                        .toInt() + 1).toString()
+                    binding.followerCountTextView.text =
+                        (binding.followerCountTextView.text.toString()
+                            .toInt() + 1).toString()
                 } else {
                     followers.remove(authViewModel.currentUserId!!)
                     toggleFollowButtonStyle(false)
-                    binding.followerCountTextView.text = (binding.followerCountTextView.text.toString()
-                        .toInt() - 1).toString()
+                    binding.followerCountTextView.text =
+                        (binding.followerCountTextView.text.toString()
+                            .toInt() - 1).toString()
                 }
                 user.followers = followers.toList()
                 userViewModel.followOrUnFollowUser(user)
@@ -190,7 +200,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.user_profile_menu,menu)
+        inflater.inflate(R.menu.user_profile_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
