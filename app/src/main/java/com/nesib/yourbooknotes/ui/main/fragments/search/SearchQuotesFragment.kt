@@ -45,39 +45,21 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSearchQuotesBinding.bind(view)
         setHasOptionsMenu(true)
-        setupUi()
         setupRecyclerView()
         subscribeObservers()
         quoteViewModel.getQuotesByGenre(args.genre)
     }
 
-    private fun setupUi() {
-//        binding.genreText.text = "#${args.genre}"
-//        if(authViewModel.currentUser?.followingGenres!!.contains(args.genre.toLowerCase())){
-//            toggleFollowButtonStyle(true)
-//        }else{
-//            toggleFollowButtonStyle(false)
-//        }
-    }
 
-//    private fun toggleFollowButtonStyle(following: Boolean) {
-//        binding.apply {
-//            followGenreButton.setBackgroundResource(if (following) R.drawable.add_quote_from_this_book_bg else R.drawable.follow_button_bg)
-//            followButtonTextView.text = if (following) "Following" else "Follow"
-//            followButtonTextView.setTextColor(
-//                if (following) ContextCompat.getColor(
-//                    requireContext(),
-//                    R.color.blue
-//                ) else ContextCompat.getColor(requireContext(), R.color.white)
-//            )
-//
-//        }
-//    }
 
     private fun subscribeObservers() {
         quoteViewModel.quotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    if(it.data?.quotes?.size == 0){
+                        binding.noQuoteFoundContainer.visibility = View.VISIBLE
+                        binding.noQuoteGenreValue.text = "#${args.genre}"
+                    }
                     if (paginationLoading) {
                         binding.paginationProgressBar.visibility = View.INVISIBLE
                         paginationLoading = false

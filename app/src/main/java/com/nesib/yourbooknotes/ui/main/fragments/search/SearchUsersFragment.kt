@@ -22,8 +22,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
     private val adapter by lazy { SearchUserAdapter() }
     private lateinit var binding: FragmentSearchUsersBinding
-    private val userViewModel:UserViewModel by viewModels({requireParentFragment()})
-    private val sharedViewModel:SharedViewModel by viewModels({requireActivity()})
+    private val userViewModel: UserViewModel by viewModels({ requireParentFragment() })
+    private val sharedViewModel: SharedViewModel by viewModels({ requireActivity() })
     private var searchViewTextChanged = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,8 +32,8 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
         subscribeObservers()
     }
 
-    private fun setupRecyclerView(){
-        adapter.onUserClickListener = {user->
+    private fun setupRecyclerView() {
+        adapter.onUserClickListener = { user ->
             val action = SearchFragmentDirections.actionSearchFragmentToUserProfileFragment(user.id)
             findNavController().navigate(action)
         }
@@ -41,14 +41,17 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
         binding.searchUsersRecyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun subscribeObservers(){
-        userViewModel.users.observe(viewLifecycleOwner){
-            when(it){
-                is DataState.Success->{
+    private fun subscribeObservers() {
+        userViewModel.users.observe(viewLifecycleOwner) {
+            when (it) {
+                is DataState.Success -> {
+                    if (it.data!!.users.isEmpty()) {
+                        binding.noUserFound.visibility = View.VISIBLE
+                    }
 //                    toggleProgressBar(false)
                     adapter.setData(it.data!!.users)
                 }
-                is DataState.Fail->{
+                is DataState.Fail -> {
 //                    toggleProgressBar(false)
                 }
                 is DataState.Loading -> {
@@ -56,20 +59,20 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
                 }
             }
         }
-        sharedViewModel.searchTextUser.observe(viewLifecycleOwner){text->
-            if(text.isNotEmpty()){
+        sharedViewModel.searchTextUser.observe(viewLifecycleOwner) { text ->
+            if (text.isNotEmpty()) {
                 searchViewTextChanged = true
                 Handler(Looper.getMainLooper())
                     .postDelayed({
                         userViewModel.getUsers(text)
-                    },300)
+                    }, 300)
             }
         }
     }
 
-    private fun toggleProgressBar(loading:Boolean){
-        binding.progressBar.visibility = if(loading) View.VISIBLE else View.INVISIBLE
-        binding.searchUsersRecyclerView.visibility = if(loading) View.INVISIBLE else View.VISIBLE
+    private fun toggleProgressBar(loading: Boolean) {
+        binding.progressBar.visibility = if (loading) View.VISIBLE else View.INVISIBLE
+        binding.searchUsersRecyclerView.visibility = if (loading) View.INVISIBLE else View.VISIBLE
     }
 
 }

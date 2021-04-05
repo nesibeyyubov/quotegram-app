@@ -37,13 +37,14 @@
 
     <TextView
         android:id="@+id/searchBookName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="A Tale of Two Cities"
         android:textColor="@color/colorPrimaryText"
         android:textSize="12sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
         app:layout_constraintStart_toEndOf="@+id/searchBookImage"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,29 +57,32 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:text="View"
-        android:textAllCaps="true"
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:text="View"
+        android:textAllCaps="true"
         android:textColor="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_marginRight="5dp"
             android:src="@drawable/ic_users"
-            app:tint="@color/colorSecondaryText"
-            android:layout_width="16dp"
-            android:layout_height="16dp"/>
+            app:tint="@color/colorSecondaryText" />
+
         <TextView
             android:id="@+id/searchBookFollowerCount"
-            android:text="2.5k"
-            android:textSize="12dp"
-            android:includeFontPadding="false"
-            android:textStyle="bold"
-            android:textColor="@color/colorSecondaryText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="2.5k"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="12dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 

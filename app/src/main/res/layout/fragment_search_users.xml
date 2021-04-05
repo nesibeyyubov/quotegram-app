@@ -2,6 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TextView
+        android:layout_marginLeft="@dimen/page_padding"
+        android:id="@+id/noUserFound"
+        android:visibility="invisible"
+        android:text="No user found"
+        android:textStyle="bold"
+        android:textColor="@color/colorSecondaryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <ProgressBar
         android:id="@+id/progressBar"

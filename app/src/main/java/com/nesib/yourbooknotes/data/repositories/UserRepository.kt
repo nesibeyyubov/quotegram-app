@@ -14,13 +14,11 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
     suspend fun signup(
         email: String,
         password: String,
-        fullname: String,
         username: String,
     ): Response<UserAuth> {
         val map = mapOf(
             "email" to email,
             "password" to password,
-            "fullname" to fullname,
             "username" to username,
         )
         return authApi.signup(map)

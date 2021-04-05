@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -20,38 +21,38 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class StartActivity : AppCompatActivity() {
-    private lateinit var binding:ActivityStartBinding
+    private lateinit var binding: ActivityStartBinding
     private lateinit var navController: NavController
-    private val authViewModel:AuthViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setAppTheme()
-        navController = (supportFragmentManager.findFragmentById(R.id.fragmentContainerView_startActivity) as NavHostFragment).navController
+        navController =
+            (supportFragmentManager.findFragmentById(R.id.fragmentContainerView_startActivity) as NavHostFragment).navController
 
         setSupportActionBar(binding.toolbarStartActivity)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        navController.addOnDestinationChangedListener{ navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
-            if(navDestination.id == R.id.splashFragment){
+        navController.addOnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
+            if (navDestination.id == R.id.splashFragment) {
                 binding.toolbarStartActivity.visibility = View.GONE
-            }
-            else{
+            } else {
                 binding.toolbarStartActivity.visibility = View.VISIBLE
             }
         }
-        if(authViewModel.isAuthenticated){
-            startActivity(Intent(this,MainActivity::class.java))
+        if (authViewModel.isAuthenticated || authViewModel.currentUser?.followingGenres!!.size>1) {
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }
 
 
-    private fun setAppTheme(){
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+    private fun setAppTheme() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             window.statusBarColor = Color.BLACK
         }
     }

@@ -58,6 +58,7 @@ class AuthViewModel @Inject constructor(
         _currentUserId = user.userId
         _isAuthenticated = user.userId != null && user.token != null
         currentUser = user
+        Log.d("mytag", "initAuthentication: ${user}")
     }
 
     fun getFollowingGenres() = sharedPreferencesRepository.getFollowingGenres()
@@ -88,14 +89,13 @@ class AuthViewModel @Inject constructor(
     fun signup(
         email: String,
         password: String,
-        fullname: String,
         username: String,
     ) {
         if (hasInternetConnection()) {
             try {
                 viewModelScope.launch(Dispatchers.IO) {
                     _auth.postValue(DataState.Loading())
-                    val response = userRepository.signup(email, password, fullname, username)
+                    val response = userRepository.signup(email, password, username)
                     if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
                         hasSignupError = true
                     }

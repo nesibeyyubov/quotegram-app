@@ -51,7 +51,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
             val username = binding.usernameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            authViewModel.signup(email, password, username, username)
+            authViewModel.signup(email, password, username)
         }
         binding.signupToLoginBtn.setOnClickListener {
             // Check if it is coming from login then pop back
@@ -96,9 +96,8 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
             when (it) {
                 is DataState.Success -> {
                     binding.signupErrorTextView.visibility = View.INVISIBLE
-                    binding.signupBtnTextView.visibility = View.VISIBLE
                     authViewModel.saveUser()
-                    val action = SignupFragmentDirections.actionSignupFragmentToSelectCategoriesFragment(it.data!!.userId)
+                    val action = SignupFragmentDirections.actionSignupFragmentToSelectCategoriesFragment(it.data!!.userId,binding.usernameEditText.text.toString())
                     findNavController().navigate(action)
                 }
                 is DataState.Fail -> {

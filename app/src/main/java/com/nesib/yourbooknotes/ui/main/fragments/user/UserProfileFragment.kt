@@ -68,6 +68,9 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         }else{
             binding.userPhotoImageView.load(R.drawable.user)
         }
+        if(user.quotes!!.isEmpty()){
+            binding.noQuoteFoundContainer.visibility = View.VISIBLE
+        }
         toggleFollowButtonStyle(user.followers!!.contains(authViewModel.currentUserId))
 
         homeAdapter.setData(user.quotes!!)

@@ -31,6 +31,8 @@ class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
         binding.selectGenreNextBtn.setOnClickListener {
             saveGenres()
         }
+        binding.welcomeUserName.text = "Hi, ${args.username ?: "Guest"}"
+
         subscribeObservers()
     }
 

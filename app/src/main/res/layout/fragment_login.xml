@@ -170,12 +170,13 @@
             android:textStyle="bold" />
 
         <ProgressBar
+            android:visibility="invisible"
             android:id="@+id/signInGoogleProgressBar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
             android:layout_centerInParent="true"
-            android:indeterminateTint="@color/blue"
-            android:visibility="invisible" />
+            android:indeterminateTint="@color/colorSecondaryText"
+             />
     </RelativeLayout>
 
 

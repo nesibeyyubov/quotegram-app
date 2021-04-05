@@ -5,6 +5,30 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="@dimen/page_padding">
 
+    <LinearLayout
+        android:paddingTop="30dp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:id="@+id/noQuoteFoundContainer"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:alpha="0.5"
+            app:tint="@color/colorSecondaryText"
+            android:src="@drawable/ic_quote"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <TextView
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:text="No qutoes found from\nthis book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -15,8 +39,8 @@
         android:visibility="gone" />
 
     <androidx.core.widget.NestedScrollView
-        android:visibility="invisible"
         android:id="@+id/bookProfileContent"
+        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
@@ -79,23 +103,26 @@
 
             <TextView
                 android:id="@+id/bookName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:maxLines="2"
                 android:text="A Tale of Two Cities"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/bookImage"
                 app:layout_constraintTop_toTopOf="@+id/bookImage" />
 
             <TextView
                 android:id="@+id/bookAuthor"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Charles Dickens"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/bookName"
                 app:layout_constraintTop_toBottomOf="@+id/bookName" />
 

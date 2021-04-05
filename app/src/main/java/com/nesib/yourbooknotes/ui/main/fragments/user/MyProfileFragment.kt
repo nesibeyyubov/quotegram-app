@@ -1,5 +1,6 @@
 package com.nesib.yourbooknotes.ui.main.fragments.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -20,6 +21,7 @@ import com.nesib.yourbooknotes.databinding.FragmentMyProfileBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
 import com.nesib.yourbooknotes.ui.main.MainActivity
+import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
@@ -123,12 +125,20 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         }else{
             binding.userPhotoImageView.load(R.drawable.user)
         }
-        homeAdapter.setData(user.quotes!!)
+        if(user.quotes!!.isEmpty()){
+            binding.noQuoteFoundContainer.visibility = View.VISIBLE
+        }
+        homeAdapter.setData(user.quotes)
     }
 
     private fun setupClickListeners() {
         binding.followButton.setOnClickListener {
             findNavController().navigate(R.id.action_myProfileFragment_to_editUserFragment)
+        }
+        binding.loginButton.setOnClickListener{
+            authViewModel.logout()
+            startActivity(Intent(requireActivity(),StartActivity::class.java))
+            requireActivity().finish()
         }
     }
     private fun setFragmentResultListener() {

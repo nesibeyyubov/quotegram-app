@@ -175,6 +175,9 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             bookQuoteCount.text = (book.totalQuoteCount ?: 0).toString()
             bookFollowerCount.text = book.followers?.size.toString()
             toggleFollowButtonStyle(book.following)
+            if(book.quotes!!.isEmpty()){
+                noQuoteFoundContainer.visibility = View.VISIBLE
+            }
         }
         bookQuotesAdapter.setData(currentBookQuotes!!.toList())
     }

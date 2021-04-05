@@ -173,7 +173,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerInParent="true"
-            android:indeterminateTint="@color/blue"
+            android:indeterminateTint="@color/colorSecondaryText"
             android:visibility="invisible" />
     </RelativeLayout>
 

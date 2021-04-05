@@ -21,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
+        android:maxWidth="150dp"
         android:paddingVertical="5dp"
         android:includeFontPadding="false"
         android:text="Jane Doe"
@@ -30,27 +31,7 @@
         app:layout_constraintStart_toEndOf="@+id/userphoto_imageView"
         app:layout_constraintTop_toTopOf="@+id/userphoto_imageView" />
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="3dp"
-        android:layout_height="3dp"
-        android:layout_marginStart="15dp"
-        android:background="@color/colorSecondaryText"
-        app:layout_constraintBottom_toBottomOf="@+id/username_textView"
-        app:layout_constraintStart_toEndOf="@+id/username_textView"
-        app:layout_constraintTop_toTopOf="@+id/username_textView" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:text="1 min ago"
-        android:textColor="@color/colorSecondaryText"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/username_textView"
-        app:layout_constraintStart_toEndOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/username_textView" />
 
     <ImageButton
         android:id="@+id/postOptionsBtn"
@@ -101,14 +82,16 @@
 
         <TextView
             android:id="@+id/bookNameTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
+            android:lines="1"
             android:includeFontPadding="false"
             android:text="A Tale of Two Cities"
             android:textColor="@color/colorPrimaryText"
             android:textSize="10sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/viewBookBtn"
             app:layout_constraintStart_toEndOf="@+id/bookImageView"
             app:layout_constraintTop_toTopOf="@+id/bookImageView" />
 
@@ -148,7 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:text="View book"
+            android:text="View"
             android:textColor="@color/blue"
             android:textSize="12sp"
             android:textStyle="bold"
