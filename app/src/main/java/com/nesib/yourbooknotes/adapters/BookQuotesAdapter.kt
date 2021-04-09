@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -34,9 +35,12 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
             val quote = differ.currentList[adapterPosition]
             binding.apply {
                 username.text = quote.creator?.username
-                userImage.load(quote.creator?.profileImage){
-                    error(R.drawable.user)
+                if(quote.creator?.profileImage == null){
+                    userImage.load(R.drawable.user)
+                }else{
+                    userImage.load(quote.creator?.profileImage)
                 }
+
                 bookQuoteTextView.text = quote.quote
                 quoteLikesCount.text = quote.likes?.size.toString()
                 if(quote.liked){
@@ -62,6 +66,9 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
                     quote.liked = !quote.liked
                     quote.likes = likes.toList()
                     binding.quoteLikesCount.text = quote.likes!!.size.toString()
+                    if(quote.liked){
+                        binding.likeBtn.startAnimation(AnimationUtils.loadAnimation(binding.likeBtn.context,R.anim.bouncing_anim))
+                    }
                     onLikeClickListener!!(quote)
                 }
                 R.id.username,R.id.userImage -> {

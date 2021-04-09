@@ -5,9 +5,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
+    <LinearLayout
+        android:id="@+id/failContainer"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textAlignment="center"
+            android:id="@+id/failMessage"
+            android:text="Something went wrong...."
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="16sp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:background="@drawable/add_quote_from_this_book_bg"
+            android:id="@+id/tryAgainButton"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            android:paddingHorizontal="10dp"
+            android:includeFontPadding="false"
+            android:paddingVertical="5dp"
+            android:text="Try Again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <LinearLayout
+        android:visibility="invisible"
         android:id="@+id/notSignedinContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -215,7 +244,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/followButton"
+                android:id="@+id/editUserButton"
                 android:layout_width="120dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="20dp"

@@ -22,6 +22,7 @@ import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.SharedViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -47,16 +48,26 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
         setHasOptionsMenu(true)
         setupRecyclerView()
         subscribeObservers()
+        setupClickListeners()
         quoteViewModel.getQuotesByGenre(args.genre)
     }
 
+    private fun setupClickListeners(){
+        binding.tryAgainButton.setOnClickListener {
+            Log.d("mytag", "button clicked ")
+            quoteViewModel.getQuotesByGenre(args.genre,forced = true)
+        }
+    }
 
 
     private fun subscribeObservers() {
         quoteViewModel.quotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    if(it.data?.quotes?.size == 0){
+                    if (binding.failContainer.visibility == View.VISIBLE) {
+                        binding.failContainer.visibility = View.GONE
+                    }
+                    if (it.data?.quotes?.size == 0) {
                         binding.noQuoteFoundContainer.visibility = View.VISIBLE
                         binding.noQuoteGenreValue.text = "#${args.genre}"
                     }
@@ -72,11 +83,17 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
                     homeAdapter.setData(currentQuotes)
                 }
                 is DataState.Fail -> {
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    binding.failMessage.text =it.message
+                    binding.failContainer.visibility = View.VISIBLE
+                    binding.shimmerLayout.visibility = View.INVISIBLE
+                    binding.shimmerLayout.stopShimmer()
+                    showToast(it.message)
                 }
                 is DataState.Loading -> {
+                    if (binding.failContainer.visibility == View.VISIBLE) {
+                        binding.failContainer.visibility = View.GONE
+                    }
                     if (paginationLoading) {
-                        Log.d("mytag", "show pagination progress bar")
                         binding.paginationProgressBar.visibility = View.VISIBLE
                     } else {
                         binding.shimmerLayout.visibility = View.VISIBLE
@@ -130,16 +147,12 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
                     item.title = "Follow"
                 } else {
                     genresChanged = false
-                    Toast.makeText(
-                        requireContext(),
-                        "You should at least select 3 genres",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showToast("You should at least select 3 genres")
                 }
             }
-            if(genresChanged){
+            if (genresChanged) {
                 val genresText = genres.toCustomizedString()
-                authViewModel.saveFollowingGenres(genresText,authViewModel.currentUserId)
+                authViewModel.saveFollowingGenres(genresText, authViewModel.currentUserId)
             }
             return true
         }

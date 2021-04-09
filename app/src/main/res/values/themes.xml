@@ -14,6 +14,7 @@
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="actionMenuTextAppearance">@style/ActionMenuTextAppearance</item>
         <item name="actionMenuTextColor">@color/blue</item>
+        <item name="colorControlNormal">@color/colorPrimaryText</item>
         <!-- Customize your theme here. -->
     </style>
 

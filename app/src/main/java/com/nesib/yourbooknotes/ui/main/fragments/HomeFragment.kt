@@ -19,6 +19,7 @@ import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,16 +39,27 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentHomeBinding.bind(view)
+        setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
 
         quoteViewModel.getQuotes()
     }
 
+    private fun setupClickListeners(){
+        binding.tryAgainButton.setOnClickListener {
+            quoteViewModel.getQuotes(forced = true)
+        }
+    }
+
+
     private fun subscribeObservers() {
         quoteViewModel.quotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    if (binding.failContainer.visibility == View.VISIBLE) {
+                        binding.failContainer.visibility = View.GONE
+                    }
                     if (currentPage == 1) {
                         binding.shimmerLayout.visibility = View.GONE
                         binding.homeRecyclerView.visibility = View.VISIBLE
@@ -63,7 +75,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                     quotes = it.data.quotes.toMutableList()
 
-
                     homeAdapter.setData(it.data.quotes)
 
                     if (binding.refreshLayout.isRefreshing) {
@@ -76,9 +87,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                 }
                 is DataState.Fail -> {
+                    binding.apply {
+                        failContainer.visibility = View.VISIBLE
+                        failMessage.text = it.message
+                    }
+                    showToast(it.message!!)
                     binding.refreshLayout.isRefreshing = false
                     if (currentPage == 1) {
-                        binding.shimmerLayout.hideShimmer()
+                        binding.shimmerLayout.stopShimmer()
                         binding.shimmerLayout.visibility = View.GONE
                     } else {
                         binding.paginationProgressBar.visibility = View.INVISIBLE
@@ -87,10 +103,12 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     fetchingData = false
                 }
                 is DataState.Loading -> {
+                    binding.failContainer.visibility = View.GONE
                     fetchingData = true
                     if (currentPage == 1 && !binding.refreshLayout.isRefreshing) {
                         binding.shimmerLayout.visibility = View.VISIBLE
                         binding.shimmerLayout.startShimmer()
+                        Log.d("mytag", "startiing shimmer...")
                     } else if (currentPage != 1 && !binding.refreshLayout.isRefreshing) {
                         binding.paginationProgressBar.visibility = View.VISIBLE
                         paginationLoading = true
@@ -104,7 +122,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 is DataState.Success -> {
                 }
                 is DataState.Fail -> {
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
+                    showToast(it.message!!)
                 }
                 is DataState.Loading -> {
                     Log.d("mytag", "like is loading...")

@@ -52,24 +52,24 @@ class BookViewModel @Inject constructor(
             try {
 
             } catch (e: Exception) {
-                _book.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _book.postValue(DataState.Fail())
             }
         } else {
             _book.postValue(DataState.Fail(message = "No internet connection"))
         }
     }
 
-    fun getBook(bookId: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
+    fun getBook(bookId: String, page: Int = 1,forced:Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
         if (hasInternetConnection()) {
             try {
-                if (_book.value == null) {
+                if (_book.value == null || forced) {
                     _book.postValue(DataState.Loading())
                     val response = mainRepository.getBook(bookId)
                     val handledResponse = handleBookResponse(response)
                     _book.postValue(handledResponse)
                 }
             } catch (e: Exception) {
-                _book.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _book.postValue(DataState.Fail())
             }
         } else {
             _book.postValue(DataState.Fail(message = "No internet connection"))
@@ -93,7 +93,7 @@ class BookViewModel @Inject constructor(
                 }
                 _quotes.postValue(DataState.Success(QuotesResponse(quoteList.toList())))
             } catch (e: Exception) {
-                _book.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _book.postValue(DataState.Fail())
             }
         } else {
             _book.postValue(DataState.Fail(message = "No internet connection"))
@@ -108,7 +108,7 @@ class BookViewModel @Inject constructor(
                 val response = mainRepository.getMoreBookQuotes(bookId, page)
                 handleQuotesResponse(response)
             } catch (e: Exception) {
-                _quotes.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _quotes.postValue(DataState.Fail())
             }
         } else {
             _quotes.postValue(DataState.Fail(message = "No internet connection"))
@@ -126,7 +126,7 @@ class BookViewModel @Inject constructor(
                     val response = mainRepository.getBooks(searchText, page)
                     handleBooksResponse(response, notPaginated)
                 } catch (e: Exception) {
-                    _books.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                    _books.postValue(DataState.Fail())
                 }
             } else {
                 _books.postValue(DataState.Fail(message = "No internet connection"))
@@ -145,7 +145,7 @@ class BookViewModel @Inject constructor(
                 val response = mainRepository.discoverBooks(genre, page, searchText)
                 handleBooksResponse(response, notPaginated)
             } catch (e: Exception) {
-                _books.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _books.postValue(DataState.Fail())
             }
         } else {
             _books.postValue(DataState.Fail(message = "No internet connection"))
@@ -164,7 +164,7 @@ class BookViewModel @Inject constructor(
                 val handledResponse = handleBookResponse(response)
                 _book.postValue(handledResponse)
             } catch (e: Exception) {
-                _book.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _book.postValue(DataState.Fail())
             }
         } else {
             _book.postValue(DataState.Fail(message = "No internet connection"))
@@ -182,7 +182,7 @@ class BookViewModel @Inject constructor(
                 _book.value?.data?.book?.following = book.following
                 _bookFollow.postValue(handledResponse)
             } catch (e: Exception) {
-                _bookFollow.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _bookFollow.postValue(DataState.Fail())
             }
         } else {
             _bookFollow.postValue(DataState.Fail(message = "No internet connection"))

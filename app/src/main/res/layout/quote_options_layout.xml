@@ -31,7 +31,32 @@
             android:layout_marginLeft="10dp"
             android:textStyle="bold"
             android:includeFontPadding="false"
-            android:text="Report this quote"
+            android:text="Report quote"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/reportUser"
+        android:clickable="true"
+        android:background="@drawable/light_gray_border_bottom_bg"
+        android:gravity="center"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            app:tint="@color/colorSecondaryText"
+            android:src="@drawable/ic_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textColor="@color/colorPrimaryText"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"
+            android:includeFontPadding="false"
+            android:text="Report user"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -70,13 +95,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
-            app:tint="@color/colorSecondaryText"
+            app:tint="@color/colorError"
             android:src="@drawable/ic_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
-            android:textColor="@color/colorPrimaryText"
+            android:textColor="@color/colorError"
             android:layout_marginLeft="10dp"
             android:textStyle="bold"
             android:includeFontPadding="false"

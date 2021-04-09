@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,7 @@ import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -25,7 +27,7 @@ import java.util.*
 class AddQuoteFragment : BottomSheetDialogFragment() {
     private val args by navArgs<AddQuoteFragmentArgs>()
     private lateinit var binding: FragmentAddQuoteBinding
-    private val quoteViewModel: QuoteViewModel by viewModels({requireActivity()})
+    private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
 
     private var updatedQuote: Quote? = null
 
@@ -64,7 +66,7 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                     quoteViewModel.postQuote(newQuote)
                 }
                 val genres = resources.getStringArray(R.array.quote_genres).toList()
-                genreSpinner.adapter = SpinnerAdapter(requireContext(),genres)
+                genreSpinner.adapter = SpinnerAdapter(requireContext(), genres)
             }
         }
         if (args.quote != null) {
@@ -75,13 +77,14 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                 bookImage.load(API_URL + quote.book!!.image)
                 addBtnTextView.text = "Update"
                 quoteEditText.setText(quote.quote)
-                genreSpinner.setSelection(
-                    resources.getStringArray(R.array.quote_genres).indexOf(
-                        quote.genre!!.capitalize(
-                            Locale.ROOT
-                        )
+                val genresArray = resources.getStringArray(R.array.quote_genres)
+                val genreIndex = genresArray.indexOf(
+                    quote.genre!!.capitalize(
+                        Locale.ROOT
                     )
                 )
+                genreSpinner.adapter = SpinnerAdapter(requireContext(),genresArray.toList())
+                genreSpinner.setSelection(genreIndex)
 
                 addQuoteBtn.setOnClickListener {
                     val quoteValue = quoteEditText.text.toString()
@@ -96,7 +99,7 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                     updatedQuote!!.quote = quoteValue
                     updatedQuote!!.genre = selectedGenreValue
 
-                    quoteViewModel.updateQuote(args.quote!!,newQuote)
+                    quoteViewModel.updateQuote(args.quote!!, newQuote)
                 }
             }
         }
@@ -115,6 +118,7 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                     toggleProgressBar(false)
                 }
                 is DataState.Fail -> {
+                    showToast(it.message!!)
                     toggleProgressBar(false)
                 }
                 is DataState.Loading -> {
@@ -133,6 +137,7 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                     toggleProgressBar(false)
                 }
                 is DataState.Fail -> {
+                    showToast(it.message!!)
                     toggleProgressBar(false)
                 }
                 is DataState.Loading -> {

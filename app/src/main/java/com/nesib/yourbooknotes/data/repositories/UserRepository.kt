@@ -57,15 +57,7 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
     suspend fun saveFollowingGenres(genres: String) =
         authApi.saveFollowingGenres(genres)
 
-    suspend fun updateUser(
-        username: String?,
-        fullname: String?,
-        email: String?,
-        password: String?,
-        bio: String?
-    ): Response<User> {
-        return authApi.updateUser(username, fullname, email, password, bio)
-    }
+    suspend fun updateUser(body:Map<String,String>) = authApi.updateUser(body)
 
     suspend fun getUser(userId: String) = authApi.getUser(userId)
 

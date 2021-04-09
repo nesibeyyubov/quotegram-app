@@ -107,24 +107,27 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
             android:layout_marginBottom="5dp"
-            android:src="@drawable/ic_users"
+            android:src="@drawable/ic_quote"
             app:layout_constraintBottom_toBottomOf="@+id/bookImageView"
             app:layout_constraintStart_toStartOf="@+id/bookAuthor"
             app:tint="@color/colorSecondaryText" />
 
         <TextView
+            android:id="@+id/bookTotalQuoteCount"
+            android:includeFontPadding="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="3dp"
             android:text="17.269"
             android:textColor="@color/colorSecondaryText"
             android:textSize="8sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-            app:layout_constraintStart_toEndOf="@+id/imageView2" />
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
         <TextView
             android:id="@+id/viewBookBtn"
@@ -153,7 +156,8 @@
         android:id="@+id/likeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_like"
         app:layout_constraintStart_toStartOf="parent"
@@ -163,8 +167,8 @@
         android:id="@+id/like_count_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
         android:text="27"
+        android:layout_marginTop="5dp"
         android:textColor="@color/colorPrimaryText"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/likeBtn"

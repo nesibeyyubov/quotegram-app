@@ -67,9 +67,8 @@ class HomeAdapter(val dialog:AlertDialog) :
                 } else {
                     likeBtn.setImageResource(R.drawable.ic_like)
                 }
-
-
-
+                val quoteCount = quote.book?.totalQuoteCount
+                bookTotalQuoteCount.text = (quoteCount ?: 0).toString()
             }
         }
 

@@ -9,10 +9,13 @@
     android:layout_marginHorizontal="@dimen/page_padding"
     >
 
+
+
     <RelativeLayout
         android:background="@color/colorBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmerLayout"
@@ -33,6 +36,37 @@
                 <include layout="@layout/full_post_shimmer_layout" />
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:id="@+id/failContainer"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textAlignment="center"
+                android:id="@+id/failMessage"
+                android:text="Something went wrong...."
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16sp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:background="@drawable/add_quote_from_this_book_bg"
+                android:id="@+id/tryAgainButton"
+                android:textColor="@color/blue"
+                android:textStyle="bold"
+                android:paddingHorizontal="10dp"
+                android:includeFontPadding="false"
+                android:paddingVertical="5dp"
+                android:text="Try Again"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -62,6 +96,7 @@
                 android:background="@color/fullPostBackgroundColor" />
         </com.facebook.shimmer.ShimmerFrameLayout>
     </RelativeLayout>
+
 
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

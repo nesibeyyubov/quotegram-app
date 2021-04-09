@@ -52,16 +52,16 @@ class QuoteViewModel @Inject constructor(
         get() = _deleteQuote
 
 
-    fun getQuotesByGenre(genre: String, page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
+    fun getQuotesByGenre(genre: String, page: Int = 1,forced:Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
         if(hasInternetConnection()){
             try{
-                if (_quotes.value == null || page > 1) {
+                if (_quotes.value == null || page > 1 || forced) {
                     _quotes.postValue(DataState.Loading())
                     val response = mainRepository.getQuotesByGenre(genre, page)
                     handleQuotesResponse(response)
                 }
             }catch (e:Exception){
-                _quotes.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _quotes.postValue(DataState.Fail())
             }
         }else{
             _quotes.postValue(DataState.Fail(message = "No internet connection"))
@@ -78,7 +78,7 @@ class QuoteViewModel @Inject constructor(
                     handleQuotesResponse(response, forced)
                 }
             } catch (exception: Exception) {
-                _quotes.postValue(DataState.Fail(message = "Something went wrong: ${exception.message}"))
+                _quotes.postValue(DataState.Fail())
             }
         } else {
             _quotes.postValue(DataState.Fail(message = "No internet connection"))
@@ -103,7 +103,7 @@ class QuoteViewModel @Inject constructor(
                     _quotes.postValue(DataState.Success(QuotesResponse(quoteList.toList())))
                     _updateQuote.postValue(handledResponse)
                 } catch (e: Exception) {
-                    _updateQuote.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                    _updateQuote.postValue(DataState.Fail())
                 }
             }else{
                 _updateQuote.postValue(DataState.Fail(message = "No internet connection"))
@@ -123,7 +123,7 @@ class QuoteViewModel @Inject constructor(
                 }
                 _deleteQuote.postValue(handledResponse)
             }catch (e:Exception){
-                _deleteQuote.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _deleteQuote.postValue(DataState.Fail())
             }
         }else{
             _deleteQuote.postValue(DataState.Fail(message = "No internet connection"))
@@ -139,7 +139,7 @@ class QuoteViewModel @Inject constructor(
                 handleQuotesResponse(response)
             }
             catch (e:Exception){
-                _quotes.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _quotes.postValue(DataState.Fail())
             }
         }
         else{
@@ -156,7 +156,7 @@ class QuoteViewModel @Inject constructor(
                 _quote.postValue(handledResponse)
             }
             catch (e:Exception){
-                _quote.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _quote.postValue(DataState.Fail())
             }
         }else{
             _quote.postValue(DataState.Fail(message = "No internet connection"))
@@ -176,7 +176,7 @@ class QuoteViewModel @Inject constructor(
                 _likeQuote.postValue(handledResponse)
             }
             catch (e:Exception){
-                _likeQuote.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _likeQuote.postValue(DataState.Fail())
             }
         }else{
             _likeQuote.postValue(DataState.Fail(message = "No internet connection"))

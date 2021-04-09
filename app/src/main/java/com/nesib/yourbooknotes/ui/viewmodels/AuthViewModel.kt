@@ -78,7 +78,7 @@ class AuthViewModel @Inject constructor(
                     handleResponse(response)
                 }
             } catch (e: Exception) {
-                _auth.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _auth.postValue(DataState.Fail())
             }
         } else {
             _auth.postValue(DataState.Fail(message = "No internet connection"))
@@ -102,7 +102,7 @@ class AuthViewModel @Inject constructor(
                     handleResponse(response)
                 }
             } catch (e: Exception) {
-                _auth.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _auth.postValue(DataState.Fail())
             }
         } else {
             _auth.postValue(DataState.Fail(message = "No internet connection"))
@@ -128,7 +128,7 @@ class AuthViewModel @Inject constructor(
                     handleResponse(response)
                 }
             } catch (e: Exception) {
-                _auth.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _auth.postValue(DataState.Fail())
             }
         } else {
             _auth.postValue(DataState.Fail(message = "No internet connection"))
@@ -152,7 +152,7 @@ class AuthViewModel @Inject constructor(
                     handleResponse(response)
                 }
             } catch (e: Exception) {
-                _auth.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _auth.postValue(DataState.Fail())
             }
         } else {
             _auth.postValue(DataState.Fail(message = "No internet connection"))

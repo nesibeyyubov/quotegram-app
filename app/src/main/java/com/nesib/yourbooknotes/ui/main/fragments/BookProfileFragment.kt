@@ -1,9 +1,11 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -18,13 +20,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.BookQuotesAdapter
 import com.nesib.yourbooknotes.databinding.FragmentBookProfileBinding
+import com.nesib.yourbooknotes.databinding.ReportDialogBinding
 import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.ReportViewModel
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,6 +37,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private val bookViewModel: BookViewModel by viewModels()
     private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
     private val authViewModel: AuthViewModel by viewModels()
+    private val reportViewModel: ReportViewModel by viewModels()
     private val args by navArgs<BookProfileFragmentArgs>()
     private val bookQuotesAdapter by lazy { BookQuotesAdapter() }
 
@@ -42,11 +48,13 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private var currentPage = 1
     private var paginatingFinished = false
 
+    private var makeSureDialog:AlertDialog? = null
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentBookProfileBinding.bind(view)
-        bookViewModel.getBook(args.bookId, currentPage)
+        bookViewModel.getBook(args.bookId)
         setupClickListeners()
         setHasOptionsMenu(true)
         setupRecyclerView()
@@ -84,6 +92,9 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         bookViewModel.book.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    if (binding.failContainer.visibility == View.VISIBLE) {
+                        binding.failContainer.visibility = View.GONE
+                    }
                     binding.bookProfileContent.visibility = View.VISIBLE
                     binding.progressBar.visibility = View.GONE
                     currentBook = it.data?.book!!
@@ -92,10 +103,15 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
                     bindData(it.data.book)
                 }
                 is DataState.Fail -> {
-                    binding.bookProfileContent.visibility = View.VISIBLE
+                    binding.failContainer.visibility = View.VISIBLE
+                    binding.failMessage.text = it.message
+                    showToast(it.message!!)
                     binding.progressBar.visibility = View.GONE
                 }
                 is DataState.Loading -> {
+                    if (binding.failContainer.visibility == View.VISIBLE) {
+                        binding.failContainer.visibility = View.GONE
+                    }
                     binding.bookProfileContent.visibility = View.GONE
                     binding.progressBar.visibility = View.VISIBLE
                 }
@@ -120,6 +136,19 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
                 is DataState.Loading -> {
                     paginationLoading = true
                     binding.paginationProgressBar.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        reportViewModel.report.observe(viewLifecycleOwner){
+            when(it){
+                is DataState.Success->{
+                    showToast(it.data!!.message)
+                    makeSureDialog?.dismiss()
+                }
+                is DataState.Fail->{
+                    showToast(it.message)
+                    makeSureDialog?.dismiss()
                 }
             }
         }
@@ -175,7 +204,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             bookQuoteCount.text = (book.totalQuoteCount ?: 0).toString()
             bookFollowerCount.text = book.followers?.size.toString()
             toggleFollowButtonStyle(book.following)
-            if(book.quotes!!.isEmpty()){
+            if (book.quotes!!.isEmpty()) {
                 noQuoteFoundContainer.visibility = View.VISIBLE
             }
         }
@@ -202,6 +231,9 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             action.book = currentBook
             findNavController().navigate(action)
         }
+        binding.tryAgainButton.setOnClickListener {
+            bookViewModel.getBook(args.bookId,forced = true)
+        }
 
         binding.bookFollowButton.setOnClickListener {
             currentBook?.let { book ->
@@ -224,9 +256,35 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         }
     }
 
+    private fun showMakeSureDialogForReport() {
+        val view = layoutInflater.inflate(R.layout.report_dialog, binding.root, false)
+        val binding = ReportDialogBinding.bind(view)
+        makeSureDialog = AlertDialog.Builder(requireContext()).setView(binding.root).create()
+        makeSureDialog!!.show()
+
+        binding.apply {
+            notNowButton.setOnClickListener { makeSureDialog!!.dismiss() }
+            reportButton.setOnClickListener {
+                makeSureDialog!!.setCancelable(false)
+                binding.reportProgressBar.visibility = View.VISIBLE
+                binding.reportButton.visibility = View.INVISIBLE
+                binding.notNowButton.isEnabled = false
+                reportViewModel.reportBook(authViewModel.currentUserId ?: "", args.bookId)
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.book_profile_menu,menu)
+        inflater.inflate(R.menu.book_profile_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId==R.id.report_book_menu_item){
+            showMakeSureDialogForReport()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

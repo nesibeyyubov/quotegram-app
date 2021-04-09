@@ -58,7 +58,7 @@ class UserViewModel @Inject constructor(
                     val response = userRepository.getMoreUserQuotes(id, page)
                     handleQuotesResponse(response)
                 } catch (e: Exception) {
-                    _userQuotes.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                    _userQuotes.postValue(DataState.Fail())
                 }
             } else {
                 _userQuotes.postValue(DataState.Fail(message = "No internet connection"))
@@ -66,10 +66,10 @@ class UserViewModel @Inject constructor(
 
         }
 
-    fun getUser(userId: String? = null) = viewModelScope.launch(Dispatchers.IO) {
+    fun getUser(userId: String? = null,forced:Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
         if (hasInternetConnection()) {
             try {
-                if (_user.value == null) {
+                if (_user.value == null || forced) {
                     _user.postValue(DataState.Loading())
                     val id = userId ?: sharedPreferencesRepository.getCurrentUser()?.userId!!
                     val response = userRepository.getUser(id)
@@ -77,7 +77,7 @@ class UserViewModel @Inject constructor(
                     _user.postValue(handledResponse)
                 }
             } catch (e: Exception) {
-                _user.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _user.postValue(DataState.Fail())
             }
         } else {
             _user.postValue(DataState.Fail(message = "No internet connection"))
@@ -101,7 +101,7 @@ class UserViewModel @Inject constructor(
                 }
                 _userQuotes.postValue(DataState.Success(QuotesResponse(userQuoteList.toList())))
             } catch (e: Exception) {
-                _userQuotes.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _userQuotes.postValue(DataState.Fail())
             }
         } else {
             _userQuotes.postValue(DataState.Fail(message = "No internet connection"))
@@ -116,7 +116,7 @@ class UserViewModel @Inject constructor(
                 val response = userRepository.getUsers(searchQuery)
                 handleUsersResponse(response)
             } catch (e: Exception) {
-                _users.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _users.postValue(DataState.Fail())
             }
         } else {
             _users.postValue(DataState.Fail(message = "No internet connection"))
@@ -133,7 +133,7 @@ class UserViewModel @Inject constructor(
                 val handledResponse = handleUserResponse(response)
                 _userFollow.postValue(handledResponse)
             } catch (e: Exception) {
-                _userFollow.postValue(DataState.Fail(message = "Something went wrong: ${e.message}"))
+                _userFollow.postValue(DataState.Fail())
             }
         } else {
             _userFollow.postValue(DataState.Fail(message = "No internet connection"))
@@ -146,13 +146,25 @@ class UserViewModel @Inject constructor(
     }
 
     fun updateUser(
-        username: String?,
-        fullname: String?,
-        email: String?,
-        password: String?,
-        bio: String?
-    ) {
-
+        username: String,
+        fullname: String,
+        email: String,
+        bio: String
+    ) = viewModelScope.launch(Dispatchers.IO) {
+        try {
+            if(hasInternetConnection()){
+                _user.postValue(DataState.Loading())
+                val body = mapOf("username" to username,"fullname" to fullname, "email" to email, "bio" to bio)
+                val response = userRepository.updateUser(body)
+                val handledResponse = handleUserResponse(response,true)
+                _user.postValue(handledResponse)
+            }else{
+                _user.postValue(DataState.Fail(message = "No internet connection"))
+            }
+        }
+        catch (e:Exception){
+            _user.postValue(DataState.Fail(message = "Something went wrong: ${e.cause}"))
+        }
     }
 
     private fun handleQuotesResponse(response: Response<QuotesResponse>) {
@@ -180,6 +192,7 @@ class UserViewModel @Inject constructor(
         }
     }
 
+
     private fun handleUsersResponse(response: Response<UsersResponse>) {
         when (response.code()) {
             CODE_SUCCESS -> {
@@ -191,10 +204,12 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    private fun handleUserResponse(response: Response<UserResponse>): DataState<UserResponse> {
+    private fun handleUserResponse(response: Response<UserResponse>,userUpdated:Boolean = false): DataState<UserResponse> {
         when (response.code()) {
             CODE_SUCCESS -> {
-                userQuoteList = response.body()!!.user!!.quotes!!.toMutableList()
+                if(!userUpdated){
+                    userQuoteList = response.body()!!.user!!.quotes!!.toMutableList()
+                }
                 return DataState.Success(response.body())
             }
             CODE_CREATION_SUCCESS -> {
@@ -220,6 +235,7 @@ class UserViewModel @Inject constructor(
         }
         return DataState.Fail(message = "No error code provided")
     }
+
 
     private fun hasInternetConnection(): Boolean {
         val connectivityManager = application.getSystemService(

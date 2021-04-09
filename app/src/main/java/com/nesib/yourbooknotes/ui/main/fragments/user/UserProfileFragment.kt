@@ -1,8 +1,10 @@
 package com.nesib.yourbooknotes.ui.main.fragments.user
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -16,13 +18,16 @@ import coil.load
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentUserProfileBinding
+import com.nesib.yourbooknotes.databinding.ReportDialogBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
 import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
+import com.nesib.yourbooknotes.ui.viewmodels.ReportViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,6 +38,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private val userViewModel: UserViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
     private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
+    private val reportViewModel: ReportViewModel by viewModels()
     private val args by navArgs<UserProfileFragmentArgs>()
 
     private var paginatingFinished = false
@@ -40,6 +46,8 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private var currentPage = 1
     private var currentUserQuotes = mutableListOf<Quote>()
     private var currentUser: User? = null
+
+    private var makeSureDialog: AlertDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,10 +73,10 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
             binding.userPhotoImageView.load(user.profileImage) {
                 error(R.drawable.user)
             }
-        }else{
+        } else {
             binding.userPhotoImageView.load(R.drawable.user)
         }
-        if(user.quotes!!.isEmpty()){
+        if (user.quotes!!.isEmpty()) {
             binding.noQuoteFoundContainer.visibility = View.VISIBLE
         }
         toggleFollowButtonStyle(user.followers!!.contains(authViewModel.currentUserId))
@@ -94,6 +102,9 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         userViewModel.user.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    if (binding.failContainer.visibility == View.VISIBLE) {
+                        binding.failContainer.visibility = View.GONE
+                    }
                     binding.progressBar.visibility = View.GONE
                     binding.profileContent.visibility = View.VISIBLE
                     val user = it.data!!.user!!
@@ -102,10 +113,16 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                     currentUserQuotes = user.quotes!!.toMutableList()
                 }
                 is DataState.Fail -> {
+                    binding.failContainer.visibility = View.VISIBLE
+                    binding.failMessage.text = it.message
+                    showToast(it.message!!)
                     binding.progressBar.visibility = View.GONE
-                    binding.profileContent.visibility = View.VISIBLE
+                    binding.profileContent.visibility = View.INVISIBLE
                 }
                 is DataState.Loading -> {
+                    if (binding.failContainer.visibility == View.VISIBLE) {
+                        binding.failContainer.visibility = View.GONE
+                    }
                     binding.progressBar.visibility = View.VISIBLE
                     binding.profileContent.visibility = View.GONE
                 }
@@ -125,8 +142,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                 }
                 is DataState.Fail -> {
                     binding.paginationProgressBar.visibility = View.INVISIBLE
-                    Toast.makeText(requireContext(), "Failed :${it.message}", Toast.LENGTH_SHORT)
-                        .show()
+                    showToast(it.message!!)
                     paginationLoading = false
                 }
                 is DataState.Loading -> {
@@ -138,15 +154,22 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         }
         userViewModel.userFollow.observe(viewLifecycleOwner) {
             when (it) {
-                is DataState.Success -> {
-
-                }
                 is DataState.Fail -> {
-                }
-                is DataState.Loading -> {
+                    showToast(it.message)
                 }
             }
-
+        }
+        reportViewModel.report.observe(viewLifecycleOwner) {
+            when (it) {
+                is DataState.Success -> {
+                    makeSureDialog?.dismiss()
+                    showToast(it.data!!.message)
+                }
+                is DataState.Fail -> {
+                    makeSureDialog?.dismiss()
+                    showToast(it.message)
+                }
+            }
         }
     }
 
@@ -176,6 +199,9 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
             }
 
         }
+        binding.tryAgainButton.setOnClickListener {
+            userViewModel.getUser(args.userId, forced = true)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -202,9 +228,35 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         })
     }
 
+    private fun showMakeSureDialogForReport() {
+        val view = layoutInflater.inflate(R.layout.report_dialog, binding.root, false)
+        val binding = ReportDialogBinding.bind(view)
+        makeSureDialog = AlertDialog.Builder(requireContext()).setView(binding.root).create()
+        makeSureDialog!!.show()
+
+        binding.apply {
+            notNowButton.setOnClickListener { makeSureDialog!!.dismiss() }
+            reportButton.setOnClickListener {
+                makeSureDialog!!.setCancelable(false)
+                binding.reportProgressBar.visibility = View.VISIBLE
+                binding.reportButton.visibility = View.INVISIBLE
+                binding.notNowButton.isEnabled = false
+                reportViewModel.reportUser(authViewModel.currentUserId ?: "", args.userId)
+            }
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.user_profile_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.report_user_menu_item) {
+            showMakeSureDialogForReport()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 

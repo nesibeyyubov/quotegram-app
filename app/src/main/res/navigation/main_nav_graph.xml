@@ -57,7 +57,13 @@
         android:id="@+id/editUserFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.user.EditUserFragment"
         android:label="Edit profile"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_profile" >
+        <argument
+            android:name="user"
+            app:argType="com.nesib.yourbooknotes.models.User"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.search.SearchFragment"

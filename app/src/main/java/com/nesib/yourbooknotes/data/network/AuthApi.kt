@@ -43,12 +43,8 @@ interface AuthApi {
 
     @PUT("/users/")
     suspend fun updateUser(
-        @Body username: String?,
-        @Body fullname: String?,
-        @Body email: String?,
-        @Body password: String?,
-        @Body bio: String?,
-    ): Response<User>
+        @Body body:Map<String,String>
+    ): Response<UserResponse>
 
     @PATCH("/users/")
     suspend fun saveFollowingGenres(

@@ -16,6 +16,7 @@ import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.IUsersNotifer
 import com.nesib.yourbooknotes.utils.Utils
+import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -48,14 +49,13 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
                     if (it.data!!.users.isEmpty()) {
                         binding.noUserFound.visibility = View.VISIBLE
                     }
-//                    toggleProgressBar(false)
-                    adapter.setData(it.data!!.users)
+                    adapter.setData(it.data.users)
                 }
                 is DataState.Fail -> {
-//                    toggleProgressBar(false)
+                    showToast(it.message!!)
                 }
                 is DataState.Loading -> {
-//                    toggleProgressBar(true)
+
                 }
             }
         }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,6 +27,7 @@ import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,23 +36,23 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
 
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val userViewModel: UserViewModel by viewModels()
-    private val quoteViewModel: QuoteViewModel by viewModels({requireActivity()})
+    private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
 
     private var paginationLoading = false
     private var currentPage = 1
     private var paginationFinished = false
     private var currentUserQuotes: MutableList<Quote>? = null
+    private var currentUser: User? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentMyProfileBinding.bind(view)
-
         setupClickListeners()
-        setFragmentResultListener()
         setupRecyclerView()
         subscribeObservers()
         getUser()
+        setFragmentResultListener()
     }
 
     private fun getUser() {
@@ -65,15 +67,24 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         userViewModel.user.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    if (binding.failContainer.visibility == View.VISIBLE) {
+                        binding.failContainer.visibility = View.GONE
+                    }
                     toggleProgressBar(false)
-                    val user = it.data!!.user!!
-                    currentUserQuotes = user.quotes!!.toMutableList()
-                    bindData(user)
+                    currentUser = it.data!!.user!!
+                    currentUserQuotes = currentUser!!.quotes!!.toMutableList()
+                    bindData(currentUser!!)
                 }
                 is DataState.Fail -> {
-                    toggleProgressBar(false)
+                    binding.failMessage.text = it.message
+                    binding.failContainer.visibility = View.VISIBLE
+                    showToast(it.message!!)
+                    toggleProgressBar(false, true)
                 }
                 is DataState.Loading -> {
+                    if (binding.failContainer.visibility == View.VISIBLE) {
+                        binding.failContainer.visibility = View.GONE
+                    }
                     toggleProgressBar(true)
                 }
             }
@@ -91,22 +102,20 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 }
                 is DataState.Fail -> {
                     binding.paginationProgressBar.visibility = View.INVISIBLE
-                    Toast.makeText(requireContext(), "Failed :${it.message}", Toast.LENGTH_SHORT)
-                        .show()
+                    showToast(it.message!!)
                     paginationLoading = false
                 }
                 is DataState.Loading -> {
                     binding.paginationProgressBar.visibility = View.VISIBLE
                     paginationLoading = true
-
                 }
             }
         }
     }
 
-    private fun toggleProgressBar(loading: Boolean) {
+    private fun toggleProgressBar(loading: Boolean, failed: Boolean = false) {
         binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
-        binding.profileContent.visibility = if (loading) View.GONE else View.VISIBLE
+        binding.profileContent.visibility = if (loading || failed) View.INVISIBLE else View.VISIBLE
         binding.notSignedinContainer.visibility = View.GONE
     }
 
@@ -122,25 +131,31 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
             binding.userPhotoImageView.load(user.profileImage) {
                 error(R.drawable.user)
             }
-        }else{
+        } else {
             binding.userPhotoImageView.load(R.drawable.user)
         }
-        if(user.quotes!!.isEmpty()){
+        if (user.quotes!!.isEmpty()) {
             binding.noQuoteFoundContainer.visibility = View.VISIBLE
         }
         homeAdapter.setData(user.quotes)
     }
 
     private fun setupClickListeners() {
-        binding.followButton.setOnClickListener {
-            findNavController().navigate(R.id.action_myProfileFragment_to_editUserFragment)
+        binding.editUserButton.setOnClickListener {
+            val action = MyProfileFragmentDirections.actionMyProfileFragmentToEditUserFragment()
+            action.user = currentUser
+            findNavController().navigate(action)
         }
-        binding.loginButton.setOnClickListener{
+        binding.loginButton.setOnClickListener {
             authViewModel.logout()
-            startActivity(Intent(requireActivity(),StartActivity::class.java))
+            startActivity(Intent(requireActivity(), StartActivity::class.java))
             requireActivity().finish()
         }
+        binding.tryAgainButton.setOnClickListener {
+            userViewModel.getUser(forced = true)
+        }
     }
+
     private fun setFragmentResultListener() {
         parentFragmentManager.setFragmentResultListener(
             "deletedQuote",
@@ -153,6 +168,16 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
             viewLifecycleOwner
         ) { s: String, updatedQuote: Bundle ->
             userViewModel.notifyQuoteUpdated((updatedQuote["updatedQuote"] as Quote))
+        }
+
+        parentFragmentManager.setFragmentResultListener(
+            "updatedUser",
+            viewLifecycleOwner
+        ) { s: String, updatedUser: Bundle ->
+            binding.apply {
+                currentUser = updatedUser["updatedUser"] as User
+                bindData(currentUser!!)
+            }
         }
     }
 

@@ -2,9 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
+    android:layout_height="match_parent">
 
 
     <ProgressBar
@@ -12,18 +10,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:indeterminateTint="@color/blue"
+        android:indeterminateDrawable="@drawable/custom_progress_bar"
         android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/failContainer"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textAlignment="center"
+            android:id="@+id/failMessage"
+            android:text="Something went wrong...."
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="16sp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:background="@drawable/add_quote_from_this_book_bg"
+            android:id="@+id/tryAgainButton"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            android:paddingHorizontal="10dp"
+            android:includeFontPadding="false"
+            android:paddingVertical="5dp"
+            android:text="Try Again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/profileContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:paddingTop="@dimen/page_padding"
         android:paddingHorizontal="@dimen/page_padding"
+        android:paddingTop="@dimen/page_padding"
         android:scrollbars="none"
-        >
+        android:visibility="invisible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,8 +63,7 @@
                 android:id="@+id/image_container"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_marginTop="5dp"
-                >
+                android:layout_marginTop="5dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/userPhoto_imageView"
@@ -50,9 +77,9 @@
             <TextView
                 android:id="@+id/usernameTextView"
                 android:layout_width="wrap_content"
-                android:maxWidth="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:maxWidth="300dp"
                 android:text="\@janedoe"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18sp"
@@ -62,10 +89,10 @@
                 android:id="@+id/bioTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="300dp"
+                android:maxLines="3"
                 android:text="This is biob. Tbio here. This is my bio here"
                 android:textAlignment="center"
-                android:maxLines="3"
-                android:maxWidth="300dp"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -170,10 +197,10 @@
                 android:id="@+id/followButton"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:paddingHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/follow_button_bg"
-                android:gravity="center">
+                android:gravity="center"
+                android:paddingHorizontal="20dp">
 
                 <TextView
                     android:id="@+id/followButtonTextView"
@@ -185,43 +212,45 @@
             </LinearLayout>
 
             <LinearLayout
-                android:paddingTop="50dp"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:visibility="gone"
                 android:id="@+id/noQuoteFoundContainer"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
                 android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:paddingTop="50dp"
+                android:visibility="gone">
+
                 <ImageView
-                    android:alpha="0.5"
-                    app:tint="@color/colorSecondaryText"
-                    android:src="@drawable/ic_quote"
                     android:layout_width="40dp"
-                    android:layout_height="40dp"/>
+                    android:layout_height="40dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_quote"
+                    app:tint="@color/colorSecondaryText" />
+
                 <TextView
-                    android:textColor="@color/colorSecondaryText"
-                    android:textSize="15sp"
-                    android:textAlignment="center"
-                    android:text="No qutoes found from\nthis user"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="No qutoes found from\nthis user"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/user_quotes_recyclerView"
                 android:layout_width="match_parent"
-                android:clipToPadding="false"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp" />
+                android:layout_marginTop="15dp"
+                android:clipToPadding="false" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/paginationProgressBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
                 android:background="@color/colorBackground"
                 android:gravity="center"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

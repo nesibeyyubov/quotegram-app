@@ -20,7 +20,9 @@ import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.SharedViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.selects.select
 import java.util.*
 
 @AndroidEntryPoint
@@ -42,8 +44,14 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSearchBooksBinding.bind(view)
         subscribeObservers()
+        setupClickListeners()
         setupRecyclerView()
         discoverBooks()
+    }
+    private fun setupClickListeners(){
+        binding.tryAgainButton.setOnClickListener {
+            bookViewModel.discoverBooks(genre = selectedGenre)
+        }
     }
 
     private fun discoverBooks() {
@@ -97,6 +105,9 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books) {
         bookViewModel.books.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    if(binding.failContainer.visibility == View.VISIBLE){
+                        binding.failContainer.visibility = View.GONE
+                    }
                     paginatingFinished =
                         paginationLoading && (currentBooks?.size == it.data!!.books.size)
                     searchViewTextChanged = false
@@ -109,11 +120,16 @@ class SearchBooksFragment : Fragment(R.layout.fragment_search_books) {
                     }
                 }
                 is DataState.Fail -> {
+                    binding.failMessage.text = it.message
+                    binding.failContainer.visibility = View.VISIBLE
                     paginationLoading = false
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    showToast(it.message!!)
                     toggleProgressBar(false)
                 }
                 is DataState.Loading -> {
+                    if(binding.failContainer.visibility == View.VISIBLE){
+                        binding.failContainer.visibility = View.GONE
+                    }
                     if (!searchViewTextChanged) {
                         if (paginationLoading) {
                             binding.paginationProgressBar.visibility = View.VISIBLE

@@ -17,6 +17,7 @@ import com.nesib.yourbooknotes.databinding.FragmentSelectBookBinding
 import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -106,6 +107,7 @@ class SelectBookFragment : Fragment(R.layout.fragment_select_book) {
 
                 }
                 is DataState.Fail -> {
+                    showToast(it.message!!)
                     paginationLoading = false
                     toggleProgressBar(false)
                     binding.paginationProgressBar.visibility = View.INVISIBLE

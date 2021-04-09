@@ -15,6 +15,7 @@
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="actionMenuTextAppearance">@style/ActionMenuTextAppearance</item>
         <item name="actionMenuTextColor">@color/blue</item>
+        <item name="colorControlNormal">@color/colorPrimaryText</item>
         <!-- Customize your theme here. -->
     </style>
 

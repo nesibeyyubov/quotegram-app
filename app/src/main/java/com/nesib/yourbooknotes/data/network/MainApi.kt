@@ -49,7 +49,7 @@ interface MainApi {
     suspend fun discoverBooks(
         @Query("genre") genre: String,
         @Query("page") page: Int,
-        @Query("search") search:String
+        @Query("search") search: String
     ): Response<BooksResponse>
 
     @GET("/books/{bookId}")
@@ -73,5 +73,12 @@ interface MainApi {
     @POST("/books/{bookToFollowId}/followers")
     suspend fun followOrUnfollowBook(@Path("bookToFollowId") bookId: String): Response<BookResponse>
 
+    @POST("/reports/quote")
+    suspend fun reportQuote(@Body reportBody: Map<String, String>): Response<BasicResponse>
 
+    @POST("/reports/user")
+    suspend fun reportUser(@Body reportBody: Map<String, String>): Response<BasicResponse>
+
+    @POST("/reports/book")
+    suspend fun reportBook(@Body reportBody: Map<String, String>): Response<BasicResponse>
 }
