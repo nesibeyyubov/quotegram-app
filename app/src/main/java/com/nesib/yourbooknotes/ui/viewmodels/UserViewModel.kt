@@ -148,13 +148,12 @@ class UserViewModel @Inject constructor(
     fun updateUser(
         username: String,
         fullname: String,
-        email: String,
         bio: String
     ) = viewModelScope.launch(Dispatchers.IO) {
         try {
             if(hasInternetConnection()){
                 _user.postValue(DataState.Loading())
-                val body = mapOf("username" to username,"fullname" to fullname, "email" to email, "bio" to bio)
+                val body = mapOf("username" to username,"fullname" to fullname, "bio" to bio)
                 val response = userRepository.updateUser(body)
                 val handledResponse = handleUserResponse(response,true)
                 _user.postValue(handledResponse)

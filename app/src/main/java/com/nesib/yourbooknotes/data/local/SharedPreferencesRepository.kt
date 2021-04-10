@@ -52,6 +52,10 @@ class SharedPreferencesRepository @Inject constructor(
         editor.apply()
     }
 
+    fun updateUser(user:UserAuth){
+        editor.putString("username", user.username)
+    }
+
     fun getFollowingGenres(): String {
         return sharedPreferences.getString("genres", "")!!
     }

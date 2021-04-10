@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Quote(
-    @SerializedName("_id") val id:String,
+    @SerializedName("_id") val id: String,
     var quote: String?,
     var book: Book?,
     var genre: String?,
@@ -12,4 +12,4 @@ data class Quote(
     var likes: List<String>?,
     var liked: Boolean = false,
     var saved: Boolean = false
-):Serializable
+) : Serializable

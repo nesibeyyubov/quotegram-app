@@ -24,7 +24,7 @@ import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 import dagger.hilt.android.qualifiers.ApplicationContext
 
-class HomeAdapter(val dialog:AlertDialog) :
+class HomeAdapter(val dialog: AlertDialog) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     var currentUserId: String? = null
     var OnUserClickListener: ((String) -> Unit)? = null
@@ -50,12 +50,13 @@ class HomeAdapter(val dialog:AlertDialog) :
             val quote = differ.currentList[adapterPosition]
             binding.apply {
                 usernameTextView.text = quote.creator?.username
-                if(quote.creator?.profileImage != "" && quote.creator?.profileImage != null){
+                if (quote.creator?.profileImage != "" && quote.creator?.profileImage != null) {
                     userphotoImageView.load(quote.creator?.profileImage)
-                }else{
+                } else {
                     userphotoImageView.load(R.drawable.user)
                 }
-                quoteTextView.text = quote.quote
+                quoteTextView.setText(quote.quote)
+
                 bookAuthor.text = quote.book?.author
                 bookImageView.load(API_URL + quote.book?.image) {
                     crossfade(600)
@@ -75,7 +76,7 @@ class HomeAdapter(val dialog:AlertDialog) :
         override fun onClick(v: View?) {
             when (v?.id) {
                 R.id.likeBtn -> {
-                    if(currentUserId != null){
+                    if (currentUserId != null) {
                         val quote = differ.currentList[adapterPosition]
                         val likes = quote.likes!!.toMutableList()
                         if (!quote.liked) {
@@ -91,10 +92,15 @@ class HomeAdapter(val dialog:AlertDialog) :
                         onLikeClickListener?.let {
                             it(quote)
                         }
-                        if(quote.liked){
-                            binding.likeBtn.startAnimation(AnimationUtils.loadAnimation(binding.likeBtn.context,R.anim.bouncing_anim))
+                        if (quote.liked) {
+                            binding.likeBtn.startAnimation(
+                                AnimationUtils.loadAnimation(
+                                    binding.likeBtn.context,
+                                    R.anim.bouncing_anim
+                                )
+                            )
                         }
-                    }else{
+                    } else {
                         dialog.show()
                     }
 

@@ -33,13 +33,12 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
     private lateinit var googleSignInActivityLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var binding: FragmentSignupBinding
-    private lateinit var authViewModel: AuthViewModel
+    private val authViewModel: AuthViewModel by viewModels({requireActivity()})
 
     private var signingWithGoogle = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSignupBinding.bind(view)
-        authViewModel = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
 
         registerActivityResult()
         subscribeObserver()
@@ -88,6 +87,11 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                         // show something useful for user
                     }
                 }
+                else{
+                    binding.signupErrorTextView.visibility = View.VISIBLE
+                    binding.signupErrorTextView.text = "Ooops, something went wrong"
+                }
+
             }
     }
 

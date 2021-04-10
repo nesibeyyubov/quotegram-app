@@ -30,44 +30,48 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private lateinit var googleSignInActivityLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var binding: FragmentLoginBinding
-    private lateinit var authViewModel:AuthViewModel
+    private val authViewModel: AuthViewModel by viewModels({requireActivity()})
 
     private var signingInWithGoogle = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentLoginBinding.bind(view)
-        authViewModel = ViewModelProvider(requireActivity()).get(AuthViewModel::class.java)
 
         registerActivityResult()
         subscribeObserver()
         setupClickListeners()
     }
-    private fun registerActivityResult(){
-        googleSignInActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-            if(task.isSuccessful){
-                val account = task.result
-                val email = account?.email
-                val profileImage = account?.photoUrl?.toString() ?: ""
-                // do login operation here
-                if(email != null){
-                    googleSignInClient.signOut()
-                    signingInWithGoogle = true
-                    authViewModel.signInWithGoogle(email,profileImage)
-                }
-                else{
-                    signingInWithGoogle = false
-                    // show something useful for user
+
+    private fun registerActivityResult() {
+        googleSignInActivityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+                if (task.isSuccessful) {
+                    val account = task.result
+                    val email = account?.email
+                    val profileImage = account?.photoUrl?.toString() ?: ""
+                    // do login operation here
+                    if (email != null) {
+                        googleSignInClient.signOut()
+                        signingInWithGoogle = true
+                        authViewModel.signInWithGoogle(email, profileImage)
+                    } else {
+                        signingInWithGoogle = false
+                        // show something useful for user
+                    }
+                }else{
+                    binding.loginErrorTextView.visibility = View.VISIBLE
+                    binding.loginErrorTextView.text = "Ooops, something went wrong"
                 }
             }
-        }
     }
 
     private fun setupClickListeners() {
         binding.loginBtn.setOnClickListener {
             authViewModel.login(
                 binding.emailEditText.text.toString(),
-                binding.passwordEditText.text.toString()
+                binding.passwordEditText.text.toString(),
+                binding.emailEditText.text.toString()
             )
         }
         binding.loginToSignupBtn.setOnClickListener {
@@ -92,22 +96,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 is DataState.Fail -> {
                     signingInWithGoogle = false
                     if(authViewModel.hasLoginError){
-                        binding.loginErrorTextView.visibility = View.VISIBLE
-                        binding.loginErrorTextView.text = it.message
-                        binding.loginBtn.isEnabled = true
-                        binding.loginBtnProgressBar.visibility = View.GONE
-                        binding.loginBtnTextView.visibility = View.VISIBLE
-                        binding.signInGoogleProgressBar.visibility = View.INVISIBLE
-                        binding.signInGoogleTextView.visibility = View.VISIBLE
+                    binding.loginErrorTextView.visibility = View.VISIBLE
+                    binding.loginErrorTextView.text = it.message
+                    binding.loginBtn.isEnabled = true
+                    binding.loginBtnProgressBar.visibility = View.GONE
+                    binding.loginBtnTextView.visibility = View.VISIBLE
+                    binding.signInGoogleProgressBar.visibility = View.INVISIBLE
+                    binding.signInGoogleTextView.visibility = View.VISIBLE
                     }
                 }
                 is DataState.Loading -> {
                     binding.loginBtn.isEnabled = false
-                    if(signingInWithGoogle){
+                    if (signingInWithGoogle) {
                         binding.signInGoogleProgressBar.visibility = View.VISIBLE
                         binding.signInGoogleTextView.visibility = View.GONE
-                    }
-                    else{
+                    } else {
                         binding.loginBtnProgressBar.visibility = View.VISIBLE
                         binding.loginBtnTextView.visibility = View.GONE
                     }

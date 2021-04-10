@@ -32,16 +32,15 @@
         app:layout_constraintTop_toTopOf="@+id/userphoto_imageView" />
 
 
-
     <ImageButton
         android:id="@+id/postOptionsBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
         android:src="@drawable/ic_more"
-        app:layout_constraintBottom_toBottomOf="@+id/textView8"
+        app:layout_constraintBottom_toBottomOf="@+id/username_textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView8" />
+        app:layout_constraintTop_toTopOf="@+id/username_textView" />
     <View
         android:id="@+id/view2"
         android:layout_width="match_parent"
@@ -50,19 +49,22 @@
         android:background="@color/lineColor"
         app:layout_constraintTop_toBottomOf="@+id/userphoto_imageView" />
 
-    <TextView
+    <kr.co.prnd.readmore.ReadMoreTextView
         android:id="@+id/quoteTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        app:readMoreMaxLine="4"
+        app:readMoreColor="@color/colorSecondaryText"
+        app:readMoreText="...view more"
         android:includeFontPadding="false"
-        android:text="Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking."
+        android:text="Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking.results of other people's thinking.results of other people's thinking."
         android:textColor="@color/colorPrimaryText"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/book_info_container"

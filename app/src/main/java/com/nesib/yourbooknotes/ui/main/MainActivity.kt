@@ -110,7 +110,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val headerBinding = DrawerHeaderLayoutBinding.bind(headerView)
                 headerBinding.headerUsername.text = currentUser.username
                 headerBinding.headerEmail.text = currentUser.email
-                Log.d("mytag", "setupDrawerUi: ${currentUser.profileImage}")
                 headerBinding.headerProfileImage.load(currentUser.profileImage){
                     error(R.drawable.user)
                 }
@@ -218,13 +217,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun addSearchInputTextChangeListener() {
         binding.searchInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
             }
-
             override fun afterTextChanged(s: Editable?) {
                 sharedViewModel.setChangedText(s.toString())
             }

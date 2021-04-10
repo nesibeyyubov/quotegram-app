@@ -44,13 +44,7 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
         Log.d("mytag", "signInWithGoogle: ${profileImage}")
         return authApi.signInWithGoogle(map)
     }
-    suspend fun login(email: String, password: String): Response<UserAuth> {
-        val map = mapOf(
-            "email" to email,
-            "password" to password,
-        )
-        return authApi.login(map)
-    }
+    suspend fun login(loginBody:Map<String,String>) = authApi.login(loginBody)
 
     suspend fun followOrUnFollowUser(userId: String) = authApi.followOrUnFollowUser(userId)
 

@@ -90,8 +90,8 @@
         android:indeterminateDrawable="@drawable/custom_progress_bar"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:visibility="invisible"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         />
 
@@ -145,7 +145,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                 />
 
             <LinearLayout
                 android:layout_width="match_parent"

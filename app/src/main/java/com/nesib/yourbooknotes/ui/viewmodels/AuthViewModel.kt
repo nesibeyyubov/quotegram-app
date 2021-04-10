@@ -58,7 +58,6 @@ class AuthViewModel @Inject constructor(
         _currentUserId = user.userId
         _isAuthenticated = user.userId != null && user.token != null
         currentUser = user
-        Log.d("mytag", "initAuthentication: ${user}")
     }
 
     fun getFollowingGenres() = sharedPreferencesRepository.getFollowingGenres()
@@ -66,45 +65,51 @@ class AuthViewModel @Inject constructor(
     fun logout() = sharedPreferencesRepository.clearUser()
 
 
-    fun login(email: String, password: String) {
-        if (hasInternetConnection()) {
-            try {
-                viewModelScope.launch(Dispatchers.IO) {
+    fun login(email: String, password: String, username: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            if (hasInternetConnection()) {
+                try {
                     _auth.postValue(DataState.Loading())
-                    val response = userRepository.login(email, password)
+                    val loginBody =
+                        mapOf("email" to email, "password" to password, "username" to username)
+                    val response = userRepository.login(loginBody)
                     if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
                         hasLoginError = true
                     }
                     handleResponse(response)
-                }
-            } catch (e: Exception) {
-                _auth.postValue(DataState.Fail())
-            }
-        } else {
-            _auth.postValue(DataState.Fail(message = "No internet connection"))
-        }
 
-    }
+                } catch (e: Exception) {
+                    hasLoginError = true
+                    _auth.postValue(DataState.Fail())
+                }
+            } else {
+                hasLoginError = true
+                _auth.postValue(DataState.Fail(message = "No internet connection"))
+            }
+
+        }
 
     fun signup(
         email: String,
         password: String,
         username: String,
-    ) {
+    ) = viewModelScope.launch(Dispatchers.IO) {
         if (hasInternetConnection()) {
             try {
-                viewModelScope.launch(Dispatchers.IO) {
-                    _auth.postValue(DataState.Loading())
-                    val response = userRepository.signup(email, password, username)
-                    if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
-                        hasSignupError = true
-                    }
-                    handleResponse(response)
+
+                _auth.postValue(DataState.Loading())
+                val response = userRepository.signup(email, password, username)
+                if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
+                    hasSignupError = true
                 }
+                handleResponse(response)
+
             } catch (e: Exception) {
+                hasSignupError = true
                 _auth.postValue(DataState.Fail())
             }
         } else {
+            hasSignupError = true
             _auth.postValue(DataState.Fail(message = "No internet connection"))
         }
 
@@ -115,22 +120,22 @@ class AuthViewModel @Inject constructor(
         fullname: String,
         username: String,
         profileImage: String
-    ) {
+    ) = viewModelScope.launch(Dispatchers.IO) {
         if (hasInternetConnection()) {
             try {
-                viewModelScope.launch(Dispatchers.IO) {
-                    _auth.postValue(DataState.Loading())
-                    val response =
-                        userRepository.signupWithGoogle(email, fullname, username, profileImage)
-                    if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
-                        hasSignupError = true
-                    }
-                    handleResponse(response)
+                _auth.postValue(DataState.Loading())
+                val response =
+                    userRepository.signupWithGoogle(email, fullname, username, profileImage)
+                if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
+                    hasSignupError = true
                 }
+                handleResponse(response)
             } catch (e: Exception) {
+                hasSignupError = true
                 _auth.postValue(DataState.Fail())
             }
         } else {
+            hasSignupError = true
             _auth.postValue(DataState.Fail(message = "No internet connection"))
         }
 
@@ -139,22 +144,25 @@ class AuthViewModel @Inject constructor(
     fun signInWithGoogle(
         email: String,
         profileImage: String
-    ) {
+    ) = viewModelScope.launch(Dispatchers.IO) {
         if (hasInternetConnection()) {
             try {
-                viewModelScope.launch(Dispatchers.IO) {
-                    _auth.postValue(DataState.Loading())
-                    val response =
-                        userRepository.signInWithGoogle(email, profileImage)
-                    if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
-                        hasLoginError = true
-                    }
-                    handleResponse(response)
+                _auth.postValue(DataState.Loading())
+                val response =
+                    userRepository.signInWithGoogle(email, profileImage)
+                if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
+                    hasLoginError = true
                 }
+                handleResponse(response)
+
             } catch (e: Exception) {
+                Log.d("mytag", "signInWithGoogle: catch block: ${e.message}")
+                hasLoginError = true
                 _auth.postValue(DataState.Fail())
             }
         } else {
+            Log.d("mytag", "no internet connnection")
+            hasLoginError = true
             _auth.postValue(DataState.Fail(message = "No internet connection"))
         }
 
@@ -166,6 +174,10 @@ class AuthViewModel @Inject constructor(
         if (auth.value?.data != null) {
             sharedPreferencesRepository.saveUser(auth.value?.data!!)
         }
+    }
+
+    fun updateUser() {
+        sharedPreferencesRepository.saveUser(currentUser!!)
     }
 
     private fun handleResponse(response: Response<UserAuth>) {
