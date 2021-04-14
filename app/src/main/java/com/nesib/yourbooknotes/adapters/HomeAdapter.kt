@@ -31,6 +31,7 @@ class HomeAdapter(val dialog: AlertDialog) :
     var OnBookClickListener: ((String) -> Unit)? = null
     var onQuoteOptionsClickListener: ((Quote) -> Unit)? = null
     var onLikeClickListener: ((Quote) -> Unit)? = null
+    var onDownloadClickListener: ((Quote) -> Unit)? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -44,6 +45,7 @@ class HomeAdapter(val dialog: AlertDialog) :
             binding.bookInfoContainer.setOnClickListener(this)
             binding.postOptionsBtn.setOnClickListener(this)
             binding.likeBtn.setOnClickListener(this)
+            binding.downloadButton.setOnClickListener(this)
         }
 
         fun bindData() {
@@ -55,7 +57,7 @@ class HomeAdapter(val dialog: AlertDialog) :
                 } else {
                     userphotoImageView.load(R.drawable.user)
                 }
-                quoteTextView.setText(quote.quote)
+                quoteTextView.text = quote.quote
 
                 bookAuthor.text = quote.book?.author
                 bookImageView.load(API_URL + quote.book?.image) {
@@ -70,6 +72,7 @@ class HomeAdapter(val dialog: AlertDialog) :
                 }
                 val quoteCount = quote.book?.totalQuoteCount
                 bookTotalQuoteCount.text = (quoteCount ?: 0).toString()
+                genreText.text = "#${quote.genre}"
             }
         }
 
@@ -119,6 +122,11 @@ class HomeAdapter(val dialog: AlertDialog) :
                 R.id.postOptionsBtn -> {
                     onQuoteOptionsClickListener?.let {
                         it((differ.currentList[adapterPosition]))
+                    }
+                }
+                R.id.downloadButton -> {
+                    onDownloadClickListener?.let {
+                        it(differ.currentList[adapterPosition])
                     }
                 }
             }

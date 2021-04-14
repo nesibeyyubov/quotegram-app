@@ -178,6 +178,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.addBookFragment -> {
                 }
+                R.id.downloadQuoteFragment -> {
+                    binding.toolbarText.text = "Download"
+                }
                 R.id.myProfileFragment -> {
                     binding.toolbarText.text = "Your Profile"
                 }
@@ -195,6 +198,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 || navDestination.id == R.id.selectBookFragment
                 || navDestination.id == R.id.addQuoteFragment
                 || navDestination.id == R.id.addBookFragment
+                || navDestination.id == R.id.downloadQuoteFragment
             ) {
                 if (binding.addQuoteBtn.visibility == View.VISIBLE) {
                     shrinkFabWithAnimation()

@@ -140,4 +140,19 @@
             android:name="genre"
             app:argType="string" />
     </fragment>
+    <fragment
+        tools:layout="@layout/fragment_download_quote"
+        android:id="@+id/downloadQuoteFragment"
+        android:name="com.nesib.yourbooknotes.ui.main.fragments.download.DownloadQuoteFragment"
+        android:label="DownloadQuoteFragment" >
+        <argument
+            android:name="quoteText"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="quoteAuthor"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <action android:id="@+id/action_global_downloadQuoteFragment" app:destination="@id/downloadQuoteFragment" />
 </navigation>

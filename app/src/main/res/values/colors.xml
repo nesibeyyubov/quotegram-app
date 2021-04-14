@@ -58,4 +58,11 @@
     <color name="checkedChipStrokeColor">@color/blue</color>
     <color name="checkedChipTextColor">@color/blue</color>
 
+
+    <!-- Download photo colors -->
+    <color name="colorPrimaryOnDark">#D1D1D1</color>
+    <color name="colorSecondaryOnDark">#878787</color>
+    <color name="colorPrimaryOnLight">#3C3C3C</color>
+    <color name="colorSecondaryOnLight">#878787</color>
+
 </resources>
