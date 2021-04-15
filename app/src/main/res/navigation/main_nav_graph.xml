@@ -155,4 +155,9 @@
             app:nullable="true" />
     </fragment>
     <action android:id="@+id/action_global_downloadQuoteFragment" app:destination="@id/downloadQuoteFragment" />
+    <fragment
+        tools:layout="@layout/fragment_notifications"
+        android:id="@+id/notificationsFragment"
+        android:name="com.nesib.yourbooknotes.ui.main.fragments.NotificationsFragment"
+        android:label="NotificationsFragment" />
 </navigation>

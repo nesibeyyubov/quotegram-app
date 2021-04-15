@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="13dp"
+    android:gravity="center_vertical"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginBottom="8dp"
+    android:background="@color/fullPostBackgroundColor"
+    android:layout_height="wrap_content">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/notification_user_photo"
+        android:src="@drawable/user"
+        android:layout_width="25dp"
+        android:layout_height="25dp"/>
+
+    <TextView
+        android:id="@+id/notification_username"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nesibeyyubov"
+        android:layout_marginRight="5dp"
+        android:textColor="@color/blue"
+        android:textStyle="bold" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="liked the"
+        android:layout_marginRight="5dp"
+        android:textColor="@color/colorPrimaryText"
+         />
+    <TextView
+        android:id="@+id/notification_quote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="quote"
+        android:layout_marginRight="5dp"
+        android:textColor="@color/blue"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="you added"
+
+        android:textStyle="bold" />
+
+</LinearLayout>
