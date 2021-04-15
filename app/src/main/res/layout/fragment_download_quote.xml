@@ -9,10 +9,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/photoContainer"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="290dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="50dp"
-        android:background="#1b1b1b"
+        android:background="#1B1B1B"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp"
@@ -20,30 +20,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_quote"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/colorSecondaryOnDark" />
+
         <TextView
             android:id="@+id/quoteText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
             android:text="To calculate the TextWidth, the TextHeight we simply do subtracting with descent and ascent, then we got the most approach TextSize, the following work is fairly easy for each other."
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryOnDark"
             android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/quoteAuthorText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
         <TextView
             android:id="@+id/quoteAuthorText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-Charlie Chaplin"
+            android:layout_marginBottom="20dp"
             android:textColor="@color/colorSecondaryOnDark"
-            android:layout_marginTop="15dp"
             android:textStyle="italic"
+            app:layout_constraintBottom_toTopOf="@+id/textView10"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/quoteText" />
+             />
 
         <TextView
             android:id="@+id/textView10"

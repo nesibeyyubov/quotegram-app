@@ -1,6 +1,7 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -48,7 +49,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private var currentPage = 1
     private var paginatingFinished = false
 
-    private var makeSureDialog:AlertDialog? = null
+    private var makeSureDialog: AlertDialog? = null
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -140,13 +141,13 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             }
         }
 
-        reportViewModel.report.observe(viewLifecycleOwner){
-            when(it){
-                is DataState.Success->{
+        reportViewModel.report.observe(viewLifecycleOwner) {
+            when (it) {
+                is DataState.Success -> {
                     showToast(it.data!!.message)
                     makeSureDialog?.dismiss()
                 }
-                is DataState.Fail->{
+                is DataState.Fail -> {
                     showToast(it.message)
                     makeSureDialog?.dismiss()
                 }
@@ -176,6 +177,23 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
                 findNavController().navigate(action)
             }
         }
+        bookQuotesAdapter.onDownloadClickListener = { quote ->
+            val action = BookProfileFragmentDirections.actionGlobalDownloadQuoteFragment(
+                quote.quote,
+                currentBook?.author
+            )
+            findNavController().navigate(action)
+        }
+        bookQuotesAdapter.onShareClickListener = { quote ->
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, quote.quote + "\n\n#Quotegram App")
+            val shareIntent = Intent.createChooser(intent, "Share Quote")
+            startActivity(shareIntent)
+
+        }
+
         val mLayoutManager = LinearLayoutManager(requireContext())
         binding.bookQuotesRecyclerView.apply {
             adapter = bookQuotesAdapter
@@ -232,7 +250,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             findNavController().navigate(action)
         }
         binding.tryAgainButton.setOnClickListener {
-            bookViewModel.getBook(args.bookId,forced = true)
+            bookViewModel.getBook(args.bookId, forced = true)
         }
 
         binding.bookFollowButton.setOnClickListener {
@@ -280,7 +298,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId==R.id.report_book_menu_item){
+        if (item.itemId == R.id.report_book_menu_item) {
             showMakeSureDialogForReport()
             return true
         }

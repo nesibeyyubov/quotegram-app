@@ -1,6 +1,7 @@
 package com.nesib.yourbooknotes.ui.main.fragments.user
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -22,6 +23,7 @@ import com.nesib.yourbooknotes.databinding.ReportDialogBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
 import com.nesib.yourbooknotes.ui.main.MainActivity
+import com.nesib.yourbooknotes.ui.main.fragments.HomeFragmentDirections
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.ReportViewModel
@@ -212,6 +214,22 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         homeAdapter.onQuoteOptionsClickListener = { quote ->
             val action = UserProfileFragmentDirections.actionGlobalQuoteOptionsFragment(quote)
             findNavController().navigate(action)
+        }
+        homeAdapter.onDownloadClickListener = { quote ->
+            val action = UserProfileFragmentDirections.actionGlobalDownloadQuoteFragment(
+                quote.quote,
+                quote.book?.author
+            )
+            findNavController().navigate(action)
+        }
+        homeAdapter.onShareClickListener = { quote ->
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, quote.quote + "\n\n#Quotegram App")
+            val shareIntent = Intent.createChooser(intent,"Share Quote")
+            startActivity(shareIntent)
+
         }
         binding.userQuotesRecyclerView.adapter = homeAdapter
         binding.userQuotesRecyclerView.layoutManager = LinearLayoutManager(context)

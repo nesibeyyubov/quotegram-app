@@ -1,5 +1,6 @@
 package com.nesib.yourbooknotes.ui.main.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -47,7 +48,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         quoteViewModel.getQuotes()
     }
 
-    private fun setupClickListeners(){
+    private fun setupClickListeners() {
         binding.tryAgainButton.setOnClickListener {
             quoteViewModel.getQuotes(forced = true)
         }
@@ -140,9 +141,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             currentPage = 1
             quoteViewModel.getQuotes(forced = true)
         }
-        homeAdapter.onDownloadClickListener = {quote->
-            val action = HomeFragmentDirections.actionGlobalDownloadQuoteFragment(quote.quote,quote.book?.author)
+        homeAdapter.onDownloadClickListener = { quote ->
+            val action = HomeFragmentDirections.actionGlobalDownloadQuoteFragment(
+                quote.quote,
+                quote.book?.author
+            )
             findNavController().navigate(action)
+        }
+        homeAdapter.onShareClickListener = { quote ->
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, quote.quote + "\n\n#Quotegram App")
+            val shareIntent = Intent.createChooser(intent,"Share Quote")
+            startActivity(shareIntent)
+
         }
         homeAdapter.currentUserId = authViewModel.currentUserId
         homeAdapter.onQuoteOptionsClickListener = { quote ->
@@ -164,6 +177,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 findNavController().navigate(R.id.action_global_myProfileFragment)
             }
         }
+
         val mLayoutManager = LinearLayoutManager(context)
         binding.homeRecyclerView.apply {
             adapter = homeAdapter

@@ -16,36 +16,41 @@ import com.nesib.yourbooknotes.models.User
 
 class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
     var onUserClickListener: ((User?) -> Unit)? = null
-    var onQuoteOptionsClicked:((Quote)->Unit)? = null
-    var currentUserId:String? = null
-    var onLikeClickListener:((Quote)->Unit)? = null
+    var onQuoteOptionsClicked: ((Quote) -> Unit)? = null
+    var currentUserId: String? = null
+    var onLikeClickListener: ((Quote) -> Unit)? = null
+    var onShareClickListener: ((Quote) -> Unit)? = null
+    var onDownloadClickListener: ((Quote) -> Unit)? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
         View.OnClickListener {
-        private var binding:QuoteFromBookLayoutBinding = QuoteFromBookLayoutBinding.bind(itemView)
+        private var binding: QuoteFromBookLayoutBinding = QuoteFromBookLayoutBinding.bind(itemView)
 
         init {
             binding.username.setOnClickListener(this)
             binding.userImage.setOnClickListener(this)
             binding.postOptionsBtn.setOnClickListener(this)
             binding.likeBtn.setOnClickListener(this)
+            binding.shareBtn.setOnClickListener(this)
+            binding.downloadButton.setOnClickListener(this)
         }
-        fun bindData(){
+
+        fun bindData() {
             val quote = differ.currentList[adapterPosition]
             binding.apply {
                 username.text = quote.creator?.username
-                if(quote.creator?.profileImage == null){
+                if (quote.creator?.profileImage == null) {
                     userImage.load(R.drawable.user)
-                }else{
+                } else {
                     userImage.load(quote.creator?.profileImage)
                 }
 
                 bookQuoteTextView.text = quote.quote
                 quoteLikesCount.text = quote.likes?.size.toString()
-                if(quote.liked){
+                if (quote.liked) {
                     likeBtn.setImageResource(R.drawable.ic_like_blue)
-                }else{
+                } else {
                     likeBtn.setImageResource(R.drawable.ic_like)
                 }
             }
@@ -66,22 +71,37 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
                     quote.liked = !quote.liked
                     quote.likes = likes.toList()
                     binding.quoteLikesCount.text = quote.likes!!.size.toString()
-                    if(quote.liked){
-                        binding.likeBtn.startAnimation(AnimationUtils.loadAnimation(binding.likeBtn.context,R.anim.bouncing_anim))
+                    if (quote.liked) {
+                        binding.likeBtn.startAnimation(
+                            AnimationUtils.loadAnimation(
+                                binding.likeBtn.context,
+                                R.anim.bouncing_anim
+                            )
+                        )
                     }
                     onLikeClickListener!!(quote)
                 }
-                R.id.username,R.id.userImage -> {
+                R.id.username, R.id.userImage -> {
                     onUserClickListener!!(differ.currentList[adapterPosition].creator)
                 }
-                R.id.postOptionsBtn->{
+                R.id.postOptionsBtn -> {
                     onQuoteOptionsClicked!!(differ.currentList[adapterPosition])
+                }
+                R.id.shareBtn->{
+                    onShareClickListener?.let {
+                        it(differ.currentList[adapterPosition])
+                    }
+                }
+                R.id.downloadButton->{
+                    onDownloadClickListener?.let {
+                        it(differ.currentList[adapterPosition])
+                    }
                 }
             }
         }
     }
 
-    private val diffCallback = object: DiffUtil.ItemCallback<Quote>(){
+    private val diffCallback = object : DiffUtil.ItemCallback<Quote>() {
         override fun areItemsTheSame(oldItem: Quote, newItem: Quote): Boolean {
             return oldItem.id == newItem.id
         }
@@ -92,10 +112,14 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
 
     }
 
-    private val differ = AsyncListDiffer(this,diffCallback)
+    private val differ = AsyncListDiffer(this, diffCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookQuotesAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.quote_from_book_layout, parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BookQuotesAdapter.ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.quote_from_book_layout, parent, false)
         return ViewHolder(view)
     }
 
@@ -105,7 +129,7 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
 
     override fun getItemCount() = differ.currentList.size
 
-    fun setData(newQuoteList:List<Quote>){
+    fun setData(newQuoteList: List<Quote>) {
         differ.submitList(newQuoteList)
     }
 }

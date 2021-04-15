@@ -32,6 +32,7 @@ class HomeAdapter(val dialog: AlertDialog) :
     var onQuoteOptionsClickListener: ((Quote) -> Unit)? = null
     var onLikeClickListener: ((Quote) -> Unit)? = null
     var onDownloadClickListener: ((Quote) -> Unit)? = null
+    var onShareClickListener: ((Quote) -> Unit)? = null
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
@@ -46,6 +47,7 @@ class HomeAdapter(val dialog: AlertDialog) :
             binding.postOptionsBtn.setOnClickListener(this)
             binding.likeBtn.setOnClickListener(this)
             binding.downloadButton.setOnClickListener(this)
+            binding.shareBtn.setOnClickListener(this)
         }
 
         fun bindData() {
@@ -126,6 +128,11 @@ class HomeAdapter(val dialog: AlertDialog) :
                 }
                 R.id.downloadButton -> {
                     onDownloadClickListener?.let {
+                        it(differ.currentList[adapterPosition])
+                    }
+                }
+                R.id.shareBtn->{
+                    onShareClickListener?.let {
                         it(differ.currentList[adapterPosition])
                     }
                 }

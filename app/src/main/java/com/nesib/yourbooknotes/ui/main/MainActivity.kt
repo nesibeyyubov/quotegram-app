@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             .create()
         notAuthenticatedBinding.notNowBtn.setOnClickListener { dialog.dismiss() }
         notAuthenticatedBinding.signInBtn.setOnClickListener {
+            authViewModel.logout()
             startActivity(
                 Intent(
                     this,

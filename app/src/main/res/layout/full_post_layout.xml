@@ -178,7 +178,8 @@
         app:layout_constraintTop_toTopOf="@+id/likeBtn" />
 
     <ImageButton
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
+        android:paddingHorizontal="8dp"
         android:id="@+id/shareBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -190,7 +191,8 @@
         app:layout_constraintTop_toTopOf="@+id/like_count_textView" />
 
     <ImageButton
-        android:layout_marginLeft="15dp"
+        android:paddingHorizontal="10dp"
+        android:layout_marginLeft="6dp"
         android:id="@+id/downloadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

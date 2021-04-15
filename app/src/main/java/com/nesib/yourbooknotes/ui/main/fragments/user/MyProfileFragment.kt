@@ -22,6 +22,7 @@ import com.nesib.yourbooknotes.databinding.FragmentMyProfileBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
 import com.nesib.yourbooknotes.ui.main.MainActivity
+import com.nesib.yourbooknotes.ui.main.fragments.HomeFragmentDirections
 import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
@@ -194,6 +195,22 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
             val action =
                 MyProfileFragmentDirections.actionMyProfileFragmentToBookProfileFragment(it)
             findNavController().navigate(action)
+        }
+        homeAdapter.onDownloadClickListener = { quote ->
+            val action = MyProfileFragmentDirections.actionGlobalDownloadQuoteFragment(
+                quote.quote,
+                quote.book?.author
+            )
+            findNavController().navigate(action)
+        }
+        homeAdapter.onShareClickListener = { quote ->
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, quote.quote + "\n\n#Quotegram App")
+            val shareIntent = Intent.createChooser(intent,"Share Quote")
+            startActivity(shareIntent)
+
         }
         binding.userQuotesRecyclerView.adapter = homeAdapter
         binding.userQuotesRecyclerView.layoutManager = LinearLayoutManager(context)
