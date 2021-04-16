@@ -13,7 +13,7 @@
         android:id="@+id/empty"
         android:title="Add" />
     <item
-        android:id="@+id/notificationFragment"
+        android:id="@+id/notificationsFragment"
         android:icon="@drawable/ic_notifications"
         android:title="Notifications" />
     <item

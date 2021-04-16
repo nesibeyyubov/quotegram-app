@@ -81,4 +81,10 @@ interface MainApi {
 
     @POST("/reports/book")
     suspend fun reportBook(@Body reportBody: Map<String, String>): Response<BasicResponse>
+
+    @GET("/notifications/")
+    suspend fun getNotifications(): Response<NotificationsResponse>
+
+    @POST("/notifications/")
+    suspend fun readNotifications(): Response<NotificationsResponse>
 }

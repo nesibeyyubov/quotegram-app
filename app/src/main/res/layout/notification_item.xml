@@ -5,7 +5,7 @@
     android:paddingHorizontal="13dp"
     android:gravity="center_vertical"
     android:layout_marginHorizontal="5dp"
-    android:layout_marginBottom="8dp"
+    android:layout_marginBottom="10dp"
     android:background="@color/fullPostBackgroundColor"
     android:layout_height="wrap_content">
     <de.hdodenhof.circleimageview.CircleImageView
@@ -20,30 +20,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="nesibeyyubov"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="4dp"
         android:textColor="@color/blue"
         android:textStyle="bold" />
     <TextView
+        android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="liked the"
-        android:layout_marginRight="5dp"
+        android:text="liked the quote you added"
+        android:layout_marginRight="4dp"
         android:textColor="@color/colorPrimaryText"
          />
-    <TextView
-        android:id="@+id/notification_quote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="quote"
-        android:layout_marginRight="5dp"
-        android:textColor="@color/blue"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="you added"
-
-        android:textStyle="bold" />
+    <View
+        android:id="@+id/newNotificationDot"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@drawable/blue_circle_dot" />
 
 </LinearLayout>

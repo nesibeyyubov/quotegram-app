@@ -177,6 +177,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.addQuoteFragment -> {
                 }
+                R.id.notificationsFragment->{
+                    binding.toolbarText.text = "Notifications"
+                }
                 R.id.addBookFragment -> {
                 }
                 R.id.downloadQuoteFragment -> {

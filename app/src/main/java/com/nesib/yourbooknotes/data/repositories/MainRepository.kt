@@ -71,4 +71,8 @@ class MainRepository @Inject constructor(
     }
 
     suspend fun toggleBookFollow(bookId: String) = mainApi.followOrUnfollowBook(bookId)
+
+    suspend fun getNotifications() = mainApi.getNotifications()
+
+    suspend fun readNotifications() = mainApi.readNotifications()
 }
