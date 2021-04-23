@@ -23,8 +23,10 @@ import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 import javax.inject.Inject
 import kotlin.math.sign
+import kotlin.random.Random
 
 @AndroidEntryPoint
 class SignupFragment : Fragment(R.layout.fragment_signup) {
@@ -33,7 +35,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
     private lateinit var googleSignInActivityLauncher: ActivityResultLauncher<Intent>
 
     private lateinit var binding: FragmentSignupBinding
-    private val authViewModel: AuthViewModel by viewModels({requireActivity()})
+    private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
 
     private var signingWithGoogle = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,7 +70,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
                 if (task.isSuccessful) {
                     val account = task.result
-                    val username = account?.email?.split("@")?.get(0)
+                    val username = account?.email?.split("@")?.get(0) + Random.nextInt(0, 9999)
                     val fullName = account?.displayName
                     val email = account?.email
                     val profileImage = account?.photoUrl?.toString()
@@ -84,12 +86,13 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                         )
                     } else {
                         signingWithGoogle = false
+                        binding.signupErrorTextView.visibility = View.VISIBLE
+                        binding.signupErrorTextView.text = "Something went wrong, please try again"
                         // show something useful for user
                     }
-                }
-                else{
+                } else {
                     binding.signupErrorTextView.visibility = View.VISIBLE
-                    binding.signupErrorTextView.text = "Ooops, something went wrong"
+                    binding.signupErrorTextView.text = "Something went wrong, please try again"
                 }
 
             }
@@ -101,7 +104,11 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                 is DataState.Success -> {
                     binding.signupErrorTextView.visibility = View.INVISIBLE
                     authViewModel.saveUser()
-                    val action = SignupFragmentDirections.actionSignupFragmentToSelectCategoriesFragment(it.data!!.userId,binding.usernameEditText.text.toString())
+                    val action =
+                        SignupFragmentDirections.actionSignupFragmentToSelectCategoriesFragment(
+                            it.data!!.userId,
+                            binding.usernameEditText.text.toString()
+                        )
                     findNavController().navigate(action)
                 }
                 is DataState.Fail -> {

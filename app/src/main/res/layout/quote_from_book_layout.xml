@@ -100,20 +100,21 @@
         android:id="@+id/likeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:paddingTop="8dp"
+        android:paddingRight="8dp"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_like"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view3" />
 
     <TextView
-        android:id="@+id/quoteLikesCount"
+        android:id="@+id/like_count_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="27"
-        android:textStyle="bold"
-        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
         android:textColor="@color/colorPrimaryText"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/likeBtn"
         app:layout_constraintStart_toEndOf="@+id/likeBtn"
         app:layout_constraintTop_toTopOf="@+id/likeBtn" />
@@ -127,30 +128,34 @@
         android:background="@android:color/transparent"
         android:src="@drawable/ic_share"
         android:tint="@color/colorPrimaryText"
-        app:layout_constraintStart_toEndOf="@+id/quoteLikesCount"
-        app:layout_constraintTop_toTopOf="@+id/likeBtn" />
+        app:layout_constraintBottom_toBottomOf="@+id/like_count_textView"
+        app:layout_constraintStart_toEndOf="@+id/like_count_textView"
+        app:layout_constraintTop_toTopOf="@+id/like_count_textView" />
 
     <ImageButton
+        android:paddingHorizontal="10dp"
+        android:layout_marginLeft="6dp"
         android:id="@+id/downloadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:paddingHorizontal="8dp"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_download"
         android:tint="@color/colorPrimaryText"
+        app:layout_constraintBottom_toBottomOf="@+id/shareBtn"
         app:layout_constraintStart_toEndOf="@+id/shareBtn"
-        app:layout_constraintTop_toTopOf="@+id/likeBtn" />
+        app:layout_constraintTop_toTopOf="@+id/shareBtn" />
 
-    <ImageButton
+    <TextView
+        android:id="@+id/genreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_bookmark_outline"
-        android:tint="@color/colorPrimaryText"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:text="\#spirituality"
+        android:textColor="@color/colorSecondaryText"
+        app:layout_constraintBottom_toBottomOf="@+id/downloadButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/likeBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

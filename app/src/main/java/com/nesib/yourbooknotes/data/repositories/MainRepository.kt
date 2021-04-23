@@ -35,7 +35,7 @@ class MainRepository @Inject constructor(
     suspend fun postQuote(quote: Map<String, String>) =
         mainApi.postQuote(quote)
 
-    suspend fun likeOrDislikeQuote(quoteId: String) = mainApi.likeOrDislikeQuote(quoteId)
+    suspend fun likeOrDislikeQuote(quoteId: String,book:Map<String,String>) = mainApi.likeOrDislikeQuote(quoteId,book)
 
     suspend fun updateQuote(quoteId: String, quote: Map<String, String>) =
         mainApi.updateQuote(quoteId, quote)
@@ -72,7 +72,7 @@ class MainRepository @Inject constructor(
 
     suspend fun toggleBookFollow(bookId: String) = mainApi.followOrUnfollowBook(bookId)
 
-    suspend fun getNotifications() = mainApi.getNotifications()
+    suspend fun getNotifications(currentPage:Int=1) = mainApi.getNotifications(currentPage)
 
     suspend fun readNotifications() = mainApi.readNotifications()
 }

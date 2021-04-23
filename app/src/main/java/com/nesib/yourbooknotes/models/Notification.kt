@@ -7,7 +7,8 @@ data class Notification(
     val likerUserId: String?,
     val likedQuoteId: String?,
     val userId: String?,
-    val username: String?,
     val userPhoto: String?,
-    val read:Boolean = false
+    val bookName: String?,
+    val likeCount:Int,
+    val read: Boolean = false
 )

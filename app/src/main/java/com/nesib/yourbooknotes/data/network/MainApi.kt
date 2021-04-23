@@ -27,7 +27,10 @@ interface MainApi {
     ): Response<QuoteResponse>
 
     @PATCH("/quotes/{quoteId}")
-    suspend fun likeOrDislikeQuote(@Path("quoteId") quoteId: String): Response<QuoteResponse>
+    suspend fun likeOrDislikeQuote(
+        @Path("quoteId") quoteId: String,
+        @Body book: Map<String, String>
+    ): Response<QuoteResponse>
 
     @PUT("/quotes/{quoteId}")
     suspend fun updateQuote(
@@ -83,7 +86,7 @@ interface MainApi {
     suspend fun reportBook(@Body reportBody: Map<String, String>): Response<BasicResponse>
 
     @GET("/notifications/")
-    suspend fun getNotifications(): Response<NotificationsResponse>
+    suspend fun getNotifications(@Query("page") page:Int): Response<NotificationsResponse>
 
     @POST("/notifications/")
     suspend fun readNotifications(): Response<NotificationsResponse>

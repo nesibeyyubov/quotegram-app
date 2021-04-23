@@ -171,7 +171,9 @@ class QuoteViewModel @Inject constructor(
                     it.likes = quote.likes
                     it.liked = quote.liked
                 }
-                val response = mainRepository.likeOrDislikeQuote(quote.id)
+                val bookName = quote.book?.name ?: "Unknown"
+                val bookBody = mapOf("bookName" to bookName)
+                val response = mainRepository.likeOrDislikeQuote(quote.id,bookBody)
                 val handledResponse = handleQuoteResponse(response)
                 _likeQuote.postValue(handledResponse)
             }

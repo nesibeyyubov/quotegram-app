@@ -85,12 +85,15 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
+            <kr.co.prnd.readmore.ReadMoreTextView
                 android:id="@+id/bioTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxWidth="300dp"
                 android:maxLines="3"
+                app:readMoreMaxLine="4"
+                app:readMoreColor="@color/blue"
+                app:readMoreText="...read more"
                 android:text="This is biob. Tbio here. This is my bio here"
                 android:textAlignment="center"
                 android:textColor="@color/colorSecondaryText"

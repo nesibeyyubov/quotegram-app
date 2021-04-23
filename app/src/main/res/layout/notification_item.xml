@@ -1,40 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingVertical="10dp"
-    android:paddingHorizontal="13dp"
-    android:gravity="center_vertical"
+    android:layout_height="wrap_content"
     android:layout_marginHorizontal="5dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="15dp"
     android:background="@color/fullPostBackgroundColor"
-    android:layout_height="wrap_content">
+    android:paddingHorizontal="13dp"
+    android:paddingVertical="10dp">
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/notification_user_photo"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:src="@drawable/user"
-        android:layout_width="25dp"
-        android:layout_height="25dp"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/view7"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:background="@drawable/blue_circle_dot"
+        android:src="@drawable/user"
+        app:layout_constraintEnd_toEndOf="@+id/notification_user_photo"
+        app:layout_constraintTop_toTopOf="@+id/notification_user_photo">
+
+        <TextView
+            android:id="@+id/otherPeopleCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="+3"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/notification_username"
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
+        android:id="@+id/notificationText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="nesibeyyubov"
-        android:layout_marginRight="4dp"
-        android:textColor="@color/blue"
-        android:textStyle="bold" />
-    <TextView
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="liked the quote you added"
-        android:layout_marginRight="4dp"
+        android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@id/notification_user_photo"
+        android:text="67 people liked the quote you added from the book called Kepenekler"
         android:textColor="@color/colorPrimaryText"
-         />
-    <View
-        android:id="@+id/newNotificationDot"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:background="@drawable/blue_circle_dot" />
+        app:layout_constraintBottom_toBottomOf="@+id/notification_user_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view7"
+        app:layout_constraintTop_toTopOf="@+id/notification_user_photo" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

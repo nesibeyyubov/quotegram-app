@@ -1,5 +1,6 @@
 package com.nesib.yourbooknotes.adapters
 
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,15 +23,15 @@ class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.ViewHolder>
         }
 
         fun bindData(notification: Notification) {
-            binding.notificationUsername.text = notification.username
+            binding.otherPeopleCount.text = "+${notification.likeCount-1}"
+            val htmlText = Html.fromHtml("${notification.likeCount} people liked the quote you added from the book called <i>\"${notification.bookName}\"</i>")
+            binding.notificationText.text = htmlText
             if (notification.userPhoto != null && notification.userPhoto != "") {
                 binding.notificationUserPhoto.load(notification.userPhoto)
             } else {
                 binding.notificationUserPhoto.load(R.drawable.user)
             }
-            if(notification.read){
-                binding.newNotificationDot.visibility = View.INVISIBLE
-            }
+
         }
     }
 

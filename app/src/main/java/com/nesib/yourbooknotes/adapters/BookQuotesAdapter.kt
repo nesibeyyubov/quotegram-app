@@ -47,12 +47,13 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
                 }
 
                 bookQuoteTextView.text = quote.quote
-                quoteLikesCount.text = quote.likes?.size.toString()
+                likeCountTextView.text = quote.likes?.size.toString()
                 if (quote.liked) {
                     likeBtn.setImageResource(R.drawable.ic_like_blue)
                 } else {
                     likeBtn.setImageResource(R.drawable.ic_like)
                 }
+                genreText.text = quote.genre
             }
         }
 
@@ -70,7 +71,7 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
                     }
                     quote.liked = !quote.liked
                     quote.likes = likes.toList()
-                    binding.quoteLikesCount.text = quote.likes!!.size.toString()
+                    binding.likeCountTextView.text = quote.likes!!.size.toString()
                     if (quote.liked) {
                         binding.likeBtn.startAnimation(
                             AnimationUtils.loadAnimation(

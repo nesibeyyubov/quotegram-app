@@ -56,7 +56,7 @@
         android:layout_marginTop="10dp"
         app:readMoreMaxLine="4"
         app:readMoreColor="@color/colorSecondaryText"
-        app:readMoreText="...view more"
+        app:readMoreText="...read more"
         android:includeFontPadding="false"
         android:text="Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking.results of other people's thinking.results of other people's thinking."
         android:textColor="@color/colorPrimaryText"

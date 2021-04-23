@@ -1,5 +1,6 @@
 package com.nesib.yourbooknotes.ui.main.fragments.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +20,7 @@ import com.nesib.yourbooknotes.adapters.HomeAdapter
 import com.nesib.yourbooknotes.databinding.FragmentSearchQuotesBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.main.MainActivity
+import com.nesib.yourbooknotes.ui.main.fragments.HomeFragmentDirections
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.SharedViewModel
@@ -54,7 +57,6 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
 
     private fun setupClickListeners(){
         binding.tryAgainButton.setOnClickListener {
-            Log.d("mytag", "button clicked ")
             quoteViewModel.getQuotesByGenre(args.genre,forced = true)
         }
     }
@@ -104,6 +106,43 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
     }
 
     private fun setupRecyclerView() {
+        homeAdapter.onDownloadClickListener = { quote ->
+            val action = SearchQuotesFragmentDirections.actionGlobalDownloadQuoteFragment(
+                quote.quote,
+                quote.book?.author
+            )
+            findNavController().navigate(action)
+        }
+        homeAdapter.onShareClickListener = { quote ->
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, quote.quote + "\n\n#Quotegram App")
+            val shareIntent = Intent.createChooser(intent,"Share Quote")
+            startActivity(shareIntent)
+        }
+        homeAdapter.currentUserId = authViewModel.currentUserId
+        homeAdapter.onQuoteOptionsClickListener = { quote ->
+            val action = SearchQuotesFragmentDirections.actionGlobalQuoteOptionsFragment(quote)
+            findNavController().navigate(action)
+        }
+        homeAdapter.onLikeClickListener = { quote ->
+            quoteViewModel.toggleLike(quote)
+        }
+        homeAdapter.OnBookClickListener = { bookId ->
+            val action = SearchQuotesFragmentDirections.actionSearchQuotesFragmentToBookProfileFragment(bookId)
+            findNavController().navigate(action)
+        }
+        homeAdapter.OnUserClickListener = { userId ->
+            if (userId != authViewModel.currentUserId) {
+                val action = SearchQuotesFragmentDirections.actionSearchQuotesFragmentToUserProfileFragment(userId)
+                findNavController().navigate(action)
+            } else {
+                findNavController().navigate(R.id.action_global_myProfileFragment)
+            }
+        }
+        homeAdapter.currentUserId = authViewModel.currentUserId
+
         val mLayoutManager = LinearLayoutManager(requireContext())
         binding.searchQuotesRecyclerView.apply {
             adapter = homeAdapter

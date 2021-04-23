@@ -139,6 +139,12 @@
         <argument
             android:name="genre"
             app:argType="string" />
+        <action
+            android:id="@+id/action_searchQuotesFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_searchQuotesFragment_to_bookProfileFragment"
+            app:destination="@id/bookProfileFragment" />
     </fragment>
     <fragment
         tools:layout="@layout/fragment_download_quote"
