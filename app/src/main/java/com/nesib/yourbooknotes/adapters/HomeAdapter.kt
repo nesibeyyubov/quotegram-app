@@ -22,6 +22,7 @@ import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.utils.Constants.API_URL
+import com.nesib.yourbooknotes.utils.toFormattedNumber
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 class HomeAdapter(val dialog: AlertDialog) :
@@ -65,7 +66,7 @@ class HomeAdapter(val dialog: AlertDialog) :
                 bookImageView.load(API_URL + quote.book?.image) {
                     crossfade(600)
                 }
-                likeCountTextView.text = quote.likes?.size.toString()
+                likeCountTextView.text = quote.likes?.size?.toFormattedNumber()
                 bookNameTextView.text = quote.book?.name
                 if (quote.liked) {
                     likeBtn.setImageResource(R.drawable.ic_like_blue)

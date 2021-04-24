@@ -1,6 +1,8 @@
 package com.nesib.yourbooknotes.ui.main.fragments.user
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
@@ -8,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -45,6 +48,10 @@ class EditUserFragment : Fragment(R.layout.fragment_edit_profile) {
             bioEditText.setText(args.user?.bio)
             emailEditText.setText(args.user?.email)
             fullnameEditText.setText(args.user?.fullname)
+            maxCharactersTextView.text = "${args.user?.bio?.length}/150"
+            bioEditText.addTextChangedListener {
+                maxCharactersTextView.text = "${it.toString().length}/150"
+            }
         }
     }
 

@@ -1,22 +1,23 @@
 package com.nesib.yourbooknotes.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Menu
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import coil.load
+import com.google.android.play.core.review.testing.FakeReviewManager
+import com.nesib.yourbooknotes.BuildConfig
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.ActivityMainBinding
 import com.nesib.yourbooknotes.databinding.DrawerHeaderLayoutBinding
@@ -24,6 +25,7 @@ import com.nesib.yourbooknotes.databinding.NotAuthenticatedLayoutBinding
 import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.SharedViewModel
+import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,7 +59,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         dialog
     }
-
     private val toBottomAnimation by lazy {
         AnimationUtils.loadAnimation(
             this@MainActivity,
@@ -111,7 +112,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val headerBinding = DrawerHeaderLayoutBinding.bind(headerView)
                 headerBinding.headerUsername.text = currentUser.username
                 headerBinding.headerEmail.text = currentUser.email
-                headerBinding.headerProfileImage.load(currentUser.profileImage){
+                headerBinding.headerProfileImage.load(currentUser.profileImage) {
                     error(R.drawable.user)
                 }
                 val drawerMenu = drawerNavigationView.menu
@@ -128,11 +129,73 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setupDrawerNavChangeListener() {
         binding.drawerNavigationView.setNavigationItemSelectedListener { menuItem ->
-            if (menuItem.itemId == R.id.drawer_logout) {
-                authViewModel.logout()
-                startActivity(Intent(this@MainActivity, StartActivity::class.java))
+            when (menuItem.itemId) {
+                R.id.drawer_logout -> {
+                    authViewModel.logout()
+                    startActivity(Intent(this@MainActivity, StartActivity::class.java))
+                }
+                R.id.drawer_signup -> {
+                    authViewModel.logout()
+                    val intent = Intent(this,StartActivity::class.java)
+                    intent.putExtra("directToSignup",true)
+                    startActivity(intent)
+                    finish()
+                }
+                R.id.drawer_login -> {
+                    authViewModel.logout()
+                    val intent = Intent(this,StartActivity::class.java)
+                    intent.putExtra("directToLogin",true)
+                    startActivity(intent)
+                    finish()
+                }
+                R.id.drawer_review -> {
+                    binding.drawerLayout.close()
+                    makeInAppReview()
+                }
+                R.id.drawer_share -> {
+                    binding.drawerLayout.close()
+                    shareApp()
+                }
+                R.id.drawer_home -> {
+
+                }
+                R.id.drawer_settings -> {
+                    binding.drawerLayout.close()
+                    navController.navigate(R.id.action_global_settingsFragment)
+                }
             }
             true
+        }
+    }
+
+    private fun shareApp(){
+        try {
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Quotegram")
+            var shareMessage = "\nLet me recommend you this cool application,which is for book and quote lovers\n\n"
+            shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+            startActivity(Intent.createChooser(shareIntent, "Choose one"))
+        } catch (e: Exception) {
+            showToast("Some error happened,please try again")
+        }
+    }
+
+    private fun makeInAppReview(){
+        val manager = FakeReviewManager(this)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener {
+            if (it.isSuccessful) {
+                val reviewInfo = it.result
+                val flow = manager.launchReviewFlow(this, reviewInfo)
+                flow.addOnCompleteListener { _ ->
+                    showToast("Review is completed !")
+                }
+            } else {
+                val reviewError = it.exception?.message
+                Log.d("mytag", "review error: $reviewError")
+            }
         }
     }
 
@@ -141,7 +204,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView_mainActivity) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.homeFragment, R.id.myProfileFragment),
+            setOf(R.id.homeFragment, R.id.myProfileFragment, R.id.notificationsFragment),
             binding.drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -177,10 +240,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.addQuoteFragment -> {
                 }
-                R.id.notificationsFragment->{
-                    binding.toolbarText.text = "Notifications"
-                }
                 R.id.addBookFragment -> {
+                }
+                R.id.notificationsFragment -> {
+                    binding.toolbarText.text = "Notifications"
                 }
                 R.id.downloadQuoteFragment -> {
                     binding.toolbarText.text = "Download"
@@ -191,11 +254,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.searchQuotesFragment -> {
                     binding.toolbarText.text = sharedViewModel.toolbarText
                 }
+                R.id.settingsFragment -> {
+                    binding.toolbarText.text = "Settings"
+                }
             }
             if (navDestination.id != R.id.searchFragment) {
                 binding.searchInputContainer.visibility = View.GONE
                 binding.toolbarText.visibility = View.VISIBLE
                 setSupportActionBar(binding.toolbarMainActivity)
+            }
+
+            if (navDestination.id == R.id.homeFragment
+                || navDestination.id == R.id.myProfileFragment
+                || navDestination.id == R.id.notificationsFragment) {
+                binding.drawerNavigationView.menu.findItem(R.id.drawer_home).isChecked = true
             }
 
             if (navDestination.id == R.id.editUserFragment
@@ -228,6 +300,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
+
             override fun afterTextChanged(s: Editable?) {
                 sharedViewModel.setChangedText(s.toString())
             }
@@ -292,7 +365,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
     }
-
 
 
 }

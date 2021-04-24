@@ -1,6 +1,7 @@
 package com.nesib.yourbooknotes.ui.on_boarding
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -18,6 +20,7 @@ import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class StartActivity : AppCompatActivity() {
@@ -25,8 +28,13 @@ class StartActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private val authViewModel: AuthViewModel by viewModels()
 
+    @Inject
+    @Named("themeSharedPreferences")
+    lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         binding = ActivityStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setAppTheme()
@@ -55,6 +63,18 @@ class StartActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             window.statusBarColor = Color.BLACK
         }
+        when (sharedPreferences.getString("theme", resources.getString(R.string.theme_default))) {
+            resources.getString(R.string.theme_default) -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            resources.getString(R.string.theme_dark) -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            resources.getString(R.string.theme_light) -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

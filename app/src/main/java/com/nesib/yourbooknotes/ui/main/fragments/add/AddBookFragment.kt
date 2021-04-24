@@ -20,6 +20,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.SpinnerAdapter
 import com.nesib.yourbooknotes.databinding.FragmentAddBookBinding
+import com.nesib.yourbooknotes.ui.main.MainActivity
+import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import com.theartofdev.edmodo.cropper.CropImage
@@ -37,6 +39,8 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
     private lateinit var binding: FragmentAddBookBinding
     private lateinit var imagePickLauncher: ActivityResultLauncher<Intent>
     private val bookViewModel: BookViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
+    private val noAuthDialog by lazy { (activity as MainActivity).dialog }
 
     private var selectedBookImage: File? = null
 
@@ -113,10 +117,15 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 pickImage()
             }
             binding.addBookButton.id -> {
-                val name = binding.bookTitle.text.toString()
-                val author = binding.bookAuthor.text.toString()
-                val genre = binding.bookGenreSpinner.selectedItem.toString().toLowerCase(Locale.ROOT)
-                bookViewModel.postBook(name, author, genre, selectedBookImage!!)
+                if(authViewModel.currentUserId != null){
+                    val name = binding.bookTitle.text.toString()
+                    val author = binding.bookAuthor.text.toString()
+                    val genre = binding.bookGenreSpinner.selectedItem.toString().toLowerCase(Locale.ROOT)
+                    bookViewModel.postBook(name, author, genre, selectedBookImage!!)
+                }else{
+                    noAuthDialog.show()
+                }
+
             }
         }
     }

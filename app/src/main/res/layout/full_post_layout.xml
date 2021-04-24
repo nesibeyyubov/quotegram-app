@@ -169,7 +169,7 @@
         android:id="@+id/like_count_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="27"
+        android:text="2576"
         android:layout_marginTop="5dp"
         android:textColor="@color/colorPrimaryText"
         android:textStyle="bold"

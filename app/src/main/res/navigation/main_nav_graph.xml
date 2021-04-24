@@ -166,4 +166,9 @@
         android:id="@+id/notificationsFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.NotificationsFragment"
         android:label="NotificationsFragment" />
+    <fragment
+        tools:layout="@layout/fragment_settings"
+        android:id="@+id/settingsFragment"
+        android:name="com.nesib.yourbooknotes.ui.main.fragments.drawer.SettingsFragment"
+        android:label="SettingsFragment" /><action android:id="@+id/action_global_settingsFragment" app:destination="@id/settingsFragment"/>
 </navigation>

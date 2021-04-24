@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">YourBookNotes</string>
 
+    <!--  Themes  -->
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_default">Default</string>
+    <string-array name="themes">
+        <item>@string/theme_default</item>
+        <item>@string/theme_dark</item>
+        <item>@string/theme_light</item>
+    </string-array>
+
+    <string name="about_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</string>
+
+
     <!--  Quote Genres  -->
     <string name="genre_love">Love</string>
     <string name="genre_life">Life</string>

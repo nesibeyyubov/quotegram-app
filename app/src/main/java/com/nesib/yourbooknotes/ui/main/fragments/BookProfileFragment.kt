@@ -24,6 +24,7 @@ import com.nesib.yourbooknotes.databinding.FragmentBookProfileBinding
 import com.nesib.yourbooknotes.databinding.ReportDialogBinding
 import com.nesib.yourbooknotes.models.Book
 import com.nesib.yourbooknotes.models.Quote
+import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
@@ -50,6 +51,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private var paginatingFinished = false
 
     private var makeSureDialog: AlertDialog? = null
+    private val notAuthDialog by lazy { (activity as MainActivity).dialog }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -254,23 +256,28 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         }
 
         binding.bookFollowButton.setOnClickListener {
-            currentBook?.let { book ->
-                val followers = book.followers!!.toMutableList()
-                if (!book.following) {
-                    followers.add(authViewModel.currentUserId!!)
-                    toggleFollowButtonStyle(true)
-                    binding.bookFollowerCount.text = (binding.bookFollowerCount.text.toString()
-                        .toInt() + 1).toString()
-                } else {
-                    followers.remove(authViewModel.currentUserId!!)
-                    toggleFollowButtonStyle(false)
-                    binding.bookFollowerCount.text = (binding.bookFollowerCount.text.toString()
-                        .toInt() - 1).toString()
+            if(authViewModel.currentUserId != null){
+                currentBook?.let { book ->
+                    val followers = book.followers!!.toMutableList()
+                    if (!book.following) {
+                        followers.add(authViewModel.currentUserId!!)
+                        toggleFollowButtonStyle(true)
+                        binding.bookFollowerCount.text = (binding.bookFollowerCount.text.toString()
+                            .toInt() + 1).toString()
+                    } else {
+                        followers.remove(authViewModel.currentUserId!!)
+                        toggleFollowButtonStyle(false)
+                        binding.bookFollowerCount.text = (binding.bookFollowerCount.text.toString()
+                            .toInt() - 1).toString()
+                    }
+                    book.followers = followers.toList()
+                    book.following = !book.following
+                    bookViewModel.toggleBookFollow(book)
                 }
-                book.followers = followers.toList()
-                book.following = !book.following
-                bookViewModel.toggleBookFollow(book)
+            }else{
+                notAuthDialog.show()
             }
+
         }
     }
 

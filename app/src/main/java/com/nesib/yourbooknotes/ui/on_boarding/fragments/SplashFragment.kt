@@ -17,22 +17,33 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSplashBinding.bind(view)
+        directToLoginOrSignup()
+        setupClickListeners()
+        setupViewPager()
+
+    }
+
+    private fun setupClickListeners() {
+        binding.prevBtn.setOnClickListener {
+            val currentIndex = binding.splashViewPager.currentItem
+            binding.splashViewPager.currentItem = currentIndex - 1
+        }
+        binding.nextBtn.setOnClickListener {
+            val currentIndex = binding.splashViewPager.currentItem
+            binding.splashViewPager.currentItem = currentIndex + 1
+        }
+    }
+
+    private fun setupViewPager() {
         val adapter = SplashPagerAdapter(requireActivity())
-
         binding.splashViewPager.adapter = adapter
-        TabLayoutMediator(
-            binding.splashTabLayout,
-            binding.splashViewPager
-        ) { tab: TabLayout.Tab, position: Int ->
-
-        }.attach()
-
-        binding.splashViewPager.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+        binding.splashViewPager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 if (position + 1 == adapter.fragments.size) {
                     binding.nextBtn.visibility = View.INVISIBLE
                 }
-                if(position < adapter.fragments.size-1){
+                if (position < adapter.fragments.size - 1) {
                     binding.nextBtn.visibility = View.VISIBLE
                 }
                 if (position == 0) {
@@ -42,15 +53,21 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
                 }
             }
         })
+        TabLayoutMediator(
+            binding.splashTabLayout,
+            binding.splashViewPager
+        ) { tab: TabLayout.Tab, position: Int ->
 
-        binding.prevBtn.setOnClickListener {
-            val currentIndex = binding.splashViewPager.currentItem
-            binding.splashViewPager.currentItem = currentIndex - 1
-        }
-        binding.nextBtn.setOnClickListener {
-            val currentIndex = binding.splashViewPager.currentItem
-            binding.splashViewPager.currentItem = currentIndex + 1
-        }
+        }.attach()
+    }
 
+    private fun directToLoginOrSignup() {
+        val directToLogin = requireActivity().intent.getBooleanExtra("directToLogin", false)
+        val directToSignup = requireActivity().intent.getBooleanExtra("directToSignup", false)
+        if (directToLogin) {
+            findNavController().navigate(R.id.loginFragment)
+        } else if (directToSignup) {
+            findNavController().navigate(R.id.signupFragment)
+        }
     }
 }

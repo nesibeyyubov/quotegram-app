@@ -9,11 +9,12 @@ import com.nesib.yourbooknotes.utils.toJoinedString
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 class SharedPreferencesRepository @Inject constructor(
     @ApplicationContext context: Context,
-    val sharedPreferences: SharedPreferences
+    @Named("encryptedSharedPreferences") val sharedPreferences: SharedPreferences
 ) {
     private val editor = sharedPreferences.edit()
     private var _currentUser: UserAuth? = null

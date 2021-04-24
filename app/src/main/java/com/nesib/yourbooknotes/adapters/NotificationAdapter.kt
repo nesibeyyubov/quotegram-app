@@ -12,6 +12,7 @@ import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.NotificationItemBinding
 import com.nesib.yourbooknotes.models.Notification
 import com.nesib.yourbooknotes.models.Quote
+import com.nesib.yourbooknotes.utils.toFormattedNumber
 
 class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
 
@@ -23,7 +24,7 @@ class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.ViewHolder>
         }
 
         fun bindData(notification: Notification) {
-            binding.otherPeopleCount.text = "+${notification.likeCount-1}"
+            binding.otherPeopleCount.text = "+${(notification.likeCount-1).toFormattedNumber()}"
             val htmlText = Html.fromHtml("${notification.likeCount} people liked the quote you added from the book called <i>\"${notification.bookName}\"</i>")
             binding.notificationText.text = htmlText
             if (notification.userPhoto != null && notification.userPhoto != "") {

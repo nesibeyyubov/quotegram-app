@@ -17,14 +17,24 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
 object LocalModule {
+
+    @Provides
+    @Named("themeSharedPreferences")
+    fun provideSharedPreferences(@ApplicationContext context: Context):SharedPreferences{
+        val sharedPreferences = context.getSharedPreferences("theme",Context.MODE_PRIVATE)
+        return sharedPreferences
+    }
+
     @Provides
     @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+    @Named(("encryptedSharedPreferences"))
+    fun provideEncryptedSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
         val masterKey =
             MasterKey.Builder(context).setKeyGenParameterSpec(MasterKeys.AES256_GCM_SPEC).build()
         val sharedPreferences = EncryptedSharedPreferences.create(

@@ -7,14 +7,25 @@ import com.google.android.material.chip.Chip
 import java.util.*
 
 fun Context.showToast(message: String) {
-    Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
 fun Fragment.showToast(message: String) {
-    Toast.makeText(this.requireContext(),message,Toast.LENGTH_SHORT).show()
+    Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show()
 }
 
-fun List<String>.toJoinedString():String{
+fun Int.toFormattedNumber():String {
+    var text = "$this"
+    if(this in 1000..9999){
+        text = (this/1000).toString() + "." + ((this/100) % 10).toString() + "k"
+    }
+    else if(this in 10000..99999){
+        text = (this/1000).toString() + "." + ((this/100) % 10).toString() + "k"
+    }
+    return text
+}
+
+fun List<String>.toJoinedString(): String {
     var index = 0
     var genresText = ""
     this.forEach { genre ->

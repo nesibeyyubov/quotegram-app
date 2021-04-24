@@ -13,6 +13,7 @@ import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.QuoteFromBookLayoutBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
+import com.nesib.yourbooknotes.utils.toFormattedNumber
 
 class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
     var onUserClickListener: ((User?) -> Unit)? = null
@@ -47,13 +48,13 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
                 }
 
                 bookQuoteTextView.text = quote.quote
-                likeCountTextView.text = quote.likes?.size.toString()
+                likeCountTextView.text = quote.likes?.size?.toFormattedNumber()
                 if (quote.liked) {
                     likeBtn.setImageResource(R.drawable.ic_like_blue)
                 } else {
                     likeBtn.setImageResource(R.drawable.ic_like)
                 }
-                genreText.text = quote.genre
+                genreText.text = "#${quote.genre}"
             }
         }
 

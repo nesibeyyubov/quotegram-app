@@ -16,6 +16,8 @@ import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.SpinnerAdapter
 import com.nesib.yourbooknotes.databinding.FragmentAddQuoteBinding
 import com.nesib.yourbooknotes.models.Quote
+import com.nesib.yourbooknotes.ui.main.MainActivity
+import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 import com.nesib.yourbooknotes.utils.DataState
@@ -28,6 +30,8 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
     private val args by navArgs<AddQuoteFragmentArgs>()
     private lateinit var binding: FragmentAddQuoteBinding
     private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
+    private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
+    private val noAuthDialog by lazy { (activity as MainActivity).dialog }
 
     private var updatedQuote: Quote? = null
 
@@ -58,12 +62,16 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                 bookImage.load(API_URL + book.image)
 
                 addQuoteBtn.setOnClickListener {
-                    val quote = quoteEditText.text.toString()
-                    val selectedGenre = binding.genreSpinner.selectedItem.toString()
-                        .toLowerCase(Locale.ROOT)
-                    val newQuote =
-                        mapOf("book" to book.id, "quote" to quote, "genre" to selectedGenre)
-                    quoteViewModel.postQuote(newQuote)
+                    if(authViewModel.currentUserId != null){
+                        val quote = quoteEditText.text.toString()
+                        val selectedGenre = binding.genreSpinner.selectedItem.toString()
+                            .toLowerCase(Locale.ROOT)
+                        val newQuote =
+                            mapOf("book" to book.id, "quote" to quote, "genre" to selectedGenre)
+                        quoteViewModel.postQuote(newQuote)
+                    }else{
+                        noAuthDialog.show()
+                    }
                 }
                 val genres = resources.getStringArray(R.array.quote_genres).toList()
                 genreSpinner.adapter = SpinnerAdapter(requireContext(), genres)
