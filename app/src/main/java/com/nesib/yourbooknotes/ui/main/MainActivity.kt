@@ -157,7 +157,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     shareApp()
                 }
                 R.id.drawer_home -> {
-
+                    binding.drawerLayout.close()
                 }
                 R.id.drawer_settings -> {
                     binding.drawerLayout.close()
@@ -256,6 +256,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.settingsFragment -> {
                     binding.toolbarText.text = "Settings"
+                }
+                R.id.userProfileFragment->{
+                    binding.toolbarText.text = "User Profile"
+                }
+                R.id.bookProfileFragment ->{
+                    binding.toolbarText.text = "Book Profile"
                 }
             }
             if (navDestination.id != R.id.searchFragment) {

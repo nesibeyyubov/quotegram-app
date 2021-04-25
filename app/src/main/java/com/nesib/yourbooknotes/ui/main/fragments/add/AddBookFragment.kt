@@ -74,7 +74,11 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 is DataState.Success -> {
                     toggleProgressBar(false)
                     findNavController().popBackStack()
-                    Toast.makeText(requireContext(), "Book is added successfully", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        "Book is added successfully",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
                 is DataState.Fail -> {
@@ -95,7 +99,7 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
 
     private fun setOnClickListeners() {
         val genres = resources.getStringArray(R.array.book_genres).toList()
-        binding.bookGenreSpinner.adapter = SpinnerAdapter(requireContext(),genres)
+        binding.bookGenreSpinner.adapter = SpinnerAdapter(requireContext(), genres)
         binding.addBookImageButton.setOnClickListener(this)
         binding.addBookImageContainer.setOnClickListener(this)
         binding.addBookButton.setOnClickListener(this)
@@ -117,12 +121,32 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 pickImage()
             }
             binding.addBookButton.id -> {
-                if(authViewModel.currentUserId != null){
+                if (authViewModel.currentUserId != null) {
                     val name = binding.bookTitle.text.toString()
                     val author = binding.bookAuthor.text.toString()
-                    val genre = binding.bookGenreSpinner.selectedItem.toString().toLowerCase(Locale.ROOT)
-                    bookViewModel.postBook(name, author, genre, selectedBookImage!!)
-                }else{
+                    val genre =
+                        binding.bookGenreSpinner.selectedItem.toString().toLowerCase(Locale.ROOT)
+                    if (name.isEmpty()) {
+                        binding.addBookErrorTextView.visibility = View.VISIBLE
+                        binding.addBookErrorTextView.text = "Title field can't' be empty"
+                    } else if (author.isEmpty()) {
+                        binding.addBookErrorTextView.visibility = View.VISIBLE
+                        binding.addBookErrorTextView.text = "Author field can't' be empty"
+                    } else if (genre == resources.getString(R.string.no_genre)
+                            .toLowerCase(Locale.ROOT)
+                    ) {
+                        binding.addBookErrorTextView.visibility = View.VISIBLE
+                        binding.addBookErrorTextView.text = "Please select a book genre"
+                    }
+                    else if(selectedBookImage == null){
+                        binding.addBookErrorTextView.visibility = View.VISIBLE
+                        binding.addBookErrorTextView.text = "Please upload a book cover"
+                    }
+                    else{
+                        binding.addBookErrorTextView.visibility = View.INVISIBLE
+                        bookViewModel.postBook(name, author, genre, selectedBookImage!!)
+                    }
+                } else {
                     noAuthDialog.show()
                 }
 
@@ -160,9 +184,9 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
         }
     }
 
-    private fun toggleLoadingImageProgressBar(loading: Boolean){
-        binding.addImageIcon.visibility = if(loading) View.INVISIBLE else View.VISIBLE
-        binding.loadingImageProgressBar.visibility = if(loading) View.VISIBLE else View.INVISIBLE
+    private fun toggleLoadingImageProgressBar(loading: Boolean) {
+        binding.addImageIcon.visibility = if (loading) View.INVISIBLE else View.VISIBLE
+        binding.loadingImageProgressBar.visibility = if (loading) View.VISIBLE else View.INVISIBLE
     }
 
 

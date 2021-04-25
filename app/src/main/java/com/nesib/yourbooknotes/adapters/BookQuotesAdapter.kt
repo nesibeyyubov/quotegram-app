@@ -14,8 +14,9 @@ import com.nesib.yourbooknotes.databinding.QuoteFromBookLayoutBinding
 import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.models.User
 import com.nesib.yourbooknotes.utils.toFormattedNumber
+import androidx.appcompat.app.AlertDialog
 
-class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
+class BookQuotesAdapter(val noAuthDialog:AlertDialog) : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
     var onUserClickListener: ((User?) -> Unit)? = null
     var onQuoteOptionsClicked: ((Quote) -> Unit)? = null
     var currentUserId: String? = null
@@ -61,6 +62,10 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
         override fun onClick(v: View?) {
             when (v?.id) {
                 R.id.likeBtn -> {
+                    if(currentUserId == null){
+                        noAuthDialog.show()
+                        return
+                    }
                     val quote = differ.currentList[adapterPosition]
                     val likes = quote.likes!!.toMutableList()
                     if (!quote.liked) {
@@ -89,12 +94,12 @@ class BookQuotesAdapter : RecyclerView.Adapter<BookQuotesAdapter.ViewHolder>() {
                 R.id.postOptionsBtn -> {
                     onQuoteOptionsClicked!!(differ.currentList[adapterPosition])
                 }
-                R.id.shareBtn->{
+                R.id.shareBtn -> {
                     onShareClickListener?.let {
                         it(differ.currentList[adapterPosition])
                     }
                 }
-                R.id.downloadButton->{
+                R.id.downloadButton -> {
                     onDownloadClickListener?.let {
                         it(differ.currentList[adapterPosition])
                     }

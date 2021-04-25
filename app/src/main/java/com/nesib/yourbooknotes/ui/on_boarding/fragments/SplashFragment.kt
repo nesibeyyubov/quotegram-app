@@ -1,5 +1,6 @@
 package com.nesib.yourbooknotes.ui.on_boarding.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -24,15 +25,16 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     }
 
     private fun setupClickListeners() {
-        binding.prevBtn.setOnClickListener {
-            val currentIndex = binding.splashViewPager.currentItem
-            binding.splashViewPager.currentItem = currentIndex - 1
+        binding.nextButton.setOnClickListener {
+            binding.splashViewPager.currentItem += 1
         }
-        binding.nextBtn.setOnClickListener {
-            val currentIndex = binding.splashViewPager.currentItem
-            binding.splashViewPager.currentItem = currentIndex + 1
+
+        binding.skipButton.setOnClickListener {
+            val action = SplashFragmentDirections.actionSplashFragmentToSelectCategoriesFragment(null,null)
+            findNavController().navigate(action)
         }
     }
+
 
     private fun setupViewPager() {
         val adapter = SplashPagerAdapter(requireActivity())
@@ -40,16 +42,20 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         binding.splashViewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                if (position + 1 == adapter.fragments.size) {
-                    binding.nextBtn.visibility = View.INVISIBLE
-                }
-                if (position < adapter.fragments.size - 1) {
-                    binding.nextBtn.visibility = View.VISIBLE
-                }
-                if (position == 0) {
-                    binding.prevBtn.visibility = View.INVISIBLE
-                } else if (position > 0) {
-                    binding.prevBtn.visibility = View.VISIBLE
+                if(position == adapter.fragments.size-1){
+                    binding.nextButton.setOnClickListener {
+                        findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
+                    }
+                    binding.nextButtonTextView.text = "Get Started"
+                    binding.spacer.visibility = View.VISIBLE
+                    binding.skipButton.visibility = View.VISIBLE
+                }else{
+                    binding.nextButtonTextView.text = "Next"
+                    binding.nextButton.setOnClickListener {
+                        binding.splashViewPager.currentItem += 1
+                    }
+                    binding.spacer.visibility = View.GONE
+                    binding.skipButton.visibility = View.GONE
                 }
             }
         })
@@ -65,8 +71,10 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         val directToLogin = requireActivity().intent.getBooleanExtra("directToLogin", false)
         val directToSignup = requireActivity().intent.getBooleanExtra("directToSignup", false)
         if (directToLogin) {
+            requireActivity().intent = Intent()
             findNavController().navigate(R.id.loginFragment)
         } else if (directToSignup) {
+            requireActivity().intent = Intent()
             findNavController().navigate(R.id.signupFragment)
         }
     }

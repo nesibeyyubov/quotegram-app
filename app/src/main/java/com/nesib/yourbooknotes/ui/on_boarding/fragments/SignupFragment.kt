@@ -22,6 +22,9 @@ import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.isEmail
+import com.nesib.yourbooknotes.utils.isPassword
+import com.nesib.yourbooknotes.utils.isUsername
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
@@ -52,7 +55,20 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
             val username = binding.usernameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            authViewModel.signup(email, password, username)
+            if(!username.isUsername()){
+                binding.signupErrorTextView.visibility = View.VISIBLE
+                binding.signupErrorTextView.text = "Username should at least be 5 characters"
+            }
+            else if(!email.isEmail()){
+                binding.signupErrorTextView.visibility = View.VISIBLE
+                binding.signupErrorTextView.text = "Please enter a valid email"
+            }
+            else if(!password.isPassword()){
+                binding.signupErrorTextView.visibility = View.VISIBLE
+                binding.signupErrorTextView.text = "Password should at least be 5 characters"
+            }else{
+                authViewModel.signup(email, password, username)
+            }
         }
         binding.signupToLoginBtn.setOnClickListener {
             // Check if it is coming from login then pop back

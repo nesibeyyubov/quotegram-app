@@ -23,6 +23,10 @@
         android:name="com.nesib.yourbooknotes.ui.on_boarding.fragments.SignupFragment"
         android:label="Signup" >
         <action
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_from_right"
             android:id="@+id/action_signupFragment_to_selectCategoriesFragment"
             app:destination="@id/selectCategoriesFragment" />
         <action
@@ -49,12 +53,24 @@
         android:name="com.nesib.yourbooknotes.ui.on_boarding.fragments.SplashFragment"
         android:label="SplashFragment" >
         <action
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_from_right"
             android:id="@+id/action_splashFragment_to_signupFragment"
             app:destination="@id/signupFragment" />
         <action
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_from_right"
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
         <action
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_from_right"
             android:id="@+id/action_splashFragment_to_selectCategoriesFragment"
             app:destination="@id/selectCategoriesFragment" />
     </fragment>

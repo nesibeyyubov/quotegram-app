@@ -30,6 +30,7 @@ import com.nesib.yourbooknotes.ui.viewmodels.ReportViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.showToast
+import com.nesib.yourbooknotes.utils.toFormattedNumber
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -67,10 +68,10 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private fun bindData(user: User) {
         binding.usernameTextView.text = user.username
         binding.bioTextView.text = if (user.bio!!.isNotEmpty()) user.bio else "No bio"
-        binding.followerCountTextView.text = user.followers!!.size.toString()
+        binding.followerCountTextView.text = user.followers!!.size.toFormattedNumber()
         binding.followingCountTextView.text =
-            (user.followingUsers!!.size + user.followingBooks!!.size).toString()
-        binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toString()
+            (user.followingUsers!!.size + user.followingBooks!!.size).toFormattedNumber()
+        binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toFormattedNumber()
         if (user.profileImage != null && user.profileImage != "") {
             binding.userPhotoImageView.load(user.profileImage) {
                 error(R.drawable.user)

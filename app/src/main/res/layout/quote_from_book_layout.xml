@@ -29,27 +29,7 @@
         app:layout_constraintStart_toEndOf="@+id/userImage"
         app:layout_constraintTop_toTopOf="@+id/userImage" />
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="3dp"
-        android:layout_height="3dp"
-        android:layout_marginStart="15dp"
-        android:background="@color/colorSecondaryText"
-        app:layout_constraintBottom_toBottomOf="@+id/username"
-        app:layout_constraintStart_toEndOf="@+id/username"
-        app:layout_constraintTop_toTopOf="@+id/username" />
 
-    <TextView
-        android:id="@+id/quotePostTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:text="1 min ago"
-        android:textColor="@color/colorSecondaryText"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/username"
-        app:layout_constraintStart_toEndOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/username" />
 
     <ImageButton
         android:id="@+id/postOptionsBtn"
@@ -57,10 +37,9 @@
         android:layout_height="wrap_content"
         android:background="@color/transparent"
         android:src="@drawable/ic_more"
-
-        app:layout_constraintBottom_toBottomOf="@+id/quotePostTime"
+        app:layout_constraintBottom_toBottomOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/quotePostTime" />
+        app:layout_constraintTop_toTopOf="@+id/username" />
 
     <View
         android:id="@+id/view2"

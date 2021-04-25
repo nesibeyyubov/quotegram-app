@@ -15,6 +15,7 @@
 
 
     <!--  Quote Genres  -->
+    <string name="no_genre">Select genre</string>
     <string name="genre_love">Love</string>
     <string name="genre_life">Life</string>
     <string name="genre_motivation">Motivation</string>
@@ -37,7 +38,7 @@
     <string name="genre_parenting">Parenting</string>
 
     <string-array name="quote_genres">
-        <item>Select category</item>
+        <item>@string/no_genre</item>
         <item>@string/genre_love</item>
         <item>@string/genre_life</item>
         <item>@string/genre_parenting</item>
@@ -87,7 +88,7 @@
     <string name="book_genre_children">Children</string>
 
     <string-array name="book_genres">
-        <item>Select book genre</item>
+        <item>@string/no_genre</item>
         <item>@string/book_genre_fantasy</item>
         <item>@string/book_genre_adventure</item>
         <item>@string/book_genre_romance</item>

@@ -98,7 +98,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                 />
 
             <LinearLayout
                 android:layout_width="match_parent"

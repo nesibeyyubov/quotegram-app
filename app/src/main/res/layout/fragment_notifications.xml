@@ -4,51 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/notSignedinContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="invisible">
 
-        <ImageView
-            android:id="@+id/image_login"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginBottom="10dp"
-            android:alpha="0.2"
-            android:src="@drawable/ic_user"
-            app:tint="@color/colorPrimaryText" />
-
-        <TextView
-            android:id="@+id/text_not_signed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Not signed in"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/text_extra_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="You need to login to use all the features"
-            android:textColor="@color/colorSecondaryText" />
-
-        <Button
-            android:id="@+id/loginButton"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="30dp"
-            android:clickable="true"
-            android:text="Login"
-            android:textAllCaps="false"
-            android:textStyle="bold" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/noNotificationsContainer"
@@ -110,4 +66,50 @@
             android:layout_height="30dp"
             android:background="@color/fullPostBackgroundColor" />
     </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <LinearLayout
+        android:id="@+id/notSignedinContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/image_login"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
+            android:alpha="0.2"
+            android:src="@drawable/ic_user"
+            app:tint="@color/colorPrimaryText" />
+
+        <TextView
+            android:id="@+id/text_not_signed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Not signed in"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_extra_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="You need to login to use all the features"
+            android:textColor="@color/colorSecondaryText" />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:text="Login"
+            android:textAllCaps="false"
+            android:textStyle="bold" />
+    </LinearLayout>
 </RelativeLayout>

@@ -20,18 +20,8 @@ class LastFragment : Fragment(R.layout.fragment_last) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentLastBinding.bind(view)
-        setupClickListeners()
     }
-    private fun setupClickListeners(){
-        binding.getStartedBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
-        }
-        binding.skipButton.setOnClickListener {
-            val action = SplashFragmentDirections.actionSplashFragmentToSelectCategoriesFragment(null,null)
-            findNavController().navigate(action)
-        }
 
-    }
 
 
 }

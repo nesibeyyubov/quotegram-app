@@ -32,6 +32,7 @@ import com.nesib.yourbooknotes.ui.viewmodels.ReportViewModel
 import com.nesib.yourbooknotes.utils.Constants.API_URL
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.showToast
+import com.nesib.yourbooknotes.utils.toFormattedNumber
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -41,7 +42,6 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private val authViewModel: AuthViewModel by viewModels()
     private val reportViewModel: ReportViewModel by viewModels()
     private val args by navArgs<BookProfileFragmentArgs>()
-    private val bookQuotesAdapter by lazy { BookQuotesAdapter() }
 
     private lateinit var binding: FragmentBookProfileBinding
     private var currentBook: Book? = null
@@ -52,6 +52,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
 
     private var makeSureDialog: AlertDialog? = null
     private val notAuthDialog by lazy { (activity as MainActivity).dialog }
+    private val bookQuotesAdapter by lazy { BookQuotesAdapter(notAuthDialog) }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -221,8 +222,8 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             bookName.text = book.name
             bookAuthor.text = book.author
             bookGenre.text = book.genre
-            bookQuoteCount.text = (book.totalQuoteCount ?: 0).toString()
-            bookFollowerCount.text = book.followers?.size.toString()
+            bookQuoteCount.text = (book.totalQuoteCount ?: 0).toFormattedNumber()
+            bookFollowerCount.text = (book.followers?.size ?: 0).toFormattedNumber()
             toggleFollowButtonStyle(book.following)
             if (book.quotes!!.isEmpty()) {
                 noQuoteFoundContainer.visibility = View.VISIBLE
@@ -256,7 +257,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         }
 
         binding.bookFollowButton.setOnClickListener {
-            if(authViewModel.currentUserId != null){
+            if (authViewModel.currentUserId != null) {
                 currentBook?.let { book ->
                     val followers = book.followers!!.toMutableList()
                     if (!book.following) {
@@ -274,7 +275,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
                     book.following = !book.following
                     bookViewModel.toggleBookFollow(book)
                 }
-            }else{
+            } else {
                 notAuthDialog.show()
             }
 

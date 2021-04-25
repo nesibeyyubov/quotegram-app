@@ -61,15 +61,37 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                 bookNameTextView.text = book.name
                 bookImage.load(API_URL + book.image)
 
+                spinnerIcon.setOnClickListener {
+                    genreSpinner.performClick()
+                }
                 addQuoteBtn.setOnClickListener {
-                    if(authViewModel.currentUserId != null){
+                    if (authViewModel.currentUserId != null) {
                         val quote = quoteEditText.text.toString()
                         val selectedGenre = binding.genreSpinner.selectedItem.toString()
                             .toLowerCase(Locale.ROOT)
-                        val newQuote =
-                            mapOf("book" to book.id, "quote" to quote, "genre" to selectedGenre)
-                        quoteViewModel.postQuote(newQuote)
-                    }else{
+
+                        if (quote.length < 15) {
+                            binding.addQuoteErrorTextView.visibility = View.VISIBLE
+                            binding.addQuoteErrorTextView.text =
+                                "Quote length should be between 15 characters"
+                        } else if (quote.length > 500) {
+                            binding.addQuoteErrorTextView.visibility = View.VISIBLE
+                            binding.addQuoteErrorTextView.text =
+                                "Quote length shouldn't be more than 500 characters"
+                        } else if (selectedGenre == resources.getString(R.string.no_genre)
+                                .toLowerCase(
+                                    Locale.ROOT
+                                )
+                        ) {
+                            binding.addQuoteErrorTextView.visibility = View.VISIBLE
+                            binding.addQuoteErrorTextView.text = "Please select a quote genre"
+                        } else {
+                            binding.addQuoteErrorTextView.visibility = View.INVISIBLE
+                            val newQuote =
+                                mapOf("book" to book.id, "quote" to quote, "genre" to selectedGenre)
+                            quoteViewModel.postQuote(newQuote)
+                        }
+                    } else {
                         noAuthDialog.show()
                     }
                 }
@@ -91,7 +113,7 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                         Locale.ROOT
                     )
                 )
-                genreSpinner.adapter = SpinnerAdapter(requireContext(),genresArray.toList())
+                genreSpinner.adapter = SpinnerAdapter(requireContext(), genresArray.toList())
                 genreSpinner.setSelection(genreIndex)
 
                 addQuoteBtn.setOnClickListener {

@@ -19,6 +19,7 @@ import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.isEmail
 import com.nesib.yourbooknotes.utils.toJoinedString
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -68,11 +69,23 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun setupClickListeners() {
         binding.loginBtn.setOnClickListener {
-            authViewModel.login(
-                binding.emailEditText.text.toString(),
-                binding.passwordEditText.text.toString(),
-                binding.emailEditText.text.toString()
-            )
+            val emailValue = binding.emailEditText.text.toString()
+            val passwordValue = binding.passwordEditText.text.toString()
+            if(emailValue.isEmpty()){
+                binding.loginErrorTextView.visibility = View.VISIBLE
+                binding.loginErrorTextView.text = "Email or username field can't be empty"
+            }
+            else if(passwordValue.isEmpty()){
+                binding.loginErrorTextView.visibility = View.VISIBLE
+                binding.loginErrorTextView.text = "Password field shouldn't be empty"
+            }
+            else{
+                authViewModel.login(
+                    binding.emailEditText.text.toString(),
+                    binding.passwordEditText.text.toString(),
+                    binding.emailEditText.text.toString()
+                )
+            }
         }
         binding.loginToSignupBtn.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_signupFragment)

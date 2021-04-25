@@ -2,7 +2,6 @@ package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,7 +11,6 @@ import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.adapters.NotificationAdapter
 import com.nesib.yourbooknotes.databinding.FragmentNotificationsBinding
 import com.nesib.yourbooknotes.models.Notification
-import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.NotificationViewModel
@@ -32,7 +30,6 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     private var paginatingFinished = false
     private var paginationLoading = false
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentNotificationsBinding.bind(view)
@@ -40,6 +37,9 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         setupRecyclerView()
         setupClickListeners()
         subscribeObservers()
+    }
+
+    private fun setupUi() {
         if(authViewModel.isAuthenticated){
             notificationViewModel.getNotifications()
         }else{
@@ -51,8 +51,6 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
             }
         }
     }
-
-    private fun setupUi() {}
     private fun subscribeObservers() {
         notificationViewModel.notifications.observe(viewLifecycleOwner) {
             when (it) {

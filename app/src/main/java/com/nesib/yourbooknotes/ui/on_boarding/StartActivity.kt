@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.ActivityStartBinding
 import com.nesib.yourbooknotes.ui.main.MainActivity
@@ -34,7 +36,6 @@ class StartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         binding = ActivityStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setAppTheme()
@@ -45,9 +46,12 @@ class StartActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.splashFragment))
+        setupActionBarWithNavController(navController,appBarConfiguration)
+
         navController.addOnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
             if (navDestination.id == R.id.splashFragment) {
-                binding.toolbarStartActivity.visibility = View.GONE
+//                binding.toolbarStartActivity.visibility = View.GONE
             } else {
                 binding.toolbarStartActivity.visibility = View.VISIBLE
             }

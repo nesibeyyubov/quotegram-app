@@ -2,6 +2,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:useLevel="false"
     android:innerRadius="0dp"
-    android:shape="ring" android:thickness="5dp">
+    android:shape="ring" android:thickness="4dp">
     <solid android:color="@color/inActiveTabDotColor"/>
 </shape>

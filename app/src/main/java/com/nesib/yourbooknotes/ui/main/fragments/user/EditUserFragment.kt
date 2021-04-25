@@ -21,6 +21,7 @@ import com.nesib.yourbooknotes.models.User
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
+import com.nesib.yourbooknotes.utils.isUsername
 import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -102,16 +103,13 @@ class EditUserFragment : Fragment(R.layout.fragment_edit_profile) {
         updatedUser =
             args.user!!.copy(username = username, fullname = fullName, bio = bio)
         if(args.user!!.username != username || args.user!!.fullname != fullName || args.user!!.bio != bio){
-            if(username.length < 5){
+            if(!username.isUsername()){
                 binding.updateProfileErrorTextView.visibility = View.VISIBLE
                 binding.updateProfileErrorTextView.text = "Username length must be at least 5 characters"
                 menuItem?.actionView =null
                 return
             }
-            Log.d(
-                "mytag",
-                "updateUser: currentUser in sharedPrefernces: ${authViewModel.currentUser}"
-            )
+
             authViewModel.currentUser = authViewModel.currentUser?.copy(username = username)
             authViewModel.updateUser()
             userViewModel.updateUser(username, fullName, bio)

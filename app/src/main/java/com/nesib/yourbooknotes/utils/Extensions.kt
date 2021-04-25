@@ -14,13 +14,24 @@ fun Fragment.showToast(message: String) {
     Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show()
 }
 
-fun Int.toFormattedNumber():String {
+fun String.isEmail(): Boolean {
+    return this.isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+}
+
+fun String.isPassword(): Boolean {
+    return this.length >= 5
+}
+
+fun String.isUsername(): Boolean {
+    return this.length >= 5
+}
+
+fun Int.toFormattedNumber(): String {
     var text = "$this"
-    if(this in 1000..9999){
-        text = (this/1000).toString() + "." + ((this/100) % 10).toString() + "k"
-    }
-    else if(this in 10000..99999){
-        text = (this/1000).toString() + "." + ((this/100) % 10).toString() + "k"
+    if (this in 1000..9999) {
+        text = (this / 1000).toString() + "." + ((this / 100) % 10).toString() + "k"
+    } else if (this in 10000..99999) {
+        text = (this / 1000).toString() + "." + ((this / 100) % 10).toString() + "k"
     }
     return text
 }

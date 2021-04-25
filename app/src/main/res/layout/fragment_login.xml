@@ -45,8 +45,7 @@
             android:id="@+id/emailEditText"
             style="@style/EditTextStyle"
             android:layout_marginTop="40dp"
-            android:hint="Your email"
-
+            android:hint="Username or email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -170,13 +169,12 @@
             android:textStyle="bold" />
 
         <ProgressBar
-            android:visibility="invisible"
             android:id="@+id/signInGoogleProgressBar"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_centerInParent="true"
             android:indeterminateTint="@color/colorSecondaryText"
-             />
+            android:visibility="invisible" />
     </RelativeLayout>
 
 
