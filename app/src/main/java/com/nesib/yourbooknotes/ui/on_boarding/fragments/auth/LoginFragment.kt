@@ -1,26 +1,20 @@
-package com.nesib.yourbooknotes.ui.on_boarding.fragments
+package com.nesib.yourbooknotes.ui.on_boarding.fragments.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.FragmentLoginBinding
 import com.nesib.yourbooknotes.ui.main.MainActivity
-import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
-import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
-import com.nesib.yourbooknotes.utils.isEmail
-import com.nesib.yourbooknotes.utils.toJoinedString
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -58,11 +52,13 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         authViewModel.signInWithGoogle(email, profileImage)
                     } else {
                         signingInWithGoogle = false
+                        binding.loginErrorTextView.visibility = View.VISIBLE
+                        binding.loginErrorTextView.text = "Something went wrong,please try again"
                         // show something useful for user
                     }
                 }else{
                     binding.loginErrorTextView.visibility = View.VISIBLE
-                    binding.loginErrorTextView.text = "Ooops, something went wrong"
+                    binding.loginErrorTextView.text = "Something went wrong,please try again"
                 }
             }
     }

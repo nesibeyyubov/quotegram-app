@@ -1,26 +1,19 @@
-package com.nesib.yourbooknotes.ui.on_boarding.fragments
+package com.nesib.yourbooknotes.ui.on_boarding.fragments.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.nesib.yourbooknotes.R
-import com.nesib.yourbooknotes.databinding.FragmentLoginBinding
 import com.nesib.yourbooknotes.databinding.FragmentSignupBinding
-import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
+import com.nesib.yourbooknotes.ui.on_boarding.fragments.auth.SignupFragmentDirections
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
-import com.nesib.yourbooknotes.ui.viewmodels.UserViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.isEmail
 import com.nesib.yourbooknotes.utils.isPassword
@@ -28,7 +21,6 @@ import com.nesib.yourbooknotes.utils.isUsername
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
-import kotlin.math.sign
 import kotlin.random.Random
 
 @AndroidEntryPoint
@@ -123,7 +115,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                     val action =
                         SignupFragmentDirections.actionSignupFragmentToSelectCategoriesFragment(
                             it.data!!.userId,
-                            binding.usernameEditText.text.toString()
+                            it.data.username
                         )
                     findNavController().navigate(action)
                 }

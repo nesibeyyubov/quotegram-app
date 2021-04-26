@@ -1,22 +1,17 @@
-package com.nesib.yourbooknotes.ui.on_boarding.fragments
+package com.nesib.yourbooknotes.ui.on_boarding.fragments.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.nesib.yourbooknotes.R
-import com.nesib.yourbooknotes.databinding.FragmentLastBinding
 import com.nesib.yourbooknotes.databinding.FragmentSelectCategoriesBinding
 import com.nesib.yourbooknotes.ui.main.MainActivity
-import com.nesib.yourbooknotes.ui.on_boarding.StartActivity
+import com.nesib.yourbooknotes.ui.on_boarding.fragments.auth.SelectCategoriesFragmentArgs
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.utils.DataState
 import java.util.*
