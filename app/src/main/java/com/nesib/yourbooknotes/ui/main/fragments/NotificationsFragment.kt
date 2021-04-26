@@ -2,9 +2,11 @@ package com.nesib.yourbooknotes.ui.main.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nesib.yourbooknotes.R
@@ -41,7 +43,11 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     private fun setupUi() {
         if(authViewModel.isAuthenticated){
-            notificationViewModel.getNotifications()
+            if(currentNotifications == null){
+                notificationViewModel.getNotifications()
+            }else{
+                notificationAdapter.setData(currentNotifications!!)
+            }
         }else{
             binding.notSignedinContainer.visibility = View.VISIBLE
             binding.loginButton.setOnClickListener {
@@ -90,6 +96,11 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     }
 
     private fun setupRecyclerView() {
+        notificationAdapter.onNotificationClickListener={
+            Log.d("mytag", "notification clicked: $it")
+            val action = NotificationsFragmentDirections.actionNotificationsFragmentToQuoteFragment(it)
+            findNavController().navigate(action)
+        }
         val mLayoutManager = LinearLayoutManager(requireContext())
         binding.notificationsRecyclerView.apply {
             adapter = notificationAdapter

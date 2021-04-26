@@ -14,6 +14,10 @@ interface MainApi {
         @Query("genres") genres: String? = null,
     ): Response<QuotesResponse>
 
+    @GET("/quotes/{quoteId}")
+    suspend fun getSingleQuote(
+        @Path("quoteId") quoteId: String
+    ): Response<QuoteResponse>
 
     @GET("/quotes/by-genre")
     suspend fun getQuotesByGenre(
@@ -86,7 +90,7 @@ interface MainApi {
     suspend fun reportBook(@Body reportBody: Map<String, String>): Response<BasicResponse>
 
     @GET("/notifications/")
-    suspend fun getNotifications(@Query("page") page:Int): Response<NotificationsResponse>
+    suspend fun getNotifications(@Query("page") page: Int): Response<NotificationsResponse>
 
     @POST("/notifications/")
     suspend fun readNotifications(): Response<NotificationsResponse>

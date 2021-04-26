@@ -24,6 +24,8 @@ class MainRepository @Inject constructor(
         return mainApi.getQuotes(page, genres)
     }
 
+    suspend fun getSingleQuote(quoteId: String) = mainApi.getSingleQuote(quoteId)
+
     suspend fun reportQuote(reportBody:Map<String,String>) = mainApi.reportQuote(reportBody)
 
     suspend fun reportUser(reportBody:Map<String,String>) = mainApi.reportUser(reportBody)

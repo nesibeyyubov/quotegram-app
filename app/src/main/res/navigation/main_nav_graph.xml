@@ -76,12 +76,12 @@
             android:id="@+id/action_searchFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
         <action
+            android:id="@+id/action_searchFragment_to_searchQuotesFragment"
+            app:destination="@id/searchQuotesFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_from_left"
             app:popEnterAnim="@anim/slide_in_from_left"
-            app:popExitAnim="@anim/slide_out_from_right"
-            android:id="@+id/action_searchFragment_to_searchQuotesFragment"
-            app:destination="@id/searchQuotesFragment" />
+            app:popExitAnim="@anim/slide_out_from_right" />
     </fragment>
     <action
         android:id="@+id/action_global_addBookFragment"
@@ -100,19 +100,23 @@
     </fragment>
     <action
         android:id="@+id/action_global_selectBookFragment"
-        app:destination="@id/selectBookFragment" />
+        app:destination="@id/selectBookFragment"
+        app:enterAnim="@anim/slide_in_from_right"
+        app:exitAnim="@anim/slide_out_from_left"
+        app:popEnterAnim="@anim/slide_in_from_left"
+        app:popExitAnim="@anim/slide_out_from_right" />
     <fragment
         android:id="@+id/myProfileFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.user.MyProfileFragment"
         android:label="MyProfileFragment"
         tools:layout="@layout/fragment_my_profile">
         <action
+            android:id="@+id/action_myProfileFragment_to_editUserFragment"
+            app:destination="@id/editUserFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_from_left"
             app:popEnterAnim="@anim/slide_in_from_left"
-            app:popExitAnim="@anim/slide_out_from_right"
-            android:id="@+id/action_myProfileFragment_to_editUserFragment"
-            app:destination="@id/editUserFragment" />
+            app:popExitAnim="@anim/slide_out_from_right" />
         <action
             android:id="@+id/action_myProfileFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
@@ -187,7 +191,11 @@
         android:id="@+id/notificationsFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.NotificationsFragment"
         android:label="NotificationsFragment"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_notifications">
+        <action
+            android:id="@+id/action_notificationsFragment_to_quoteFragment"
+            app:destination="@id/quoteFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.nesib.yourbooknotes.ui.main.fragments.drawer.SettingsFragment"
@@ -196,4 +204,16 @@
     <action
         android:id="@+id/action_global_settingsFragment"
         app:destination="@id/settingsFragment" />
+    <fragment
+        android:id="@+id/quoteFragment"
+        android:name="com.nesib.yourbooknotes.ui.main.fragments.QuoteFragment"
+        android:label="QuoteFragment">
+        <argument
+            android:name="quoteId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_bookProfileFragment"
+        app:destination="@id/bookProfileFragment" /><action android:id="@+id/action_global_userProfileFragment" app:destination="@id/userProfileFragment"/>
 </navigation>

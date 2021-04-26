@@ -35,29 +35,7 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:paddingTop="30dp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:visibility="invisible"
-        android:id="@+id/noQuoteFoundContainer"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:alpha="0.5"
-            app:tint="@color/colorSecondaryText"
-            android:src="@drawable/ic_quote"
-            android:layout_width="40dp"
-            android:layout_height="40dp"/>
-        <TextView
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="15sp"
-            android:textAlignment="center"
-            android:text="No qutoes found from\nthis book"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -70,10 +48,10 @@
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/bookProfileContent"
-        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
+        android:visibility="invisible"
         android:paddingTop="@dimen/page_padding"
         android:scrollbars="none"
         >
@@ -82,6 +60,33 @@
             android:descendantFocusability="blocksDescendants"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/noQuoteFoundContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/add_book_from_this_book_btn"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@+id/add_book_from_this_book_btn">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_quote"
+                    app:tint="@color/colorSecondaryText" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No qutoes found from\nthis book"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView14"
@@ -180,37 +185,38 @@
                 app:layout_constraintBottom_toBottomOf="@+id/bookImage"
                 app:layout_constraintStart_toStartOf="@+id/bookGenre" />
 
-            <View
-                android:id="@+id/view3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="30dp"
-                android:background="@color/lineColor"
-                app:layout_constraintTop_toBottomOf="@+id/bookImage" />
-
             <LinearLayout
+                android:layout_marginTop="15dp"
                 android:id="@+id/bookFollowButton"
-                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="5dp"
                 android:background="@drawable/follow_button_bg"
+                android:clickable="true"
                 android:gravity="center"
                 android:paddingHorizontal="15dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView14"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bookImage">
 
                 <TextView
                     android:id="@+id/bookFollowButtonText"
-                    android:includeFontPadding="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
                     android:text="Follow Book"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/lineColor"
+                app:layout_constraintTop_toBottomOf="@+id/bookFollowButton" />
+
+
 
 
             <TextView

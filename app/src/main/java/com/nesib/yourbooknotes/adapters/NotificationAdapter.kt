@@ -15,12 +15,17 @@ import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.utils.toFormattedNumber
 
 class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
+    var onNotificationClickListener:((String?)->Unit)? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = NotificationItemBinding.bind(itemView)
 
         init {
-
+            binding.root.setOnClickListener {
+                onNotificationClickListener?.let {
+                    it(differ.currentList[adapterPosition].likedQuoteId)
+                }
+            }
         }
 
         fun bindData(notification: Notification) {

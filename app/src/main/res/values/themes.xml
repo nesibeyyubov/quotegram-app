@@ -41,6 +41,12 @@
         <item name="chipStrokeWidth">1dp</item>
     </style>
 
+    <style name="CustomNavViewStyle" parent="Widget.Design.NavigationView">
+        <item name="itemIconTint">@color/drawer_item_icon_selector</item>
+        <item name="itemBackground">@drawable/drawer_item_bg_selector</item>
+        <item name="itemTextColor">@color/drawer_item_text_selector</item>
+    </style>
+
     <style name="CustomChipStyleNoIcon" parent="CustomChipStyle">
         <item name="checkedIcon">@null</item>
     </style>

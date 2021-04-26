@@ -39,6 +39,10 @@ class QuoteViewModel @Inject constructor(
     val quote: LiveData<DataState<QuoteResponse>>
         get() = _quote
 
+    private val _singleQuote = MutableLiveData<DataState<QuoteResponse>>()
+    val singleQuote: LiveData<DataState<QuoteResponse>>
+        get() = _quote
+
     private val _likeQuote = MutableLiveData<DataState<QuoteResponse>>()
     val likeQuote: LiveData<DataState<QuoteResponse>>
         get() = _likeQuote
@@ -52,21 +56,22 @@ class QuoteViewModel @Inject constructor(
         get() = _deleteQuote
 
 
-    fun getQuotesByGenre(genre: String, page: Int = 1,forced:Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
-        if(hasInternetConnection()){
-            try{
-                if (_quotes.value == null || page > 1 || forced) {
-                    _quotes.postValue(DataState.Loading())
-                    val response = mainRepository.getQuotesByGenre(genre, page)
-                    handleQuotesResponse(response)
+    fun getQuotesByGenre(genre: String, page: Int = 1, forced: Boolean = false) =
+        viewModelScope.launch(Dispatchers.IO) {
+            if (hasInternetConnection()) {
+                try {
+                    if (_quotes.value == null || page > 1 || forced) {
+                        _quotes.postValue(DataState.Loading())
+                        val response = mainRepository.getQuotesByGenre(genre, page)
+                        handleQuotesResponse(response)
+                    }
+                } catch (e: Exception) {
+                    _quotes.postValue(DataState.Fail())
                 }
-            }catch (e:Exception){
-                _quotes.postValue(DataState.Fail())
+            } else {
+                _quotes.postValue(DataState.Fail(message = "No internet connection"))
             }
-        }else{
-            _quotes.postValue(DataState.Fail(message = "No internet connection"))
         }
-    }
 
 
     fun getQuotes(page: Int = 1, forced: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
@@ -86,9 +91,26 @@ class QuoteViewModel @Inject constructor(
 
     }
 
+    fun getSingleQuote(quoteId: String) = viewModelScope.launch(Dispatchers.IO) {
+        if (hasInternetConnection()) {
+            try {
+                _quote.postValue(DataState.Loading())
+                val response = mainRepository.getSingleQuote(quoteId)
+                val handledResponse = handleQuoteResponse(response)
+                _quote.postValue(handledResponse)
+            } catch (exception: Exception) {
+                Log.d("mytag", "catch block :${exception.message} ${exception.cause}")
+                _quote.postValue(DataState.Fail())
+            }
+        } else {
+            _quote.postValue(DataState.Fail(message = "No internet connection"))
+        }
+
+    }
+
     fun updateQuote(oldQuote: Quote, newQuote: Map<String, String>) =
         viewModelScope.launch(Dispatchers.IO) {
-            if(hasInternetConnection()) {
+            if (hasInternetConnection()) {
                 try {
                     _updateQuote.postValue(DataState.Loading())
                     val response = mainRepository.updateQuote(oldQuote.id, newQuote)
@@ -105,14 +127,14 @@ class QuoteViewModel @Inject constructor(
                 } catch (e: Exception) {
                     _updateQuote.postValue(DataState.Fail())
                 }
-            }else{
+            } else {
                 _updateQuote.postValue(DataState.Fail(message = "No internet connection"))
             }
 
         }
 
     fun deleteQuote(quote: Quote) = viewModelScope.launch(Dispatchers.IO) {
-        if(hasInternetConnection()){
+        if (hasInternetConnection()) {
             try {
                 _deleteQuote.postValue(DataState.Loading())
                 val response = mainRepository.deleteQuote(quote.id)
@@ -122,50 +144,48 @@ class QuoteViewModel @Inject constructor(
                     _quotes.postValue(DataState.Success(data = QuotesResponse(quoteList.toList())))
                 }
                 _deleteQuote.postValue(handledResponse)
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 _deleteQuote.postValue(DataState.Fail())
             }
-        }else{
+        } else {
             _deleteQuote.postValue(DataState.Fail(message = "No internet connection"))
         }
     }
 
 
     fun getMoreQuotes(page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
-        if(hasInternetConnection()){
-            try{
+        if (hasInternetConnection()) {
+            try {
                 _quotes.postValue(DataState.Loading())
                 val response = mainRepository.getQuotes(page)
                 handleQuotesResponse(response)
-            }
-            catch (e:Exception){
+            } catch (e: Exception) {
+
                 _quotes.postValue(DataState.Fail())
             }
-        }
-        else{
+        } else {
             _quotes.postValue(DataState.Fail(message = "No internet connection"))
         }
     }
 
     fun postQuote(quote: Map<String, String>) = viewModelScope.launch(Dispatchers.IO) {
-        if(hasInternetConnection()){
-            try{
+        if (hasInternetConnection()) {
+            try {
                 _quote.postValue(DataState.Loading())
                 val response = mainRepository.postQuote(quote)
                 val handledResponse = handleQuoteResponse(response)
                 _quote.postValue(handledResponse)
-            }
-            catch (e:Exception){
+            } catch (e: Exception) {
                 _quote.postValue(DataState.Fail())
             }
-        }else{
+        } else {
             _quote.postValue(DataState.Fail(message = "No internet connection"))
         }
     }
 
     fun toggleLike(quote: Quote) = viewModelScope.launch(Dispatchers.IO) {
-        if(hasInternetConnection()){
-            try{
+        if (hasInternetConnection()) {
+            try {
                 _likeQuote.postValue(DataState.Loading())
                 _quotes.value?.data?.quotes?.find { q -> q.id == quote.id }?.let {
                     it.likes = quote.likes
@@ -173,14 +193,13 @@ class QuoteViewModel @Inject constructor(
                 }
                 val bookName = quote.book?.name ?: "Unknown"
                 val bookBody = mapOf("bookName" to bookName)
-                val response = mainRepository.likeOrDislikeQuote(quote.id,bookBody)
+                val response = mainRepository.likeOrDislikeQuote(quote.id, bookBody)
                 val handledResponse = handleQuoteResponse(response)
                 _likeQuote.postValue(handledResponse)
-            }
-            catch (e:Exception){
+            } catch (e: Exception) {
                 _likeQuote.postValue(DataState.Fail())
             }
-        }else{
+        } else {
             _likeQuote.postValue(DataState.Fail(message = "No internet connection"))
         }
 
@@ -214,6 +233,7 @@ class QuoteViewModel @Inject constructor(
     private fun handleQuoteResponse(response: Response<QuoteResponse>): DataState<QuoteResponse> {
         when (response.code()) {
             Constants.CODE_SUCCESS -> {
+                Log.d("mytag", "handleQuoteResponse: SUCCESS")
                 return DataState.Success(response.body())
             }
             Constants.CODE_CREATION_SUCCESS -> {

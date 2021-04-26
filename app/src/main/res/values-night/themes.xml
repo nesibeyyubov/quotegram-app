@@ -33,6 +33,12 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="CustomNavViewStyle" parent="Widget.Design.NavigationView">
+        <item name="itemIconTint">@color/drawer_item_icon_selector</item>
+        <item name="itemBackground">@drawable/drawer_item_bg_selector</item>
+        <item name="itemTextColor">@color/drawer_item_text_selector</item>
+    </style>
+
     <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="chipBackgroundColor">@drawable/chip_bg_selector</item>
         <item name="android:textColor">@drawable/chip_text_selector</item>

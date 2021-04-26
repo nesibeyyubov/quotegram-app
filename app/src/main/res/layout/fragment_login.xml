@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,12 +7,13 @@
     android:layout_marginHorizontal="@dimen/page_padding">
 
     <LinearLayout
+        android:id="@+id/loginContainer"
+        android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/signInWithGoogleButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -78,7 +79,7 @@
             android:id="@+id/loginBtn"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/blue_button_bg"
             android:clickable="true"
             android:gravity="center"
@@ -139,8 +140,8 @@
         android:id="@+id/signInWithGoogleButton"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
+        android:layout_below="@id/loginContainer"
+        android:layout_marginTop="40dp"
         android:background="@drawable/ripple_white_bg"
         android:clickable="true"
         android:elevation="1dp"
@@ -178,4 +179,4 @@
     </RelativeLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
