@@ -60,6 +60,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:background="@drawable/image_outline"
                 android:id="@+id/image_container"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -67,8 +68,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/userPhoto_imageView"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
                     android:layout_centerInParent="true"
                     android:src="@drawable/user" />
 

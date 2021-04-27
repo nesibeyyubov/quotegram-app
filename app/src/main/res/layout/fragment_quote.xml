@@ -18,6 +18,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/failContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/failMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Something went wrong...."
+            android:textAlignment="center"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tryAgainButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/add_quote_from_this_book_bg"
+            android:includeFontPadding="false"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="Try Again"
+            android:textColor="@color/blue"
+            android:textStyle="bold" />
+    </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/quoteContainer"
         android:layout_width="match_parent"

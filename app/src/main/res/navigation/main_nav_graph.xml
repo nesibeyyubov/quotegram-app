@@ -193,6 +193,10 @@
         android:label="NotificationsFragment"
         tools:layout="@layout/fragment_notifications">
         <action
+            app:enterAnim="@anim/slide_in_from_right"
+            app:exitAnim="@anim/slide_out_from_left"
+            app:popEnterAnim="@anim/slide_in_from_left"
+            app:popExitAnim="@anim/slide_out_from_right"
             android:id="@+id/action_notificationsFragment_to_quoteFragment"
             app:destination="@id/quoteFragment" />
     </fragment>

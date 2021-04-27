@@ -15,15 +15,25 @@ class SharedViewModel : ViewModel() {
     val searchTextUser
         get() = _searchTextUser
 
+    private val _searchTextGenre = MutableLiveData<String>()
+    val searchTextGenre
+        get() = _searchTextGenre
+
 
     fun setChangedText(text: String) {
-         if (currentTabIndex == 1) {
-            _searchTextBook.value = text
-        } else {
-            _searchTextUser.value = text
+        when(currentTabIndex){
+            0 ->{
+                _searchTextGenre.value = text
+            }
+            1 ->{
+                _searchTextBook.value = text
+            }
+            2 ->{
+                _searchTextUser.value = text
+            }
         }
-    }
 
+    }
 
 
 }

@@ -20,6 +20,7 @@ import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.ReportViewModel
+import com.nesib.yourbooknotes.utils.Constants.TEXT_DELETED_QUOTE
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,8 +82,8 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
             when (it) {
                 is DataState.Success -> {
                     parentFragmentManager.setFragmentResult(
-                        "deletedQuote",
-                        bundleOf("deletedQuote" to deletedQuote)
+                        TEXT_DELETED_QUOTE,
+                        bundleOf(TEXT_DELETED_QUOTE to deletedQuote)
                     )
                     findNavController().popBackStack()
                     makeSureDialog!!.dismiss()
@@ -91,7 +92,7 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 is DataState.Fail -> {
                     findNavController().popBackStack()
                     makeSureDialog!!.dismiss()
-                    showToast(it.message!!)
+                    showToast(it.message)
                 }
                 is DataState.Loading -> {
 

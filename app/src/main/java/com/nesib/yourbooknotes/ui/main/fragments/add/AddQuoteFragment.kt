@@ -20,6 +20,8 @@ import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.utils.Constants.API_URL
+import com.nesib.yourbooknotes.utils.Constants.MAX_QUOTE_LENGTH
+import com.nesib.yourbooknotes.utils.Constants.MIN_QUOTE_LENGTH
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,11 +75,11 @@ class AddQuoteFragment : BottomSheetDialogFragment() {
                         if (quote.length < 15) {
                             binding.addQuoteErrorTextView.visibility = View.VISIBLE
                             binding.addQuoteErrorTextView.text =
-                                "Quote length should be between 15 characters"
+                                "Quote length should be between ${MIN_QUOTE_LENGTH} characters"
                         } else if (quote.length > 500) {
                             binding.addQuoteErrorTextView.visibility = View.VISIBLE
                             binding.addQuoteErrorTextView.text =
-                                "Quote length shouldn't be more than 500 characters"
+                                "Quote length shouldn't be more than ${MAX_QUOTE_LENGTH} characters"
                         } else if (selectedGenre == resources.getString(R.string.no_genre)
                                 .toLowerCase(
                                     Locale.ROOT

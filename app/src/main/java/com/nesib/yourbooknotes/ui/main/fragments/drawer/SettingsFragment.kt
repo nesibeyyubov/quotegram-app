@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.data.local.SharedPreferencesRepository
 import com.nesib.yourbooknotes.databinding.FragmentSettingsBinding
+import com.nesib.yourbooknotes.utils.Constants.KEY_THEME
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
@@ -48,21 +49,21 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 when (resources.getStringArray(R.array.themes)[position]) {
                     resources.getString(R.string.theme_dark) -> {
                         sharedPrefEditor.putString(
-                            "theme",
+                            KEY_THEME,
                             resources.getString(R.string.theme_dark)
                         )
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     }
                     resources.getString(R.string.theme_light) -> {
                         sharedPrefEditor.putString(
-                            "theme",
+                            KEY_THEME,
                             resources.getString(R.string.theme_light)
                         )
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     }
                     resources.getString(R.string.theme_default) -> {
                         sharedPrefEditor.putString(
-                            "theme",
+                            KEY_THEME,
                             resources.getString(R.string.theme_default)
                         )
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
@@ -78,7 +79,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun setupUi() {
-        when (sharedPreferences.getString("theme", resources.getString(R.string.theme_default))) {
+        when (sharedPreferences.getString(KEY_THEME, resources.getString(R.string.theme_default))) {
             resources.getString(R.string.theme_default) -> {
                 binding.themeSpinner.setSelection(0)
             }

@@ -22,9 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class QuoteViewModel @Inject constructor(
-    val mainRepository: MainRepository,
-    @ApplicationContext val application: Context
-) : ViewModel() {
+    val mainRepository: MainRepository, application: Application,
+) : AndroidViewModel(application) {
 
     private var quoteList = mutableListOf<Quote>()
     private val _quotes = MutableLiveData<DataState<QuotesResponse>>()
@@ -37,10 +36,6 @@ class QuoteViewModel @Inject constructor(
 
     private val _quote = MutableLiveData<DataState<QuoteResponse>>()
     val quote: LiveData<DataState<QuoteResponse>>
-        get() = _quote
-
-    private val _singleQuote = MutableLiveData<DataState<QuoteResponse>>()
-    val singleQuote: LiveData<DataState<QuoteResponse>>
         get() = _quote
 
     private val _likeQuote = MutableLiveData<DataState<QuoteResponse>>()
@@ -60,6 +55,7 @@ class QuoteViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             if (hasInternetConnection()) {
                 try {
+                    Log.d("mytag", "getQuotesByGenre: ${genre}")
                     if (_quotes.value == null || page > 1 || forced) {
                         _quotes.postValue(DataState.Loading())
                         val response = mainRepository.getQuotesByGenre(genre, page)
@@ -99,7 +95,6 @@ class QuoteViewModel @Inject constructor(
                 val handledResponse = handleQuoteResponse(response)
                 _quote.postValue(handledResponse)
             } catch (exception: Exception) {
-                Log.d("mytag", "catch block :${exception.message} ${exception.cause}")
                 _quote.postValue(DataState.Fail())
             }
         } else {
@@ -261,7 +256,7 @@ class QuoteViewModel @Inject constructor(
     }
 
     private fun hasInternetConnection(): Boolean {
-        val connectivityManager = application.getSystemService(
+        val connectivityManager = getApplication<Application>().getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetwork ?: return false

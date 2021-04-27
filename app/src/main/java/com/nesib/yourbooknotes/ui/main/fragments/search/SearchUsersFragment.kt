@@ -52,7 +52,7 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
                     adapter.setData(it.data.users)
                 }
                 is DataState.Fail -> {
-                    showToast(it.message!!)
+                    showToast(it.message)
                 }
                 is DataState.Loading -> {
 

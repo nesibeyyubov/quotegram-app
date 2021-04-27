@@ -35,6 +35,7 @@
     <color name="inputBackgroundColor">@color/white</color>
     <color name="inputStrokeColor">@color/black</color>
     <color name="lineColor">@color/gray_300</color>
+    <color name="bottomNavigationStrokeColor">@color/gray_300</color>
     <color name="quotePostBackgroundColor">@color/white</color>
 
     <color name="activeTabDotColor">@color/gray_900</color>

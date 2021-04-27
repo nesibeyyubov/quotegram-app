@@ -22,9 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookViewModel @Inject constructor(
-    val mainRepository: MainRepository,
-    @ApplicationContext val application: Context
-) : ViewModel() {
+    val mainRepository: MainRepository, application: Application,
+) : AndroidViewModel(application) {
     private var quoteList = mutableListOf<Quote>()
     private var bookList = mutableListOf<Book>()
     private val _quotes = MutableLiveData<DataState<QuotesResponse>>()
@@ -300,7 +299,7 @@ class BookViewModel @Inject constructor(
     }
 
     private fun hasInternetConnection(): Boolean {
-        val connectivityManager = application.getSystemService(
+        val connectivityManager = getApplication<Application>().getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetwork ?: return false

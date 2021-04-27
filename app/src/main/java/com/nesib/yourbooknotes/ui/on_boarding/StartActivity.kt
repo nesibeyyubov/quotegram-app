@@ -20,6 +20,7 @@ import com.nesib.yourbooknotes.R
 import com.nesib.yourbooknotes.databinding.ActivityStartBinding
 import com.nesib.yourbooknotes.ui.main.MainActivity
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
+import com.nesib.yourbooknotes.utils.Constants.KEY_THEME
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
@@ -49,13 +50,7 @@ class StartActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.splashFragment))
         setupActionBarWithNavController(navController,appBarConfiguration)
 
-        navController.addOnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
-            if (navDestination.id == R.id.splashFragment) {
-//                binding.toolbarStartActivity.visibility = View.GONE
-            } else {
-                binding.toolbarStartActivity.visibility = View.VISIBLE
-            }
-        }
+
         if (authViewModel.isAuthenticated || authViewModel.currentUser?.followingGenres!!.size>1) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
@@ -67,7 +62,7 @@ class StartActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             window.statusBarColor = Color.BLACK
         }
-        when (sharedPreferences.getString("theme", resources.getString(R.string.theme_default))) {
+        when (sharedPreferences.getString(KEY_THEME, resources.getString(R.string.theme_default))) {
             resources.getString(R.string.theme_default) -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }

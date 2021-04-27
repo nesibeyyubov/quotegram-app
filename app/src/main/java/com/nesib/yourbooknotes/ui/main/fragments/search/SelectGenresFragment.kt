@@ -21,18 +21,30 @@ class SelectGenresFragment:Fragment(R.layout.fragment_select_quote_genres) {
     private lateinit var genresAdapter:GenresAdapter
     private val authViewModel:AuthViewModel by viewModels({requireActivity()})
     private val sharedViewModel:SharedViewModel by viewModels({requireActivity()})
+
+    private lateinit var genreList:MutableList<String>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSelectQuoteGenresBinding.bind(view)
-        val genreList = resources.getStringArray(R.array.quote_genres).toMutableList()
+        setupRecyclerView()
+        subscribeObservers()
+    }
+
+    private fun subscribeObservers() {
+        sharedViewModel.searchTextGenre.observe(viewLifecycleOwner){
+            val filteredList = genreList.filter { genre->
+                genre.toLowerCase(Locale.ROOT).contains(it.toLowerCase(Locale.ROOT))
+            }
+            genresAdapter.setData(filteredList)
+        }
+    }
+
+    private fun setupRecyclerView(){
+        genreList = resources.getStringArray(R.array.quote_genres).toMutableList()
         genreList.removeAt(0)
         val followingGenres = authViewModel.getFollowingGenres().split(",")
-        genresAdapter = GenresAdapter(genreList,followingGenres)
-
-        binding.genreRecyclerView.apply {
-            adapter = genresAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
+        genresAdapter = GenresAdapter(followingGenres)
+        genresAdapter.setData(genreList)
 
         genresAdapter.onGenreClickListener = { genre->
             sharedViewModel.toolbarText = "#${genre}"
@@ -41,5 +53,10 @@ class SelectGenresFragment:Fragment(R.layout.fragment_select_quote_genres) {
                     Locale.ROOT))
             findNavController().navigate(action)
         }
+        binding.genreRecyclerView.apply {
+            adapter = genresAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
+
     }
 }

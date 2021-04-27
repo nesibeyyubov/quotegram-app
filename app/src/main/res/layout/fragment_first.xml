@@ -1,37 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="@dimen/page_padding"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:padding="@dimen/page_padding">
 
-   <com.airbnb.lottie.LottieAnimationView
-       android:id="@+id/lottieAnimView"
-       app:lottie_autoPlay="true"
-       app:lottie_loop="true"
-       android:layout_marginBottom="30dp"
-       app:lottie_rawRes="@raw/lottie"
-       android:layout_width="match_parent"
-       android:layout_height="200dp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/lottieAnimView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:alpha="0.1"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/blob" />
+        <ImageView
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/welcome" />
+    </RelativeLayout>
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome"
         android:textColor="@color/blue"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="Title here"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:textStyle="bold" />
+
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="10dp"
+        android:text="Quotegram is an app that you can share your quotes which had been taken from any book"
         android:textAlignment="center"
         android:textColor="@color/colorSecondaryText"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp"
-        android:text="Lorem Ipsum is simpltting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:textSize="16sp" />
 
 
 </LinearLayout>

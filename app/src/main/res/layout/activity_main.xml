@@ -71,7 +71,7 @@
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_view"
-            android:background="@color/colorBackground"
+            android:background="@drawable/bottom_navigation_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -85,7 +85,7 @@
             android:layout_height="80dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="15dp"
             android:src="@drawable/ic_add_single"
             app:backgroundTint="@color/blue"
             app:tint="@color/white" />

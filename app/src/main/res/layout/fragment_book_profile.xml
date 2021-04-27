@@ -51,7 +51,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:visibility="invisible"
         android:paddingTop="@dimen/page_padding"
         android:scrollbars="none"
         >
@@ -130,7 +129,7 @@
 
             <ImageView
                 android:id="@+id/bookImage"
-                android:layout_width="95dp"
+                android:layout_width="85dp"
                 android:layout_height="125dp"
                 android:src="@drawable/book"
                 app:layout_constraintStart_toStartOf="parent"
@@ -186,7 +185,6 @@
                 app:layout_constraintStart_toStartOf="@+id/bookGenre" />
 
             <LinearLayout
-                android:layout_marginTop="15dp"
                 android:id="@+id/bookFollowButton"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
@@ -194,16 +192,17 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:paddingHorizontal="15dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView14"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bookImage">
+
+                app:layout_constraintTop_toTopOf="@+id/bookFollowerCount">
 
                 <TextView
                     android:id="@+id/bookFollowButtonText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="Follow Book"
+                    android:text="Follow"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
@@ -214,7 +213,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="15dp"
                 android:background="@color/lineColor"
-                app:layout_constraintTop_toBottomOf="@+id/bookFollowButton" />
+                app:layout_constraintTop_toBottomOf="@+id/bookImage" />
 
 
 

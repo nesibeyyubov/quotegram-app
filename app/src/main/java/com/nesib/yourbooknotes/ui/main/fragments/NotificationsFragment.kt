@@ -31,6 +31,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     private var currentPage = 1
     private var paginatingFinished = false
     private var paginationLoading = false
+    private var comingBackFromQuote = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,6 +47,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
             if(currentNotifications == null){
                 notificationViewModel.getNotifications()
             }else{
+                comingBackFromQuote = true
                 notificationAdapter.setData(currentNotifications!!)
             }
         }else{
@@ -65,9 +67,10 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                         binding.paginationProgressBar.visibility = View.INVISIBLE
                     }
                     paginationLoading = false
-                    if(currentNotifications?.size == it.data!!.notifications!!.toList().size){
+                    if(currentNotifications?.size == it.data!!.notifications!!.toList().size && !comingBackFromQuote){
                         paginatingFinished = true
                     }
+                    comingBackFromQuote = false
                     currentNotifications = it.data.notifications!!.toList()
                     binding.progressBar.visibility = View.INVISIBLE
                     notificationAdapter.setData(currentNotifications!!)
@@ -77,6 +80,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                     }
                 }
                 is DataState.Loading -> {
+                    binding.failContainer.visibility = View.GONE
                     if(paginationLoading){
                         binding.paginationProgressBar.visibility = View.VISIBLE
                     }else{
@@ -84,6 +88,8 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                     }
                 }
                 is DataState.Fail -> {
+                    binding.failContainer.visibility = View.VISIBLE
+                    binding.failMessage.text = it.message
                     if(binding.paginationProgressBar.visibility == View.VISIBLE){
                         binding.paginationProgressBar.visibility = View.INVISIBLE
                     }
@@ -97,7 +103,6 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     private fun setupRecyclerView() {
         notificationAdapter.onNotificationClickListener={
-            Log.d("mytag", "notification clicked: $it")
             val action = NotificationsFragmentDirections.actionNotificationsFragmentToQuoteFragment(it)
             findNavController().navigate(action)
         }
@@ -122,5 +127,9 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     }
 
-    private fun setupClickListeners() {}
+    private fun setupClickListeners() {
+        binding.tryAgainButton.setOnClickListener {
+            notificationViewModel.getNotifications(1)
+        }
+    }
 }

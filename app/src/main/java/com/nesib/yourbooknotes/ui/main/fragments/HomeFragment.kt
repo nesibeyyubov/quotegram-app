@@ -110,7 +110,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     if (currentPage == 1 && !binding.refreshLayout.isRefreshing) {
                         binding.shimmerLayout.visibility = View.VISIBLE
                         binding.shimmerLayout.startShimmer()
-                        Log.d("mytag", "startiing shimmer...")
                     } else if (currentPage != 1 && !binding.refreshLayout.isRefreshing) {
                         binding.paginationProgressBar.visibility = View.VISIBLE
                         paginationLoading = true
@@ -121,13 +120,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         quoteViewModel.likeQuote.observe(viewLifecycleOwner) {
             when (it) {
-                is DataState.Success -> {
-                }
                 is DataState.Fail -> {
-                    showToast(it.message!!)
-                }
-                is DataState.Loading -> {
-                    Log.d("mytag", "like is loading...")
+                    showToast(it.message)
                 }
             }
         }

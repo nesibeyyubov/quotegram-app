@@ -11,7 +11,7 @@
     <item
         android:visible="true"
         android:id="@+id/empty"
-        android:title="Add" />
+        android:title="" />
     <item
         android:id="@+id/notificationsFragment"
         android:icon="@drawable/ic_notifications"

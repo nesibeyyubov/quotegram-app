@@ -30,6 +30,9 @@ import com.nesib.yourbooknotes.ui.viewmodels.BookViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.ReportViewModel
 import com.nesib.yourbooknotes.utils.Constants.API_URL
+import com.nesib.yourbooknotes.utils.Constants.TEXT_DELETED_QUOTE
+import com.nesib.yourbooknotes.utils.Constants.TEXT_NEW_QUOTE
+import com.nesib.yourbooknotes.utils.Constants.TEXT_UPDATED_QUOTE
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.showToast
 import com.nesib.yourbooknotes.utils.toFormattedNumber
@@ -69,26 +72,26 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
 
     private fun setFragmentResultListener() {
         parentFragmentManager.setFragmentResultListener(
-            "newQuote",
+            TEXT_NEW_QUOTE,
             viewLifecycleOwner
         ) { requestKey: String, newQuote: Bundle ->
-            currentBookQuotes?.add(0, newQuote["newQuote"] as Quote)
+            currentBookQuotes?.add(0, newQuote[TEXT_NEW_QUOTE] as Quote)
             val newList = currentBookQuotes?.toList()
             newList?.let { bookQuotesAdapter.setData(it) }
         }
 
         parentFragmentManager.setFragmentResultListener(
-            "deletedQuote",
+            TEXT_DELETED_QUOTE,
             viewLifecycleOwner
         ) { requestKey: String, deletedQuote: Bundle ->
-            bookViewModel.notifyQuoteRemoved(deletedQuote["deletedQuote"] as Quote)
+            bookViewModel.notifyQuoteRemoved(deletedQuote[TEXT_DELETED_QUOTE] as Quote)
         }
 
         parentFragmentManager.setFragmentResultListener(
-            "updatedQuote",
+            TEXT_UPDATED_QUOTE,
             viewLifecycleOwner
         ) { s: String, updatedQuote: Bundle ->
-            bookViewModel.notifyQuoteUpdated((updatedQuote["updatedQuote"] as Quote))
+            bookViewModel.notifyQuoteUpdated((updatedQuote[TEXT_UPDATED_QUOTE] as Quote))
         }
     }
 
@@ -235,7 +238,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
     private fun toggleFollowButtonStyle(following: Boolean) {
         binding.apply {
             bookFollowButton.setBackgroundResource(if (following) R.drawable.add_quote_from_this_book_bg else R.drawable.follow_button_bg)
-            bookFollowButtonText.text = if (following) "Following" else "Follow Book"
+            bookFollowButtonText.text = if (following) "Following" else "Follow"
             bookFollowButtonText.setTextColor(
                 if (following) ContextCompat.getColor(
                     requireContext(),

@@ -17,6 +17,7 @@ import com.nesib.yourbooknotes.models.Quote
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.utils.Constants
+import com.nesib.yourbooknotes.utils.Constants.TEXT_UPDATED_QUOTE
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.showToast
 import com.nesib.yourbooknotes.utils.toFormattedNumber
@@ -34,6 +35,7 @@ class QuoteFragment : Fragment(R.layout.fragment_quote), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentQuoteBinding.bind(view)
         subscribeObservers()
+        setupClickListeners()
         setupFragmentResultListeners()
 
         if (args.quoteId != null) {
@@ -43,6 +45,18 @@ class QuoteFragment : Fragment(R.layout.fragment_quote), View.OnClickListener {
                 bindData(currentQuote!!)
             }
         }
+    }
+
+    private fun setupClickListeners(){
+        binding.usernameTextView.setOnClickListener(this)
+        binding.userphotoImageView.setOnClickListener(this)
+        binding.viewBookBtn.setOnClickListener(this)
+        binding.bookInfoContainer.setOnClickListener(this)
+        binding.postOptionsBtn.setOnClickListener(this)
+        binding.likeBtn.setOnClickListener(this)
+        binding.downloadButton.setOnClickListener(this)
+        binding.shareBtn.setOnClickListener(this)
+        binding.tryAgainButton.setOnClickListener(this)
     }
 
     private fun subscribeObservers() {
@@ -55,11 +69,14 @@ class QuoteFragment : Fragment(R.layout.fragment_quote), View.OnClickListener {
                     bindData(it.data?.quote!!)
                 }
                 is DataState.Loading -> {
+                    binding.failContainer.visibility = View.INVISIBLE
                     binding.quoteContainer.visibility = View.INVISIBLE
                     binding.progressBar.visibility = View.VISIBLE
                 }
                 is DataState.Fail -> {
+                    binding.failContainer.visibility = View.VISIBLE
                     showToast(it.message)
+                    binding.failMessage.text = it.message
                     binding.quoteContainer.visibility = View.INVISIBLE
                     binding.progressBar.visibility = View.INVISIBLE
                 }
@@ -69,24 +86,17 @@ class QuoteFragment : Fragment(R.layout.fragment_quote), View.OnClickListener {
 
     private fun setupFragmentResultListeners() {
         parentFragmentManager.setFragmentResultListener(
-            "updatedQuote",
+            TEXT_UPDATED_QUOTE,
             viewLifecycleOwner
         ) { s: String, bundle: Bundle ->
-            val updatedQuote = (bundle["updatedQuote"] as Quote)
+            val updatedQuote = (bundle[TEXT_UPDATED_QUOTE] as Quote)
             currentQuote = updatedQuote
             bindData(updatedQuote)
         }
     }
 
     private fun bindData(quote: Quote) {
-        binding.usernameTextView.setOnClickListener(this)
-        binding.userphotoImageView.setOnClickListener(this)
-        binding.viewBookBtn.setOnClickListener(this)
-        binding.bookInfoContainer.setOnClickListener(this)
-        binding.postOptionsBtn.setOnClickListener(this)
-        binding.likeBtn.setOnClickListener(this)
-        binding.downloadButton.setOnClickListener(this)
-        binding.shareBtn.setOnClickListener(this)
+
         binding.apply {
             usernameTextView.text = quote.creator?.username
             if (quote.creator?.profileImage != "" && quote.creator?.profileImage != null) {
@@ -161,6 +171,9 @@ class QuoteFragment : Fragment(R.layout.fragment_quote), View.OnClickListener {
                     currentQuote?.book?.author
                 )
                 findNavController().navigate(action)
+            }
+            binding.tryAgainButton.id->{
+                quoteViewModel.getSingleQuote(args.quoteId!!)
             }
             binding.shareBtn.id -> {
                 val intent = Intent()

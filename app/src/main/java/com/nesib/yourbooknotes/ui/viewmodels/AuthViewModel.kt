@@ -1,5 +1,6 @@
 package com.nesib.yourbooknotes.ui.viewmodels
 
+import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -25,10 +26,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
+    application: Application,
     val sharedPreferencesRepository: SharedPreferencesRepository,
     val userRepository: UserRepository,
-    @ApplicationContext val application: Context
-) : ViewModel() {
+) : AndroidViewModel(application) {
     var hasSignupError = false
     var hasLoginError = false
     var currentUser: UserAuth? = null
@@ -241,7 +242,7 @@ class AuthViewModel @Inject constructor(
         }
 
     private fun hasInternetConnection(): Boolean {
-        val connectivityManager = application.getSystemService(
+        val connectivityManager = getApplication<Application>().getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetwork ?: return false

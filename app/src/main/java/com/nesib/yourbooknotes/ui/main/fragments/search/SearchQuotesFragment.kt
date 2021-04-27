@@ -24,6 +24,7 @@ import com.nesib.yourbooknotes.ui.main.fragments.HomeFragmentDirections
 import com.nesib.yourbooknotes.ui.viewmodels.AuthViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.QuoteViewModel
 import com.nesib.yourbooknotes.ui.viewmodels.SharedViewModel
+import com.nesib.yourbooknotes.utils.Constants.MIN_GENRE_COUNT
 import com.nesib.yourbooknotes.utils.DataState
 import com.nesib.yourbooknotes.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -186,7 +187,7 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
                     item.title = "Follow"
                 } else {
                     genresChanged = false
-                    showToast("You should at least select 3 genres")
+                    showToast("You should at least select ${MIN_GENRE_COUNT} genres")
                 }
             }
             if (genresChanged) {

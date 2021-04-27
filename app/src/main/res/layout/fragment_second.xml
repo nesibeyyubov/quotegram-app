@@ -20,7 +20,7 @@
         android:textColor="@color/blue"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:text="Title here"
+        android:text="Explore Quotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
@@ -29,7 +29,7 @@
         android:textColor="@color/colorSecondaryText"
         android:textSize="16sp"
         android:layout_marginTop="10dp"
-        android:text="Lorem Ipsum is simpltting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unk"
+        android:text="You can find quotes in any genre. You can follow the genres you love to see them in your home page.Also you can follow books,users to get quote from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

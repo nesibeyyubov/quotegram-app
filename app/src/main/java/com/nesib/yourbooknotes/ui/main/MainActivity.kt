@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var authViewModel: AuthViewModel
     private val sharedViewModel: SharedViewModel by viewModels()
 
+    private var currentFragmentIndex = 0
+
     val dialog by lazy {
         val notAuthenticatedBinding = NotAuthenticatedLayoutBinding.bind(
             layoutInflater.inflate(
@@ -136,15 +138,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.drawer_signup -> {
                     authViewModel.logout()
-                    val intent = Intent(this,StartActivity::class.java)
-                    intent.putExtra("directToSignup",true)
+                    val intent = Intent(this, StartActivity::class.java)
+                    intent.putExtra("directToSignup", true)
                     startActivity(intent)
                     finish()
                 }
                 R.id.drawer_login -> {
                     authViewModel.logout()
-                    val intent = Intent(this,StartActivity::class.java)
-                    intent.putExtra("directToLogin",true)
+                    val intent = Intent(this, StartActivity::class.java)
+                    intent.putExtra("directToLogin", true)
                     startActivity(intent)
                     finish()
                 }
@@ -168,13 +170,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun shareApp(){
+    private fun shareApp() {
         try {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Quotegram")
-            var shareMessage = "\nLet me recommend you this cool application,which is for book and quote lovers\n\n"
-            shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+            var shareMessage =
+                "\nLet me recommend you this cool application,which is for book and quote lovers\n\n"
+            shareMessage =
+                shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "\n\n";
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
             startActivity(Intent.createChooser(shareIntent, "Choose one"))
         } catch (e: Exception) {
@@ -182,7 +186,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun makeInAppReview(){
+    private fun makeInAppReview() {
         val manager = FakeReviewManager(this)
         val request = manager.requestReviewFlow()
         request.addOnCompleteListener {
@@ -210,6 +214,52 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavView.menu.getItem(2).isEnabled = false
         binding.bottomNavView.setupWithNavController(navController)
+        binding.bottomNavView.setOnNavigationItemSelectedListener {
+            Log.d(
+                "mytag",
+                "navController.currentDestination?.label: ${navController.currentDestination?.label}"
+            )
+            when (it.itemId) {
+                R.id.homeFragment -> {
+                    if (currentFragmentIndex == 0) {
+                        false
+                    } else {
+                        currentFragmentIndex = 0
+                        navController.navigate(R.id.homeFragment)
+                        true
+                    }
+                }
+                R.id.searchFragment -> {
+                    if (currentFragmentIndex == 1) {
+                        false
+                    } else {
+                        currentFragmentIndex = 1
+                        navController.navigate(R.id.searchFragment)
+                        true
+                    }
+                }
+                R.id.notificationsFragment -> {
+                    if (currentFragmentIndex == 2) {
+                        false
+                    } else {
+                        currentFragmentIndex = 2
+                        navController.navigate(R.id.notificationsFragment)
+                        true
+                    }
+                }
+                R.id.myProfileFragment -> {
+                    if (currentFragmentIndex == 3) {
+                        false
+                    } else {
+                        currentFragmentIndex = 3
+                        navController.navigate(R.id.myProfileFragment)
+                        true
+                    }
+                }
+                else -> false
+            }
+
+        }
         binding.drawerNavigationView.setupWithNavController(navController)
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
@@ -242,6 +292,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.addBookFragment -> {
                 }
+                R.id.quoteFragment -> {
+                    binding.toolbarText.text = "Quote"
+                }
                 R.id.notificationsFragment -> {
                     binding.toolbarText.text = "Notifications"
                 }
@@ -257,10 +310,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.settingsFragment -> {
                     binding.toolbarText.text = "Settings"
                 }
-                R.id.userProfileFragment->{
+                R.id.userProfileFragment -> {
                     binding.toolbarText.text = "User Profile"
                 }
-                R.id.bookProfileFragment ->{
+                R.id.bookProfileFragment -> {
                     binding.toolbarText.text = "Book Profile"
                 }
             }
@@ -272,7 +325,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             if (navDestination.id == R.id.homeFragment
                 || navDestination.id == R.id.myProfileFragment
-                || navDestination.id == R.id.notificationsFragment) {
+                || navDestination.id == R.id.notificationsFragment
+            ) {
                 binding.drawerNavigationView.menu.findItem(R.id.drawer_home).isChecked = true
             }
 
