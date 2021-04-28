@@ -7,15 +7,23 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieAnimView"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        android:layout_marginBottom="30dp"
-        app:lottie_rawRes="@raw/lottie"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
-
+        android:layout_height="wrap_content">
+        <ImageView
+            android:translationX="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/vector_2_front" />
+        <ImageView
+            android:id="@+id/lottieAnimView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:alpha="0.2"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/vector_bg" />
+    </RelativeLayout>
     <TextView
         android:textColor="@color/blue"
         android:textSize="24sp"

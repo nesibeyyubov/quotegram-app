@@ -5,74 +5,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/photoContainer"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="290dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="50dp"
-        android:background="#1B1B1B"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="20dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/textStyleContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_quote"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/colorSecondaryOnDark" />
-
-        <TextView
-            android:id="@+id/quoteText"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/photoContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="50dp"
+            android:background="#1B1B1B"
             android:gravity="center"
-            android:text="To calculate the TextWidth, the TextHeight we simply do subtracting with descent and ascent, then we got the most approach TextSize, the following work is fairly easy for each other."
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimaryOnDark"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/quoteAuthorText"
+            android:minHeight="310dp"
+            android:orientation="vertical"
+            android:padding="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/quoteAuthorText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-Charlie Chaplin"
-            android:layout_marginBottom="20dp"
-            android:textColor="@color/colorSecondaryOnDark"
-            android:textStyle="italic"
-            app:layout_constraintBottom_toTopOf="@+id/textView10"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-             />
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_quote"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorSecondaryOnDark" />
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quotegram"
-            android:textSize="16sp"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            android:textColor="@color/blue"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/quoteText"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="To calculate the TextWidth, the TextHeight we simply do subtracting with descent and ascent, then we got the most approach TextSize, the following work is fairly easy for each other."
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryOnDark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/quoteAuthorText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/quoteAuthorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="-Unknown"
+                android:textColor="@color/colorSecondaryOnDark"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toTopOf="@+id/textView10"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quotegram"
+                android:textAllCaps="true"
+                android:textColor="@color/blue"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/textStyleContainer"
@@ -81,7 +89,6 @@
         android:background="@color/white"
         android:backgroundTint="@color/fullPostBackgroundColor"
         android:elevation="2dp"
-        android:paddingHorizontal="@dimen/page_padding"
         android:paddingVertical="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,71 +98,25 @@
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/page_padding"
             android:text="Photo style"
-            android:textSize="16sp"
             android:textColor="@color/blue"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/colorRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_marginTop="15dp"
+            android:clipToPadding="false"
+            android:paddingHorizontal="@dimen/page_padding"
             android:scrollbars="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <View
-                    android:id="@+id/photo_style_black"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginRight="15dp"
-                    android:background="#1B1B1B" />
-
-                <View
-                    android:id="@+id/photo_style_white"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginRight="15dp"
-                    android:background="#F2F2F2" />
-
-                <View
-                    android:id="@+id/photo_style_blue"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginRight="15dp"
-                    android:background="#DCEBFE" />
-
-                <View
-                    android:id="@+id/photo_style_green"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginRight="15dp"
-                    android:background="#C7FFCE" />
-
-                <View
-                    android:id="@+id/photo_style_rose"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginRight="15dp"
-                    android:background="#FFD1EA" />
-
-                <View
-                    android:id="@+id/photo_style_yellow"
-                    android:layout_width="69dp"
-                    android:layout_height="70dp"
-                    android:layout_marginRight="15dp"
-                    android:background="#FFF9AB" />
-            </LinearLayout>
-        </HorizontalScrollView>
-
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -163,8 +124,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:gravity="center"
+            android:paddingHorizontal="@dimen/page_padding"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
+            app:layout_constraintTop_toBottomOf="@+id/colorRecyclerView">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -178,9 +140,9 @@
                 android:layout_width="220dp"
                 android:layout_height="wrap_content"
                 android:minHeight="0dp"
+                android:stepSize="1"
                 android:valueFrom="8"
                 android:valueTo="20"
-                android:stepSize="1"
                 app:thumbColor="@color/blue"
                 app:thumbRadius="5dp"
                 app:trackColor="@color/blue"
@@ -196,140 +158,140 @@
 
         </LinearLayout>
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:gravity="center"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">-->
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:gravity="center"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">-->
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Text Alignment"-->
-<!--                android:textColor="@color/colorSecondaryText" />-->
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="Text Alignment"-->
+        <!--                android:textColor="@color/colorSecondaryText" />-->
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginLeft="30dp"-->
-<!--                android:layout_weight="1">-->
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginLeft="30dp"-->
+        <!--                android:layout_weight="1">-->
 
-<!--                <ImageView-->
-<!--                    android:id="@+id/align_center"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginRight="20dp"-->
-<!--                    android:src="@drawable/ic_align_center"-->
-<!--                    app:tint="@color/blue" />-->
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/align_center"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginRight="20dp"-->
+        <!--                    android:src="@drawable/ic_align_center"-->
+        <!--                    app:tint="@color/blue" />-->
 
-<!--                <ImageView-->
-<!--                    android:id="@+id/align_left"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginRight="20dp"-->
-<!--                    android:src="@drawable/ic_align_left"-->
-<!--                    app:tint="@color/colorSecondaryText" />-->
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/align_left"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginRight="20dp"-->
+        <!--                    android:src="@drawable/ic_align_left"-->
+        <!--                    app:tint="@color/colorSecondaryText" />-->
 
-<!--                <ImageView-->
-<!--                    android:id="@+id/align_right"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:src="@drawable/ic_align_right"-->
-<!--                    app:tint="@color/colorSecondaryText" />-->
-<!--            </LinearLayout>-->
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/align_right"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:src="@drawable/ic_align_right"-->
+        <!--                    app:tint="@color/colorSecondaryText" />-->
+        <!--            </LinearLayout>-->
 
 
-<!--        </LinearLayout>-->
+        <!--        </LinearLayout>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/chooseBgContainer"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="150dp"-->
-<!--        android:background="@color/white"-->
-<!--        android:backgroundTint="@color/fullPostBackgroundColor"-->
-<!--        android:elevation="2dp"-->
-<!--        android:paddingHorizontal="@dimen/page_padding"-->
-<!--        android:paddingVertical="10dp"-->
-<!--        android:visibility="invisible"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent">-->
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:id="@+id/chooseBgContainer"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="150dp"-->
+    <!--        android:background="@color/white"-->
+    <!--        android:backgroundTint="@color/fullPostBackgroundColor"-->
+    <!--        android:elevation="2dp"-->
+    <!--        android:paddingHorizontal="@dimen/page_padding"-->
+    <!--        android:paddingVertical="10dp"-->
+    <!--        android:visibility="invisible"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent">-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/choosebgtext"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Choose background"-->
-<!--            android:textColor="@color/blue"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/choosebgtext"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Choose background"-->
+    <!--            android:textColor="@color/blue"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Done"-->
-<!--            android:textColor="@color/blue"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+    <!--        <TextView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="Done"-->
+    <!--            android:textColor="@color/blue"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
-<!--        <HorizontalScrollView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="18dp"-->
-<!--            android:scrollbars="none"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/choosebgtext">-->
+    <!--        <HorizontalScrollView-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginTop="18dp"-->
+    <!--            android:scrollbars="none"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toBottomOf="@+id/choosebgtext">-->
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content">-->
+    <!--            <LinearLayout-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content">-->
 
-<!--                <View-->
-<!--                    android:layout_width="70dp"-->
-<!--                    android:layout_height="70dp"-->
-<!--                    android:layout_marginRight="15dp"-->
-<!--                    android:background="#FF5A9B" />-->
+    <!--                <View-->
+    <!--                    android:layout_width="70dp"-->
+    <!--                    android:layout_height="70dp"-->
+    <!--                    android:layout_marginRight="15dp"-->
+    <!--                    android:background="#FF5A9B" />-->
 
-<!--                <View-->
-<!--                    android:layout_width="70dp"-->
-<!--                    android:layout_height="70dp"-->
-<!--                    android:layout_marginRight="15dp"-->
-<!--                    android:background="#2196F3" />-->
+    <!--                <View-->
+    <!--                    android:layout_width="70dp"-->
+    <!--                    android:layout_height="70dp"-->
+    <!--                    android:layout_marginRight="15dp"-->
+    <!--                    android:background="#2196F3" />-->
 
-<!--                <View-->
-<!--                    android:layout_width="70dp"-->
-<!--                    android:layout_height="70dp"-->
-<!--                    android:layout_marginRight="15dp"-->
-<!--                    android:background="#8BC34A" />-->
+    <!--                <View-->
+    <!--                    android:layout_width="70dp"-->
+    <!--                    android:layout_height="70dp"-->
+    <!--                    android:layout_marginRight="15dp"-->
+    <!--                    android:background="#8BC34A" />-->
 
-<!--                <View-->
-<!--                    android:layout_width="70dp"-->
-<!--                    android:layout_height="70dp"-->
-<!--                    android:layout_marginRight="15dp"-->
-<!--                    android:background="#FF9800" />-->
+    <!--                <View-->
+    <!--                    android:layout_width="70dp"-->
+    <!--                    android:layout_height="70dp"-->
+    <!--                    android:layout_marginRight="15dp"-->
+    <!--                    android:background="#FF9800" />-->
 
-<!--                <View-->
-<!--                    android:layout_width="70dp"-->
-<!--                    android:layout_height="70dp"-->
-<!--                    android:layout_marginRight="15dp"-->
-<!--                    android:background="#673AB7" />-->
+    <!--                <View-->
+    <!--                    android:layout_width="70dp"-->
+    <!--                    android:layout_height="70dp"-->
+    <!--                    android:layout_marginRight="15dp"-->
+    <!--                    android:background="#673AB7" />-->
 
-<!--                <View-->
-<!--                    android:layout_width="70dp"-->
-<!--                    android:layout_height="70dp"-->
-<!--                    android:layout_marginRight="15dp"-->
-<!--                    android:background="#FF5A9B" />-->
-<!--            </LinearLayout>-->
-<!--        </HorizontalScrollView>-->
+    <!--                <View-->
+    <!--                    android:layout_width="70dp"-->
+    <!--                    android:layout_height="70dp"-->
+    <!--                    android:layout_marginRight="15dp"-->
+    <!--                    android:background="#FF5A9B" />-->
+    <!--            </LinearLayout>-->
+    <!--        </HorizontalScrollView>-->
 
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

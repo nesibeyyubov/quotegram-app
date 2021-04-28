@@ -37,16 +37,15 @@
             android:text="Sign in to continue"
             android:textColor="@color/colorSecondaryText"
             android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <EditText
-            android:id="@+id/emailEditText"
+            android:id="@+id/usernameEditText"
             style="@style/EditTextStyle"
-            android:layout_marginTop="40dp"
-            android:hint="Username or email"
+            android:layout_marginTop="30dp"
+            android:hint="Username"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />

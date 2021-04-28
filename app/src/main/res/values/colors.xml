@@ -39,7 +39,7 @@
     <color name="quotePostBackgroundColor">@color/white</color>
 
     <color name="activeTabDotColor">@color/gray_900</color>
-    <color name="inActiveTabDotColor">@color/gray_300</color>
+    <color name="inActiveTabDotColor">@color/gray_400</color>
 
     <color name="colorShimmer">@color/gray_300</color>
 

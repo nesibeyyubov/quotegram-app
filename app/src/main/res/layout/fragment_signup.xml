@@ -39,7 +39,6 @@
             android:text="Create a new account"
             android:textColor="@color/colorSecondaryText"
             android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -56,12 +55,6 @@
                 android:id="@+id/username_editText"
                 style="@style/EditTextStyle"
                 android:hint="Username" />
-
-            <EditText
-                android:id="@+id/emailEditText"
-                style="@style/EditTextStyle"
-                android:layout_marginTop="15dp"
-                android:hint="Your email" />
 
             <EditText
                 android:id="@+id/passwordEditText"

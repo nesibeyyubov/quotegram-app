@@ -45,21 +45,16 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
     private fun setupClickListeners() {
         binding.signupBtn.setOnClickListener {
             val username = binding.usernameEditText.text.toString()
-            val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
             if(!username.isUsername()){
                 binding.signupErrorTextView.visibility = View.VISIBLE
                 binding.signupErrorTextView.text = "Username should at least be 5 characters"
             }
-            else if(!email.isEmail()){
-                binding.signupErrorTextView.visibility = View.VISIBLE
-                binding.signupErrorTextView.text = "Please enter a valid email"
-            }
             else if(!password.isPassword()){
                 binding.signupErrorTextView.visibility = View.VISIBLE
                 binding.signupErrorTextView.text = "Password should at least be 5 characters"
             }else{
-                authViewModel.signup(email, password, username)
+                authViewModel.signup( username, password)
             }
         }
         binding.signupToLoginBtn.setOnClickListener {

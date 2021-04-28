@@ -13,15 +13,19 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.AnimationUtils
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nesib.yourbooknotes.R
+import com.nesib.yourbooknotes.adapters.ColorBoxAdapter
 import com.nesib.yourbooknotes.databinding.FragmentDownloadQuoteBinding
 import com.nesib.yourbooknotes.databinding.RationaleDialogLayoutBinding
 import com.nesib.yourbooknotes.utils.showToast
@@ -37,18 +41,20 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
     private var imageFileName: String? = ""
     private lateinit var binding: FragmentDownloadQuoteBinding
     private val args by navArgs<DownloadQuoteFragmentArgs>()
-    private val photoStyles: List<View> by lazy {
-        listOf(
-            binding.photoStyleBlack,
-            binding.photoStyleWhite,
-            binding.photoStyleBlue,
-            binding.photoStyleGreen,
-            binding.photoStyleRose,
-            binding.photoStyleYellow
-        )
-    }
     private val photoStyleColors =
         listOf("#1B1B1B", "#F2F2F2", "#DCEBFE", "#C7FFCE", "#FFD1EA", "#FFF9AB")
+    private val colorAdapter by lazy { ColorBoxAdapter(photoStyleColors) }
+//    private val photoStyles: List<View> by lazy {
+//        listOf(
+//            binding.photoStyleBlack,
+//            binding.photoStyleWhite,
+//            binding.photoStyleBlue,
+//            binding.photoStyleGreen,
+//            binding.photoStyleRose,
+//            binding.photoStyleYellow
+//        )
+//    }
+
 
     private val rationaleDialog: AlertDialog by lazy {
         val dBinding = RationaleDialogLayoutBinding.inflate(layoutInflater, null, false)
@@ -69,6 +75,46 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
         setHasOptionsMenu(true)
         setupClickListeners()
         setupUi()
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView() {
+        colorAdapter.onColorBoxClickedListener = {view,color->
+            view.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.scale_anim))
+            binding.photoContainer.setBackgroundColor(Color.parseColor(color))
+            if (photoStyleColors.indexOf(color) == 0) {
+                binding.quoteText.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorPrimaryOnDark
+                    )
+                )
+                binding.quoteAuthorText.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorSecondaryOnDark
+                    )
+                )
+            } else {
+                binding.quoteText.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorPrimaryOnLight
+                    )
+                )
+                binding.quoteAuthorText.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorSecondaryOnLight
+                    )
+                )
+            }
+        }
+        binding.colorRecyclerView.apply {
+            adapter = colorAdapter
+            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+        }
+
     }
 
     private fun requestStoragePermission() =
@@ -90,44 +136,44 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
         }
         binding.apply {
             quoteText.text = "\"${args.quoteText}\""
-            quoteAuthorText.text = "-${args.quoteAuthor}"
+            quoteAuthorText.text = "-From \"${args.quoteAuthor}\" book "
         }
     }
 
     private fun setupClickListeners() {
-        photoStyles.forEachIndexed { i: Int, view: View ->
-            view.setOnClickListener {
-                it.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.scale_anim))
-                binding.photoContainer.setBackgroundColor(Color.parseColor(photoStyleColors[i]))
-                if (i == 0) {
-                    binding.quoteText.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.colorPrimaryOnDark
-                        )
-                    )
-                    binding.quoteAuthorText.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.colorSecondaryOnDark
-                        )
-                    )
-                } else {
-                    binding.quoteText.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.colorPrimaryOnLight
-                        )
-                    )
-                    binding.quoteAuthorText.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.colorSecondaryOnLight
-                        )
-                    )
-                }
-            }
-        }
+//        photoStyles.forEachIndexed { i: Int, view: View ->
+//            view.setOnClickListener {
+//                it.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.scale_anim))
+//                binding.photoContainer.setBackgroundColor(Color.parseColor(photoStyleColors[i]))
+//                if (i == 0) {
+//                    binding.quoteText.setTextColor(
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            R.color.colorPrimaryOnDark
+//                        )
+//                    )
+//                    binding.quoteAuthorText.setTextColor(
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            R.color.colorSecondaryOnDark
+//                        )
+//                    )
+//                } else {
+//                    binding.quoteText.setTextColor(
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            R.color.colorPrimaryOnLight
+//                        )
+//                    )
+//                    binding.quoteAuthorText.setTextColor(
+//                        ContextCompat.getColor(
+//                            requireContext(),
+//                            R.color.colorSecondaryOnLight
+//                        )
+//                    )
+//                }
+//            }
+//        }
         binding.textSizeSlider.addOnChangeListener { slider, value, fromUser ->
             binding.sliderValueText.text = value.toInt().toString()
             binding.quoteText.setTextSize(TypedValue.COMPLEX_UNIT_SP, value)
@@ -138,7 +184,8 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
         val view = binding.photoContainer
         photoBitmap = Bitmap.createBitmap(
             view.width,
-            view.height, Bitmap.Config.ARGB_8888
+            view.height,
+            Bitmap.Config.ARGB_8888
         )
         val canvas = Canvas(photoBitmap!!)
         view.draw(canvas)
@@ -173,22 +220,30 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
             val image = File(imagesDir, imageFileName)
             fos = FileOutputStream(image)
-            imageUri = image.toUri()
+            imageUri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                FileProvider.getUriForFile(
+                    requireContext(),
+                    requireContext().applicationContext.packageName + ".provider",
+                    image
+                )
+            } else {
+                image.toUri()
+            }
 
         }
         fos?.use {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
             showToast("Downloaded image successfully !")
             showImageDownloadedNotification()
         }
-
-
     }
 
     private fun showImageDownloadedNotification() {
         val intent = Intent()
         intent.action = Intent.ACTION_VIEW
         intent.setDataAndType(imageUri, "image/*")
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
         val pendingIntent = PendingIntent.getActivity(requireContext(), 0, intent, 0)
 
         val notification = if (Build.VERSION.SDK_INT > 26) {
@@ -209,7 +264,7 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
 
         val notificationManager =
             requireActivity().getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 "download_image",
                 "download_image_channel",

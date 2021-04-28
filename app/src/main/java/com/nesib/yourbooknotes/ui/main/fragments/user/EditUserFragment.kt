@@ -47,7 +47,6 @@ class EditUserFragment : Fragment(R.layout.fragment_edit_profile) {
         binding.apply {
             usernameEditText.setText(args.user?.username)
             bioEditText.setText(args.user?.bio)
-            emailEditText.setText(args.user?.email)
             fullnameEditText.setText(args.user?.fullname)
             maxCharactersTextView.text = "${args.user?.bio?.length}/150"
             bioEditText.addTextChangedListener {

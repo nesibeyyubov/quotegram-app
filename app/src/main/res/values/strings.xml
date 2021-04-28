@@ -11,8 +11,8 @@
         <item>@string/theme_light</item>
     </string-array>
 
-    <string name="about_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</string>
-
+    <string name="about_text">This app is built by a single developer.If you see any bugs or something wrong please feel free to contact me.Also if you found the quote,book or user that is inappropriate please report them.Currently in app, we can not set a profile photo except when we sign in with google.In next updates it will be added too.And in the end,if you liked the app, do not forget to leave a review as it will help this app get bigger.</string>
+    <string name="privacy_policy_text"></string>
 
     <!--  Quote Genres  -->
     <string name="no_genre">Select genre</string>

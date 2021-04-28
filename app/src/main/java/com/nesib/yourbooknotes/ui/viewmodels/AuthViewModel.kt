@@ -66,13 +66,13 @@ class AuthViewModel @Inject constructor(
     fun logout() = sharedPreferencesRepository.clearUser()
 
 
-    fun login(email: String, password: String, username: String) =
+    fun login(username: String,password: String) =
         viewModelScope.launch(Dispatchers.IO) {
             if (hasInternetConnection()) {
                 try {
                     _auth.postValue(DataState.Loading())
                     val loginBody =
-                        mapOf("email" to email, "password" to password, "username" to username)
+                        mapOf("password" to password, "username" to username)
                     val response = userRepository.login(loginBody)
                     if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
                         hasLoginError = true
@@ -91,15 +91,14 @@ class AuthViewModel @Inject constructor(
         }
 
     fun signup(
-        email: String,
-        password: String,
         username: String,
+        password: String,
     ) = viewModelScope.launch(Dispatchers.IO) {
         if (hasInternetConnection()) {
             try {
 
                 _auth.postValue(DataState.Loading())
-                val response = userRepository.signup(email, password, username)
+                val response = userRepository.signup(username, password )
                 if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
                     hasSignupError = true
                 }

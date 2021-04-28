@@ -199,7 +199,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         homeAdapter.onDownloadClickListener = { quote ->
             val action = MyProfileFragmentDirections.actionGlobalDownloadQuoteFragment(
                 quote.quote,
-                quote.book?.author
+                quote.book?.name
             )
             findNavController().navigate(action)
         }

@@ -12,12 +12,10 @@ import javax.inject.Singleton
 class UserRepository @Inject constructor(val authApi: AuthApi) {
 
     suspend fun signup(
-        email: String,
-        password: String,
         username: String,
+        password: String
     ): Response<UserAuth> {
         val map = mapOf(
-            "email" to email,
             "password" to password,
             "username" to username,
         )

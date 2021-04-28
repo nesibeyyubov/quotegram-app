@@ -186,7 +186,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         bookQuotesAdapter.onDownloadClickListener = { quote ->
             val action = BookProfileFragmentDirections.actionGlobalDownloadQuoteFragment(
                 quote.quote,
-                currentBook?.author
+                currentBook?.name
             )
             findNavController().navigate(action)
         }

@@ -65,11 +65,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     private fun setupClickListeners() {
         binding.loginBtn.setOnClickListener {
-            val emailValue = binding.emailEditText.text.toString()
+            val usernameValue = binding.usernameEditText.text.toString()
             val passwordValue = binding.passwordEditText.text.toString()
-            if(emailValue.isEmpty()){
+            if(usernameValue.isEmpty()){
                 binding.loginErrorTextView.visibility = View.VISIBLE
-                binding.loginErrorTextView.text = "Email or username field can't be empty"
+                binding.loginErrorTextView.text = "Username field can't be empty"
             }
             else if(passwordValue.isEmpty()){
                 binding.loginErrorTextView.visibility = View.VISIBLE
@@ -77,9 +77,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
             else{
                 authViewModel.login(
-                    binding.emailEditText.text.toString(),
+                    binding.usernameEditText.text.toString(),
                     binding.passwordEditText.text.toString(),
-                    binding.emailEditText.text.toString()
                 )
             }
         }
