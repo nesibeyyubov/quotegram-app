@@ -7,7 +7,7 @@
 
 
 
-    <com.nesib.yourbooknotes.utils.NestedHorizontalScrollViewConainer
+    <com.nesib.quotegram.utils.NestedHorizontalScrollViewConainer
         android:layout_width="match_parent"
         android:id="@+id/bookGenreScrollView"
         android:layout_height="wrap_content">
@@ -204,7 +204,7 @@
             </com.google.android.material.chip.ChipGroup>
 
         </HorizontalScrollView>
-    </com.nesib.yourbooknotes.utils.NestedHorizontalScrollViewConainer>
+    </com.nesib.quotegram.utils.NestedHorizontalScrollViewConainer>
 
 
     <androidx.recyclerview.widget.RecyclerView

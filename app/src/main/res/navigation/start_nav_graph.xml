@@ -8,7 +8,7 @@
     <fragment
         tools:layout="@layout/fragment_login"
         android:id="@+id/loginFragment"
-        android:name="com.nesib.yourbooknotes.ui.on_boarding.fragments.auth.LoginFragment"
+        android:name="com.nesib.quotegram.ui.on_boarding.fragments.auth.LoginFragment"
         android:label="Login" >
         <action
             android:id="@+id/action_loginFragment_to_signupFragment"
@@ -20,7 +20,7 @@
     <fragment
         tools:layout="@layout/fragment_signup"
         android:id="@+id/signupFragment"
-        android:name="com.nesib.yourbooknotes.ui.on_boarding.fragments.auth.SignupFragment"
+        android:name="com.nesib.quotegram.ui.on_boarding.fragments.auth.SignupFragment"
         android:label="Signup" >
         <action
             app:enterAnim="@anim/slide_in_from_right"
@@ -36,7 +36,7 @@
     <fragment
         tools:layout="@layout/fragment_select_categories"
         android:id="@+id/selectCategoriesFragment"
-        android:name="com.nesib.yourbooknotes.ui.on_boarding.fragments.auth.SelectCategoriesFragment"
+        android:name="com.nesib.quotegram.ui.on_boarding.fragments.auth.SelectCategoriesFragment"
         android:label="SelectCategoriesFragment" >
         <argument
             android:name="userId"
@@ -50,7 +50,7 @@
     <fragment
         tools:layout="@layout/fragment_splash"
         android:id="@+id/splashFragment"
-        android:name="com.nesib.yourbooknotes.ui.on_boarding.fragments.SplashFragment"
+        android:name="com.nesib.quotegram.ui.on_boarding.fragments.SplashFragment"
         android:label="SplashFragment" >
         <action
             app:enterAnim="@anim/slide_in_from_right"

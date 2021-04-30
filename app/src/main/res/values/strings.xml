@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">YourBookNotes</string>
+    <string name="app_name">Quotegram</string>
 
     <!--  Themes  -->
     <string name="theme_dark">Dark</string>
