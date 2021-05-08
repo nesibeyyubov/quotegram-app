@@ -52,6 +52,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:paddingTop="@dimen/page_padding"
+        android:visibility="invisible"
         android:scrollbars="none"
         >
 

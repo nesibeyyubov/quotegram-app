@@ -1,10 +1,10 @@
 package com.nesib.quotegram.ui.main
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
@@ -16,7 +16,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.*
 import coil.load
-import com.google.android.play.core.review.testing.FakeReviewManager
 import com.nesib.quotegram.BuildConfig
 import com.nesib.quotegram.R
 import com.nesib.quotegram.databinding.ActivityMainBinding
@@ -156,7 +155,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.drawer_review -> {
                     binding.drawerLayout.close()
-                    makeInAppReview()
+                    reviewApp()
                 }
                 R.id.drawer_share -> {
                     binding.drawerLayout.close()
@@ -190,20 +189,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun makeInAppReview() {
-        val manager = FakeReviewManager(this)
-        val request = manager.requestReviewFlow()
-        request.addOnCompleteListener {
-            if (it.isSuccessful) {
-                val reviewInfo = it.result
-                val flow = manager.launchReviewFlow(this, reviewInfo)
-                flow.addOnCompleteListener { _ ->
-                    showToast("Review is completed !")
-                }
-            } else {
-                val reviewError = it.exception?.message
-                Log.d("mytag", "review error: $reviewError")
-            }
+    private fun reviewApp() {
+        val uri: Uri = Uri.parse("market://details?id=$packageName")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            startActivity(Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://play.google.com/store/apps/details?id=$packageName")))
         }
     }
 

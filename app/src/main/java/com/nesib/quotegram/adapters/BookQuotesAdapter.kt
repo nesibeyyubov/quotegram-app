@@ -41,6 +41,7 @@ class BookQuotesAdapter(val noAuthDialog:AlertDialog) : RecyclerView.Adapter<Boo
             val quote = differ.currentList[adapterPosition]
             binding.apply {
                 username.text = quote.creator?.username
+
                 if (quote.creator?.profileImage == null) {
                     userImage.load(R.drawable.user)
                 } else {

@@ -2,6 +2,7 @@ package com.nesib.quotegram.ui.on_boarding.fragments.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.common.api.ApiException
 import com.nesib.quotegram.R
 import com.nesib.quotegram.databinding.FragmentSignupBinding
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
@@ -44,15 +46,14 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
         binding.signupBtn.setOnClickListener {
             val username = binding.usernameEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            if(!username.isUsername()){
+            if (!username.isUsername()) {
                 binding.signupErrorTextView.visibility = View.VISIBLE
                 binding.signupErrorTextView.text = "Username should at least be 5 characters"
-            }
-            else if(!password.isPassword()){
+            } else if (!password.isPassword()) {
                 binding.signupErrorTextView.visibility = View.VISIBLE
                 binding.signupErrorTextView.text = "Password should at least be 5 characters"
-            }else{
-                authViewModel.signup( username, password)
+            } else {
+                authViewModel.signup(username, password)
             }
         }
         binding.signupToLoginBtn.setOnClickListener {
@@ -70,7 +71,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
                 if (task.isSuccessful) {
-                    val account = task.result
+                    val account = task.getResult(ApiException::class.java)
                     val username = account?.email?.split("@")?.get(0) + Random.nextInt(0, 9999)
                     val fullName = account?.displayName
                     val email = account?.email
@@ -86,12 +87,22 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                             profileImage ?: ""
                         )
                     } else {
+                        Log.d(
+                            "mytag",
+                            "1)task result: ${task.result},task cancelled: ${task.isCanceled}, task exception${task.exception?.message}"
+                        )
                         signingWithGoogle = false
                         binding.signupErrorTextView.visibility = View.VISIBLE
                         binding.signupErrorTextView.text = "Something went wrong, please try again"
                         // show something useful for user
                     }
+
                 } else {
+                    Log.d(
+                        "mytag",
+                        "2)task cancelled: ${task.isCanceled}, task exception${task.exception?.message}"
+                    )
+
                     binding.signupErrorTextView.visibility = View.VISIBLE
                     binding.signupErrorTextView.text = "Something went wrong, please try again"
                 }

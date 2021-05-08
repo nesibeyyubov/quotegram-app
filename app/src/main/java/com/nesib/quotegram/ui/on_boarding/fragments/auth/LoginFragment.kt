@@ -2,6 +2,7 @@ package com.nesib.quotegram.ui.on_boarding.fragments.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,6 +42,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         googleSignInActivityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+                Log.d("mytag", "registerActivityResult: ${task.exception?.localizedMessage}")
                 if (task.isSuccessful) {
                     val account = task.result
                     val email = account?.email

@@ -14,17 +14,6 @@
         android:layout_height="3dp"
         android:background="@color/colorSecondaryText" />
 
-    <TextView
-        android:id="@+id/add_book_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:text="Add book"
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
     <RelativeLayout
         android:id="@+id/addBookImageContainer"
         android:layout_width="84dp"
@@ -153,7 +142,7 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="30dp" />
+        android:layout_height="10dp" />
 
     <LinearLayout
         android:id="@+id/addBookButton"

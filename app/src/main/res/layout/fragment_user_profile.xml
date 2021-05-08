@@ -207,6 +207,7 @@
                 android:paddingHorizontal="20dp">
 
                 <TextView
+                    android:includeFontPadding="false"
                     android:id="@+id/followButtonTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
