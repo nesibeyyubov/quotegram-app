@@ -110,7 +110,6 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
                 is DataState.Fail -> {
                     binding.failContainer.visibility = View.VISIBLE
                     binding.failMessage.text = it.message
-                    showToast(it.message!!)
                     binding.progressBar.visibility = View.GONE
                 }
                 is DataState.Loading -> {

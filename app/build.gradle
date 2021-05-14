@@ -55,9 +55,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-
-    implementation "com.airbnb.android:lottie:3.4.0"
-
+    
     implementation 'com.google.dagger:hilt-android:2.33-beta'
     kapt 'com.google.dagger:hilt-compiler:2.33-beta'
 
@@ -71,8 +69,6 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.github.Jamshid-M:IGRefreshLayout:1.0.3'
 
-
-
     // Logging interceptor
     implementation('com.github.ihsanbal:LoggingInterceptor:3.1.0') {
         exclude group: 'org.json', module: 'json'
@@ -85,9 +81,6 @@ dependencies {
     implementation "androidx.security:security-crypto:1.1.0-alpha01"
 
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
-
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     implementation 'kr.co.prnd:readmore-textview:1.0.0'
 

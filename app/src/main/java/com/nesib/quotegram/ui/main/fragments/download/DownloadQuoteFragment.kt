@@ -42,17 +42,6 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
     private val photoStyleColors =
         listOf("#1B1B1B", "#F2F2F2", "#DCEBFE", "#C7FFCE", "#FFD1EA", "#FFF9AB")
     private val colorAdapter by lazy { ColorBoxAdapter(photoStyleColors) }
-//    private val photoStyles: List<View> by lazy {
-//        listOf(
-//            binding.photoStyleBlack,
-//            binding.photoStyleWhite,
-//            binding.photoStyleBlue,
-//            binding.photoStyleGreen,
-//            binding.photoStyleRose,
-//            binding.photoStyleYellow
-//        )
-//    }
-
 
     private val rationaleDialog: AlertDialog by lazy {
         val dBinding = RationaleDialogLayoutBinding.inflate(layoutInflater, null, false)
@@ -139,39 +128,6 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
     }
 
     private fun setupClickListeners() {
-//        photoStyles.forEachIndexed { i: Int, view: View ->
-//            view.setOnClickListener {
-//                it.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.scale_anim))
-//                binding.photoContainer.setBackgroundColor(Color.parseColor(photoStyleColors[i]))
-//                if (i == 0) {
-//                    binding.quoteText.setTextColor(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            R.color.colorPrimaryOnDark
-//                        )
-//                    )
-//                    binding.quoteAuthorText.setTextColor(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            R.color.colorSecondaryOnDark
-//                        )
-//                    )
-//                } else {
-//                    binding.quoteText.setTextColor(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            R.color.colorPrimaryOnLight
-//                        )
-//                    )
-//                    binding.quoteAuthorText.setTextColor(
-//                        ContextCompat.getColor(
-//                            requireContext(),
-//                            R.color.colorSecondaryOnLight
-//                        )
-//                    )
-//                }
-//            }
-//        }
         binding.textSizeSlider.addOnChangeListener { slider, value, fromUser ->
             binding.sliderValueText.text = value.toInt().toString()
             binding.quoteText.setTextSize(TypedValue.COMPLEX_UNIT_SP, value)
@@ -279,12 +235,13 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
         grantResults: IntArray
     ) {
         if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            rationaleDialog.dismiss()
             saveMediaToStorage(photoBitmap!!)
         } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
             if (shouldShowRequestPermissionRationale(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 rationaleDialog.show()
             } else {
-                showToast("Image not saved,because of denial of permission")
+                showToast("Image not saved,because you denied the permission")
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

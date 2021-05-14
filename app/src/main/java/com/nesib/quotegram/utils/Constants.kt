@@ -7,7 +7,7 @@ object Constants {
     const val CODE_VALIDATION_FAIL = 422
     const val CODE_AUTHENTICATION_FAIL = 401
     const val CODE_SERVER_ERROR = 500
-    const val API_URL = "http://192.168.0.106:4000/"
+    const val API_URL = "http://159.89.25.107:4000/"
     const val ADMIN_USER_ID = "60670d9b34d95b1a30dc8c0d"
 
     // Quantities
@@ -24,6 +24,10 @@ object Constants {
     const val TEXT_DIRECT_TO_LOGIN="directToLogin"
     const val TEXT_DIRECT_TO_SIGNUP="directToSignup"
     const val TEXT_UPDATED_USER="updatedUser"
+
+    const val CONTACT_EMAIL="app.quotegram@gmail.com"
+
+    const val PRIVACY_POLICY_URL = "https://quotegram.netlify.app/"
 
 
 }

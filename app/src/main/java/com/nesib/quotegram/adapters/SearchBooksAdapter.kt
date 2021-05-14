@@ -10,6 +10,7 @@ import com.nesib.quotegram.databinding.SearchBookLayoutBinding
 import com.nesib.quotegram.databinding.SelectBookLayoutBinding
 import com.nesib.quotegram.models.Book
 import com.nesib.quotegram.utils.Constants.API_URL
+import com.nesib.quotegram.utils.toFormattedNumber
 
 class SearchBooksAdapter(val isSelectBookFragment: Boolean = false) :
     RecyclerView.Adapter<SearchBooksAdapter.ViewHolder>() {
@@ -45,7 +46,7 @@ class SearchBooksAdapter(val isSelectBookFragment: Boolean = false) :
                     searchBookImage.load(API_URL + book.image) {
                         crossfade(400)
                     }
-                    searchBookFollowerCount.text = book.followerCount.toString()
+                    searchBookFollowerCount.text = book.followerCount.toFormattedNumber()
                 }
             }
 

@@ -36,6 +36,10 @@
                     android:id="@+id/drawer_share"
                     android:icon="@drawable/ic_share"
                     android:title="Share" />
+                <item
+                    android:id="@+id/drawer_privacy"
+                    android:icon="@drawable/ic_privacy"
+                    android:title="Privacy Policy" />
             </menu>
         </item>
     </group>

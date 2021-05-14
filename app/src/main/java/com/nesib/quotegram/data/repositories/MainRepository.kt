@@ -76,5 +76,5 @@ class MainRepository @Inject constructor(
 
     suspend fun getNotifications(currentPage:Int=1) = mainApi.getNotifications(currentPage)
 
-    suspend fun readNotifications() = mainApi.readNotifications()
+    suspend fun clearNotifications() = mainApi.clearNotifications()
 }

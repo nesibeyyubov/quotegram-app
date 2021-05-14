@@ -32,9 +32,9 @@ class NotificationViewModel @Inject constructor(
     val notifications
         get() = _notifications
 
-    private val _readNotifications = MutableLiveData<DataState<NotificationsResponse>>()
-    val readNotifications
-        get() = _readNotifications
+    private val _clearNotifications = MutableLiveData<DataState<NotificationsResponse>>()
+    val clearNotifications
+        get() = _clearNotifications
 
 
     fun getNotifications(page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
@@ -42,7 +42,8 @@ class NotificationViewModel @Inject constructor(
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 _notifications.postValue(DataState.Loading())
                 val response = mainRepository.getNotifications(page)
-                handleNotificationsResponse(response)
+                val handledResponse = handleNotificationsResponse(response)
+                _notifications.postValue(handledResponse)
             } else {
                 _notifications.postValue(DataState.Fail(message = "No internet connection"))
             }
@@ -52,48 +53,48 @@ class NotificationViewModel @Inject constructor(
     }
 
 
-    fun readNotifications() = viewModelScope.launch(Dispatchers.IO) {
+    fun clearNotifications() = viewModelScope.launch(Dispatchers.IO) {
         try {
             if (Utils.hasInternetConnection(getApplication<Application>())) {
-                _readNotifications.postValue(DataState.Loading())
-                val response = mainRepository.readNotifications()
-                handleNotificationsResponse(response)
+                _clearNotifications.postValue(DataState.Loading())
+                val response = mainRepository.clearNotifications()
+                val handledResponse = handleNotificationsResponse(response)
+                _clearNotifications.postValue(handledResponse)
             } else {
-                _readNotifications.postValue(DataState.Fail(message = "No internet connection"))
+                _clearNotifications.postValue(DataState.Fail(message = "No internet connection"))
             }
         } catch (e: Exception) {
-            _readNotifications.postValue(DataState.Fail())
+            _clearNotifications.postValue(DataState.Fail())
         }
     }
 
-    private fun handleNotificationsResponse(response: Response<NotificationsResponse>) {
+    private fun handleNotificationsResponse(response: Response<NotificationsResponse>): DataState<NotificationsResponse> {
         when (response.code()) {
             CODE_SUCCESS -> {
                 response.body()?.notifications?.forEach { notification ->
                     notificationList.add(notification)
                 }
-                _notifications.postValue(
-                    DataState.Success(
+
+                    return DataState.Success(
                         data = NotificationsResponse(
                             notifications = notificationList
                         )
                     )
-                )
             }
             CODE_AUTHENTICATION_FAIL -> {
                 val authResponse = Utils.toBasicResponse(response)
-                _notifications.postValue(DataState.Fail(message = authResponse.message))
+                return DataState.Fail(message = authResponse.message)
             }
             CODE_SERVER_ERROR -> {
                 val serverResponse = Utils.toBasicResponse(response)
-                _notifications.postValue(DataState.Fail(message = serverResponse.message))
+                return DataState.Fail(message = serverResponse.message)
             }
             CODE_VALIDATION_FAIL -> {
                 val validationResponse = Utils.toBasicResponse(response)
-                _notifications.postValue(DataState.Fail(message = validationResponse.message))
+                return DataState.Fail(message = validationResponse.message)
             }
             else -> {
-                _notifications.postValue(DataState.Fail())
+                return DataState.Fail()
             }
         }
     }

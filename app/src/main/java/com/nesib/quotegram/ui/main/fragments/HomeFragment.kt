@@ -90,7 +90,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         failContainer.visibility = View.VISIBLE
                         failMessage.text = it.message
                     }
-                    showToast(it.message!!)
                     binding.refreshLayout.isRefreshing = false
                     if (currentPage == 1) {
                         binding.shimmerLayout.stopShimmer()

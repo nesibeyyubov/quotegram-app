@@ -153,6 +153,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     startActivity(intent)
                     finish()
                 }
+                R.id.drawer_privacy->{
+                    try{
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.data = Uri.parse(Constants.PRIVACY_POLICY_URL)
+                        startActivity(intent)
+                    }
+                    catch (e:Exception){
+                        showToast(e.message ?: "Something went wrong")
+                    }
+                }
                 R.id.drawer_review -> {
                     binding.drawerLayout.close()
                     reviewApp()

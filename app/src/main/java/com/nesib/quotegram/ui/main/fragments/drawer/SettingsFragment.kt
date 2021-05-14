@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.nesib.quotegram.R
 import com.nesib.quotegram.databinding.FragmentSettingsBinding
+import com.nesib.quotegram.utils.Constants
 import com.nesib.quotegram.utils.Constants.KEY_THEME
 import com.nesib.quotegram.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,12 +45,11 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             if (contactText.isNotEmpty()) {
                 val i = Intent(Intent.ACTION_SEND)
                 i.type = "message/rfc822"
-                i.putExtra(Intent.EXTRA_EMAIL, arrayOf("nasibeyyubov@gmail.com"))
+                i.putExtra(Intent.EXTRA_EMAIL, arrayOf(Constants.CONTACT_EMAIL))
                 i.putExtra(Intent.EXTRA_SUBJECT, "Contact with developer")
                 i.putExtra(Intent.EXTRA_TEXT, contactText)
                 try {
                     startActivity(Intent.createChooser(i, "Select one"))
-                    binding.contactEditText.setText("")
                 } catch (e: Exception) {
                     showToast("Something went wrong,please try again later")
                 }

@@ -92,6 +92,6 @@ interface MainApi {
     @GET("/notifications/")
     suspend fun getNotifications(@Query("page") page: Int): Response<NotificationsResponse>
 
-    @POST("/notifications/")
-    suspend fun readNotifications(): Response<NotificationsResponse>
+    @DELETE("/notifications/")
+    suspend fun clearNotifications(): Response<NotificationsResponse>
 }

@@ -85,7 +85,6 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
                     binding.failContainer.visibility = View.VISIBLE
                     binding.shimmerLayout.visibility = View.INVISIBLE
                     binding.shimmerLayout.stopShimmer()
-                    showToast(it.message)
                 }
                 is DataState.Loading -> {
                     if (binding.failContainer.visibility == View.VISIBLE) {

@@ -2,7 +2,6 @@ package com.nesib.quotegram.ui.on_boarding.fragments.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,27 +40,33 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun registerActivityResult() {
         googleSignInActivityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-                Log.d("mytag", "registerActivityResult: ${task.exception?.localizedMessage}")
-                if (task.isSuccessful) {
-                    val account = task.result
-                    val email = account?.email
-                    val profileImage = account?.photoUrl?.toString() ?: ""
-                    // do login operation here
-                    if (email != null) {
-                        googleSignInClient.signOut()
-                        signingInWithGoogle = true
-                        authViewModel.signInWithGoogle(email, profileImage)
-                    } else {
-                        signingInWithGoogle = false
+                try{
+                    val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+                    if (task.isSuccessful) {
+                        val account = task.result
+                        val email = account?.email
+                        val profileImage = account?.photoUrl?.toString() ?: ""
+                        // do login operation here
+                        if (email != null) {
+                            googleSignInClient.signOut()
+                            signingInWithGoogle = true
+                            authViewModel.signInWithGoogle(email, profileImage)
+                        } else {
+                            signingInWithGoogle = false
+                            binding.loginErrorTextView.visibility = View.VISIBLE
+                            binding.loginErrorTextView.text = "Something went wrong,please try again"
+                            // show something useful for user
+                        }
+                    }else{
                         binding.loginErrorTextView.visibility = View.VISIBLE
                         binding.loginErrorTextView.text = "Something went wrong,please try again"
-                        // show something useful for user
                     }
-                }else{
-                    binding.loginErrorTextView.visibility = View.VISIBLE
-                    binding.loginErrorTextView.text = "Something went wrong,please try again"
                 }
+                catch (e:Exception){
+                    binding.loginErrorTextView.visibility = View.VISIBLE
+                    binding.loginErrorTextView.text = "Something went wrong,please try again later"
+                }
+
             }
     }
 

@@ -9,8 +9,6 @@ import com.nesib.quotegram.models.BasicResponse
 import retrofit2.Response
 
 object Utils {
-    var usersNotifier:IUsersNotifer? = null
-    var booksNotifier:IBooksNotifer? = null
     fun <T> toBasicResponse(response:Response<T>):BasicResponse{
         return Gson().fromJson(
             response.errorBody()?.charStream(),

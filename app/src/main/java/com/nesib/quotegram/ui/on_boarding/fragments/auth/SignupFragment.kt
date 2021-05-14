@@ -2,7 +2,6 @@ package com.nesib.quotegram.ui.on_boarding.fragments.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,7 +18,6 @@ import com.nesib.quotegram.utils.DataState
 import com.nesib.quotegram.utils.isPassword
 import com.nesib.quotegram.utils.isUsername
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -69,43 +67,41 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
     private fun registerActivityResult() {
         googleSignInActivityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-                if (task.isSuccessful) {
-                    val account = task.getResult(ApiException::class.java)
-                    val username = account?.email?.split("@")?.get(0) + Random.nextInt(0, 9999)
-                    val fullName = account?.displayName
-                    val email = account?.email
-                    val profileImage = account?.photoUrl?.toString()
-                    // do signup operation here
-                    if (email != null && fullName != null && username != null) {
-                        signingWithGoogle = true
-                        googleSignInClient.signOut()
-                        authViewModel.signupWithGoogle(
-                            email,
-                            fullName,
-                            username,
-                            profileImage ?: ""
-                        )
+                try{
+                    val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+                    if (task.isSuccessful) {
+                        val account = task.getResult(ApiException::class.java)
+                        val username = account?.email?.split("@")?.get(0) + Random.nextInt(0, 9999)
+                        val fullName = account?.displayName
+                        val email = account?.email
+                        val profileImage = account?.photoUrl?.toString()
+                        // do signup operation here
+                        if (email != null && fullName != null && username != null) {
+                            signingWithGoogle = true
+                            googleSignInClient.signOut()
+                            authViewModel.signupWithGoogle(
+                                email,
+                                fullName,
+                                username,
+                                profileImage ?: ""
+                            )
+                        } else {
+                            signingWithGoogle = false
+                            binding.signupErrorTextView.visibility = View.VISIBLE
+                            binding.signupErrorTextView.text = "Something went wrong, please try again"
+                            // show something useful for user
+                        }
+
                     } else {
-                        Log.d(
-                            "mytag",
-                            "1)task result: ${task.result},task cancelled: ${task.isCanceled}, task exception${task.exception?.message}"
-                        )
-                        signingWithGoogle = false
                         binding.signupErrorTextView.visibility = View.VISIBLE
                         binding.signupErrorTextView.text = "Something went wrong, please try again"
-                        // show something useful for user
                     }
-
-                } else {
-                    Log.d(
-                        "mytag",
-                        "2)task cancelled: ${task.isCanceled}, task exception${task.exception?.message}"
-                    )
-
-                    binding.signupErrorTextView.visibility = View.VISIBLE
-                    binding.signupErrorTextView.text = "Something went wrong, please try again"
                 }
+                catch (e:Exception){
+                    binding.signupErrorTextView.visibility = View.VISIBLE
+                    binding.signupErrorTextView.text = "Something went wrong, please try again later"
+                }
+
 
             }
     }

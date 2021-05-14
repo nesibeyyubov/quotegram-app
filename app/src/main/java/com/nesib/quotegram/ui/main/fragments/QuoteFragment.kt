@@ -17,7 +17,6 @@ import com.nesib.quotegram.ui.viewmodels.QuoteViewModel
 import com.nesib.quotegram.utils.Constants
 import com.nesib.quotegram.utils.Constants.TEXT_UPDATED_QUOTE
 import com.nesib.quotegram.utils.DataState
-import com.nesib.quotegram.utils.showToast
 import com.nesib.quotegram.utils.toFormattedNumber
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -73,7 +72,6 @@ class QuoteFragment : Fragment(R.layout.fragment_quote), View.OnClickListener {
                 }
                 is DataState.Fail -> {
                     binding.failContainer.visibility = View.VISIBLE
-                    showToast(it.message)
                     binding.failMessage.text = it.message
                     binding.quoteContainer.visibility = View.INVISIBLE
                     binding.progressBar.visibility = View.INVISIBLE

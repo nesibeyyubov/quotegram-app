@@ -76,7 +76,6 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 is DataState.Fail -> {
                     binding.failMessage.text = it.message
                     binding.failContainer.visibility = View.VISIBLE
-                    showToast(it.message!!)
                     toggleProgressBar(false, true)
                 }
                 is DataState.Loading -> {

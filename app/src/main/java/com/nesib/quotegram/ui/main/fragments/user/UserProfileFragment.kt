@@ -116,7 +116,6 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
                 is DataState.Fail -> {
                     binding.failContainer.visibility = View.VISIBLE
                     binding.failMessage.text = it.message
-                    showToast(it.message!!)
                     binding.progressBar.visibility = View.GONE
                     binding.profileContent.visibility = View.INVISIBLE
                 }
