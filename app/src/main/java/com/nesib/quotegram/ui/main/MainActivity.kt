@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
@@ -225,39 +226,40 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.bottomNavView.menu.getItem(2).isEnabled = false
         binding.bottomNavView.setupWithNavController(navController)
         binding.bottomNavView.setOnNavigationItemSelectedListener {
+            val currentDestinationLabel = navController.currentDestination?.label
             when (it.itemId) {
                 R.id.homeFragment -> {
-                    if (currentFragmentIndex == 0) {
+                    if (currentDestinationLabel == "homeFragment") {
                         false
                     } else {
-                        currentFragmentIndex = 0
+                        navController.popBackStack()
                         navController.navigate(R.id.homeFragment)
                         true
                     }
                 }
                 R.id.searchFragment -> {
-                    if (currentFragmentIndex == 1) {
+                    if (currentDestinationLabel == "searchFragment") {
                         false
                     } else {
-                        currentFragmentIndex = 1
+                        navController.popBackStack()
                         navController.navigate(R.id.searchFragment)
                         true
                     }
                 }
                 R.id.notificationsFragment -> {
-                    if (currentFragmentIndex == 2) {
+                    if (currentDestinationLabel == "notificationsFragment") {
                         false
                     } else {
-                        currentFragmentIndex = 2
+                        navController.popBackStack()
                         navController.navigate(R.id.notificationsFragment)
                         true
                     }
                 }
                 R.id.myProfileFragment -> {
-                    if (currentFragmentIndex == 3) {
+                    if (currentDestinationLabel == "myProfileFragment") {
                         false
                     } else {
-                        currentFragmentIndex = 3
+                        navController.popBackStack()
                         navController.navigate(R.id.myProfileFragment)
                         true
                     }

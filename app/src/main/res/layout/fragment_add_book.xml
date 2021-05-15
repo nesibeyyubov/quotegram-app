@@ -118,13 +118,13 @@
             android:background="@color/lineColor" />
 
         <ImageView
-            app:tint="@color/colorSecondaryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginRight="2dp"
             android:background="@color/inputBackgroundColor"
-            android:src="@drawable/ic_down" />
+            android:src="@drawable/ic_down"
+            app:tint="@color/colorSecondaryText" />
     </LinearLayout>
 
     <TextView

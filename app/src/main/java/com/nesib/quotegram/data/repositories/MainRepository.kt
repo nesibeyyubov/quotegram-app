@@ -67,8 +67,6 @@ class MainRepository @Inject constructor(
         val authorRequestBody = author.toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val genreRequestBody = genre.toRequestBody("multipart/form-data".toMediaTypeOrNull())
 
-        Log.d("mytag", "postBook: ${imageBodyPart.body}")
-
         return mainApi.postBook(nameRequestBody, authorRequestBody, genreRequestBody, imageBodyPart)
     }
 

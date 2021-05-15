@@ -175,9 +175,14 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
         }
         bookQuotesAdapter.onUserClickListener = { user ->
             user?.let {
-                val action =
-                    BookProfileFragmentDirections.actionBookProfileFragmentToUserProfileFragment(it.id)
-                findNavController().navigate(action)
+                if(it.id == authViewModel.currentUserId){
+                    findNavController().navigate(R.id.myProfileFragment)
+                }else{
+                    val action =
+                        BookProfileFragmentDirections.actionBookProfileFragmentToUserProfileFragment(it.id)
+                    findNavController().navigate(action)
+                }
+
             }
         }
         bookQuotesAdapter.onDownloadClickListener = { quote ->

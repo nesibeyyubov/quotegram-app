@@ -57,7 +57,7 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
 
     private fun setupUi() {
         if (authViewModel.currentUserId != null) {
-            if (args.quote.creator!!.id == authViewModel.currentUserId || authViewModel.currentUserId == Constants.ADMIN_USER_ID) {
+            if (args.quote.creator!!.id == authViewModel.currentUserId) {
                 binding.reportQuote.visibility = View.GONE
                 binding.reportUser.visibility = View.GONE
                 binding.editQuote.setOnClickListener(this)

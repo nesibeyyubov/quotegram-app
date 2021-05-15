@@ -71,7 +71,6 @@ class EditUserFragment : Fragment(R.layout.fragment_edit_profile) {
                     showToast(it.message)
                 }
                 is DataState.Loading -> {
-                    Log.d("mytag", "update user loading...")
                 }
             }
         }

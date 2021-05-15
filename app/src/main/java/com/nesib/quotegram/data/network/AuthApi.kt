@@ -21,7 +21,10 @@ interface AuthApi {
 
     // Users
     @GET("/users/")
-    suspend fun getUsers(@Query("search") searchQuery: String): Response<UsersResponse>
+    suspend fun getUsers(
+        @Query("search") searchQuery: String,
+        @Query("page") currentPage: Int
+    ): Response<UsersResponse>
 
     @GET("/users/{userId}")
     suspend fun getUser(@Path("userId") userId: String): Response<UserResponse>
@@ -32,18 +35,12 @@ interface AuthApi {
         @Query("page") page: Int
     ): Response<QuotesResponse>
 
-    @GET("/users/{userId}/savedQuotes")
-    suspend fun getSavedQuotes(@Path("userId") userId: String): Response<List<Quote>>
-
-    @POST("/users/{quoteId}/savedQuotes")
-    suspend fun postSavedQuote(@Body quoteId: String): Response<List<Quote>>
-
     @POST("/users/{userId}/followers")
     suspend fun followOrUnFollowUser(@Path("userId") userId: String): Response<UserResponse>
 
     @PUT("/users/")
     suspend fun updateUser(
-        @Body body:Map<String,String>
+        @Body body: Map<String, String>
     ): Response<UserResponse>
 
     @PATCH("/users/")

@@ -224,7 +224,6 @@ class QuoteViewModel @Inject constructor(
     private fun handleQuoteResponse(response: Response<QuoteResponse>): DataState<QuoteResponse> {
         when (response.code()) {
             Constants.CODE_SUCCESS -> {
-                Log.d("mytag", "handleQuoteResponse: SUCCESS")
                 return DataState.Success(response.body())
             }
             Constants.CODE_CREATION_SUCCESS -> {

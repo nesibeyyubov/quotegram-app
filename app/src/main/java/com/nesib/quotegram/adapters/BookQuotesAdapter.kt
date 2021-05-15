@@ -1,5 +1,6 @@
 package com.nesib.quotegram.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +42,7 @@ class BookQuotesAdapter(val noAuthDialog:AlertDialog) : RecyclerView.Adapter<Boo
             val quote = differ.currentList[adapterPosition]
             binding.apply {
                 username.text = quote.creator?.username
-
+                Log.d("mytag", "quote.creator.username: ${quote.creator}")
                 if (quote.creator?.profileImage == null) {
                     userImage.load(R.drawable.user)
                 } else {

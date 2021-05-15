@@ -23,6 +23,7 @@ import com.nesib.quotegram.ui.main.MainActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.BookViewModel
 import com.nesib.quotegram.utils.DataState
+import com.nesib.quotegram.utils.showToast
 import com.theartofdev.edmodo.cropper.CropImage
 import dagger.hilt.android.AndroidEntryPoint
 import id.zelory.compressor.Compressor
@@ -73,12 +74,7 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 is DataState.Success -> {
                     toggleProgressBar(false)
                     findNavController().popBackStack()
-                    Toast.makeText(
-                        requireContext(),
-                        "Book is added successfully",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    showToast("Book is added successfully")
                 }
                 is DataState.Fail -> {
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
@@ -166,19 +162,17 @@ class AddBookFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 toggleLoadingImageProgressBar(true)
                 lifecycleScope.launch(Dispatchers.IO) {
                     selectedBookImage = Compressor.compress(requireContext(), file) {
-                        quality(20)
+                        quality(5)
                     }
                     withContext(Dispatchers.Main) {
                         toggleLoadingImageProgressBar(false)
                         binding.bookImageView.setImageURI(selectedBookImage?.toUri())
                     }
-                    Log.d(
-                        "mytag",
-                        "file after compression: size = ${(selectedBookImage?.length()!! / 1024).toInt()} kb "
-                    )
+
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 val error = result.error
+                showToast(error.message ?: "Image crop error,please try again")
             }
         }
     }

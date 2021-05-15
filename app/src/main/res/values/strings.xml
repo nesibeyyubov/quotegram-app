@@ -11,7 +11,7 @@
         <item>@string/theme_light</item>
     </string-array>
 
-    <string name="about_text">This app is built by only one developer.If you see any bugs or something wrong please feel free to contact me.Also if you found the quote,book or user that is inappropriate,please report them.\nCurrently in app, we can not set a profile photo except when we sign in with google.In next updates it will be added too.And in the end,if you liked the app, do not forget to leave a review as it will help this app get bigger.</string>
+    <string name="about_text">This app is built by only one developer.If you see any bugs or something wrong please feel free to contact me.Also if you found the quote,book or user that is inappropriate,please report them.\n\nCurrently in app, we can not set a profile photo except when we sign in with google.In next updates it will be added too.And in the end,if you liked the app, do not forget to leave a review as it will help this app to get bigger.</string>
     <string name="privacy_policy_text"></string>
 
     <!--  Quote Genres  -->

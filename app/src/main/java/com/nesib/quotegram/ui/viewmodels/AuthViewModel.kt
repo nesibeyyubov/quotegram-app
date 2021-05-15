@@ -155,12 +155,10 @@ class AuthViewModel @Inject constructor(
                 handleResponse(response)
 
             } catch (e: Exception) {
-                Log.d("mytag", "signInWithGoogle: catch block: ${e.message}")
                 hasLoginError = true
                 _auth.postValue(DataState.Fail())
             }
         } else {
-            Log.d("mytag", "no internet connnection")
             hasLoginError = true
             _auth.postValue(DataState.Fail(message = "No internet connection"))
         }

@@ -38,7 +38,6 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
 
     suspend fun signInWithGoogle(email:String,profileImage: String): Response<UserAuth> {
         val map = mapOf("email" to email,"profileImage" to profileImage)
-        Log.d("mytag", "signInWithGoogle: ${profileImage}")
         return authApi.signInWithGoogle(map)
     }
     suspend fun login(loginBody:Map<String,String>) = authApi.login(loginBody)
@@ -55,9 +54,6 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
     suspend fun getMoreUserQuotes(userId: String, page: Int) =
         authApi.getMoreUserQuotes(userId, page)
 
-    suspend fun getUsers(searchQuery: String) = authApi.getUsers(searchQuery)
+    suspend fun getUsers(searchQuery: String,currentPage:Int) = authApi.getUsers(searchQuery,currentPage)
 
-    suspend fun getSavedQuotes(userId: String) = authApi.getSavedQuotes(userId)
-
-    suspend fun postSavedQuote(quoteId: String) = authApi.postSavedQuote(quoteId)
 }

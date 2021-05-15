@@ -1,6 +1,5 @@
 package com.nesib.quotegram.di
 
-import com.ihsanbal.logging.LoggingInterceptor
 import com.nesib.quotegram.data.network.AuthApi
 import com.nesib.quotegram.data.network.MainApi
 import com.nesib.quotegram.data.network.MyOkHttpClientInterceptor
@@ -23,20 +22,13 @@ object NetworkModule {
         return GsonConverterFactory.create()
     }
 
-    @Provides
-    fun provideLoggingInterceptor(): LoggingInterceptor {
-        return LoggingInterceptor.Builder()
-            .build()
-    }
 
     @Provides
     fun provideOkHttpClient(
         myOkHttpClientInterceptor: MyOkHttpClientInterceptor,
-        loggingInterceptor: LoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(myOkHttpClientInterceptor)
-            .addInterceptor(loggingInterceptor)
             .build()
     }
 

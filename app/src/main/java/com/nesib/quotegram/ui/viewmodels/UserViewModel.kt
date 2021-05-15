@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.nesib.quotegram.data.local.SharedPreferencesRepository
@@ -28,6 +29,7 @@ class UserViewModel @Inject constructor(
     val userRepository: UserRepository, application: Application,
 ) : AndroidViewModel(application) {
     private var userQuoteList = mutableListOf<Quote>()
+    private var usersList = mutableListOf<User>()
 
     private val _user = MutableLiveData<DataState<UserResponse>>()
     val user: LiveData<DataState<UserResponse>>
@@ -107,20 +109,21 @@ class UserViewModel @Inject constructor(
 
     }
 
-    fun getUsers(searchQuery: String = "") = viewModelScope.launch(Dispatchers.IO) {
-        if (hasInternetConnection()) {
-            try {
-                _users.postValue(DataState.Loading())
-                val response = userRepository.getUsers(searchQuery)
-                handleUsersResponse(response)
-            } catch (e: Exception) {
-                _users.postValue(DataState.Fail())
+    fun getUsers(searchQuery: String = "", paginating: Boolean = false,currentPage:Int = 1) =
+        viewModelScope.launch(Dispatchers.IO) {
+            if (hasInternetConnection()) {
+                try {
+                    _users.postValue(DataState.Loading())
+                    val response = userRepository.getUsers(searchQuery,currentPage)
+                    handleUsersResponse(response, paginating)
+                } catch (e: Exception) {
+                    _users.postValue(DataState.Fail())
+                }
+            } else {
+                _users.postValue(DataState.Fail(message = "No internet connection"))
             }
-        } else {
-            _users.postValue(DataState.Fail(message = "No internet connection"))
-        }
 
-    }
+        }
 
 
     fun followOrUnFollowUser(user: User) = viewModelScope.launch(Dispatchers.IO) {
@@ -139,9 +142,6 @@ class UserViewModel @Inject constructor(
 
     }
 
-    fun saveFollowingGenres(genres: Map<String, String>) {
-
-    }
 
     fun updateUser(
         username: String,
@@ -189,10 +189,24 @@ class UserViewModel @Inject constructor(
     }
 
 
-    private fun handleUsersResponse(response: Response<UsersResponse>) {
+    private fun handleUsersResponse(response: Response<UsersResponse>, paginating: Boolean) {
         when (response.code()) {
             CODE_SUCCESS -> {
-                _users.postValue(DataState.Success(response.body()))
+                if (paginating) {
+                    response.body()?.users?.forEach { user ->
+                        usersList.add(user)
+                    }
+                } else {
+                    usersList = response.body()?.users?.toMutableList() ?: mutableListOf()
+                }
+                _users.postValue(
+                    DataState.Success(
+                        UsersResponse(
+                            users = usersList,
+                            message = "Got the users successfully"
+                        )
+                    )
+                )
             }
             CODE_SERVER_ERROR -> {
                 _users.postValue(DataState.Fail(message = "Server error"))
