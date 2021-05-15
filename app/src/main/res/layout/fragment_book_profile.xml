@@ -132,6 +132,7 @@
                 android:id="@+id/bookImage"
                 android:layout_width="85dp"
                 android:layout_height="125dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/book"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
