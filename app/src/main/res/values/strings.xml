@@ -80,11 +80,9 @@
     <string name="book_genre_leadership">Leadership</string>
     <string name="book_genre_business">Business</string>
     <string name="book_genre_psychology">Psychology</string>
-    <string name="book_genre_productiveness">Productiveness</string>
     <string name="book_genre_parenting">Parenting</string>
     <string name="book_genre_classic">Classic</string>
     <string name="book_genre_biography">Biography</string>
-    <string name="book_genre_religion">Religion</string>
     <string name="book_genre_children">Children</string>
 
     <string-array name="book_genres">
@@ -106,11 +104,9 @@
         <item>@string/book_genre_leadership</item>
         <item>@string/book_genre_business</item>
         <item>@string/book_genre_psychology</item>
-        <item>@string/book_genre_productiveness</item>
         <item>@string/book_genre_parenting</item>
         <item>@string/book_genre_classic</item>
         <item>@string/book_genre_biography</item>
-        <item>@string/book_genre_religion</item>
         <item>@string/book_genre_children</item>
     </string-array>
 </resources>

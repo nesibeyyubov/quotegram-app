@@ -139,12 +139,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/book_genre_parenting" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_productiveness"
-                    style="@style/CustomChipStyleNoIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/book_genre_productiveness" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_psychology"
@@ -160,12 +154,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/book_genre_relationship" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_religion"
-                    style="@style/CustomChipStyleNoIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/book_genre_religion" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_romance"

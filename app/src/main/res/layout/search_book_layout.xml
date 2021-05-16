@@ -40,9 +40,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:maxLines="2"
         android:text="A Tale of Two Cities"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="12sp"
+        android:textSize="11sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout"
         app:layout_constraintStart_toEndOf="@+id/searchBookImage"
@@ -51,7 +52,8 @@
     <ImageView
         android:id="@+id/searchBookImage"
         android:layout_width="50dp"
-        android:layout_height="70dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/book"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
