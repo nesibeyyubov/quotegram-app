@@ -1,6 +1,6 @@
 :star: A Quote app which is very like instagram. I made this app to publish in play store but because of virtual server prices and some other reasons, i did not publish it. The main purpose of this app is to join book lovers in the app.
 
-:exclamation: You can download apk file from <a href="https://www.mediafire.com/file/ydr3auqyb7blkrs/quotegram-app.apk/file">here</a>
+:exclamation: You can download apk file from <a href="https://www.mediafire.com/file/4996k0w5ej7r5d6/quotegram.apk/file">here</a>
 
 <h3>:zap: Features</h3>
 <li>You can signup, login (using Google account or own password) or continue as guest.</li>
