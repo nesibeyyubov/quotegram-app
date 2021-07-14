@@ -225,49 +225,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNavView.menu.getItem(2).isEnabled = false
         binding.bottomNavView.setupWithNavController(navController)
-        binding.bottomNavView.setOnNavigationItemSelectedListener {
-            val currentDestinationLabel = navController.currentDestination?.label
-            when (it.itemId) {
-                R.id.homeFragment -> {
-                    if (currentDestinationLabel == "homeFragment") {
-                        false
-                    } else {
-                        navController.popBackStack()
-                        navController.navigate(R.id.homeFragment)
-                        true
-                    }
-                }
-                R.id.searchFragment -> {
-                    if (currentDestinationLabel == "searchFragment") {
-                        false
-                    } else {
-                        navController.popBackStack()
-                        navController.navigate(R.id.searchFragment)
-                        true
-                    }
-                }
-                R.id.notificationsFragment -> {
-                    if (currentDestinationLabel == "notificationsFragment") {
-                        false
-                    } else {
-                        navController.popBackStack()
-                        navController.navigate(R.id.notificationsFragment)
-                        true
-                    }
-                }
-                R.id.myProfileFragment -> {
-                    if (currentDestinationLabel == "myProfileFragment") {
-                        false
-                    } else {
-                        navController.popBackStack()
-                        navController.navigate(R.id.myProfileFragment)
-                        true
-                    }
-                }
-                else -> false
-            }
-
-        }
         binding.drawerNavigationView.setupWithNavController(navController)
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }

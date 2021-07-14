@@ -51,8 +51,9 @@ dependencies {
 
     // Kotlin
     def nav_version = "2.3.5"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    def new_nav_version ="2.4.0-alpha04"
+    implementation "androidx.navigation:navigation-fragment-ktx:$new_nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$new_nav_version"
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     
