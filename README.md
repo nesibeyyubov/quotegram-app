@@ -32,38 +32,45 @@
      <td>Splash Screen</td>
      <td>Login Screen</td>
      <td>Signup</td>
-     <td>Select Genres</td>
+     
   </tr>
   <tr>
     <td valign="top"><img src="https://i.ibb.co/X84HKZY/splash-3.png"></td>
     <td valign="top"><img src="https://i.ibb.co/2vWRx1g/login.png"></td>
     <td valign="top"><img src="https://i.ibb.co/Y7H5B92/signup.png"></td>
-    <td valign="top"><img src="https://i.ibb.co/nPQCCty/select-genre.png"></td>
   </tr>
  
   <tr>
+    <td>Select Genres</td>
     <td>Home Screen</td>
     <td>Light Theme</td>
-    <td>Notifications</td>
-    <td>Drawer</td>
   </tr>
   
   <tr>
+    <td valign="top"><img src="https://i.ibb.co/nPQCCty/select-genre.png"></td>
     <td valign="top"><img src="https://i.ibb.co/3sNWD53/home.png"></td>
     <td valign="top"><img src="https://i.ibb.co/GW1QCDK/light.png"></td>
-    <td valign="top"><img src="https://i.ibb.co/3RzK5bS/notifications.png"></td>
-    <td valign="top"><img src="https://i.ibb.co/zhNzCc2/drawer.png"></td>
   </tr>
  
   <tr>
+     <td>Notifications</td>
+     <td>Settings</td>
      <td>My Profile</td>
-     <td>Edit Profile</td>
-     <td>Search Quotes</td>
-     <td>Search Books</td>
   </tr>
  
   <tr>
+    <td valign="top"><img src="https://i.ibb.co/3RzK5bS/notifications.png"></td>
+    <td valign="top"><img src="https://i.ibb.co/w78FXDQ/settings.png"></td>
     <td valign="top"><img src="https://i.ibb.co/5sjsrZc/my-profile.png"></td>
+  </tr>
+
+  <tr>
+    <td>Edit Profile</td>
+    <td>Search Quotes</td>
+    <td>Search Books</td>
+  </tr>
+
+  <tr>
     <td valign="top"><img src="https://i.ibb.co/cTm67zS/edit-user.png"></td>
     <td valign="top"><img src="https://i.ibb.co/6RwG6bZ/search-quote.png"></td>
     <td valign="top"><img src="https://i.ibb.co/KbTm5CQ/search-book.png"></td>
@@ -73,14 +80,12 @@
      <td>Book Profile</td>
      <td>Add Quote</td>
      <td>Download Quote</td>
-     <td>Settings</td>
   </tr>
  
   <tr>
     <td valign="top"><img src="https://i.ibb.co/3Sq3PG0/book-profile.png"></td>
     <td valign="top"><img src="https://i.ibb.co/dGmtf85/add-quote.png"></td>
     <td valign="top"><img src="https://i.ibb.co/1r2VsJt/download.png"></td>
-    <td valign="top"><img src="https://i.ibb.co/w78FXDQ/settings.png"></td>
   </tr>
  
  
