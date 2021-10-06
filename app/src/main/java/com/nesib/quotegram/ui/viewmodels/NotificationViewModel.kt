@@ -1,6 +1,7 @@
 package com.nesib.quotegram.ui.viewmodels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -42,7 +43,7 @@ class NotificationViewModel @Inject constructor(
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 _notifications.postValue(DataState.Loading())
                 val response = mainRepository.getNotifications(page)
-                val handledResponse = handleNotificationsResponse(response)
+                val handledResponse = handleNotificationsResponse(response,page)
                 _notifications.postValue(handledResponse)
             } else {
                 _notifications.postValue(DataState.Fail(message = "No internet connection"))
@@ -58,7 +59,7 @@ class NotificationViewModel @Inject constructor(
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 _clearNotifications.postValue(DataState.Loading())
                 val response = mainRepository.clearNotifications()
-                val handledResponse = handleNotificationsResponse(response)
+                val handledResponse = handleNotificationsResponse(response,page = 1)
                 _clearNotifications.postValue(handledResponse)
             } else {
                 _clearNotifications.postValue(DataState.Fail(message = "No internet connection"))
@@ -68,9 +69,12 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
-    private fun handleNotificationsResponse(response: Response<NotificationsResponse>): DataState<NotificationsResponse> {
+    private fun handleNotificationsResponse(response: Response<NotificationsResponse>,page:Int): DataState<NotificationsResponse> {
         when (response.code()) {
             CODE_SUCCESS -> {
+                if(page == 1){
+                    notificationList.clear()
+                }
                 response.body()?.notifications?.forEach { notification ->
                     notificationList.add(notification)
                 }

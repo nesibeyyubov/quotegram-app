@@ -83,6 +83,7 @@ class BookProfileFragment : Fragment(R.layout.fragment_book_profile) {
             viewLifecycleOwner
         ) { requestKey: String, deletedQuote: Bundle ->
             bookViewModel.notifyQuoteRemoved(deletedQuote[TEXT_DELETED_QUOTE] as Quote)
+            binding.bookQuoteCount.text = (binding.bookQuoteCount.text.toString().toInt() - 1).toString()
         }
 
         parentFragmentManager.setFragmentResultListener(

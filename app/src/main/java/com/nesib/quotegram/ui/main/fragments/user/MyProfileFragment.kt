@@ -160,6 +160,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
             viewLifecycleOwner
         ) { requestKey: String, deletedQuote: Bundle ->
             userViewModel.notifyQuoteRemoved(deletedQuote[TEXT_DELETED_QUOTE] as Quote)
+            binding.quoteCountTextView.text = (binding.quoteCountTextView.text.toString().toInt() - 1).toString()
         }
         parentFragmentManager.setFragmentResultListener(
             TEXT_UPDATED_QUOTE,

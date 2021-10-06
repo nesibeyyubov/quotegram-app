@@ -2,6 +2,7 @@ package com.nesib.quotegram.ui.main.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -47,17 +48,11 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         setupRecyclerView()
         setupClickListeners()
         subscribeObservers()
+        notificationViewModel.getNotifications()
     }
 
     private fun setupUi() {
-        if (authViewModel.isAuthenticated) {
-            if (currentNotifications == null) {
-                notificationViewModel.getNotifications()
-            } else {
-                comingBackFromQuote = true
-                notificationAdapter.setData(currentNotifications!!)
-            }
-        } else {
+        if (!authViewModel.isAuthenticated) {
             binding.notSignedinContainer.visibility = View.VISIBLE
             binding.loginButton.setOnClickListener {
                 authViewModel.logout()
@@ -74,7 +69,6 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
             when (it) {
                 is DataState.Success -> {
                     clearAllMenuItem?.actionView = clearAllTextActionView
-
                     currentNotifications = emptyList()
                     notificationAdapter.setData(currentNotifications!!)
                     if (currentNotifications!!.isEmpty()) {
@@ -111,6 +105,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                     }
                 }
                 is DataState.Loading -> {
+                    binding.noNotificationsContainer.visibility = View.INVISIBLE
                     binding.failContainer.visibility = View.GONE
                     if (paginationLoading) {
                         binding.paginationProgressBar.visibility = View.VISIBLE

@@ -4,13 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Layout
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.nesib.quotegram.R
+import com.nesib.quotegram.adapters.FullPageQuoteAdapter
 import com.nesib.quotegram.adapters.HomeAdapter
 import com.nesib.quotegram.databinding.FragmentHomeBinding
 import com.nesib.quotegram.models.Quote
@@ -26,7 +30,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
     private val authenticationDialog by lazy { (activity as MainActivity).dialog }
-    private val homeAdapter by lazy { HomeAdapter(authenticationDialog) }
+    private val homeAdapter by lazy { FullPageQuoteAdapter(authenticationDialog) }
 
     private lateinit var binding: FragmentHomeBinding
     private var quotes = mutableListOf<Quote>()
@@ -41,7 +45,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
-
         quoteViewModel.getQuotes()
     }
 
@@ -60,11 +63,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         binding.failContainer.visibility = View.GONE
                     }
                     if (currentPage == 1) {
-                        binding.shimmerLayout.visibility = View.GONE
-                        binding.homeRecyclerView.visibility = View.VISIBLE
+                        binding.homeProgressBar.visibility = View.GONE
+//                        binding.homeRecyclerView.visibility = View.VISIBLE
+                        binding.homeViewPager.visibility = View.VISIBLE
                     } else {
-                        binding.shimmerLayout.visibility = View.GONE
-                        binding.homeRecyclerView.visibility = View.VISIBLE
+                        binding.homeProgressBar.visibility = View.GONE
+//                        binding.homeRecyclerView.visibility = View.VISIBLE
+                        binding.homeViewPager.visibility = View.VISIBLE
 
                         binding.paginationProgressBar.visibility = View.INVISIBLE
                         paginationLoading = false
@@ -79,7 +84,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     if (binding.refreshLayout.isRefreshing) {
                         binding.refreshLayout.isRefreshing = false
                         Handler(Looper.getMainLooper()).postDelayed({
-                            binding.homeRecyclerView.smoothScrollToPosition(0)
+                            binding.homeViewPager.currentItem = 0
                         }, 200)
                     }
                     fetchingData = false
@@ -92,8 +97,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                     binding.refreshLayout.isRefreshing = false
                     if (currentPage == 1) {
-                        binding.shimmerLayout.stopShimmer()
-                        binding.shimmerLayout.visibility = View.GONE
+                        binding.homeProgressBar.visibility = View.GONE
                     } else {
                         binding.paginationProgressBar.visibility = View.INVISIBLE
                         paginationLoading = false
@@ -104,8 +108,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     binding.failContainer.visibility = View.GONE
                     fetchingData = true
                     if (currentPage == 1 && !binding.refreshLayout.isRefreshing) {
-                        binding.shimmerLayout.visibility = View.VISIBLE
-                        binding.shimmerLayout.startShimmer()
+                        binding.homeProgressBar.visibility = View.VISIBLE
                     } else if (currentPage != 1 && !binding.refreshLayout.isRefreshing) {
                         binding.paginationProgressBar.visibility = View.VISIBLE
                         paginationLoading = true
@@ -143,7 +146,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             intent.action = Intent.ACTION_SEND
             intent.type = "text/plain"
             intent.putExtra(Intent.EXTRA_TEXT, quote.quote + "\n\n#Quotegram App")
-            val shareIntent = Intent.createChooser(intent,"Share Quote")
+            val shareIntent = Intent.createChooser(intent, "Share Quote")
             startActivity(shareIntent)
 
         }
@@ -169,21 +172,35 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         val mLayoutManager = LinearLayoutManager(context)
-        binding.homeRecyclerView.apply {
+
+        binding.homeViewPager.apply {
             adapter = homeAdapter
-            layoutManager = mLayoutManager
-            this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    if (dy > 0) {
-                        if (!paginatingFinished && mLayoutManager.findLastCompletelyVisibleItemPosition() == (quotes.size - 1) && !paginationLoading) {
-                            currentPage++
-                            quoteViewModel.getMoreQuotes(currentPage)
-                        }
+            orientation = ViewPager2.ORIENTATION_VERTICAL
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    if (position + 1 == quotes.size && !paginatingFinished) {
+                        currentPage++
+                        quoteViewModel.getMoreQuotes(currentPage)
                     }
+                    super.onPageSelected(position)
                 }
             })
         }
+//        binding.homeRecyclerView.apply {
+//            adapter = homeAdapter
+//            layoutManager = mLayoutManager
+//            this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                    super.onScrolled(recyclerView, dx, dy)
+//                    if (dy > 0) {
+//                        if (!paginatingFinished && mLayoutManager.findLastCompletelyVisibleItemPosition() == (quotes.size - 1) && !paginationLoading) {
+//                            currentPage++
+//                            quoteViewModel.getMoreQuotes(currentPage)
+//                        }
+//                    }
+//                }
+//            })
+//        }
 
     }
 }
