@@ -11,11 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.FullPageQuoteAdapter
 import com.nesib.quotegram.adapters.HomeAdapter
+import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentHomeBinding
 import com.nesib.quotegram.models.Quote
 import com.nesib.quotegram.ui.main.MainActivity
@@ -26,13 +28,12 @@ import com.nesib.quotegram.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
     private val authenticationDialog by lazy { (activity as MainActivity).dialog }
     private val homeAdapter by lazy { FullPageQuoteAdapter(authenticationDialog) }
 
-    private lateinit var binding: FragmentHomeBinding
     private var quotes = mutableListOf<Quote>()
     private var currentPage = 1
     private var paginationLoading = false
@@ -41,7 +42,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentHomeBinding.bind(view)
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
@@ -186,7 +186,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
             })
         }
-//        binding.homeRecyclerView.apply {
+//        binding.homeViewPager.apply {
 //            adapter = homeAdapter
 //            layoutManager = mLayoutManager
 //            this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -203,4 +203,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 //        }
 
     }
+
+    override fun createBinding(view: View) = FragmentHomeBinding.bind(view)
 }

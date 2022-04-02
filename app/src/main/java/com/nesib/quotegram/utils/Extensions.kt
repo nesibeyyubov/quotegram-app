@@ -1,6 +1,7 @@
 package com.nesib.quotegram.utils
 
 import android.content.Context
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import java.util.*
@@ -47,4 +48,34 @@ fun List<String>.toJoinedString(): String {
         index++
     }
     return genresText
+}
+
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    visibility = View.INVISIBLE
+}
+
+fun View.gone() {
+    visibility = View.GONE
+}
+
+fun List<View>.show() {
+    this.forEach {
+        it.show()
+    }
+}
+
+fun List<View>.hide() {
+    this.forEach {
+        it.hide()
+    }
+}
+
+fun List<View>.gone() {
+    this.forEach {
+        it.gone()
+    }
 }
