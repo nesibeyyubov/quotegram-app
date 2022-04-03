@@ -40,8 +40,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         ) { tab: TabLayout.Tab, i: Int ->
             tab.text = when (i) {
                 0 -> "Quotes"
-                1 -> "Books"
-                2 -> "Users"
+                1 -> "Users"
                 else -> ""
             }
         }.attach()

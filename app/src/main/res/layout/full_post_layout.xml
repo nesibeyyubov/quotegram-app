@@ -66,92 +66,13 @@
         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/book_info_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="8dp"
-        android:background="@drawable/ripple_light_bg"
-        app:layout_constraintTop_toBottomOf="@+id/quoteTextView">
-
-        <ImageView
-            android:id="@+id/bookImageView"
-            android:layout_width="30dp"
-            android:layout_height="45dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/book"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/bookNameTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:lines="1"
-            android:includeFontPadding="false"
-            android:text="A Tale of Two Cities"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="10sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/viewBookBtn"
-            app:layout_constraintStart_toEndOf="@+id/bookImageView"
-            app:layout_constraintTop_toTopOf="@+id/bookImageView" />
-
-        <TextView
-            android:id="@+id/bookAuthor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Charles Dickens"
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="8sp"
-            app:layout_constraintStart_toStartOf="@+id/bookNameTextView"
-            app:layout_constraintTop_toBottomOf="@+id/bookNameTextView" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="13dp"
-            android:layout_height="13dp"
-            android:layout_marginBottom="5dp"
-            android:src="@drawable/ic_quote"
-            app:layout_constraintBottom_toBottomOf="@+id/bookImageView"
-            app:layout_constraintStart_toStartOf="@+id/bookAuthor"
-            app:tint="@color/colorSecondaryText" />
-
-        <TextView
-            android:id="@+id/bookTotalQuoteCount"
-            android:includeFontPadding="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:text="17.269"
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="8sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toTopOf="@+id/imageView2" />
-
-        <TextView
-            android:id="@+id/viewBookBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:text="View"
-            android:textColor="@color/blue"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/bookNameTextView" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <View
         android:id="@+id/view3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="10dp"
         android:background="@color/lineColor"
-        app:layout_constraintTop_toBottomOf="@+id/book_info_container"
+        app:layout_constraintTop_toBottomOf="@+id/quoteTextView"
         tools:layout_editor_absoluteX="10dp" />
 
 

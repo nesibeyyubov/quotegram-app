@@ -11,18 +11,10 @@
         android:label="homeFragment"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_bookProfileFragment"
-            app:destination="@id/bookProfileFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
     </fragment>
-    <dialog
-        android:id="@+id/addBookFragment"
-        android:name="com.nesib.quotegram.ui.main.fragments.add.AddBookFragment"
-        android:label="Add a new book"
-        tools:layout="@layout/fragment_add_book" />
-    <dialog
+    <fragment
         android:id="@+id/addQuoteFragment"
         android:name="com.nesib.quotegram.ui.main.fragments.add.AddQuoteFragment"
         android:label="Add new quote"
@@ -37,21 +29,6 @@
             android:defaultValue="@null"
             app:argType="com.nesib.quotegram.models.Quote"
             app:nullable="true" />
-    </dialog>
-    <fragment
-        android:id="@+id/bookProfileFragment"
-        android:name="com.nesib.quotegram.ui.main.fragments.BookProfileFragment"
-        android:label="Book Profile"
-        tools:layout="@layout/fragment_book_profile">
-        <action
-            android:id="@+id/action_bookProfileFragment_to_addQuoteFragment"
-            app:destination="@id/addQuoteFragment" />
-        <argument
-            android:name="bookId"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_bookProfileFragment_to_userProfileFragment"
-            app:destination="@id/userProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/editUserFragment"
@@ -70,9 +47,6 @@
         android:label="searchFragment "
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/action_searchFragment_to_bookProfileFragment"
-            app:destination="@id/bookProfileFragment" />
-        <action
             android:id="@+id/action_searchFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
         <action
@@ -83,9 +57,6 @@
             app:popEnterAnim="@anim/slide_in_from_left"
             app:popExitAnim="@anim/slide_out_from_right" />
     </fragment>
-    <action
-        android:id="@+id/action_global_addBookFragment"
-        app:destination="@id/addBookFragment" />
     <fragment
         android:id="@+id/selectBookFragment"
         android:name="com.nesib.quotegram.ui.main.fragments.add.SelectBookFragment"
@@ -94,9 +65,6 @@
         <action
             android:id="@+id/action_selectBookFragment_to_addQuoteFragment"
             app:destination="@id/addQuoteFragment" />
-        <action
-            android:id="@+id/action_selectBookFragment_to_addBookFragment"
-            app:destination="@id/addBookFragment" />
     </fragment>
     <action
         android:id="@+id/action_global_selectBookFragment"
@@ -120,9 +88,6 @@
         <action
             android:id="@+id/action_myProfileFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
-        <action
-            android:id="@+id/action_myProfileFragment_to_bookProfileFragment"
-            app:destination="@id/bookProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
@@ -162,9 +127,6 @@
         <action
             android:id="@+id/action_searchQuotesFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
-        <action
-            android:id="@+id/action_searchQuotesFragment_to_bookProfileFragment"
-            app:destination="@id/bookProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/downloadQuoteFragment"
@@ -193,12 +155,12 @@
         android:label="notificationsFragment"
         tools:layout="@layout/fragment_notifications">
         <action
+            android:id="@+id/action_notificationsFragment_to_quoteFragment"
+            app:destination="@id/quoteFragment"
             app:enterAnim="@anim/slide_in_from_right"
             app:exitAnim="@anim/slide_out_from_left"
             app:popEnterAnim="@anim/slide_in_from_left"
-            app:popExitAnim="@anim/slide_out_from_right"
-            android:id="@+id/action_notificationsFragment_to_quoteFragment"
-            app:destination="@id/quoteFragment" />
+            app:popExitAnim="@anim/slide_out_from_right" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -218,6 +180,6 @@
             app:nullable="true" />
     </fragment>
     <action
-        android:id="@+id/action_global_bookProfileFragment"
-        app:destination="@id/bookProfileFragment" /><action android:id="@+id/action_global_userProfileFragment" app:destination="@id/userProfileFragment"/>
+        android:id="@+id/action_global_userProfileFragment"
+        app:destination="@id/userProfileFragment" />
 </navigation>

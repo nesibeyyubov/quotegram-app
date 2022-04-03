@@ -19,7 +19,6 @@ class HomeAdapter(val dialog: AlertDialog) :
     RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     var currentUserId: String? = null
     var OnUserClickListener: ((String) -> Unit)? = null
-    var OnBookClickListener: ((String) -> Unit)? = null
     var onQuoteOptionsClickListener: ((Quote) -> Unit)? = null
     var onLikeClickListener: ((Quote) -> Unit)? = null
     var onDownloadClickListener: ((Quote) -> Unit)? = null
@@ -33,8 +32,6 @@ class HomeAdapter(val dialog: AlertDialog) :
         init {
             binding.usernameTextView.setOnClickListener(this)
             binding.userphotoImageView.setOnClickListener(this)
-            binding.viewBookBtn.setOnClickListener(this)
-            binding.bookInfoContainer.setOnClickListener(this)
             binding.postOptionsBtn.setOnClickListener(this)
             binding.likeBtn.setOnClickListener(this)
             binding.downloadButton.setOnClickListener(this)
@@ -52,19 +49,12 @@ class HomeAdapter(val dialog: AlertDialog) :
                 }
                 quoteTextView.text = quote.quote
 
-                bookAuthor.text = quote.book?.author
-                bookImageView.load(API_URL + quote.book?.image) {
-                    crossfade(600)
-                }
                 likeCountTextView.text = quote.likes?.size?.toFormattedNumber()
-                bookNameTextView.text = quote.book?.name
                 if (quote.liked) {
                     likeBtn.setImageResource(R.drawable.ic_like_blue)
                 } else {
                     likeBtn.setImageResource(R.drawable.ic_like)
                 }
-                val quoteCount = quote.book?.totalQuoteCount
-                bookTotalQuoteCount.text = (quoteCount ?: 0).toString()
                 genreText.text = "#${quote.genre}"
             }
         }
@@ -105,11 +95,6 @@ class HomeAdapter(val dialog: AlertDialog) :
                 R.id.username_textView, R.id.userphoto_imageView -> {
                     OnUserClickListener?.let {
                         it((differ.currentList[adapterPosition].creator!!.id))
-                    }
-                }
-                R.id.viewBookBtn, R.id.book_info_container -> {
-                    OnBookClickListener?.let {
-                        it(differ.currentList[adapterPosition].book!!.id)
                     }
                 }
                 R.id.postOptionsBtn -> {

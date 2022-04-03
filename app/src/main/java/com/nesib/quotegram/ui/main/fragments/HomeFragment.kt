@@ -158,10 +158,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         homeAdapter.onLikeClickListener = { quote ->
             quoteViewModel.toggleLike(quote)
         }
-        homeAdapter.OnBookClickListener = { bookId ->
-            val action = HomeFragmentDirections.actionHomeFragmentToBookProfileFragment(bookId)
-            findNavController().navigate(action)
-        }
+
         homeAdapter.OnUserClickListener = { userId ->
             if (userId != authViewModel.currentUserId) {
                 val action = HomeFragmentDirections.actionHomeFragmentToUserProfileFragment(userId)

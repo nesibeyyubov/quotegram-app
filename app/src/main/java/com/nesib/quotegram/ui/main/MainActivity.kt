@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -25,10 +26,9 @@ import com.nesib.quotegram.databinding.NotAuthenticatedLayoutBinding
 import com.nesib.quotegram.ui.on_boarding.StartActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.SharedViewModel
-import com.nesib.quotegram.utils.Constants
+import com.nesib.quotegram.utils.*
 import com.nesib.quotegram.utils.Constants.TEXT_DIRECT_TO_LOGIN
 import com.nesib.quotegram.utils.Constants.TEXT_DIRECT_TO_SIGNUP
-import com.nesib.quotegram.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 this,
                 StartActivity::class.java
             )
-            intent.putExtra(Constants.TEXT_DIRECT_TO_LOGIN,true)
+            intent.putExtra(Constants.TEXT_DIRECT_TO_LOGIN, true)
             startActivity(intent)
         }
         dialog
@@ -154,13 +154,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     startActivity(intent)
                     finish()
                 }
-                R.id.drawer_privacy->{
-                    try{
+                R.id.drawer_privacy -> {
+                    try {
                         val intent = Intent(Intent.ACTION_VIEW)
                         intent.data = Uri.parse(Constants.PRIVACY_POLICY_URL)
                         startActivity(intent)
-                    }
-                    catch (e:Exception){
+                    } catch (e: Exception) {
                         showToast(e.message ?: "Something went wrong")
                     }
                 }
@@ -203,14 +202,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun reviewApp() {
         val uri: Uri = Uri.parse("market://details?id=$packageName")
         val intent = Intent(Intent.ACTION_VIEW, uri)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
-                Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
-                Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_NO_HISTORY or
+                    Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+        )
         try {
             startActivity(intent)
         } catch (e: Exception) {
-            startActivity(Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://play.google.com/store/apps/details?id=$packageName")))
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=$packageName")
+                )
+            )
         }
     }
 
@@ -237,11 +242,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         navController.addOnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
             when (navDestination.id) {
                 R.id.homeFragment -> {
-                    currentFragmentIndex = 0
                     binding.toolbarText.text = "Quotes"
+                    if (!binding.fabAddButton.isShown) {
+                        binding.fabAddButton.show()
+                    }
+                    if (binding.bottomNavView.visibility == View.GONE) {
+                        binding.bottomNavView.show()
+                    }
                 }
                 R.id.searchFragment -> {
-                    currentFragmentIndex = 1
                     binding.toolbarMainActivity.navigationIcon = null
                     binding.toolbarText.text = "Discover"
                     binding.searchInputContainer.visibility = View.VISIBLE
@@ -257,14 +266,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     binding.toolbarText.text = "Quote"
                 }
                 R.id.notificationsFragment -> {
-                    currentFragmentIndex = 2
                     binding.toolbarText.text = "Notifications"
                 }
                 R.id.downloadQuoteFragment -> {
                     binding.toolbarText.text = "Download"
                 }
                 R.id.myProfileFragment -> {
-                    currentFragmentIndex = 3
                     binding.toolbarText.text = "Your Profile"
                 }
                 R.id.searchQuotesFragment -> {
@@ -276,10 +283,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.userProfileFragment -> {
                     binding.toolbarText.text = "User Profile"
                 }
-                R.id.bookProfileFragment -> {
-                    binding.toolbarText.text = "Book Profile"
-                }
             }
+
             if (navDestination.id != R.id.searchFragment) {
                 binding.searchInputContainer.visibility = View.GONE
                 binding.toolbarText.visibility = View.VISIBLE
@@ -293,65 +298,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             if (navDestination.id == R.id.editUserFragment
-                || navDestination.id == R.id.selectBookFragment
-                || navDestination.id == R.id.addQuoteFragment
-                || navDestination.id == R.id.addBookFragment
                 || navDestination.id == R.id.downloadQuoteFragment
+                || navDestination.id == R.id.addQuoteFragment
             ) {
-                if (binding.addQuoteBtn.visibility == View.VISIBLE) {
-                    shrinkFabWithAnimation()
-                }
-                binding.bottomNavView.visibility = View.GONE
+                binding.bottomNavView.gone()
                 binding.fabAddButton.hide()
-
-            } else {
-                if (binding.bottomNavView.visibility == View.GONE) {
-                    if (binding.addQuoteBtn.visibility == View.GONE && fabExtended) {
-                        extendFabWithAnimation()
-                    }
-                    binding.bottomNavView.visibility = View.VISIBLE
-                    binding.fabAddButton.show()
-
-                }
             }
         }
     }
 
     private fun addSearchInputTextChangeListener() {
-        binding.searchInput.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                sharedViewModel.setChangedText(s.toString())
-            }
-
-        })
+        binding.searchInput.doAfterTextChanged { sharedViewModel.setChangedText(it.toString()) }
     }
 
     private fun setupClickListeners() {
-        binding.addQuoteBtn.setOnClickListener(this)
-        binding.addBookBtn.setOnClickListener(this)
         binding.fabAddButton.setOnClickListener(this)
-    }
-
-    private fun extendFabWithAnimation() {
-        binding.fabAddButton.startAnimation(extendedFabAnimation)
-        binding.addBookBtn.visibility = View.VISIBLE
-        binding.addQuoteBtn.visibility = View.VISIBLE
-        binding.addQuoteBtn.startAnimation(fromBottomAnimation)
-        binding.addBookBtn.startAnimation(fromBottomAnimation)
-        fabExtended = true
-    }
-
-    private fun shrinkFabWithAnimation() {
-        binding.fabAddButton.startAnimation(nonExtendedFabAnimation)
-        binding.addQuoteBtn.startAnimation(toBottomAnimation)
-        binding.addBookBtn.startAnimation(toBottomAnimation)
-        binding.addBookBtn.visibility = View.INVISIBLE
-        binding.addQuoteBtn.visibility = View.INVISIBLE
-        fabExtended = false
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -360,32 +321,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.add_quote_btn -> {
-                if (authViewModel.isAuthenticated) {
-                    navController.navigate(R.id.action_global_selectBookFragment)
-                } else {
-                    dialog.show()
-                }
-            }
-            R.id.add_book_btn -> {
-                if (authViewModel.isAuthenticated) {
-                    navController.navigate(R.id.action_global_addBookFragment)
-                } else {
-                    dialog.show()
-                }
-            }
             R.id.fab_add_button -> {
-                if (!fabExtended) {
-                    extendFabWithAnimation()
+                if (authViewModel.isAuthenticated) {
+                    navController.navigate(R.id.action_global_addQuoteFragment)
                 } else {
-                    shrinkFabWithAnimation()
+                    dialog.show()
                 }
             }
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
 

@@ -2,6 +2,8 @@ package com.nesib.quotegram.utils
 
 import android.content.Context
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import java.util.*
@@ -48,6 +50,26 @@ fun List<String>.toJoinedString(): String {
         index++
     }
     return genresText
+}
+
+fun toggleKeyboard(isVisible: Boolean, view: View, context: Context) {
+    val inputManager =
+        context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    if (isVisible) {
+        inputManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    } else {
+        inputManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+}
+
+fun EditText.focusWithKeyboard() {
+    if (this.requestFocus()) {
+        toggleKeyboard(isVisible = true, this, context)
+    }
+}
+
+fun EditText.unFocus() {
+    toggleKeyboard(isVisible = false, this, context)
 }
 
 fun View.show() {

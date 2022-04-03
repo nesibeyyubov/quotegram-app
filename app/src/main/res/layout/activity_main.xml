@@ -90,34 +90,7 @@
             app:backgroundTint="@color/blue"
             app:tint="@color/white" />
 
-        <Button
-            android:id="@+id/add_book_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_above="@id/fab_add_button"
-            android:layout_centerHorizontal="true"
-            android:layout_marginVertical="8dp"
-            android:background="@drawable/follow_button_bg"
-            android:includeFontPadding="false"
-            android:src="@drawable/ic_add_single"
-            android:text="Add new book "
-            android:textAllCaps="false"
-            android:visibility="invisible"
-            app:tint="@color/white" />
 
-        <Button
-            android:id="@+id/add_quote_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_above="@id/add_book_btn"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/follow_button_bg"
-            android:includeFontPadding="false"
-            android:src="@drawable/ic_add_single"
-            android:text="Add new quote"
-            android:textAllCaps="false"
-            android:visibility="invisible"
-            app:tint="@color/white" />
     </RelativeLayout>
 
 

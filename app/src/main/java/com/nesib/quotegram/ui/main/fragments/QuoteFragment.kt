@@ -47,8 +47,6 @@ class QuoteFragment : Fragment(R.layout.fragment_quote), View.OnClickListener {
     private fun setupClickListeners(){
         binding.usernameTextView.setOnClickListener(this)
         binding.userphotoImageView.setOnClickListener(this)
-        binding.viewBookBtn.setOnClickListener(this)
-        binding.bookInfoContainer.setOnClickListener(this)
         binding.postOptionsBtn.setOnClickListener(this)
         binding.likeBtn.setOnClickListener(this)
         binding.downloadButton.setOnClickListener(this)
@@ -102,35 +100,18 @@ class QuoteFragment : Fragment(R.layout.fragment_quote), View.OnClickListener {
             }
             quoteTextView.text = quote.quote
 
-            bookAuthor.text = quote.book?.author
-            bookImageView.load(Constants.API_URL + quote.book?.image) {
-                crossfade(600)
-            }
             likeCountTextView.text = quote.likes?.size?.toFormattedNumber()
-            bookNameTextView.text = quote.book?.name
             if (quote.liked) {
                 likeBtn.setImageResource(R.drawable.ic_like_blue)
             } else {
                 likeBtn.setImageResource(R.drawable.ic_like)
             }
-            val quoteCount = quote.book?.totalQuoteCount
-            bookTotalQuoteCount.text = (quoteCount ?: 0).toString()
             genreText.text = "#${quote.genre}"
         }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            binding.viewBookBtn.id -> {
-                val action =
-                    QuoteFragmentDirections.actionGlobalBookProfileFragment(currentQuote!!.book!!.id)
-                findNavController().navigate(action)
-            }
-            binding.bookInfoContainer.id -> {
-                val action =
-                    QuoteFragmentDirections.actionGlobalBookProfileFragment(currentQuote!!.book!!.id)
-                findNavController().navigate(action)
-            }
             binding.postOptionsBtn.id -> {
                 val action =
                     QuoteFragmentDirections.actionGlobalQuoteOptionsFragment(currentQuote!!)

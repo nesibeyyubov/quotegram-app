@@ -16,6 +16,7 @@
         android:layout_marginTop="5dp"
         android:background="@android:color/transparent"
         app:tabGravity="center"
+        app:tabIndicatorAnimationMode="elastic"
         app:tabSelectedTextColor="@color/blue"
         app:tabTextColor="@color/colorSecondaryText">
 
@@ -23,11 +24,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quotes" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Books" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

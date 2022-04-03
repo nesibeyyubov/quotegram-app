@@ -124,10 +124,7 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
         homeAdapter.onLikeClickListener = { quote ->
             quoteViewModel.toggleLike(quote)
         }
-        homeAdapter.OnBookClickListener = { bookId ->
-            val action = SearchQuotesFragmentDirections.actionSearchQuotesFragmentToBookProfileFragment(bookId)
-            findNavController().navigate(action)
-        }
+
         homeAdapter.OnUserClickListener = { userId ->
             if (userId != authViewModel.currentUserId) {
                 val action = SearchQuotesFragmentDirections.actionSearchQuotesFragmentToUserProfileFragment(userId)

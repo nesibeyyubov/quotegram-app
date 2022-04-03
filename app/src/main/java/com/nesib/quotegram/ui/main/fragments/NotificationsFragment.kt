@@ -19,9 +19,8 @@ import com.nesib.quotegram.models.Notification
 import com.nesib.quotegram.ui.on_boarding.StartActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.NotificationViewModel
+import com.nesib.quotegram.utils.*
 import com.nesib.quotegram.utils.Constants.TEXT_DIRECT_TO_LOGIN
-import com.nesib.quotegram.utils.DataState
-import com.nesib.quotegram.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +37,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     private var comingBackFromQuote = false
 
     private var clearAllMenuItem: MenuItem? = null
-    private var clearAllTextActionView:View? = null
+    private var clearAllTextActionView: View? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -87,9 +86,9 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         }
         notificationViewModel.notifications.observe(viewLifecycleOwner) {
             when (it) {
-                is DataState.Success -> {
-                    if (binding.paginationProgressBar.visibility == View.VISIBLE) {
-                        binding.paginationProgressBar.visibility = View.INVISIBLE
+                is DataState.Success -> with(binding) {
+                    if (paginationProgressBar.visibility == View.VISIBLE) {
+                        paginationProgressBar.hide()
                     }
                     paginationLoading = false
                     if (currentNotifications?.size == it.data!!.notifications!!.toList().size && !comingBackFromQuote) {
@@ -97,30 +96,26 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                     }
                     comingBackFromQuote = false
                     currentNotifications = it.data.notifications!!.toList()
-                    binding.progressBar.visibility = View.INVISIBLE
+                    progressBar.hide()
                     notificationAdapter.setData(currentNotifications!!)
                     if (currentNotifications!!.isEmpty()) {
                         paginatingFinished = true
-                        binding.noNotificationsContainer.visibility = View.VISIBLE
+                        noNotificationsContainer.show()
                     }
                 }
-                is DataState.Loading -> {
-                    binding.noNotificationsContainer.visibility = View.INVISIBLE
-                    binding.failContainer.visibility = View.GONE
-                    if (paginationLoading) {
-                        binding.paginationProgressBar.visibility = View.VISIBLE
-                    } else {
-                        binding.progressBar.visibility = View.VISIBLE
-                    }
+                is DataState.Loading -> with(binding) {
+                    noNotificationsContainer.hide()
+                    failContainer.gone()
+                    if (paginationLoading) paginationProgressBar.show() else progressBar.show()
                 }
-                is DataState.Fail -> {
-                    binding.failContainer.visibility = View.VISIBLE
-                    binding.failMessage.text = it.message
-                    if (binding.paginationProgressBar.visibility == View.VISIBLE) {
-                        binding.paginationProgressBar.visibility = View.INVISIBLE
+                is DataState.Fail -> with(binding) {
+                    failContainer.show()
+                    failMessage.text = it.message
+                    if (paginationProgressBar.visibility == View.VISIBLE) {
+                        paginationProgressBar.hide()
                     }
                     paginationLoading = false
-                    binding.progressBar.visibility = View.INVISIBLE
+                    progressBar.hide()
                     showToast(it.message)
                 }
             }
@@ -161,7 +156,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if(authViewModel.currentUserId != null){
+        if (authViewModel.currentUserId != null) {
             inflater.inflate(R.menu.notifications_menu, menu)
         }
         super.onCreateOptionsMenu(menu, inflater)
@@ -169,7 +164,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.clear_notifications_menu_item) {
-            if(currentNotifications!!.isNotEmpty()){
+            if (currentNotifications!!.isNotEmpty()) {
                 clearAllMenuItem = item
                 clearAllTextActionView = clearAllMenuItem?.actionView
                 notificationViewModel.clearNotifications()

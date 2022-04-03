@@ -62,9 +62,6 @@ class SelectBookFragment : Fragment(R.layout.fragment_select_book) {
     }
 
     private fun setOnClickListeners() {
-        binding.addBookYourselfBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_selectBookFragment_to_addBookFragment)
-        }
         searchAdapter.onBookClickListener = { book ->
             val action = SelectBookFragmentDirections.actionSelectBookFragmentToAddQuoteFragment()
             action.book = book
