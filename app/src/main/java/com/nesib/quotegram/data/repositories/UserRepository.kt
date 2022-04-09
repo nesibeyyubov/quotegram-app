@@ -36,24 +36,26 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
         return authApi.signupWithGoogle(map)
     }
 
-    suspend fun signInWithGoogle(email:String,profileImage: String): Response<UserAuth> {
-        val map = mapOf("email" to email,"profileImage" to profileImage)
+    suspend fun signInWithGoogle(email: String, profileImage: String): Response<UserAuth> {
+        val map = mapOf("email" to email, "profileImage" to profileImage)
         return authApi.signInWithGoogle(map)
     }
-    suspend fun login(loginBody:Map<String,String>) = authApi.login(loginBody)
+
+    suspend fun login(loginBody: Map<String, String>) = authApi.login(loginBody)
 
     suspend fun followOrUnFollowUser(userId: String) = authApi.followOrUnFollowUser(userId)
 
     suspend fun saveFollowingGenres(genres: String) =
         authApi.saveFollowingGenres(genres)
 
-    suspend fun updateUser(body:Map<String,String>) = authApi.updateUser(body)
+    suspend fun updateUser(body: Map<String, String>) = authApi.updateUser(body)
 
     suspend fun getUser(userId: String) = authApi.getUser(userId)
 
     suspend fun getMoreUserQuotes(userId: String, page: Int) =
         authApi.getMoreUserQuotes(userId, page)
 
-    suspend fun getUsers(searchQuery: String,currentPage:Int) = authApi.getUsers(searchQuery,currentPage)
+    suspend fun getUsers(searchQuery: String, currentPage: Int) =
+        authApi.getUsers(searchQuery, currentPage)
 
 }

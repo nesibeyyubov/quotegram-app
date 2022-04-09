@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,9 +8,11 @@
         android:id="@+id/quoteTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
+        android:paddingHorizontal="5dp"
         android:layout_marginBottom="55dp"
         android:includeFontPadding="false"
+        android:fontFamily="sans-serif-light"
+        android:paddingVertical="65dp"
         android:text="Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking.results of other people's thinking.results of other people's thinking."
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryText"

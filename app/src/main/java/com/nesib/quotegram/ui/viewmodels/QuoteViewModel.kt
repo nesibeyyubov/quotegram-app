@@ -75,6 +75,7 @@ class QuoteViewModel @Inject constructor(
                     handleQuotesResponse(response, forced)
                 }
             } catch (exception: Exception) {
+                Log.d("mytag", "getQuotes: ${exception.message}")
                 _quotes.postValue(DataState.Fail())
             }
         } else {
@@ -182,9 +183,7 @@ class QuoteViewModel @Inject constructor(
                     it.likes = quote.likes
                     it.liked = quote.liked
                 }
-                val bookName = quote.book?.name ?: "Unknown"
-                val bookBody = mapOf("bookName" to bookName)
-                val response = mainRepository.likeOrDislikeQuote(quote.id, bookBody)
+                val response = mainRepository.likeOrDislikeQuote(quote.id)
                 val handledResponse = handleQuoteResponse(response)
                 _likeQuote.postValue(handledResponse)
             } catch (e: Exception) {

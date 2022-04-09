@@ -76,23 +76,11 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
                         R.color.colorPrimaryOnDark
                     )
                 )
-                binding.quoteAuthorText.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorSecondaryOnDark
-                    )
-                )
             } else {
                 binding.quoteText.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.colorPrimaryOnLight
-                    )
-                )
-                binding.quoteAuthorText.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorSecondaryOnLight
                     )
                 )
             }
@@ -122,8 +110,7 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
             binding.textSizeSlider.value = 12f
         }
         binding.apply {
-            quoteText.text = "\"${args.quoteText}\""
-            quoteAuthorText.text = "-From \"${args.quoteAuthor}\" book "
+            quoteText.text = args.quoteText
         }
     }
 

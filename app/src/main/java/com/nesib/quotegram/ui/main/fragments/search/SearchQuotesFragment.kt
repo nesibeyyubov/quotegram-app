@@ -104,7 +104,7 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
         homeAdapter.onDownloadClickListener = { quote ->
             val action = SearchQuotesFragmentDirections.actionGlobalDownloadQuoteFragment(
                 quote.quote,
-                quote.book?.name
+                ""
             )
             findNavController().navigate(action)
         }

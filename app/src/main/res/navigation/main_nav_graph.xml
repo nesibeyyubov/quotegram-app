@@ -20,11 +20,6 @@
         android:label="Add new quote"
         tools:layout="@layout/fragment_add_quote">
         <argument
-            android:name="book"
-            android:defaultValue="@null"
-            app:argType="com.nesib.quotegram.models.Book"
-            app:nullable="true" />
-        <argument
             android:name="quote"
             android:defaultValue="@null"
             app:argType="com.nesib.quotegram.models.Quote"
@@ -57,22 +52,6 @@
             app:popEnterAnim="@anim/slide_in_from_left"
             app:popExitAnim="@anim/slide_out_from_right" />
     </fragment>
-    <fragment
-        android:id="@+id/selectBookFragment"
-        android:name="com.nesib.quotegram.ui.main.fragments.add.SelectBookFragment"
-        android:label="SelectBookFragment"
-        tools:layout="@layout/fragment_select_book">
-        <action
-            android:id="@+id/action_selectBookFragment_to_addQuoteFragment"
-            app:destination="@id/addQuoteFragment" />
-    </fragment>
-    <action
-        android:id="@+id/action_global_selectBookFragment"
-        app:destination="@id/selectBookFragment"
-        app:enterAnim="@anim/slide_in_from_right"
-        app:exitAnim="@anim/slide_out_from_left"
-        app:popEnterAnim="@anim/slide_in_from_left"
-        app:popExitAnim="@anim/slide_out_from_right" />
     <fragment
         android:id="@+id/myProfileFragment"
         android:name="com.nesib.quotegram.ui.main.fragments.user.MyProfileFragment"

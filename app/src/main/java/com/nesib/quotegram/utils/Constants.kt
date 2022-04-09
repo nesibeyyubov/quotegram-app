@@ -1,5 +1,7 @@
 package com.nesib.quotegram.utils
 
+import com.nesib.quotegram.R
+
 object Constants {
     // Server codes
     const val CODE_SUCCESS = 200
@@ -28,5 +30,6 @@ object Constants {
 
     const val PRIVACY_POLICY_URL = "https://quotegram.netlify.app/"
 
+    val ROOT_SCREENS = listOf(R.id.homeFragment, R.id.myProfileFragment, R.id.notificationsFragment, R.id.searchFragment)
 
 }

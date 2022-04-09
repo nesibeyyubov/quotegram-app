@@ -145,7 +145,7 @@ class QuoteFragment : Fragment(R.layout.fragment_quote), View.OnClickListener {
             binding.downloadButton.id -> {
                 val action = QuoteFragmentDirections.actionGlobalDownloadQuoteFragment(
                     currentQuote?.quote,
-                    currentQuote?.book?.author
+                    ""
                 )
                 findNavController().navigate(action)
             }

@@ -28,15 +28,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
+            <View
                 android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_quote"
+                android:layout_width="40dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/colorSecondaryOnDark" />
+                app:tint="@color/blue"
+                 />
 
             <TextView
                 android:id="@+id/quoteText"
@@ -44,26 +46,18 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="To calculate the TextWidth, the TextHeight we simply do subtracting with descent and ascent, then we got the most approach TextSize, the following work is fairly easy for each other."
+                android:text="To calculate the TextWidth, the TextHeight we simply do subtracting with descent and ascent, then we got the most approach TextSize, the following work is fairly easy for each other.the following work is fairly easy for each other.the following work is fairly easy for each other."
                 android:textAlignment="center"
+                android:fontFamily="sans-serif-light"
+                android:lineHeight="23dp"
                 android:textColor="@color/colorPrimaryOnDark"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toTopOf="@+id/quoteAuthorText"
+                app:layout_constraintBottom_toTopOf="@+id/appContainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
-            <TextView
-                android:id="@+id/quoteAuthorText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:text="-Unknown"
-                android:textColor="@color/colorSecondaryOnDark"
-                android:textStyle="italic"
-                app:layout_constraintBottom_toTopOf="@+id/appContainer"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -77,16 +71,18 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_marginRight="8dp"
                     android:src="@drawable/app_icon"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"/>
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"/>
+
                 <TextView
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed-light"
+                    android:textStyle="bold"
                     android:text="Quotegram"
                     android:textColor="@color/blue"
-                    android:textSize="16sp"
-                    />
+                    android:textSize="16sp" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

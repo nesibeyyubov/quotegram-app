@@ -2,14 +2,11 @@ package com.nesib.quotegram.ui.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.nesib.quotegram.ui.main.fragments.search.SearchTab
 
 class SharedViewModel : ViewModel() {
-    var currentTabIndex = 0
+    var currentTab: SearchTab = SearchTab.Quotes
     var toolbarText = ""
-
-    private val _searchTextBook = MutableLiveData<String>()
-    val searchTextBook
-        get() = _searchTextBook
 
     private val _searchTextUser = MutableLiveData<String>()
     val searchTextUser
@@ -21,14 +18,11 @@ class SharedViewModel : ViewModel() {
 
 
     fun setChangedText(text: String) {
-        when(currentTabIndex){
-            0 ->{
+        when (currentTab) {
+            SearchTab.Quotes -> {
                 _searchTextGenre.value = text
             }
-            1 ->{
-                _searchTextBook.value = text
-            }
-            2 ->{
+            SearchTab.Users -> {
                 _searchTextUser.value = text
             }
         }

@@ -137,7 +137,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         homeAdapter.onDownloadClickListener = { quote ->
             val action = HomeFragmentDirections.actionGlobalDownloadQuoteFragment(
                 quote.quote,
-                quote.book?.name
+                ""
             )
             findNavController().navigate(action)
         }

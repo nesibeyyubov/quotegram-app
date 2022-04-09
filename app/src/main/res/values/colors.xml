@@ -28,6 +28,7 @@
 
     <!--  Light theme  -->
     <color name="colorBackground">@color/gray_100</color>
+    <color name="quoteTextBackground">#F6F6F6</color>
     <color name="colorError">@color/red_light</color>
     <color name="colorWarning">@color/orange_light</color>
     <color name="fullPostBackgroundColor">@color/white</color>

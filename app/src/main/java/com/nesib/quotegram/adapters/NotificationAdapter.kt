@@ -14,7 +14,7 @@ import com.nesib.quotegram.models.Notification
 import com.nesib.quotegram.utils.toFormattedNumber
 
 class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.ViewHolder>() {
-    var onNotificationClickListener:((String?)->Unit)? = null
+    var onNotificationClickListener: ((String?) -> Unit)? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = NotificationItemBinding.bind(itemView)
@@ -28,8 +28,9 @@ class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.ViewHolder>
         }
 
         fun bindData(notification: Notification) {
-            binding.otherPeopleCount.text = "+${(notification.likeCount-1).toFormattedNumber()}"
-            val htmlText = Html.fromHtml("${notification.likeCount} people liked the quote you added from the book called <i>\"${notification.bookName}\"</i>")
+            binding.otherPeopleCount.text = "+${(notification.likeCount - 1).toFormattedNumber()}"
+            val htmlText =
+                Html.fromHtml("${notification.likeCount} people liked the quote you added")
             binding.notificationText.text = htmlText
             if (notification.userPhoto != null && notification.userPhoto != "") {
                 binding.notificationUserPhoto.load(notification.userPhoto)

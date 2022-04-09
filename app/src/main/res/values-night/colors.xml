@@ -25,6 +25,7 @@
 
     <!--  Light theme  -->
     <color name="colorBackground">@color/black_400</color>
+    <color name="quoteTextBackground">#121212</color>
     <color name="colorError">@color/red_light</color>
     <color name="colorWarning">@color/orange_light</color>
     <color name="fullPostBackgroundColor">@color/black_300</color>

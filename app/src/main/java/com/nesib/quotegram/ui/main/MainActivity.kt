@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var authViewModel: AuthViewModel
     private val sharedViewModel: SharedViewModel by viewModels()
 
-    private var currentFragmentIndex = 0
-
     val dialog by lazy {
         val notAuthenticatedBinding = NotAuthenticatedLayoutBinding.bind(
             layoutInflater.inflate(
@@ -64,31 +62,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         dialog
     }
-    private val toBottomAnimation by lazy {
-        AnimationUtils.loadAnimation(
-            this@MainActivity,
-            R.anim.to_bottom
-        )
-    }
-    private val fromBottomAnimation by lazy {
-        AnimationUtils.loadAnimation(
-            this@MainActivity,
-            R.anim.from_bottom
-        )
-    }
-    private val extendedFabAnimation by lazy {
-        AnimationUtils.loadAnimation(
-            this@MainActivity,
-            R.anim.extended_rotate
-        )
-    }
-    private val nonExtendedFabAnimation by lazy {
-        AnimationUtils.loadAnimation(
-            this@MainActivity,
-            R.anim.non_extended_rotate
-        )
-    }
-    private var fabExtended = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -219,18 +192,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun setupNavigation() {
+    private fun setupNavigation() = with(binding) {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView_mainActivity) as NavHostFragment
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(
             setOf(R.id.homeFragment, R.id.myProfileFragment, R.id.notificationsFragment),
-            binding.drawerLayout
+            drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.bottomNavView.menu.getItem(2).isEnabled = false
-        binding.bottomNavView.setupWithNavController(navController)
-        binding.drawerNavigationView.setupWithNavController(navController)
+        bottomNavView.menu.getItem(2).isEnabled = false
+        bottomNavView.setupWithNavController(navController)
+        drawerNavigationView.setupWithNavController(navController)
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
@@ -250,17 +223,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         binding.bottomNavView.show()
                     }
                 }
-                R.id.searchFragment -> {
-                    binding.toolbarMainActivity.navigationIcon = null
-                    binding.toolbarText.text = "Discover"
-                    binding.searchInputContainer.visibility = View.VISIBLE
-                    binding.toolbarText.visibility = View.GONE
+                R.id.searchFragment -> with(binding) {
+                    toolbarMainActivity.navigationIcon = null
+                    toolbarText.text = "Discover"
+                    searchInputContainer.visibility = View.VISIBLE
+                    toolbarText.visibility = View.GONE
                 }
                 R.id.editUserFragment -> {
                     binding.toolbarText.text = "Edit User"
-                }
-                R.id.selectBookFragment -> {
-                    binding.toolbarText.text = "Select Book"
                 }
                 R.id.quoteFragment -> {
                     binding.toolbarText.text = "Quote"
@@ -290,21 +260,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 binding.toolbarText.visibility = View.VISIBLE
             }
 
-            if (navDestination.id == R.id.homeFragment
-                || navDestination.id == R.id.myProfileFragment
-                || navDestination.id == R.id.notificationsFragment
-            ) {
+            if (navDestination.isRootScreen()) {
                 binding.drawerNavigationView.menu.findItem(R.id.drawer_home).isChecked = true
             }
-
-            if (navDestination.id == R.id.editUserFragment
-                || navDestination.id == R.id.downloadQuoteFragment
-                || navDestination.id == R.id.addQuoteFragment
-            ) {
-                binding.bottomNavView.gone()
-                binding.fabAddButton.hide()
+            if (navDestination.shouldShowBottomNav()) {
+                showBottomNavFab()
+            } else {
+                hideBottomNavFab()
             }
         }
+    }
+
+    private fun showBottomNavFab() {
+        binding.bottomNavView.show()
+        binding.fabAddButton.show()
+    }
+
+    private fun hideBottomNavFab() {
+        binding.bottomNavView.gone()
+        binding.fabAddButton.hide()
     }
 
     private fun addSearchInputTextChangeListener() {

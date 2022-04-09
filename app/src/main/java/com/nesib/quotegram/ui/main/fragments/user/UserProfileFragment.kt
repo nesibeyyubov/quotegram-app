@@ -68,7 +68,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         binding.bioTextView.text = if (user.bio!!.isNotEmpty()) user.bio else "No bio"
         binding.followerCountTextView.text = user.followers!!.size.toFormattedNumber()
         binding.followingCountTextView.text =
-            (user.followingUsers!!.size + user.followingBooks!!.size).toFormattedNumber()
+            (user.followingUsers!!.size).toFormattedNumber()
         binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toFormattedNumber()
         if (user.profileImage != null && user.profileImage != "") {
             binding.userPhotoImageView.load(user.profileImage) {
@@ -216,7 +216,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         homeAdapter.onDownloadClickListener = { quote ->
             val action = UserProfileFragmentDirections.actionGlobalDownloadQuoteFragment(
                 quote.quote,
-                quote.book?.name
+                ""
             )
             findNavController().navigate(action)
         }

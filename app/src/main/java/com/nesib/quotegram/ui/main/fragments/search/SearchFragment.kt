@@ -9,18 +9,17 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.SearchPagerAdapter
+import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentSearchBinding
 import com.nesib.quotegram.ui.viewmodels.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchFragment : Fragment(R.layout.fragment_search) {
-    private lateinit var binding: FragmentSearchBinding
+class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
     private lateinit var pagerAdapter: SearchPagerAdapter
-    private val sharedViewModel:SharedViewModel by viewModels({requireActivity()})
+    private val sharedViewModel: SharedViewModel by viewModels({ requireActivity() })
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSearchBinding.bind(view)
         setupTabLayout()
     }
 
@@ -31,7 +30,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                sharedViewModel.currentTabIndex = position
+                sharedViewModel.currentTab =
+                    if (position == 0) SearchTab.Quotes else SearchTab.Users
             }
         })
         TabLayoutMediator(
@@ -46,5 +46,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }.attach()
     }
 
+    override fun createBinding(view: View) = FragmentSearchBinding.bind(view)
 
 }
+
+enum class SearchTab { Quotes, Users }

@@ -10,7 +10,6 @@ data class User(
     val email: String?,
     val bio: String?,
     var followers: List<String>?,
-    val followingBooks: List<String>?,
     val followingUsers: List<String>?,
     val followingGenres: List<String>?,
     val quotes: List<Quote>?,

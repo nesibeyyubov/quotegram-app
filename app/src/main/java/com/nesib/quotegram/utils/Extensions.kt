@@ -6,6 +6,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import com.nesib.quotegram.R
 import java.util.*
 
 fun Context.showToast(message: String) {
@@ -15,6 +18,22 @@ fun Context.showToast(message: String) {
 fun Fragment.showToast(message: String) {
     Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show()
 }
+
+fun NavDestination.isRootScreen(): Boolean {
+    return when (id) {
+        in Constants.ROOT_SCREENS -> true
+        else -> false
+    }
+}
+
+fun NavDestination.shouldShowBottomNav(): Boolean {
+    if (isRootScreen()) return true
+    return when (id) {
+        R.id.searchQuotesFragment, R.id.quoteOptionsFragment, R.id.userProfileFragment, R.id.quoteFragment -> true
+        else -> false
+    }
+}
+
 
 fun String.isEmail(): Boolean {
     return this.isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
