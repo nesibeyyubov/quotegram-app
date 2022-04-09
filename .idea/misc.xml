@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/ic_info.xml" value="0.1375" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/font/fonts.xml" value="0.25462962962962965" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/activity_main.xml" value="0.4" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/discover_book_item_layout.xml" value="0.23645833333333333" />
@@ -17,7 +18,7 @@
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_settings.xml" value="0.264" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/full_post_layout.xml" value="0.176" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/full_post_shimmer_layout.xml" value="0.23645833333333333" />
-        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/full_screen_quote_item.xml" value="0.2" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/full_screen_quote_item.xml" value="0.536" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/genre_item_layout.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/grid_quote_layout.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/progress_bar_layout.xml" value="0.23645833333333333" />
