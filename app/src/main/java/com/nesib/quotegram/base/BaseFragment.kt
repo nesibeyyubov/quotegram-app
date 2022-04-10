@@ -1,11 +1,9 @@
 package com.nesib.quotegram.base
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 
 abstract class BaseFragment<VBinding : ViewBinding>(layoutResource: Int) :
@@ -25,6 +23,10 @@ abstract class BaseFragment<VBinding : ViewBinding>(layoutResource: Int) :
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun navigateTo(screenId: Int) {
+        findNavController().navigate(screenId)
     }
 
 }

@@ -6,7 +6,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import com.nesib.quotegram.R
 import java.util.*
@@ -91,11 +90,11 @@ fun EditText.unFocus() {
     toggleKeyboard(isVisible = false, this, context)
 }
 
-fun View.show() {
+fun View.visible() {
     visibility = View.VISIBLE
 }
 
-fun View.hide() {
+fun View.invisible() {
     visibility = View.INVISIBLE
 }
 
@@ -103,15 +102,15 @@ fun View.gone() {
     visibility = View.GONE
 }
 
-fun List<View>.show() {
+fun List<View>.visible() {
     this.forEach {
-        it.show()
+        it.visible()
     }
 }
 
-fun List<View>.hide() {
+fun List<View>.invisible() {
     this.forEach {
-        it.hide()
+        it.invisible()
     }
 }
 

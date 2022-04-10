@@ -44,7 +44,7 @@ want to get quote from"
         android:textStyle="bold" />
 
 
-    <ScrollView
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="220dp">
 
@@ -197,7 +197,7 @@ want to get quote from"
 
         </com.google.android.material.chip.ChipGroup>
 
-    </ScrollView>
+    </HorizontalScrollView>
 
     <TextView
         android:id="@+id/warning_text"

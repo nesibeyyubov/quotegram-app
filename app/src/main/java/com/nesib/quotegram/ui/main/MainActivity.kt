@@ -3,11 +3,7 @@ package com.nesib.quotegram.ui.main
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -220,7 +216,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         binding.fabAddButton.show()
                     }
                     if (binding.bottomNavView.visibility == View.GONE) {
-                        binding.bottomNavView.show()
+                        binding.bottomNavView.visible()
                     }
                 }
                 R.id.searchFragment -> with(binding) {
@@ -272,7 +268,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showBottomNavFab() {
-        binding.bottomNavView.show()
+        binding.bottomNavView.visible()
         binding.fabAddButton.show()
     }
 

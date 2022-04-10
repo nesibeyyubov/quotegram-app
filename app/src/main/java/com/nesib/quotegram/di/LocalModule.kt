@@ -19,9 +19,8 @@ object LocalModule {
 
     @Provides
     @Named("themeSharedPreferences")
-    fun provideSharedPreferences(@ApplicationContext context: Context):SharedPreferences{
-        val sharedPreferences = context.getSharedPreferences("theme",Context.MODE_PRIVATE)
-        return sharedPreferences
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("theme", Context.MODE_PRIVATE)
     }
 
     @Provides

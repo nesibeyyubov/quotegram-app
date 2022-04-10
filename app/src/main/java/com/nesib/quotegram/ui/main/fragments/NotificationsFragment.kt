@@ -2,7 +2,6 @@ package com.nesib.quotegram.ui.main.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -88,7 +87,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
             when (it) {
                 is DataState.Success -> with(binding) {
                     if (paginationProgressBar.visibility == View.VISIBLE) {
-                        paginationProgressBar.hide()
+                        paginationProgressBar.invisible()
                     }
                     paginationLoading = false
                     if (currentNotifications?.size == it.data!!.notifications!!.toList().size && !comingBackFromQuote) {
@@ -96,26 +95,26 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                     }
                     comingBackFromQuote = false
                     currentNotifications = it.data.notifications!!.toList()
-                    progressBar.hide()
+                    progressBar.invisible()
                     notificationAdapter.setData(currentNotifications!!)
                     if (currentNotifications!!.isEmpty()) {
                         paginatingFinished = true
-                        noNotificationsContainer.show()
+                        noNotificationsContainer.visible()
                     }
                 }
                 is DataState.Loading -> with(binding) {
-                    noNotificationsContainer.hide()
+                    noNotificationsContainer.invisible()
                     failContainer.gone()
-                    if (paginationLoading) paginationProgressBar.show() else progressBar.show()
+                    if (paginationLoading) paginationProgressBar.visible() else progressBar.visible()
                 }
                 is DataState.Fail -> with(binding) {
-                    failContainer.show()
+                    failContainer.visible()
                     failMessage.text = it.message
                     if (paginationProgressBar.visibility == View.VISIBLE) {
-                        paginationProgressBar.hide()
+                        paginationProgressBar.invisible()
                     }
                     paginationLoading = false
-                    progressBar.hide()
+                    progressBar.invisible()
                     showToast(it.message)
                 }
             }
