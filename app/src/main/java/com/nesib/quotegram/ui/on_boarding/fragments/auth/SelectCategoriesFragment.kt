@@ -14,6 +14,7 @@ import com.nesib.quotegram.ui.main.MainActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.utils.Constants
 import com.nesib.quotegram.utils.DataState
+import com.nesib.quotegram.utils.invisible
 import java.util.*
 
 class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
@@ -34,7 +35,7 @@ class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
     private fun saveGenres() {
         val checkedIds = binding.chipGroup.checkedChipIds
         if (checkedIds.size >= Constants.MIN_GENRE_COUNT) {
-            binding.warningText.visibility = View.GONE
+            binding.warningText.invisible()
             var genres = ""
             var index = 0
             checkedIds.forEach { checkedId ->
