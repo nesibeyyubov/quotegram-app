@@ -19,12 +19,18 @@ object Constants {
     // Strings
     const val KEY_THEME = "theme"
     const val DEFAULT_SELECTED_GENRE = "all"
-    const val TEXT_NEW_QUOTE="newQuote"
-    const val TEXT_DELETED_QUOTE="deletedQuote"
-    const val TEXT_UPDATED_QUOTE="updatedQuote"
+    const val KEY_NEW_QUOTE="newQuote"
+    const val KEY_DELETED_QUOTE="deletedQuote"
+    const val KEY_UPDATED_QUOTE="updatedQuote"
     const val TEXT_DIRECT_TO_LOGIN="directToLogin"
     const val TEXT_DIRECT_TO_SIGNUP="directToSignup"
     const val TEXT_UPDATED_USER="updatedUser"
+
+    // Api Keys
+    const val KEY_QUOTE = "quote"
+    const val KEY_GENRE = "genre"
+    const val KEY_PASSWORD = "password"
+    const val KEY_USERNAME = "username"
 
     const val CONTACT_EMAIL="app.quotegram@gmail.com"
 

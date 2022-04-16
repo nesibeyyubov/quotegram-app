@@ -79,26 +79,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
     }
 
-    private fun setupDrawerUi() {
+    fun setSelectedItemOnBnv(id: Int) {
+        binding.bottomNavView.selectedItemId = id
+    }
+
+    private fun setupDrawerUi() = with(binding) {
         val currentUser = authViewModel.getUser()
         if (authViewModel.isAuthenticated) {
-            binding.apply {
-                val headerView = drawerNavigationView.getHeaderView(0)
-                val headerBinding = DrawerHeaderLayoutBinding.bind(headerView)
-                headerBinding.headerUsername.text = currentUser.username
-                headerBinding.headerEmail.text = currentUser.email
-                headerBinding.headerProfileImage.load(currentUser.profileImage) {
-                    error(R.drawable.user)
-                }
-                val drawerMenu = drawerNavigationView.menu
-                drawerMenu.findItem(R.id.drawer_login).isVisible = false
-                drawerMenu.findItem(R.id.drawer_signup).isVisible = false
+            val headerView = drawerNavigationView.getHeaderView(0)
+            val headerBinding = DrawerHeaderLayoutBinding.bind(headerView)
+            headerBinding.headerUsername.text = currentUser.username
+            headerBinding.headerEmail.text = currentUser.email
+            headerBinding.headerProfileImage.load(currentUser.profileImage) {
+                error(R.drawable.user)
             }
+            val drawerMenu = drawerNavigationView.menu
+            drawerMenu.findItem(R.id.drawer_login).isVisible = false
+            drawerMenu.findItem(R.id.drawer_signup).isVisible = false
         } else {
-            binding.apply {
-                val bottomNavMenu = drawerNavigationView.menu
-                bottomNavMenu.findItem(R.id.drawer_logout).isVisible = false
-            }
+            val bottomNavMenu = drawerNavigationView.menu
+            bottomNavMenu.findItem(R.id.drawer_logout).isVisible = false
         }
     }
 

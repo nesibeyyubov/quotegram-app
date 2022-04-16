@@ -1,7 +1,6 @@
 package com.nesib.quotegram.ui.main.fragments.user
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -18,7 +17,7 @@ import com.nesib.quotegram.models.User
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.UserViewModel
 import com.nesib.quotegram.utils.DataState
-import com.nesib.quotegram.utils.isUsername
+import com.nesib.quotegram.utils.isValidUsername
 import com.nesib.quotegram.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -98,7 +97,7 @@ class EditUserFragment : Fragment(R.layout.fragment_edit_profile) {
         updatedUser =
             args.user!!.copy(username = username, fullname = fullName, bio = bio)
         if(args.user!!.username != username || args.user!!.fullname != fullName || args.user!!.bio != bio){
-            if(!username.isUsername()){
+            if(!username.isValidUsername()){
                 binding.updateProfileErrorTextView.visibility = View.VISIBLE
                 binding.updateProfileErrorTextView.text = "Username length must be at least 5 characters"
                 menuItem?.actionView =null

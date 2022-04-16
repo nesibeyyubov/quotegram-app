@@ -14,8 +14,7 @@ import com.nesib.quotegram.databinding.FragmentQuoteBinding
 import com.nesib.quotegram.models.Quote
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.QuoteViewModel
-import com.nesib.quotegram.utils.Constants
-import com.nesib.quotegram.utils.Constants.TEXT_UPDATED_QUOTE
+import com.nesib.quotegram.utils.Constants.KEY_UPDATED_QUOTE
 import com.nesib.quotegram.utils.DataState
 import com.nesib.quotegram.utils.toFormattedNumber
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,10 +79,10 @@ class QuoteFragment : Fragment(R.layout.fragment_quote), View.OnClickListener {
 
     private fun setupFragmentResultListeners() {
         parentFragmentManager.setFragmentResultListener(
-            TEXT_UPDATED_QUOTE,
+            KEY_UPDATED_QUOTE,
             viewLifecycleOwner
         ) { s: String, bundle: Bundle ->
-            val updatedQuote = (bundle[TEXT_UPDATED_QUOTE] as Quote)
+            val updatedQuote = (bundle[KEY_UPDATED_QUOTE] as Quote)
             currentQuote = updatedQuote
             bindData(updatedQuote)
         }

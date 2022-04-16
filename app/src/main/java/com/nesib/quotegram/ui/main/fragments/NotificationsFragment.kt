@@ -46,20 +46,25 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         setupRecyclerView()
         setupClickListeners()
         subscribeObservers()
-        notificationViewModel.getNotifications()
     }
 
-    private fun setupUi() {
+    private fun setupUi() = with(binding) {
         if (!authViewModel.isAuthenticated) {
-            binding.notSignedinContainer.visibility = View.VISIBLE
-            binding.loginButton.setOnClickListener {
-                authViewModel.logout()
-                val intent = Intent(requireActivity(), StartActivity::class.java)
-                intent.putExtra(TEXT_DIRECT_TO_LOGIN, true)
-                startActivity(intent)
-                requireActivity().finish()
+            notSignedinContainer.visibility = View.VISIBLE
+            loginButton.setOnClickListener {
+                navigateLogin()
             }
+        } else {
+            notificationViewModel.getNotifications()
         }
+    }
+
+    private fun navigateLogin() {
+        authViewModel.logout()
+        val intent = Intent(requireActivity(), StartActivity::class.java)
+        intent.putExtra(TEXT_DIRECT_TO_LOGIN, true)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun subscribeObservers() {
@@ -78,8 +83,8 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                     clearAllMenuItem?.setActionView(R.layout.progress_bar_layout)
                 }
                 is DataState.Fail -> {
-                    clearAllMenuItem?.actionView = clearAllTextActionView
                     showToast(it.message)
+                    clearAllMenuItem?.actionView = clearAllTextActionView
                 }
             }
         }

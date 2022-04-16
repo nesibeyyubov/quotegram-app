@@ -208,36 +208,13 @@ want to get quote from"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-
-    <LinearLayout
-        android:id="@+id/selectGenre_nextBtn"
+    <com.nesib.quotegram.ui.custom_views.ProgressBarButton
+        android:id="@+id/pb_button"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/blue_button_bg"
-        android:clickable="true"
-        android:gravity="center"
+        app:text="Continue"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/nextTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Next"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <ProgressBar
-            android:id="@+id/nextBtnProgressBar"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:indeterminateTint="@color/white"
-            android:visibility="gone" />
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

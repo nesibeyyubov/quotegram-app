@@ -15,6 +15,8 @@ import com.nesib.quotegram.utils.Constants.CODE_CREATION_SUCCESS
 import com.nesib.quotegram.utils.Constants.CODE_SERVER_ERROR
 import com.nesib.quotegram.utils.Constants.CODE_SUCCESS
 import com.nesib.quotegram.utils.Constants.CODE_VALIDATION_FAIL
+import com.nesib.quotegram.utils.Constants.KEY_PASSWORD
+import com.nesib.quotegram.utils.Constants.KEY_USERNAME
 import com.nesib.quotegram.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -65,13 +67,13 @@ class AuthViewModel @Inject constructor(
     fun logout() = sharedPreferencesRepository.clearUser()
 
 
-    fun login(username: String,password: String) =
+    fun login(username: String, password: String) =
         viewModelScope.launch(Dispatchers.IO) {
             if (hasInternetConnection()) {
                 try {
                     _auth.postValue(DataState.Loading())
                     val loginBody =
-                        mapOf("password" to password, "username" to username)
+                        mapOf(KEY_PASSWORD to password, KEY_USERNAME to username)
                     val response = userRepository.login(loginBody)
                     if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
                         hasLoginError = true
@@ -97,7 +99,7 @@ class AuthViewModel @Inject constructor(
             try {
 
                 _auth.postValue(DataState.Loading())
-                val response = userRepository.signup(username, password )
+                val response = userRepository.signup(username, password)
                 if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
                     hasSignupError = true
                 }

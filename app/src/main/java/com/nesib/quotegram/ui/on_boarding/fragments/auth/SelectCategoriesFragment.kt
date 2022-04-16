@@ -24,7 +24,7 @@ class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSelectCategoriesBinding.bind(view)
-        binding.selectGenreNextBtn.setOnClickListener {
+        binding.pbButton.setOnClickListener {
             saveGenres()
         }
         binding.welcomeUserName.text = "Hi, ${args.username ?: "Guest"}"
@@ -53,25 +53,25 @@ class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
 
     }
 
-    private fun subscribeObservers() {
+    private fun startMainActivity() {
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
+    }
+
+    private fun subscribeObservers() = with(binding) {
         authViewModel.genres.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
                     authViewModel.saveUser()
-                    val intent = Intent(requireContext(), MainActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
+                    startMainActivity()
                 }
                 is DataState.Loading -> {
-                    binding.selectGenreNextBtn.isEnabled = false
-                    binding.nextTextView.visibility = View.GONE
-                    binding.nextBtnProgressBar.visibility = View.VISIBLE
+                    pbButton.showLoading()
                 }
                 is DataState.Fail -> {
-                    binding.selectGenreNextBtn.isEnabled = true
+                    pbButton.hideLoading()
                     Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
-                    binding.nextTextView.visibility = View.GONE
-                    binding.nextBtnProgressBar.visibility = View.VISIBLE
                 }
             }
         }

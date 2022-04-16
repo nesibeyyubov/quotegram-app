@@ -16,10 +16,7 @@ import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentLoginBinding
 import com.nesib.quotegram.ui.main.MainActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
-import com.nesib.quotegram.utils.DataState
-import com.nesib.quotegram.utils.gone
-import com.nesib.quotegram.utils.invisible
-import com.nesib.quotegram.utils.visible
+import com.nesib.quotegram.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Exception
 import javax.inject.Inject
@@ -74,7 +71,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     }
 
     private fun setupClickListeners() = with(binding) {
-        loginBtn.setOnClickListener {
+        pbButton.setOnClickListener {
             val usernameValue = usernameEditText.text.toString()
             val passwordValue = passwordEditText.text.toString()
             if (usernameValue.isEmpty()) {
@@ -88,11 +85,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
             }
         }
         loginToSignupBtn.setOnClickListener { navigateTo(R.id.signupFragment) }
-        signInWithGoogleButton.setOnClickListener {
+        btnSignGoogle.setOnClickListener {
             val googleSignInIntent = googleSignInClient.signInIntent
             googleSignInActivityLauncher.launch(googleSignInIntent)
         }
 
+    }
+
+    private fun startMainActivity() {
+        startActivity(Intent(requireActivity(), MainActivity::class.java))
+        requireActivity().finish()
     }
 
     private fun subscribeObserver() = with(binding) {
@@ -101,27 +103,21 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
                 is DataState.Success -> {
                     loginErrorTextView.invisible()
                     authViewModel.saveUser()
-                    startActivity(Intent(requireActivity(), MainActivity::class.java))
-                    requireActivity().finish()
+                    startMainActivity()
                 }
                 is DataState.Fail -> {
                     signingInWithGoogle = false
                     if (authViewModel.hasLoginError) {
-                        listOf(loginErrorTextView, loginBtnTextView, signInGoogleTextView).visible()
-                        loginBtnProgressBar.gone()
-                        signInGoogleProgressBar.invisible()
-                        loginErrorTextView.text = it.message
-                        loginBtn.isEnabled = true
+                        loginErrorTextView.showError(it.message)
+                        pbButton.hideLoading()
+                        btnSignGoogle.hideLoading()
                     }
                 }
                 is DataState.Loading -> {
-                    loginBtn.isEnabled = false
                     if (signingInWithGoogle) {
-                        signInGoogleProgressBar.visible()
-                        signInGoogleTextView.gone()
+                        btnSignGoogle.showLoading()
                     } else {
-                        loginBtnProgressBar.visible()
-                        loginBtnTextView.gone()
+                        pbButton.showLoading()
                     }
                 }
             }
@@ -129,8 +125,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         authViewModel.hasLoginError = false
+        super.onDestroyView()
     }
 
     override fun createBinding(view: View) = FragmentLoginBinding.bind(view)

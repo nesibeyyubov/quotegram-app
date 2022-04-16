@@ -12,6 +12,7 @@
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_download_quote.xml" value="0.25275938189845476" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_home.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_login.xml" value="0.264" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_notifications.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_quote.xml" value="0.2" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_search.xml" value="0.11499493414387031" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_search_books.xml" value="0.4" />
@@ -25,6 +26,7 @@
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/full_screen_quote_item.xml" value="0.536" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/genre_item_layout.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/grid_quote_layout.xml" value="0.23645833333333333" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/layout_google_button.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/layout_progress_bar_button.xml" value="0.264" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/progress_bar_layout.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/quote_from_book_layout.xml" value="0.23645833333333333" />

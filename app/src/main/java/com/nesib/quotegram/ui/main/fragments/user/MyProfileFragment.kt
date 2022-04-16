@@ -19,9 +19,9 @@ import com.nesib.quotegram.ui.on_boarding.StartActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.QuoteViewModel
 import com.nesib.quotegram.ui.viewmodels.UserViewModel
-import com.nesib.quotegram.utils.Constants.TEXT_DELETED_QUOTE
+import com.nesib.quotegram.utils.Constants.KEY_DELETED_QUOTE
 import com.nesib.quotegram.utils.Constants.TEXT_DIRECT_TO_LOGIN
-import com.nesib.quotegram.utils.Constants.TEXT_UPDATED_QUOTE
+import com.nesib.quotegram.utils.Constants.KEY_UPDATED_QUOTE
 import com.nesib.quotegram.utils.Constants.TEXT_UPDATED_USER
 import com.nesib.quotegram.utils.DataState
 import com.nesib.quotegram.utils.showToast
@@ -156,17 +156,17 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
 
     private fun setFragmentResultListener() {
         parentFragmentManager.setFragmentResultListener(
-            TEXT_DELETED_QUOTE,
+            KEY_DELETED_QUOTE,
             viewLifecycleOwner
         ) { requestKey: String, deletedQuote: Bundle ->
-            userViewModel.notifyQuoteRemoved(deletedQuote[TEXT_DELETED_QUOTE] as Quote)
+            userViewModel.notifyQuoteRemoved(deletedQuote[KEY_DELETED_QUOTE] as Quote)
             binding.quoteCountTextView.text = (binding.quoteCountTextView.text.toString().toInt() - 1).toString()
         }
         parentFragmentManager.setFragmentResultListener(
-            TEXT_UPDATED_QUOTE,
+            KEY_UPDATED_QUOTE,
             viewLifecycleOwner
         ) { s: String, updatedQuote: Bundle ->
-            userViewModel.notifyQuoteUpdated((updatedQuote[TEXT_UPDATED_QUOTE] as Quote))
+            userViewModel.notifyQuoteUpdated((updatedQuote[KEY_UPDATED_QUOTE] as Quote))
         }
 
         parentFragmentManager.setFragmentResultListener(

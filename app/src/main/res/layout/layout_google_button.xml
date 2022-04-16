@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signUpWithGoogleButton"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/ripple_white_bg"
+    android:elevation="1dp"
+    android:paddingHorizontal="10dp">
+
+    <ImageView
+        android:id="@+id/iv_google"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_google" />
+
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-light"
+        android:text="Sign Up With Google"
+        android:textAlignment="center"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/colorSecondaryText"
+        android:visibility="invisible" />
+
+</RelativeLayout>

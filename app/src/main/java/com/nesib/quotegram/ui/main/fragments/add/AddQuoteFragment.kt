@@ -1,20 +1,11 @@
 package com.nesib.quotegram.ui.main.fragments.add
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil.load
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.SpinnerAdapter
 import com.nesib.quotegram.base.BaseFragment
@@ -24,9 +15,12 @@ import com.nesib.quotegram.ui.main.MainActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.QuoteViewModel
 import com.nesib.quotegram.utils.*
-import com.nesib.quotegram.utils.Constants.API_URL
+import com.nesib.quotegram.utils.Constants.KEY_GENRE
 import com.nesib.quotegram.utils.Constants.MAX_QUOTE_LENGTH
 import com.nesib.quotegram.utils.Constants.MIN_QUOTE_LENGTH
+import com.nesib.quotegram.utils.Constants.KEY_NEW_QUOTE
+import com.nesib.quotegram.utils.Constants.KEY_QUOTE
+import com.nesib.quotegram.utils.Constants.KEY_UPDATED_QUOTE
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -101,8 +95,8 @@ class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>(R.layout.fragment
                     .toLowerCase(Locale.ROOT)
                 val newQuote =
                     mapOf(
-                        "quote" to quoteValue,
-                        "genre" to selectedGenreValue
+                        KEY_QUOTE to quoteValue,
+                        KEY_GENRE to selectedGenreValue
                     )
                 updatedQuote = args.quote!!.copy()
                 updatedQuote!!.quote = quoteValue
@@ -118,9 +112,10 @@ class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>(R.layout.fragment
         quoteViewModel.quote.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    showToast("Quote added !")
                     parentFragmentManager.setFragmentResult(
-                        "newQuote",
-                        bundleOf("newQuote" to it.data!!.quote)
+                        KEY_NEW_QUOTE,
+                        bundleOf(KEY_NEW_QUOTE to it.data!!.quote)
                     )
                     findNavController().popBackStack()
                     toggleProgressBar(false)
@@ -138,8 +133,8 @@ class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>(R.layout.fragment
             when (it) {
                 is DataState.Success -> {
                     parentFragmentManager.setFragmentResult(
-                        "updatedQuote",
-                        bundleOf("updatedQuote" to updatedQuote)
+                        KEY_UPDATED_QUOTE,
+                        bundleOf(KEY_UPDATED_QUOTE to updatedQuote)
                     )
                     findNavController().popBackStack()
                     toggleProgressBar(false)
@@ -162,8 +157,8 @@ class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>(R.layout.fragment
 
     override fun onDestroyView() {
         binding.quoteEditText.unFocus()
-        super.onDestroyView()
         quoteViewModel.clearLiveDataValues()
+        super.onDestroyView()
     }
 
     override fun createBinding(view: View) = FragmentAddQuoteBinding.bind(view)

@@ -78,31 +78,12 @@
                     android:textSize="14sp"
                     android:visibility="invisible" />
 
-                <LinearLayout
-                    android:id="@+id/signupBtn"
+                <com.nesib.quotegram.ui.custom_views.ProgressBarButton
+                    android:id="@+id/pb_button"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/blue_button_bg"
-                    android:clickable="true"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/signupBtnTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Signup"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <ProgressBar
-                        android:id="@+id/signupBtnProgressBar"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:indeterminateTint="@color/white"
-                        android:visibility="gone" />
-                </LinearLayout>
+                    app:text="Signup" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -140,46 +121,12 @@
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
-        android:id="@+id/signUpWithGoogleButton"
+    <com.nesib.quotegram.ui.custom_views.GoogleButton
+        android:id="@+id/signup_btn_google"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/scroll_view"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/ripple_white_bg"
-        android:clickable="true"
-        android:elevation="1dp"
-        android:paddingHorizontal="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_google" />
-
-        <TextView
-            android:id="@+id/signUpGoogleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_weight="1"
-            android:text="Sign Up With Google"
-            android:textAlignment="center"
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <ProgressBar
-            android:id="@+id/signupGoogleProgressBar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerInParent="true"
-            android:indeterminateTint="@color/colorSecondaryText"
-            android:visibility="invisible" />
-    </RelativeLayout>
+        android:layout_marginTop="15dp"
+        app:text="Sign up with Google" />
 
 </RelativeLayout>

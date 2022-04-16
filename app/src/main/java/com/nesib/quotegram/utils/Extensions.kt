@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDestination
@@ -38,11 +39,11 @@ fun String.isEmail(): Boolean {
     return this.isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }
 
-fun String.isPassword(): Boolean {
+fun String.isValidPassword(): Boolean {
     return this.length >= 5
 }
 
-fun String.isUsername(): Boolean {
+fun String.isValidUsername(): Boolean {
     return this.length >= 5
 }
 
@@ -84,6 +85,11 @@ fun EditText.focusWithKeyboard() {
     if (this.requestFocus()) {
         toggleKeyboard(isVisible = true, this, context)
     }
+}
+
+fun TextView.showError(message: String) {
+    this.visibility = View.VISIBLE
+    this.text = message
 }
 
 fun EditText.unFocus() {

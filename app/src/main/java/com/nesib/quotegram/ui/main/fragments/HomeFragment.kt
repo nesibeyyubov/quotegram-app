@@ -7,8 +7,10 @@ import android.os.Looper
 import android.text.Layout
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -64,13 +66,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                     }
                     if (currentPage == 1) {
                         binding.homeProgressBar.visibility = View.GONE
-//                        binding.homeRecyclerView.visibility = View.VISIBLE
                         binding.homeViewPager.visibility = View.VISIBLE
                     } else {
                         binding.homeProgressBar.visibility = View.GONE
-//                        binding.homeRecyclerView.visibility = View.VISIBLE
                         binding.homeViewPager.visibility = View.VISIBLE
-
                         binding.paginationProgressBar.visibility = View.INVISIBLE
                         paginationLoading = false
                     }
@@ -164,7 +163,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 val action = HomeFragmentDirections.actionHomeFragmentToUserProfileFragment(userId)
                 findNavController().navigate(action)
             } else {
-                findNavController().navigate(R.id.action_global_myProfileFragment)
+                (requireActivity() as MainActivity).setSelectedItemOnBnv(R.id.myProfileFragment)
             }
         }
 
@@ -183,21 +182,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 }
             })
         }
-//        binding.homeViewPager.apply {
-//            adapter = homeAdapter
-//            layoutManager = mLayoutManager
-//            this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                    super.onScrolled(recyclerView, dx, dy)
-//                    if (dy > 0) {
-//                        if (!paginatingFinished && mLayoutManager.findLastCompletelyVisibleItemPosition() == (quotes.size - 1) && !paginationLoading) {
-//                            currentPage++
-//                            quoteViewModel.getMoreQuotes(currentPage)
-//                        }
-//                    }
-//                }
-//            })
-//        }
 
     }
 

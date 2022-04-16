@@ -18,8 +18,7 @@ import com.nesib.quotegram.models.Quote
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.QuoteViewModel
 import com.nesib.quotegram.ui.viewmodels.ReportViewModel
-import com.nesib.quotegram.utils.Constants
-import com.nesib.quotegram.utils.Constants.TEXT_DELETED_QUOTE
+import com.nesib.quotegram.utils.Constants.KEY_DELETED_QUOTE
 import com.nesib.quotegram.utils.DataState
 import com.nesib.quotegram.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,8 +80,8 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
             when (it) {
                 is DataState.Success -> {
                     parentFragmentManager.setFragmentResult(
-                        TEXT_DELETED_QUOTE,
-                        bundleOf(TEXT_DELETED_QUOTE to deletedQuote)
+                        KEY_DELETED_QUOTE,
+                        bundleOf(KEY_DELETED_QUOTE to deletedQuote)
                     )
                     findNavController().popBackStack()
                     makeSureDialog!!.dismiss()
