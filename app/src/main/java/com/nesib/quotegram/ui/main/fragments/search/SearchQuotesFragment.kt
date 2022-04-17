@@ -2,6 +2,7 @@ package com.nesib.quotegram.ui.main.fragments.search
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -19,9 +20,8 @@ import com.nesib.quotegram.models.Quote
 import com.nesib.quotegram.ui.main.MainActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.QuoteViewModel
+import com.nesib.quotegram.utils.*
 import com.nesib.quotegram.utils.Constants.MIN_GENRE_COUNT
-import com.nesib.quotegram.utils.DataState
-import com.nesib.quotegram.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -36,7 +36,7 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
     private var currentPage = 1
     private var paginatingFinished = false
     private var paginationLoading = false
-    private var currentQuotes: List<Quote> = emptyList()
+    private var quotesSize = 0
     private var followingGenres: String = ""
 
     private var genres: MutableList<String> = mutableListOf()
@@ -51,49 +51,37 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
         quoteViewModel.getQuotesByGenre(args.genre)
     }
 
-    private fun setupClickListeners(){
+    private fun setupClickListeners() {
         binding.tryAgainButton.setOnClickListener {
-            quoteViewModel.getQuotesByGenre(args.genre,forced = true)
+            quoteViewModel.getQuotesByGenre(args.genre, forced = true)
         }
     }
 
 
-    private fun subscribeObservers() {
+    private fun subscribeObservers() = with(binding) {
         quoteViewModel.quotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    if (binding.failContainer.visibility == View.VISIBLE) {
-                        binding.failContainer.visibility = View.GONE
-                    }
-                    if (it.data?.quotes?.size == 0) {
-                        binding.noQuoteFoundContainer.visibility = View.VISIBLE
-                        binding.noQuoteGenreValue.text = "#${args.genre}"
-                    }
-                    if (paginationLoading) {
-                        binding.paginationProgressBar.visibility = View.INVISIBLE
-                        paginationLoading = false
-                        if (currentQuotes.size == it.data!!.quotes.size) {
-                            paginatingFinished = true
-                        }
-                    }
-                    currentQuotes = it.data!!.quotes
-                    binding.shimmerLayout.visibility = View.INVISIBLE
-                    homeAdapter.setData(currentQuotes)
+                    failContainer.safeGone()
+                    shimmerLayout.safeInvisible()
+                    paginatingFinished = quotesSize == it.data!!.quotes.size
+                    quotesSize = it.data.quotes.size
+                    homeAdapter.setData(it.data.quotes)
+                    paginationLoading = false
                 }
                 is DataState.Fail -> {
-                    binding.failMessage.text =it.message
-                    binding.failContainer.visibility = View.VISIBLE
-                    binding.shimmerLayout.visibility = View.INVISIBLE
-                    binding.shimmerLayout.stopShimmer()
+                    failMessage.text = it.message
+                    failContainer.visible()
+                    shimmerLayout.safeInvisible()
+                    shimmerLayout.stopShimmer()
+                    paginationLoading = false
                 }
                 is DataState.Loading -> {
-                    if (binding.failContainer.visibility == View.VISIBLE) {
-                        binding.failContainer.visibility = View.GONE
-                    }
-                    if (paginationLoading) {
-                        binding.paginationProgressBar.visibility = View.VISIBLE
+                    failContainer.safeGone()
+                    if (currentPage == 1) {
+                        shimmerLayout.visible()
                     } else {
-                        binding.shimmerLayout.visibility = View.VISIBLE
+                        paginationLoading = true
                     }
                 }
             }
@@ -113,7 +101,7 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
             intent.action = Intent.ACTION_SEND
             intent.type = "text/plain"
             intent.putExtra(Intent.EXTRA_TEXT, quote.quote + "\n\n#Quotegram App")
-            val shareIntent = Intent.createChooser(intent,"Share Quote")
+            val shareIntent = Intent.createChooser(intent, "Share Quote")
             startActivity(shareIntent)
         }
         homeAdapter.currentUserId = authViewModel.currentUserId
@@ -127,7 +115,10 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
 
         homeAdapter.OnUserClickListener = { userId ->
             if (userId != authViewModel.currentUserId) {
-                val action = SearchQuotesFragmentDirections.actionSearchQuotesFragmentToUserProfileFragment(userId)
+                val action =
+                    SearchQuotesFragmentDirections.actionSearchQuotesFragmentToUserProfileFragment(
+                        userId
+                    )
                 findNavController().navigate(action)
             } else {
                 findNavController().navigate(R.id.action_global_myProfileFragment)
@@ -143,7 +134,7 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     if (dy > 0) {
-                        if (!paginatingFinished && mLayoutManager.findLastCompletelyVisibleItemPosition() == (currentQuotes.size - 1) && !paginationLoading) {
+                        if (!paginatingFinished && mLayoutManager.findLastCompletelyVisibleItemPosition() == (quotesSize - 5) && !paginationLoading) {
                             currentPage++
                             paginationLoading = true
                             quoteViewModel.getQuotesByGenre(args.genre, currentPage)
@@ -178,7 +169,7 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
                     item.title = "Follow"
                 } else {
                     genresChanged = false
-                    showToast("You should at least select ${MIN_GENRE_COUNT} genres")
+                    showToast("You should at least select $MIN_GENRE_COUNT genres")
                 }
             }
             if (genresChanged) {
@@ -190,7 +181,7 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
         return super.onOptionsItemSelected(item)
     }
 
-    fun MutableList<String>.toCustomizedString(): String {
+    private fun MutableList<String>.toCustomizedString(): String {
         var text = ""
         this.forEachIndexed { index, genre ->
             text += if (index != this.size - 1) {

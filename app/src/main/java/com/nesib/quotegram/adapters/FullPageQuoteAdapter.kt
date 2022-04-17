@@ -19,6 +19,7 @@ import com.nesib.quotegram.utils.toFormattedNumber
 class FullPageQuoteAdapter(val dialog: AlertDialog) :
     RecyclerView.Adapter<FullPageQuoteAdapter.ViewHolder>() {
     var currentUserId: String? = null
+
     var OnUserClickListener: ((String) -> Unit)? = null
     var onQuoteOptionsClickListener: ((Quote) -> Unit)? = null
     var onLikeClickListener: ((Quote) -> Unit)? = null

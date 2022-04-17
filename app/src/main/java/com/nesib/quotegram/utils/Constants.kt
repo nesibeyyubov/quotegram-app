@@ -19,23 +19,32 @@ object Constants {
     // Strings
     const val KEY_THEME = "theme"
     const val DEFAULT_SELECTED_GENRE = "all"
-    const val KEY_NEW_QUOTE="newQuote"
-    const val KEY_DELETED_QUOTE="deletedQuote"
-    const val KEY_UPDATED_QUOTE="updatedQuote"
-    const val TEXT_DIRECT_TO_LOGIN="directToLogin"
-    const val TEXT_DIRECT_TO_SIGNUP="directToSignup"
-    const val TEXT_UPDATED_USER="updatedUser"
+    const val KEY_NEW_QUOTE = "newQuote"
+    const val KEY_DELETED_QUOTE = "deletedQuote"
+    const val KEY_UPDATED_QUOTE = "updatedQuote"
+    const val TEXT_DIRECT_TO_LOGIN = "directToLogin"
+    const val TEXT_DIRECT_TO_SIGNUP = "directToSignup"
+    const val TEXT_UPDATED_USER = "updatedUser"
 
     // Api Keys
     const val KEY_QUOTE = "quote"
     const val KEY_GENRE = "genre"
     const val KEY_PASSWORD = "password"
     const val KEY_USERNAME = "username"
+    const val KEY_FULL_NAME = "fullname"
+    const val KEY_PROFILE_IMAGE = "profileImage"
+    const val KEY_EMAIL = "email"
 
-    const val CONTACT_EMAIL="app.quotegram@gmail.com"
+
+    const val CONTACT_EMAIL = "app.quotegram@gmail.com"
 
     const val PRIVACY_POLICY_URL = "https://quotegram.netlify.app/"
 
-    val ROOT_SCREENS = listOf(R.id.homeFragment, R.id.myProfileFragment, R.id.notificationsFragment, R.id.searchFragment)
+    val ROOT_SCREENS = listOf(
+        R.id.homeFragment,
+        R.id.myProfileFragment,
+        R.id.notificationsFragment,
+        R.id.searchFragment
+    )
 
 }

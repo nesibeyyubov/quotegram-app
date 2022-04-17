@@ -1,5 +1,6 @@
 package com.nesib.quotegram.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -107,7 +108,7 @@ class HomeAdapter(val dialog: AlertDialog) :
                         it(differ.currentList[adapterPosition])
                     }
                 }
-                R.id.shareBtn->{
+                R.id.shareBtn -> {
                     onShareClickListener?.let {
                         it(differ.currentList[adapterPosition])
                     }
@@ -142,6 +143,7 @@ class HomeAdapter(val dialog: AlertDialog) :
     override fun getItemCount() = differ.currentList.size
 
     fun setData(newQuoteList: List<Quote>) {
+        Log.d("mytag", "setData: ${newQuoteList.size}")
         differ.submitList(newQuoteList)
     }
 }

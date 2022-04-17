@@ -1,8 +1,12 @@
 package com.nesib.quotegram.data.repositories
 
-import android.util.Log
 import com.nesib.quotegram.data.network.AuthApi
 import com.nesib.quotegram.models.*
+import com.nesib.quotegram.utils.Constants.KEY_EMAIL
+import com.nesib.quotegram.utils.Constants.KEY_FULL_NAME
+import com.nesib.quotegram.utils.Constants.KEY_PASSWORD
+import com.nesib.quotegram.utils.Constants.KEY_PROFILE_IMAGE
+import com.nesib.quotegram.utils.Constants.KEY_USERNAME
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,8 +19,8 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
         password: String
     ): Response<UserAuth> {
         val map = mapOf(
-            "password" to password,
-            "username" to username,
+            KEY_PASSWORD to password,
+            KEY_USERNAME to username,
         )
         return authApi.signup(map)
     }
@@ -28,16 +32,16 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
         profileImage: String,
     ): Response<UserAuth> {
         val map = mapOf(
-            "email" to email,
-            "fullname" to fullname,
-            "username" to username,
-            "profileImage" to profileImage
+            KEY_EMAIL to email,
+            KEY_FULL_NAME to fullname,
+            KEY_USERNAME to username,
+            KEY_PROFILE_IMAGE to profileImage
         )
         return authApi.signupWithGoogle(map)
     }
 
     suspend fun signInWithGoogle(email: String, profileImage: String): Response<UserAuth> {
-        val map = mapOf("email" to email, "profileImage" to profileImage)
+        val map = mapOf(KEY_EMAIL to email, KEY_PROFILE_IMAGE to profileImage)
         return authApi.signInWithGoogle(map)
     }
 

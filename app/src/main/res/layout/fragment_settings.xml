@@ -87,9 +87,9 @@
 
             <Button
                 android:id="@+id/sendButton"
-                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:layout_marginTop="5dp"
                 android:text="Send" />
 
         </LinearLayout>
@@ -120,6 +120,13 @@
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="16sp" />
         </LinearLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:src="@mipmap/ic_launcher"
+            app:shapeAppearanceOverlay="@style/RoundedImage" />
     </LinearLayout>
 
 </ScrollView>

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.HomeAdapter
+import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentMyProfileBinding
 import com.nesib.quotegram.models.Quote
 import com.nesib.quotegram.models.User
@@ -19,19 +20,15 @@ import com.nesib.quotegram.ui.on_boarding.StartActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.QuoteViewModel
 import com.nesib.quotegram.ui.viewmodels.UserViewModel
+import com.nesib.quotegram.utils.*
 import com.nesib.quotegram.utils.Constants.KEY_DELETED_QUOTE
 import com.nesib.quotegram.utils.Constants.TEXT_DIRECT_TO_LOGIN
 import com.nesib.quotegram.utils.Constants.KEY_UPDATED_QUOTE
 import com.nesib.quotegram.utils.Constants.TEXT_UPDATED_USER
-import com.nesib.quotegram.utils.DataState
-import com.nesib.quotegram.utils.showToast
-import com.nesib.quotegram.utils.toFormattedNumber
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
-    private lateinit var binding: FragmentMyProfileBinding
-
+class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragment_my_profile) {
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val userViewModel: UserViewModel by viewModels()
     private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
@@ -40,12 +37,11 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
     private var paginationLoading = false
     private var currentPage = 1
     private var paginationFinished = false
-    private var currentUserQuotes: MutableList<Quote>? = null
+    private var quotesSize = 0
     private var currentUser: User? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMyProfileBinding.bind(view)
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
@@ -57,31 +53,27 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         if (authViewModel.isAuthenticated) {
             userViewModel.getUser()
         } else {
-            binding.notSignedinContainer.visibility = View.VISIBLE
+            binding.notSignedinContainer.visible()
         }
     }
 
-    private fun subscribeObservers() {
+    private fun subscribeObservers() = with(binding) {
         userViewModel.user.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    if (binding.failContainer.visibility == View.VISIBLE) {
-                        binding.failContainer.visibility = View.GONE
-                    }
+                    failContainer.safeGone()
                     toggleProgressBar(false)
                     currentUser = it.data!!.user!!
-                    currentUserQuotes = currentUser!!.quotes!!.toMutableList()
+                    quotesSize = currentUser!!.quotes!!.size
                     bindData(currentUser!!)
                 }
                 is DataState.Fail -> {
-                    binding.failMessage.text = it.message
-                    binding.failContainer.visibility = View.VISIBLE
-                    toggleProgressBar(false, true)
+                    failMessage.text = it.message
+                    failContainer.visible()
+                    toggleProgressBar(loading = false, failed = true)
                 }
                 is DataState.Loading -> {
-                    if (binding.failContainer.visibility == View.VISIBLE) {
-                        binding.failContainer.visibility = View.GONE
-                    }
+                    failContainer.safeGone()
                     toggleProgressBar(true)
                 }
             }
@@ -89,22 +81,19 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         userViewModel.userQuotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    if (currentUserQuotes?.size == it.data!!.quotes.size) {
-                        paginationFinished = true
-                    }
-                    binding.paginationProgressBar.visibility = View.INVISIBLE
+                    paginationFinished = quotesSize == it.data!!.quotes.size
                     paginationLoading = false
                     homeAdapter.setData(it.data.quotes)
-                    currentUserQuotes = it.data.quotes.toMutableList()
+                    quotesSize = it.data.quotes.size
+                    paginationProgressBar.invisible()
                 }
                 is DataState.Fail -> {
-                    binding.paginationProgressBar.visibility = View.INVISIBLE
-                    showToast(it.message!!)
+                    showToast(it.message)
                     paginationLoading = false
                 }
                 is DataState.Loading -> {
-                    binding.paginationProgressBar.visibility = View.VISIBLE
                     paginationLoading = true
+                    paginationProgressBar.visible()
                 }
             }
         }
@@ -116,22 +105,21 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         binding.notSignedinContainer.visibility = View.GONE
     }
 
-    private fun bindData(user: User) {
-        binding.usernameTextView.text = user.username
-        binding.bioTextView.text = if (user.bio!!.isNotEmpty()) user.bio else "No bio"
-        binding.followerCountTextView.text = user.followers!!.size.toFormattedNumber()
-        binding.followingCountTextView.text =
-            (user.followingUsers!!.size).toString()
-        binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toFormattedNumber()
+    private fun bindData(user: User) = with(binding) {
+        usernameTextView.text = user.username
+        bioTextView.text = if (user.bio!!.isNotEmpty()) user.bio else "No bio"
+        followerCountTextView.text = user.followers!!.size.toFormattedNumber()
+        followingCountTextView.text = (user.followingUsers!!.size).toString()
+        quoteCountTextView.text = (user.totalQuoteCount ?: 0).toFormattedNumber()
         if (user.profileImage != null && user.profileImage != "") {
-            binding.userPhotoImageView.load(user.profileImage) {
+            userPhotoImageView.load(user.profileImage) {
                 error(R.drawable.user)
             }
         } else {
-            binding.userPhotoImageView.load(R.drawable.user)
+            userPhotoImageView.load(R.drawable.user)
         }
         if (user.quotes!!.isEmpty()) {
-            binding.noQuoteFoundContainer.visibility = View.VISIBLE
+            noQuoteFoundContainer.visible()
         }
         homeAdapter.setData(user.quotes)
     }
@@ -145,7 +133,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
         binding.loginButton.setOnClickListener {
             authViewModel.logout()
             val intent = Intent(requireActivity(), StartActivity::class.java)
-            intent.putExtra(TEXT_DIRECT_TO_LOGIN,true)
+            intent.putExtra(TEXT_DIRECT_TO_LOGIN, true)
             startActivity(intent)
             requireActivity().finish()
         }
@@ -160,7 +148,8 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
             viewLifecycleOwner
         ) { requestKey: String, deletedQuote: Bundle ->
             userViewModel.notifyQuoteRemoved(deletedQuote[KEY_DELETED_QUOTE] as Quote)
-            binding.quoteCountTextView.text = (binding.quoteCountTextView.text.toString().toInt() - 1).toString()
+            binding.quoteCountTextView.text =
+                (binding.quoteCountTextView.text.toString().toInt() - 1).toString()
         }
         parentFragmentManager.setFragmentResultListener(
             KEY_UPDATED_QUOTE,
@@ -201,7 +190,7 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
             intent.action = Intent.ACTION_SEND
             intent.type = "text/plain"
             intent.putExtra(Intent.EXTRA_TEXT, quote.quote + "\n\n#Quotegram App")
-            val shareIntent = Intent.createChooser(intent,"Share Quote")
+            val shareIntent = Intent.createChooser(intent, "Share Quote")
             startActivity(shareIntent)
 
         }
@@ -212,11 +201,14 @@ class MyProfileFragment : Fragment(R.layout.fragment_my_profile) {
                 val notReachedBottom = v.canScrollVertically(1)
                 if (!notReachedBottom && !paginationLoading && !paginationFinished) {
                     currentPage++
+                    paginationLoading = true
                     userViewModel.getMoreUserQuotes(page = currentPage)
                 }
             }
         })
     }
+
+    override fun createBinding(view: View) = FragmentMyProfileBinding.bind(view)
 
 
 }

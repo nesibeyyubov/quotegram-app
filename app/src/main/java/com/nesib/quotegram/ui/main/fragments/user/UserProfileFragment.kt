@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.HomeAdapter
+import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentUserProfileBinding
 import com.nesib.quotegram.databinding.ReportDialogBinding
 import com.nesib.quotegram.models.Quote
@@ -26,14 +27,12 @@ import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.QuoteViewModel
 import com.nesib.quotegram.ui.viewmodels.ReportViewModel
 import com.nesib.quotegram.ui.viewmodels.UserViewModel
-import com.nesib.quotegram.utils.DataState
-import com.nesib.quotegram.utils.showToast
-import com.nesib.quotegram.utils.toFormattedNumber
+import com.nesib.quotegram.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
-    private lateinit var binding: FragmentUserProfileBinding
+class UserProfileFragment :
+    BaseFragment<FragmentUserProfileBinding>(R.layout.fragment_user_profile) {
 
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val userViewModel: UserViewModel by viewModels()
@@ -45,15 +44,13 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private var paginatingFinished = false
     private var paginationLoading = false
     private var currentPage = 1
-    private var currentUserQuotes = mutableListOf<Quote>()
+    private var quotesSize = 0
     private var currentUser: User? = null
 
     private var makeSureDialog: AlertDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentUserProfileBinding.bind(view)
-
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
@@ -63,99 +60,81 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     }
 
 
-    private fun bindData(user: User) {
-        binding.usernameTextView.text = user.username
-        binding.bioTextView.text = if (user.bio!!.isNotEmpty()) user.bio else "No bio"
-        binding.followerCountTextView.text = user.followers!!.size.toFormattedNumber()
-        binding.followingCountTextView.text =
+    private fun bindData(user: User) = with(binding) {
+        usernameTextView.text = user.username
+        bioTextView.text = if (user.bio!!.isNotEmpty()) user.bio else "No bio"
+        followerCountTextView.text = user.followers!!.size.toFormattedNumber()
+        followingCountTextView.text =
             (user.followingUsers!!.size).toFormattedNumber()
-        binding.quoteCountTextView.text = (user.totalQuoteCount ?: 0).toFormattedNumber()
+        quoteCountTextView.text = (user.totalQuoteCount ?: 0).toFormattedNumber()
         if (user.profileImage != null && user.profileImage != "") {
-            binding.userPhotoImageView.load(user.profileImage) {
+            userPhotoImageView.load(user.profileImage) {
                 error(R.drawable.user)
             }
         } else {
-            binding.userPhotoImageView.load(R.drawable.user)
+            userPhotoImageView.load(R.drawable.user)
         }
         if (user.quotes!!.isEmpty()) {
-            binding.noQuoteFoundContainer.visibility = View.VISIBLE
+            noQuoteFoundContainer.visibility = View.VISIBLE
         }
         toggleFollowButtonStyle(user.followers!!.contains(authViewModel.currentUserId))
 
         homeAdapter.setData(user.quotes!!)
     }
 
-    private fun toggleFollowButtonStyle(following: Boolean) {
-        binding.apply {
-            followButton.setBackgroundResource(if (following) R.drawable.add_quote_from_this_book_bg else R.drawable.follow_button_bg)
-            followButtonTextView.text = if (following) "Following" else "Follow"
-            followButtonTextView.setTextColor(
-                if (following) ContextCompat.getColor(
-                    requireContext(),
-                    R.color.blue
-                ) else ContextCompat.getColor(requireContext(), R.color.white)
-            )
-
-        }
+    private fun toggleFollowButtonStyle(following: Boolean) = with(binding) {
+        followButton.setBackgroundResource(if (following) R.drawable.add_quote_from_this_book_bg else R.drawable.follow_button_bg)
+        followButtonTextView.text = if (following) "Following" else "Follow"
+        followButtonTextView.setTextColor(
+            if (following) ContextCompat.getColor(
+                requireContext(),
+                R.color.blue
+            ) else ContextCompat.getColor(requireContext(), R.color.white)
+        )
     }
 
-    private fun subscribeObservers() {
+    private fun subscribeObservers() = with(binding) {
         userViewModel.user.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    if (binding.failContainer.visibility == View.VISIBLE) {
-                        binding.failContainer.visibility = View.GONE
-                    }
-                    binding.progressBar.visibility = View.GONE
-                    binding.profileContent.visibility = View.VISIBLE
-                    val user = it.data!!.user!!
-                    currentUser = user
-                    bindData(user)
-                    currentUserQuotes = user.quotes!!.toMutableList()
+                    failContainer.safeGone()
+                    progressBar.gone()
+                    profileContent.visible()
+                    currentUser = it.data!!.user!!
+                    quotesSize = currentUser!!.quotes!!.size
+                    bindData(currentUser!!)
                 }
                 is DataState.Fail -> {
-                    binding.failContainer.visibility = View.VISIBLE
-                    binding.failMessage.text = it.message
-                    binding.progressBar.visibility = View.GONE
-                    binding.profileContent.visibility = View.INVISIBLE
+                    failContainer.visible()
+                    failMessage.text = it.message
+                    progressBar.gone()
+                    profileContent.invisible()
                 }
                 is DataState.Loading -> {
-                    if (binding.failContainer.visibility == View.VISIBLE) {
-                        binding.failContainer.visibility = View.GONE
-                    }
-                    binding.progressBar.visibility = View.VISIBLE
-                    binding.profileContent.visibility = View.GONE
+                    failContainer.safeGone()
+                    profileContent.gone()
+                    progressBar.visible()
                 }
             }
         }
         userViewModel.userQuotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    if (currentUserQuotes.size == it.data!!.quotes.size) {
-                        paginatingFinished = true
-                    }
-                    binding.paginationProgressBar.visibility = View.INVISIBLE
+                    paginatingFinished = quotesSize == it.data!!.quotes.size
+                    paginationProgressBar.safeInvisible()
                     paginationLoading = false
                     homeAdapter.setData(it.data.quotes)
-                    currentUserQuotes = it.data.quotes.toMutableList()
-
+                    quotesSize = it.data.quotes.size
                 }
                 is DataState.Fail -> {
-                    binding.paginationProgressBar.visibility = View.INVISIBLE
-                    showToast(it.message!!)
+                    paginationProgressBar.invisible()
+                    showToast(it.message)
                     paginationLoading = false
                 }
                 is DataState.Loading -> {
                     if (paginationLoading) {
-                        binding.paginationProgressBar.visibility = View.VISIBLE
+                        paginationProgressBar.visible()
                     }
-                }
-            }
-        }
-        userViewModel.userFollow.observe(viewLifecycleOwner) {
-            when (it) {
-                is DataState.Fail -> {
-                    showToast(it.message)
                 }
             }
         }
@@ -225,7 +204,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
             intent.action = Intent.ACTION_SEND
             intent.type = "text/plain"
             intent.putExtra(Intent.EXTRA_TEXT, quote.quote + "\n\n#Quotegram App")
-            val shareIntent = Intent.createChooser(intent,"Share Quote")
+            val shareIntent = Intent.createChooser(intent, "Share Quote")
             startActivity(shareIntent)
 
         }
@@ -235,7 +214,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
             if (scrollY > oldScrollY) {
                 val notReachedBottom = v.canScrollVertically(1)
 
-                if (!notReachedBottom && !paginationLoading && currentUserQuotes.size >= 2 && !paginatingFinished) {
+                if (!notReachedBottom && !paginationLoading && quotesSize >= 2 && !paginatingFinished) {
                     currentPage++
                     paginationLoading = true
                     userViewModel.getMoreUserQuotes(args.userId, currentPage)
@@ -254,9 +233,9 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
             notNowButton.setOnClickListener { makeSureDialog!!.dismiss() }
             reportButton.setOnClickListener {
                 makeSureDialog!!.setCancelable(false)
-                binding.reportProgressBar.visibility = View.VISIBLE
-                binding.reportButton.visibility = View.INVISIBLE
-                binding.notNowButton.isEnabled = false
+                reportProgressBar.invisible()
+                reportButton.invisible()
+                notNowButton.isEnabled = false
                 reportViewModel.reportUser(authViewModel.currentUserId ?: "", args.userId)
             }
         }
@@ -274,6 +253,8 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    override fun createBinding(view: View) = FragmentUserProfileBinding.bind(view)
 
 
 }

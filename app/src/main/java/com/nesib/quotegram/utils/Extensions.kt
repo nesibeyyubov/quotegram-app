@@ -108,6 +108,24 @@ fun View.gone() {
     visibility = View.GONE
 }
 
+fun View.safeInvisible() {
+    if (isVisible()) {
+        this.invisible()
+    }
+}
+
+fun View.safeVisible() {
+    if (!isVisible()) {
+        this.visible()
+    }
+}
+
+fun View.safeGone() {
+    if (isVisible()) {
+        this.gone()
+    }
+}
+
 fun List<View>.visible() {
     this.forEach {
         it.visible()
@@ -125,3 +143,5 @@ fun List<View>.gone() {
         it.gone()
     }
 }
+
+fun View.isVisible() = this.visibility == View.VISIBLE

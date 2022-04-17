@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
-    android:background="@drawable/full_post_bg"
-    android:padding="10dp">
+    android:background="@drawable/full_post_bg">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userImage"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/user"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,15 +21,14 @@
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
         android:includeFontPadding="false"
+        android:paddingStart="10dp"
         android:text="Jane Doe"
         android:textColor="@color/colorPrimaryText"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/userImage"
         app:layout_constraintStart_toEndOf="@+id/userImage"
         app:layout_constraintTop_toTopOf="@+id/userImage" />
-
 
 
     <ImageButton
@@ -53,6 +53,7 @@
         android:id="@+id/bookQuoteTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
         android:includeFontPadding="false"
         android:text="Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking."
@@ -62,7 +63,6 @@
         app:layout_constraintHorizontal_bias="0.157"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
-
 
 
     <View
@@ -79,9 +79,9 @@
         android:id="@+id/likeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingRight="8dp"
-        android:background="@android:color/transparent"
+        android:background="?attr/actionBarItemBackground"
+        android:clickable="true"
+        android:padding="6dp"
         android:src="@drawable/ic_like"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view3" />
@@ -90,8 +90,9 @@
         android:id="@+id/like_count_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="27"
         android:layout_marginTop="5dp"
+        android:includeFontPadding="false"
+        android:text="27"
         android:textColor="@color/colorPrimaryText"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/likeBtn"
@@ -99,25 +100,28 @@
         app:layout_constraintTop_toTopOf="@+id/likeBtn" />
 
     <ImageButton
-        android:layout_marginLeft="10dp"
-        android:paddingHorizontal="8dp"
         android:id="@+id/shareBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:layout_marginLeft="5dp"
+        android:background="?attr/actionBarItemBackground"
+        android:clickable="true"
+        android:padding="6dp"
         android:src="@drawable/ic_share"
         android:tint="@color/colorPrimaryText"
-        app:layout_constraintBottom_toBottomOf="@+id/like_count_textView"
+        app:layout_constraintBottom_toBottomOf="@+id/likeBtn"
         app:layout_constraintStart_toEndOf="@+id/like_count_textView"
-        app:layout_constraintTop_toTopOf="@+id/like_count_textView" />
+        app:layout_constraintTop_toTopOf="@+id/likeBtn" />
 
     <ImageButton
-        android:paddingHorizontal="10dp"
-        android:layout_marginLeft="6dp"
         android:id="@+id/downloadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:layout_marginLeft="5dp"
+        android:background="?attr/actionBarItemBackground"
+        android:clickable="true"
+        android:padding="6dp"
+        android:paddingHorizontal="10dp"
         android:src="@drawable/ic_download"
         android:tint="@color/colorPrimaryText"
         app:layout_constraintBottom_toBottomOf="@+id/shareBtn"
