@@ -11,18 +11,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.SearchUserAdapter
+import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentSearchUsersBinding
 import com.nesib.quotegram.models.User
+import com.nesib.quotegram.ui.main.MainActivity
 import com.nesib.quotegram.ui.viewmodels.SharedViewModel
 import com.nesib.quotegram.ui.viewmodels.UserViewModel
 import com.nesib.quotegram.utils.DataState
+import com.nesib.quotegram.utils.Utils
 import com.nesib.quotegram.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
+class SearchUsersFragment :
+    BaseFragment<FragmentSearchUsersBinding>(R.layout.fragment_search_users) {
     private val searchAdapter by lazy { SearchUserAdapter() }
-    private lateinit var binding: FragmentSearchUsersBinding
     private val userViewModel: UserViewModel by viewModels({ requireParentFragment() })
     private val sharedViewModel: SharedViewModel by viewModels({ requireActivity() })
 
@@ -31,19 +34,23 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
     private var currentPage = 1
     private var paginatingFinished = false
     private var paginationLoading = false
-    private var currentUsers: List<User>? = null
+    private var usersSize = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSearchUsersBinding.bind(view)
         setupRecyclerView()
         subscribeObservers()
     }
 
     private fun setupRecyclerView() {
         searchAdapter.onUserClickListener = { user ->
-            val action = SearchFragmentDirections.actionSearchFragmentToUserProfileFragment(user.id)
+            if (sharedViewModel.searchTextUser.value?.isNotEmpty() == true) {
+                (requireActivity() as MainActivity).dismissSearchKeyboard()
+            }
+            val action =
+                SearchFragmentDirections.actionSearchFragmentToUserProfileFragment(user.id)
             findNavController().navigate(action)
+
         }
         val mLayoutManager = LinearLayoutManager(requireContext())
         binding.searchUsersRecyclerView.apply {
@@ -53,7 +60,7 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     if (dy > 0) {
-                        if (!paginatingFinished && mLayoutManager.findLastCompletelyVisibleItemPosition() == (currentUsers!!.size - 1) && !paginationLoading) {
+                        if (!paginatingFinished && mLayoutManager.findLastCompletelyVisibleItemPosition() == (usersSize - 1) && !paginationLoading) {
                             currentPage++
                             paginationLoading = true
                             userViewModel.getUsers(currentSearchText, true, currentPage)
@@ -74,7 +81,7 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
                         paginatingFinished = true
                         binding.noUserFound.visibility = View.VISIBLE
                     }
-                    currentUsers = it.data.users
+                    usersSize = it.data.users.size
                     searchAdapter.setData(it.data.users)
                 }
                 is DataState.Fail -> {
@@ -97,5 +104,7 @@ class SearchUsersFragment : Fragment(R.layout.fragment_search_users) {
             }
         }
     }
+
+    override fun createBinding(view: View) = FragmentSearchUsersBinding.bind(view)
 
 }

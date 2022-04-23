@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.nesib.quotegram.R
+import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentSettingsBinding
 import com.nesib.quotegram.utils.Constants
 import com.nesib.quotegram.utils.Constants.KEY_THEME
@@ -19,8 +20,7 @@ import javax.inject.Named
 
 
 @AndroidEntryPoint
-class SettingsFragment : Fragment(R.layout.fragment_settings) {
-    private lateinit var binding: FragmentSettingsBinding
+class SettingsFragment : BaseFragment<FragmentSettingsBinding>(R.layout.fragment_settings) {
 
     @Inject
     @Named("themeSharedPreferences")
@@ -30,7 +30,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSettingsBinding.bind(view)
         setupUi()
         setupClickListeners()
 
@@ -53,7 +52,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 } catch (e: Exception) {
                     showToast("Something went wrong,please try again later")
                 }
-            }else{
+            } else {
                 showToast("Contact field cannot be empty")
             }
         }
@@ -110,4 +109,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             }
         }
     }
+
+    override fun createBinding(view: View) = FragmentSettingsBinding.bind(view)
 }

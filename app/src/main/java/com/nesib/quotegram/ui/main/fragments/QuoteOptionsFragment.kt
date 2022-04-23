@@ -84,33 +84,27 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
                         bundleOf(KEY_DELETED_QUOTE to deletedQuote)
                     )
                     findNavController().popBackStack()
-                    makeSureDialog!!.dismiss()
+                    makeSureDialog?.dismiss()
                     showToast("Deleted quote successfully")
                 }
                 is DataState.Fail -> {
                     findNavController().popBackStack()
-                    makeSureDialog!!.dismiss()
+                    makeSureDialog?.dismiss()
                     showToast(it.message)
-                }
-                is DataState.Loading -> {
-
                 }
             }
         }
-        reportViewModel.report.observe(viewLifecycleOwner){
-            when(it){
+        reportViewModel.report.observe(viewLifecycleOwner) {
+            when (it) {
                 is DataState.Success -> {
                     showToast("Reported successfully!")
                     makeSureDialog?.dismiss()
                     findNavController().popBackStack()
                 }
-                is DataState.Fail->{
+                is DataState.Fail -> {
                     makeSureDialog?.dismiss()
                     findNavController().popBackStack()
                     showToast(it.message)
-                }
-                is DataState.Loading->{
-
                 }
             }
         }
@@ -123,11 +117,11 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
         makeSureDialog = AlertDialog.Builder(requireContext()).setView(binding.root).create()
         makeSureDialog!!.show()
 
-        binding.apply {
+        with(binding) {
             notDeleteButton.setOnClickListener { makeSureDialog!!.dismiss() }
             deleteButton.setOnClickListener {
                 deletedQuote = quote
-                makeSureDialog!!.setCancelable(false)
+                makeSureDialog?.setCancelable(false)
                 binding.deleteProgressBar.visibility = View.VISIBLE
                 binding.deleteButton.visibility = View.INVISIBLE
                 binding.notDeleteButton.isEnabled = false
@@ -136,11 +130,11 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
         }
     }
 
-    private fun showMakeSureDialogForReport(quote: Quote,reportQuote:Boolean) {
+    private fun showMakeSureDialogForReport(quote: Quote, reportQuote: Boolean) {
         val view = layoutInflater.inflate(R.layout.report_dialog, null, false)
         val binding = ReportDialogBinding.bind(view)
         makeSureDialog = AlertDialog.Builder(requireContext()).setView(binding.root).create()
-        makeSureDialog!!.show()
+        makeSureDialog?.show()
 
         binding.apply {
             notNowButton.setOnClickListener { makeSureDialog!!.dismiss() }
@@ -149,10 +143,13 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 binding.reportProgressBar.visibility = View.VISIBLE
                 binding.reportButton.visibility = View.INVISIBLE
                 binding.notNowButton.isEnabled = false
-                if(reportQuote){
-                    reportViewModel.reportQuote(authViewModel.currentUserId ?: "",quote.id)
-                }else{
-                    reportViewModel.reportUser(authViewModel.currentUserId ?: "",quote.creator!!.id)
+                if (reportQuote) {
+                    reportViewModel.reportQuote(authViewModel.currentUserId ?: "", quote.id)
+                } else {
+                    reportViewModel.reportUser(
+                        authViewModel.currentUserId ?: "",
+                        quote.creator!!.id
+                    )
                 }
             }
         }
@@ -173,12 +170,12 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 findNavController().navigate(action)
             }
             R.id.reportUser -> {
-                showMakeSureDialogForReport(args.quote,false)
+                showMakeSureDialogForReport(args.quote, false)
             }
             R.id.reportQuote -> {
-                showMakeSureDialogForReport(args.quote,true)
+                showMakeSureDialogForReport(args.quote, true)
             }
-            R.id.deleteQuote->{
+            R.id.deleteQuote -> {
                 showMakeSureDialog(args.quote)
             }
         }

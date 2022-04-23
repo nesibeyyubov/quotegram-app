@@ -117,6 +117,7 @@ class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>(R.layout.fragment
                         KEY_NEW_QUOTE,
                         bundleOf(KEY_NEW_QUOTE to it.data!!.quote)
                     )
+                    binding.quoteEditText.unFocusWithKeyboard()
                     findNavController().popBackStack()
                     toggleProgressBar(false)
                 }
@@ -136,6 +137,7 @@ class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>(R.layout.fragment
                         KEY_UPDATED_QUOTE,
                         bundleOf(KEY_UPDATED_QUOTE to updatedQuote)
                     )
+                    binding.quoteEditText.unFocusWithKeyboard()
                     findNavController().popBackStack()
                     toggleProgressBar(false)
                 }

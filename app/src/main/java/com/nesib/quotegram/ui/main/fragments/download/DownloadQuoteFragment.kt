@@ -25,6 +25,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.ColorBoxAdapter
+import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentDownloadQuoteBinding
 import com.nesib.quotegram.databinding.RationaleDialogLayoutBinding
 import com.nesib.quotegram.utils.showToast
@@ -33,11 +34,11 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 
-class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
+class DownloadQuoteFragment :
+    BaseFragment<FragmentDownloadQuoteBinding>(R.layout.fragment_download_quote) {
     private var photoBitmap: Bitmap? = null
     private var imageUri: Uri? = null
     private var imageFileName: String? = ""
-    private lateinit var binding: FragmentDownloadQuoteBinding
     private val args by navArgs<DownloadQuoteFragmentArgs>()
     private val photoStyleColors =
         listOf("#1B1B1B", "#F2F2F2", "#DCEBFE", "#C7FFCE", "#FFD1EA", "#FFF9AB")
@@ -58,7 +59,6 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentDownloadQuoteBinding.bind(view)
         setHasOptionsMenu(true)
         setupClickListeners()
         setupUi()
@@ -66,7 +66,7 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
     }
 
     private fun setupRecyclerView() {
-        colorAdapter.onColorBoxClickedListener = {view,color->
+        colorAdapter.onColorBoxClickedListener = { view, color ->
             view.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.scale_anim))
             binding.photoContainer.setBackgroundColor(Color.parseColor(color))
             if (photoStyleColors.indexOf(color) == 0) {
@@ -80,14 +80,15 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
                 binding.quoteText.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.colorPrimaryOnLight
+                        R.color.black
                     )
                 )
             }
         }
         binding.colorRecyclerView.apply {
             adapter = colorAdapter
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
 
     }
@@ -95,29 +96,27 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
     private fun requestStoragePermission() =
         requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
 
-    private fun setupUi() {
-        binding.textSizeSlider.value = 18f
+    private fun setupUi() = with(binding) {
+        textSizeSlider.value = 18f
         if (args.quoteText!!.length in 181..239) {
-            binding.textSizeSlider.valueTo = 18.toFloat()
-            binding.textSizeSlider.value = 16f
+            textSizeSlider.valueTo = 18.toFloat()
+            textSizeSlider.value = 16f
         }
         if (args.quoteText!!.length in 240..300) {
-            binding.textSizeSlider.valueTo = 16.toFloat()
-            binding.textSizeSlider.value = 14f
+            textSizeSlider.valueTo = 16.toFloat()
+            textSizeSlider.value = 14f
         }
         if (args.quoteText!!.length > 300) {
-            binding.textSizeSlider.valueTo = 14.toFloat()
-            binding.textSizeSlider.value = 12f
+            textSizeSlider.valueTo = 14.toFloat()
+            textSizeSlider.value = 12f
         }
-        binding.apply {
-            quoteText.text = args.quoteText
-        }
+        quoteText.text = args.quoteText
     }
 
-    private fun setupClickListeners() {
-        binding.textSizeSlider.addOnChangeListener { slider, value, fromUser ->
-            binding.sliderValueText.text = value.toInt().toString()
-            binding.quoteText.setTextSize(TypedValue.COMPLEX_UNIT_SP, value)
+    private fun setupClickListeners() = with(binding){
+        textSizeSlider.addOnChangeListener { slider, value, fromUser ->
+            sliderValueText.text = value.toInt().toString()
+            quoteText.setTextSize(TypedValue.COMPLEX_UNIT_SP, value)
         }
     }
 
@@ -228,7 +227,7 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
             if (shouldShowRequestPermissionRationale(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 rationaleDialog.show()
             } else {
-                showToast("Image not saved,because you denied the permission")
+                showToast("Image not saved, because you denied the permission")
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -246,6 +245,8 @@ class DownloadQuoteFragment : Fragment(R.layout.fragment_download_quote) {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    override fun createBinding(view: View) = FragmentDownloadQuoteBinding.bind(view)
 
 
 }

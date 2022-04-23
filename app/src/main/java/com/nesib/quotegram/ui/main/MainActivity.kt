@@ -3,6 +3,7 @@ package com.nesib.quotegram.ui.main
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -102,6 +103,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    fun dismissSearchKeyboard() {
+        Utils.hideKeyboard(binding.searchInput)
+    }
+
     private fun setupDrawerNavChangeListener() {
         binding.drawerNavigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -158,13 +163,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Quotegram")
             var shareMessage =
-                "\nLet me recommend you this cool application,which is for book and quote lovers\n\n"
+                "\nLet me recommend you this cool application, which is for quote lovers\n\n"
             shareMessage =
                 shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "\n\n";
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
             startActivity(Intent.createChooser(shareIntent, "Choose one"))
         } catch (e: Exception) {
-            showToast("Some error happened,please try again")
+            showToast("Some error happened, please try again")
         }
     }
 
@@ -209,6 +214,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setupBottomNavChangeListeners() {
         navController.addOnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
+            currentFocus?.let { Utils.hideKeyboard(it) }
             when (navDestination.id) {
                 R.id.homeFragment -> {
                     binding.toolbarText.text = "Quotes"

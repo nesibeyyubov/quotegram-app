@@ -87,6 +87,10 @@ fun EditText.focusWithKeyboard() {
     }
 }
 
+fun EditText.unFocusWithKeyboard() {
+    toggleKeyboard(isVisible = false, this, context)
+}
+
 fun TextView.showError(message: String) {
     this.visibility = View.VISIBLE
     this.text = message

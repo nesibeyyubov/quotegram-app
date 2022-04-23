@@ -10,7 +10,6 @@ class ViewPagerPagination<T>(private val items: List<T>, val listener: (currentP
 
     override fun onPageSelected(position: Int) {
         if (position + 1 == items.size) {
-            Log.d("mytag", "pagination time: ${position + 1}")
             currentPage++
             listener.invoke(currentPage)
             loading = true

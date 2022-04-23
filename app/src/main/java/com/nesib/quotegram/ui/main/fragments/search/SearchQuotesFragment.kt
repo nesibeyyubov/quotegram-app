@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.HomeAdapter
+import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentSearchQuotesBinding
 import com.nesib.quotegram.models.Quote
 import com.nesib.quotegram.ui.main.MainActivity
@@ -26,8 +27,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
-    private lateinit var binding: FragmentSearchQuotesBinding
+class SearchQuotesFragment :
+    BaseFragment<FragmentSearchQuotesBinding>(R.layout.fragment_search_quotes) {
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val quoteViewModel: QuoteViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
@@ -43,7 +44,6 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSearchQuotesBinding.bind(view)
         setHasOptionsMenu(true)
         setupRecyclerView()
         subscribeObservers()
@@ -192,4 +192,6 @@ class SearchQuotesFragment : Fragment(R.layout.fragment_search_quotes) {
         }
         return text
     }
+
+    override fun createBinding(view: View) = FragmentSearchQuotesBinding.bind(view)
 }
