@@ -47,7 +47,7 @@ class SplashPagerAdapter :
         }
     }
 
-    override fun onBindViewHolder(holder: SplashPagerAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(fragments[position])
     }
 

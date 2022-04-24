@@ -10,16 +10,16 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.SplashPagerAdapter
+import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentSplashBinding
 import com.nesib.quotegram.ui.on_boarding.StartActivity
+import com.nesib.quotegram.utils.Constants
 import com.nesib.quotegram.utils.gone
 import com.nesib.quotegram.utils.visible
 
-class SplashFragment : Fragment(R.layout.fragment_splash) {
-    private lateinit var binding: FragmentSplashBinding
+class SplashFragment : BaseFragment<FragmentSplashBinding>(R.layout.fragment_splash) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSplashBinding.bind(view)
         directToLoginOrSignup()
         setupClickListeners()
         setupViewPager()
@@ -71,8 +71,10 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
     }
 
     private fun directToLoginOrSignup() {
-        val directToLogin = requireActivity().intent.getBooleanExtra("directToLogin", false)
-        val directToSignup = requireActivity().intent.getBooleanExtra("directToSignup", false)
+        val directToLogin =
+            requireActivity().intent.getBooleanExtra(Constants.TEXT_DIRECT_TO_LOGIN, false)
+        val directToSignup =
+            requireActivity().intent.getBooleanExtra(Constants.TEXT_DIRECT_TO_SIGNUP, false)
         if (directToLogin) {
             requireActivity().intent = Intent()
             findNavController().navigate(R.id.loginFragment)
@@ -81,4 +83,6 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
             findNavController().navigate(R.id.signupFragment)
         }
     }
+
+    override fun createBinding(view: View) = FragmentSplashBinding.bind(view)
 }

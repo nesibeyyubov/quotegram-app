@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.chip.Chip
 import com.nesib.quotegram.R
+import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentSelectCategoriesBinding
 import com.nesib.quotegram.ui.main.MainActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
@@ -17,18 +18,17 @@ import com.nesib.quotegram.utils.DataState
 import com.nesib.quotegram.utils.invisible
 import java.util.*
 
-class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
-    private lateinit var binding: FragmentSelectCategoriesBinding
+class SelectCategoriesFragment :
+    BaseFragment<FragmentSelectCategoriesBinding>(R.layout.fragment_select_categories) {
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
     private val args by navArgs<SelectCategoriesFragmentArgs>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSelectCategoriesBinding.bind(view)
         binding.pbButton.setOnClickListener {
             saveGenres()
         }
         binding.welcomeUserName.text = "Hi, ${args.username ?: "Guest"}"
-        binding.tvInfo.text = getString(R.string.txt_genre_warning, Constants.MIN_GENRE_COUNT)
+        binding.tvWarning.text = getString(R.string.txt_genre_warning, Constants.MIN_GENRE_COUNT)
 
         subscribeObservers()
     }
@@ -36,7 +36,7 @@ class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
     private fun saveGenres() {
         val checkedIds = binding.chipGroup.checkedChipIds
         if (checkedIds.size >= Constants.MIN_GENRE_COUNT) {
-            binding.warningText.invisible()
+            binding.tvWarning.invisible()
             var genres = ""
             var index = 0
             checkedIds.forEach { checkedId ->
@@ -77,4 +77,6 @@ class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
             }
         }
     }
+
+    override fun createBinding(view: View) = FragmentSelectCategoriesBinding.bind(view)
 }

@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDestination
 import com.nesib.quotegram.R
+import com.nesib.quotegram.utils.Constants.MIN_PASSWORD_LENGTH
+import com.nesib.quotegram.utils.Constants.MIN_USERNAME_LENGTH
 import java.util.*
 
 fun Context.showToast(message: String) {
@@ -40,11 +42,11 @@ fun String.isEmail(): Boolean {
 }
 
 fun String.isValidPassword(): Boolean {
-    return this.length >= 5
+    return this.length >= MIN_PASSWORD_LENGTH
 }
 
 fun String.isValidUsername(): Boolean {
-    return this.length >= 5
+    return this.length >= MIN_USERNAME_LENGTH
 }
 
 fun Int.toFormattedNumber(): String {

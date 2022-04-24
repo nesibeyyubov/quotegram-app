@@ -134,7 +134,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         intent.data = Uri.parse(Constants.PRIVACY_POLICY_URL)
                         startActivity(intent)
                     } catch (e: Exception) {
-                        showToast(e.message ?: "Something went wrong")
+                        showToast(e.message ?: getString(R.string.smthng_went_wrong))
                     }
                 }
                 R.id.drawer_review -> {
@@ -169,7 +169,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
             startActivity(Intent.createChooser(shareIntent, "Choose one"))
         } catch (e: Exception) {
-            showToast("Some error happened, please try again")
+            showToast(getString(R.string.smthng_went_wrong))
         }
     }
 
@@ -217,7 +217,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             currentFocus?.let { Utils.hideKeyboard(it) }
             when (navDestination.id) {
                 R.id.homeFragment -> {
-                    binding.toolbarText.text = "Quotes"
+                    binding.toolbarText.text = getString(R.string.title_quotes)
                     if (!binding.fabAddButton.isShown) {
                         binding.fabAddButton.show()
                     }
@@ -227,39 +227,38 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.searchFragment -> with(binding) {
                     toolbarMainActivity.navigationIcon = null
-                    toolbarText.text = "Discover"
-                    searchInputContainer.visibility = View.VISIBLE
-                    toolbarText.visibility = View.GONE
+                    searchInputContainer.visible()
+                    toolbarText.gone()
                 }
                 R.id.editUserFragment -> {
-                    binding.toolbarText.text = "Edit User"
+                    binding.toolbarText.text = getString(R.string.title_edit_user)
                 }
                 R.id.quoteFragment -> {
-                    binding.toolbarText.text = "Quote"
+                    binding.toolbarText.text = getString(R.string.title_quote)
                 }
                 R.id.notificationsFragment -> {
-                    binding.toolbarText.text = "Notifications"
+                    binding.toolbarText.text = getString(R.string.title_notifications)
                 }
                 R.id.downloadQuoteFragment -> {
-                    binding.toolbarText.text = "Download"
+                    binding.toolbarText.text = getString(R.string.title_download)
                 }
                 R.id.myProfileFragment -> {
-                    binding.toolbarText.text = "Your Profile"
+                    binding.toolbarText.text = getString(R.string.title_your_profile)
                 }
                 R.id.searchQuotesFragment -> {
                     binding.toolbarText.text = sharedViewModel.toolbarText
                 }
                 R.id.settingsFragment -> {
-                    binding.toolbarText.text = "Settings"
+                    binding.toolbarText.text = getString(R.string.title_settings)
                 }
                 R.id.userProfileFragment -> {
-                    binding.toolbarText.text = "User Profile"
+                    binding.toolbarText.text = getString(R.string.title_user_profile)
                 }
             }
 
             if (navDestination.id != R.id.searchFragment) {
-                binding.searchInputContainer.visibility = View.GONE
-                binding.toolbarText.visibility = View.VISIBLE
+                binding.searchInputContainer.gone()
+                binding.toolbarText.visible()
             }
 
             if (navDestination.isRootScreen()) {

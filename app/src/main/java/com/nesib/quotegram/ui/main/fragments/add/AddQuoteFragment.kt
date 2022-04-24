@@ -49,25 +49,29 @@ class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>(R.layout.fragment
                 val selectedGenre = binding.genreSpinner.selectedItem.toString()
                     .toLowerCase(Locale.ROOT)
 
-                if (quote.length < 15) {
+                if (quote.length < MIN_QUOTE_LENGTH) {
                     binding.addQuoteErrorTextView.visibility = View.VISIBLE
-                    binding.addQuoteErrorTextView.text =
-                        "Quote length should be between ${MIN_QUOTE_LENGTH} characters"
-                } else if (quote.length > 500) {
+                    binding.addQuoteErrorTextView.text = getString(
+                        R.string.quote_name_validation,
+                        MIN_QUOTE_LENGTH
+                    )
+                } else if (quote.length > MAX_QUOTE_LENGTH) {
                     binding.addQuoteErrorTextView.visibility = View.VISIBLE
-                    binding.addQuoteErrorTextView.text =
-                        "Quote length shouldn't be more than ${MAX_QUOTE_LENGTH} characters"
+                    binding.addQuoteErrorTextView.text = getString(
+                        R.string.quote_name_validation_max,
+                        MAX_QUOTE_LENGTH
+                    )
                 } else if (selectedGenre == resources.getString(R.string.no_genre)
                         .toLowerCase(
                             Locale.ROOT
                         )
                 ) {
                     binding.addQuoteErrorTextView.visibility = View.VISIBLE
-                    binding.addQuoteErrorTextView.text = "Please select a quote genre"
+                    binding.addQuoteErrorTextView.text = getString(R.string.pls_select_genre)
                 } else {
                     binding.addQuoteErrorTextView.visibility = View.INVISIBLE
                     val newQuote =
-                        mapOf("quote" to quote, "genre" to selectedGenre)
+                        mapOf(KEY_QUOTE to quote, KEY_GENRE to selectedGenre)
                     quoteViewModel.postQuote(newQuote)
                 }
             } else {
@@ -78,7 +82,7 @@ class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>(R.layout.fragment
         genreSpinner.adapter = SpinnerAdapter(requireContext(), genres)
         if (args.quote != null) {
             val quote = args.quote
-            addBtnTextView.text = "Update"
+            addBtnTextView.text = getString(R.string.txt_update)
             quoteEditText.setText(quote?.quote)
             val genresArray = resources.getStringArray(R.array.quote_genres)
             val genreIndex = genresArray.indexOf(
@@ -112,7 +116,7 @@ class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>(R.layout.fragment
         quoteViewModel.quote.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    showToast("Quote added !")
+                    showToast(getString(R.string.action_quote_addad))
                     parentFragmentManager.setFragmentResult(
                         KEY_NEW_QUOTE,
                         bundleOf(KEY_NEW_QUOTE to it.data!!.quote)

@@ -48,12 +48,12 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(R.layout.fragment
                 i.putExtra(Intent.EXTRA_SUBJECT, "Contact with developer")
                 i.putExtra(Intent.EXTRA_TEXT, contactText)
                 try {
-                    startActivity(Intent.createChooser(i, "Select one"))
+                    startActivity(Intent.createChooser(i, getString(R.string.select_one)))
                 } catch (e: Exception) {
-                    showToast("Something went wrong,please try again later")
+                    showToast(getString(R.string.smthng_went_wrong))
                 }
             } else {
-                showToast("Contact field cannot be empty")
+                showToast(getString(R.string.contact_not_empty))
             }
         }
         binding.themeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

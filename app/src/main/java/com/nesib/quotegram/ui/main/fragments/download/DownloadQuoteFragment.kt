@@ -113,7 +113,7 @@ class DownloadQuoteFragment :
         quoteText.text = args.quoteText
     }
 
-    private fun setupClickListeners() = with(binding){
+    private fun setupClickListeners() = with(binding) {
         textSizeSlider.addOnChangeListener { slider, value, fromUser ->
             sliderValueText.text = value.toInt().toString()
             quoteText.setTextSize(TypedValue.COMPLEX_UNIT_SP, value)
@@ -173,7 +173,7 @@ class DownloadQuoteFragment :
         }
         fos?.use {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
-            showToast("Downloaded image successfully !")
+            showToast(getString(R.string.image_downloaded_successfully))
             showImageDownloadedNotification()
         }
     }
@@ -188,14 +188,14 @@ class DownloadQuoteFragment :
 
         val notification = if (Build.VERSION.SDK_INT > 26) {
             NotificationCompat.Builder(requireContext(), "download_image")
-                .setContentTitle("Downloaded Image")
+                .setContentTitle(getString(R.string.image_downloaded))
                 .setContentText(imageFileName)
                 .setSmallIcon(R.drawable.ic_download_complete)
                 .setContentIntent(pendingIntent)
                 .build()
         } else {
             NotificationCompat.Builder(requireContext())
-                .setContentTitle("Downloaded Image")
+                .setContentTitle(getString(R.string.image_downloaded))
                 .setContentText(imageFileName)
                 .setSmallIcon(R.drawable.ic_download_complete)
                 .setContentIntent(pendingIntent)
@@ -227,7 +227,7 @@ class DownloadQuoteFragment :
             if (shouldShowRequestPermissionRationale(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 rationaleDialog.show()
             } else {
-                showToast("Image not saved, because you denied the permission")
+                showToast(getString(R.string.image_access_denied))
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

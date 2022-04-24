@@ -113,6 +113,8 @@
 
     <!--    App Strings  -->
 
+    <!--  COMMON  -->
+    <string name="smthng_went_wrong">Something went wrong, please try again</string>
 
     <!--    On Boarding-->
     <string name="txt_welcome">Welcome</string>
@@ -137,4 +139,53 @@
     <string name="txt_select_genre">Please select a quote genre you want to get quote from</string>
     <string name="txt_genre_warning">You should select at least %d genres</string>
     <string name="txt_continue">Continue</string>
+
+    <string name="error_empty_username">Username can\'t be empty</string>
+    <string name="error_username">Username should at least be %d characters</string>
+    <string name="error_password">Password should at least be %d characters</string>
+    <string name="error_empty_password">Password shouldn\'t be empty</string>
+
+
+    <!--  MAIN  -->
+    <string name="txt_share">Share</string>
+    <string name="txt_save">Save</string>
+    <string name="txt_quotes">Quotes</string>
+    <string name="report_quote">Report quote</string>
+    <string name="report_user">Report user</string>
+    <string name="edit_quote">Edit quote</string>
+    <string name="delete_quote">Delete quote</string>
+    <string name="users">Users</string>
+    <string name="txt_following">Following</string>
+    <string name="txt_follow">Follow</string>
+    <string name="txt_not_following">Not following</string>
+    <string name="txt_followers">Followers</string>
+    <string name="no_quotes_found_in_user">No quotes found from \nthis user</string>
+    <string name="txt_add">Add</string>
+    <string name="author_warning">Please consider adding author of quote</string>
+    <string name="notification_description">%d people liked the quote you added</string>
+    <string name="txt_clear_all">Clear all</string>
+    <string name="txt_photo_style">Photo style</string>
+    <string name="txt_text_size">Text size</string>
+    <string name="txt_update">Update</string>
+
+    <string name="action_quote_addad">Quote added !</string>
+    <string name="pls_select_genre">Please select a quote genre.</string>
+    <string name="image_downloaded_successfully">Image downloaded successfully !</string>
+    <string name="image_downloaded">Image downloaded !</string>
+    <string name="image_access_denied">Image not saved, because you denied the permission</string>
+    <string name="contact_not_empty">Contact field cannot be empty</string>
+    <string name="select_one">Select one</string>
+
+    <!--  TOOLBAR  -->
+    <string name="title_quotes">Quotes</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_your_profile">Your profile</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_user_profile">User profile</string>
+    <string name="title_download">Download</string>
+    <string name="title_edit_user">Edit user</string>
+    <string name="title_quote">Quote</string>
+
+    <string name="quote_name_validation">Quote length should be between %d characters</string>
+    <string name="quote_name_validation_max">Quote length shouldn\'t be more than %d characters</string>
 </resources>

@@ -39,8 +39,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
             binding.viewPager
         ) { tab: TabLayout.Tab, i: Int ->
             tab.text = when (i) {
-                0 -> "Quotes"
-                1 -> "Users"
+                0 -> getString(R.string.txt_quotes)
+                1 -> getString(R.string.users)
                 else -> ""
             }
         }.attach()

@@ -18,6 +18,8 @@ import com.nesib.quotegram.models.UserAuth
 import com.nesib.quotegram.ui.on_boarding.StartActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.utils.*
+import com.nesib.quotegram.utils.Constants.MIN_PASSWORD_LENGTH
+import com.nesib.quotegram.utils.Constants.MIN_USERNAME_LENGTH
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.random.Random
@@ -55,9 +57,9 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
         val username = usernameEditText.text.toString()
         val password = passwordEditText.text.toString()
         if (!username.isValidUsername()) {
-            signupErrorTextView.showError("Username should at least be 5 characters")
+            signupErrorTextView.showError(getString(R.string.error_username, MIN_USERNAME_LENGTH))
         } else if (!password.isValidPassword()) {
-            signupErrorTextView.showError("Password should at least be 5 characters")
+            signupErrorTextView.showError(getString(R.string.error_password, MIN_PASSWORD_LENGTH))
         } else {
             authViewModel.signup(username, password)
         }
@@ -78,8 +80,8 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
                 username,
                 profileImage ?: ""
             )
-        }else{
-            binding.signupErrorTextView.showError("Something went wrong, please try again later")
+        } else {
+            binding.signupErrorTextView.showError(getString(R.string.smthng_went_wrong))
         }
     }
 
@@ -93,7 +95,7 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
                         signupWithGoogle(account)
                     }
                 } catch (e: Exception) {
-                    signupErrorTextView.showError("Something went wrong, please try again later")
+                    signupErrorTextView.showError(getString(R.string.smthng_went_wrong))
                 }
             }
     }

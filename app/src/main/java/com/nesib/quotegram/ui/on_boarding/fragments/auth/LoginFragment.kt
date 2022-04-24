@@ -68,8 +68,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     private fun signinWithGoogleFailed() = with(binding) {
         signingInWithGoogle = false
         loginErrorTextView.visible()
-        loginErrorTextView.text =
-            "Something went wrong, please try again"
+        loginErrorTextView.text = getString(R.string.smthng_went_wrong)
+
     }
 
     private fun setupClickListeners() = with(binding) {
@@ -78,10 +78,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
             val passwordValue = passwordEditText.text.toString()
             if (usernameValue.isEmpty()) {
                 loginErrorTextView.visible()
-                loginErrorTextView.text = "Username can't be empty"
+                loginErrorTextView.text = getString(R.string.error_empty_username)
             } else if (passwordValue.isEmpty()) {
                 loginErrorTextView.visible()
-                loginErrorTextView.text = "Password shouldn't be empty"
+                loginErrorTextView.text = getString(R.string.error_empty_password)
             } else {
                 authViewModel.login(usernameValue, passwordValue)
             }

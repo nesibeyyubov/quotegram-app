@@ -15,6 +15,8 @@ object Constants {
     const val MIN_GENRE_COUNT = 3
     const val MAX_QUOTE_LENGTH = 500
     const val MIN_QUOTE_LENGTH = 15
+    const val MIN_PASSWORD_LENGTH = 5
+    const val MIN_USERNAME_LENGTH = 5
 
     // Strings
     const val KEY_THEME = "theme"

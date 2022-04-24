@@ -51,9 +51,9 @@
             <ImageButton
                 android:id="@+id/likeBtn"
                 android:layout_width="35dp"
-                android:padding="5dp"
                 android:layout_height="35dp"
                 android:background="?attr/actionBarItemBackground"
+                android:padding="5dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_like" />
 
@@ -61,8 +61,8 @@
                 android:id="@+id/likeCountTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:includeFontPadding="false"
                 android:layout_marginTop="-4dp"
+                android:includeFontPadding="false"
                 android:text="Like"
                 android:textColor="@color/colorPrimaryText" />
 
@@ -78,9 +78,9 @@
             <ImageButton
                 android:id="@+id/shareBtn"
                 android:layout_width="35dp"
-                android:padding="5dp"
                 android:layout_height="35dp"
                 android:background="?attr/actionBarItemBackground"
+                android:padding="5dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_share" />
 
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-4dp"
                 android:includeFontPadding="false"
-                android:text="Share"
+                android:text="@string/txt_share"
                 android:textColor="@color/colorPrimaryText" />
 
         </LinearLayout>
@@ -104,18 +104,18 @@
             <ImageButton
                 android:id="@+id/downloadButton"
                 android:layout_width="35dp"
-                android:padding="5dp"
                 android:layout_height="35dp"
                 android:background="?attr/actionBarItemBackground"
+                android:padding="5dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_download" />
 
             <TextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="-4dp"
                 android:includeFontPadding="false"
-                android:layout_height="wrap_content"
-                android:text="Save"
+                android:text="@string/txt_save"
                 android:textColor="@color/colorPrimaryText" />
 
         </LinearLayout>
@@ -124,9 +124,9 @@
         <ImageButton
             android:id="@+id/postOptionsBtn"
             android:layout_width="35dp"
-            android:padding="5dp"
             android:layout_height="35dp"
             android:background="?attr/actionBarItemBackground"
+            android:padding="5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_more" />
 
