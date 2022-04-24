@@ -17,6 +17,10 @@ import com.nesib.quotegram.databinding.ActivityStartBinding
 import com.nesib.quotegram.ui.main.MainActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.utils.Constants.KEY_THEME
+import com.nesib.quotegram.utils.gone
+import com.nesib.quotegram.utils.safeGone
+import com.nesib.quotegram.utils.safeVisible
+import com.nesib.quotegram.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import javax.inject.Named
@@ -36,7 +40,7 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (authViewModel.isAuthenticated || authViewModel.currentUser?.followingGenres!!.size>1) {
+        if (authViewModel.isAuthenticated || authViewModel.currentUser?.followingGenres!!.size > 1) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
@@ -44,7 +48,15 @@ class StartActivity : AppCompatActivity() {
         setupNavigation()
     }
 
-    private fun setupNavigation(){
+    fun hideToolbar() {
+        binding.toolbarStartActivity.safeGone()
+    }
+
+    fun showToolbar() {
+        binding.toolbarStartActivity.safeVisible()
+    }
+
+    private fun setupNavigation() {
         navController =
             (supportFragmentManager.findFragmentById(R.id.fragmentContainerView_startActivity) as NavHostFragment).navController
 
@@ -53,7 +65,7 @@ class StartActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.splashFragment))
-        setupActionBarWithNavController(navController,appBarConfiguration)
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
 

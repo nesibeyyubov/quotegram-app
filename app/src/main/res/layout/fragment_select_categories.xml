@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginHorizontal="@dimen/page_padding"
@@ -23,13 +24,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tv_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-light"
-        android:text="Please select a quote genre you
-want to get quote from"
+        android:text="@string/txt_select_genre"
         android:textColor="@color/colorSecondaryText"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@ want to get quote from"
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/selectGenre_nextBtn"
+        app:layout_constraintBottom_toTopOf="@+id/pb_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/warning_text">
 
@@ -202,19 +202,19 @@ want to get quote from"
         android:layout_marginTop="25dp"
         android:drawableLeft="@drawable/ic_info"
         android:drawablePadding="10dp"
-        android:text="You should select at least 3 items"
+        tools:text="@string/txt_genre_warning"
         android:textColor="@color/colorSecondaryText"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_info" />
 
     <com.nesib.quotegram.ui.custom_views.ProgressBarButton
         android:id="@+id/pb_button"
         android:layout_width="match_parent"
-        app:text="Continue"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:text="@string/txt_continue" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

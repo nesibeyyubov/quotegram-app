@@ -28,7 +28,7 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login"
+                android:text="@string/txt_login"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="26sp"
                 android:textStyle="bold"
@@ -40,7 +40,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign in to continue"
+                android:text="@string/txt_login_description"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
-                app:text="Login" />
+                app:text="@string/txt_login" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -95,7 +95,7 @@
                     android:id="@+id/textView3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="You don't have an account? "
+                    android:text="@string/txt_dont_have_account"
                     android:textColor="@color/colorSecondaryText"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -110,7 +110,7 @@
                     android:background="@drawable/bg_ripple_for_text"
                     android:clickable="true"
                     android:padding="5dp"
-                    android:text="Sign up"
+                    android:text="@string/txt_signup"
                     android:textColor="@color/blue"
                     android:textSize="14sp"
                     android:textStyle="bold"
@@ -128,7 +128,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/scroll_view"
         android:layout_marginTop="15dp"
-        app:text="Sign in with Google" />
+        app:text="@string/txt_signin_google" />
 
 
 </RelativeLayout>

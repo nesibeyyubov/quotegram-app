@@ -15,6 +15,7 @@ import com.nesib.quotegram.R
 import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentLoginBinding
 import com.nesib.quotegram.ui.main.MainActivity
+import com.nesib.quotegram.ui.on_boarding.StartActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +36,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
         registerActivityResult()
         subscribeObserver()
         setupClickListeners()
+        (requireActivity() as StartActivity).showToolbar()
     }
 
     private fun registerActivityResult() {

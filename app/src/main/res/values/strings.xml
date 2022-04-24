@@ -109,4 +109,32 @@
         <item>@string/book_genre_biography</item>
         <item>@string/book_genre_children</item>
     </string-array>
+
+
+    <!--    App Strings  -->
+
+
+    <!--    On Boarding-->
+    <string name="txt_welcome">Welcome</string>
+    <string name="txt_get_started">Get Started</string>
+    <string name="txt_explore_quotes">Explore Quotes</string>
+    <string name="txt_enjoy_sharing">Enjoy Sharing</string>
+    <string name="txt_splash_first">Quotegram is an app that you can share your quotes which had been taken from any book</string>
+    <string name="txt_splash_second">You can find quotes in any genre. You can follow the genres you love to see them in your home page.Also you can follow books,users to get quote from</string>
+    <string name="txt_splash_third">You can share quote both as text an image. You can customize quote image style and download it on your phone</string>
+    <string name="txt_next">Next</string>
+    <string name="txt_continue_guest">Continue as guest</string>
+
+    <!--  Authorization  -->
+    <string name="txt_login">Login</string>
+    <string name="txt_login_description">Sign in to continue</string>
+    <string name="txt_signup">Sign Up</string>
+    <string name="txt_signup_description">Create a new account</string>
+    <string name="txt_dont_have_account">You don\'t have an account?</string>
+    <string name="txt_have_account">You already have an account?</string>
+    <string name="txt_signup_google">Sign up with Google</string>
+    <string name="txt_signin_google">Sign in with Google</string>
+    <string name="txt_select_genre">Please select a quote genre you want to get quote from</string>
+    <string name="txt_genre_warning">You should select at least %d genres</string>
+    <string name="txt_continue">Continue</string>
 </resources>

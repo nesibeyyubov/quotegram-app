@@ -2,50 +2,52 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:padding="10dp"
         android:id="@+id/buttonContainer"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
         <LinearLayout
-            android:clickable="true"
-            android:visibility="gone"
             android:id="@+id/skipButton"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_weight="1"
             android:background="@drawable/blue_border_button_bg"
+            android:clickable="true"
             android:gravity="center"
-            >
+            android:visibility="gone">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Continue as guest"
+                android:text="@string/txt_continue_guest"
                 android:textColor="@color/blue"
                 android:textStyle="bold" />
         </LinearLayout>
+
         <Space
-            android:visibility="gone"
             android:id="@+id/spacer"
             android:layout_width="20dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
         <LinearLayout
-            android:layout_weight="1"
             android:id="@+id/nextButton"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_weight="1"
             android:background="@drawable/blue_button_bg"
-            android:gravity="center"
-            >
+            android:gravity="center">
+
             <TextView
                 android:id="@+id/nextButtonTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Next"
+                android:text="@string/txt_next"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>

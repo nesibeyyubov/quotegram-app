@@ -11,6 +11,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.SplashPagerAdapter
 import com.nesib.quotegram.databinding.FragmentSplashBinding
+import com.nesib.quotegram.ui.on_boarding.StartActivity
+import com.nesib.quotegram.utils.gone
+import com.nesib.quotegram.utils.visible
 
 class SplashFragment : Fragment(R.layout.fragment_splash) {
     private lateinit var binding: FragmentSplashBinding
@@ -20,7 +23,7 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         directToLoginOrSignup()
         setupClickListeners()
         setupViewPager()
-
+        (requireActivity() as StartActivity).hideToolbar()
     }
 
     private fun setupClickListeners() {
@@ -29,32 +32,33 @@ class SplashFragment : Fragment(R.layout.fragment_splash) {
         }
 
         binding.skipButton.setOnClickListener {
-            val action = SplashFragmentDirections.actionSplashFragmentToSelectCategoriesFragment(null,null)
+            (requireActivity() as StartActivity).showToolbar()
+            val action =
+                SplashFragmentDirections.actionSplashFragmentToSelectCategoriesFragment(null, null)
             findNavController().navigate(action)
         }
     }
 
 
-    private fun setupViewPager() {
-        val adapter = SplashPagerAdapter(requireActivity())
-        binding.splashViewPager.adapter = adapter
-        binding.splashViewPager.registerOnPageChangeCallback(object :
+    private fun setupViewPager() = with(binding) {
+        val adapter = SplashPagerAdapter()
+        splashViewPager.adapter = adapter
+        splashViewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                if(position == adapter.fragments.size-1){
-                    binding.nextButton.setOnClickListener {
+                if (position == adapter.itemCount - 1) {
+                    nextButton.setOnClickListener {
+                        (requireActivity() as StartActivity).showToolbar()
                         findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
                     }
-                    binding.nextButtonTextView.text = "Get Started"
-                    binding.spacer.visibility = View.VISIBLE
-                    binding.skipButton.visibility = View.VISIBLE
-                }else{
-                    binding.nextButtonTextView.text = "Next"
-                    binding.nextButton.setOnClickListener {
-                        binding.splashViewPager.currentItem += 1
+                    nextButtonTextView.text = getString(R.string.txt_get_started)
+                    listOf(spacer, skipButton).visible()
+                } else {
+                    nextButtonTextView.text = getString(R.string.txt_next)
+                    nextButton.setOnClickListener {
+                        splashViewPager.currentItem += 1
                     }
-                    binding.spacer.visibility = View.GONE
-                    binding.skipButton.visibility = View.GONE
+                    listOf(spacer, skipButton).gone()
                 }
             }
         })

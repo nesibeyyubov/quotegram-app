@@ -28,6 +28,7 @@ class SelectCategoriesFragment : Fragment(R.layout.fragment_select_categories) {
             saveGenres()
         }
         binding.welcomeUserName.text = "Hi, ${args.username ?: "Guest"}"
+        binding.tvInfo.text = getString(R.string.txt_genre_warning, Constants.MIN_GENRE_COUNT)
 
         subscribeObservers()
     }

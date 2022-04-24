@@ -29,7 +29,7 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Signup"
+                android:text="@string/txt_signup"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="26sp"
                 android:textStyle="bold"
@@ -41,7 +41,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create a new account"
+                android:text="@string/txt_signup_description"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    app:text="Signup" />
+                    app:text="@string/txt_signup" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -94,7 +94,7 @@
                         android:id="@+id/textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="You already have an account? "
+                        android:text="@string/txt_have_account"
                         android:textColor="@color/colorSecondaryText"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -109,7 +109,7 @@
                         android:background="@drawable/bg_ripple_for_text"
                         android:clickable="true"
                         android:padding="5dp"
-                        android:text="Login"
+                        android:text="@string/txt_login"
                         android:textColor="@color/blue"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -127,6 +127,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/scroll_view"
         android:layout_marginTop="15dp"
-        app:text="Sign up with Google" />
+        app:text="@string/txt_signup_google" />
 
 </RelativeLayout>
