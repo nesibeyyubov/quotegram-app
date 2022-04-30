@@ -101,7 +101,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             intent.action = Intent.ACTION_SEND
             intent.type = "text/plain"
             intent.putExtra(Intent.EXTRA_TEXT, quote.quote + "\n\n#Quotegram App")
-            val shareIntent = Intent.createChooser(intent, "Share Quote")
+            val shareIntent = Intent.createChooser(intent, getString(R.string.share_quote))
             startActivity(shareIntent)
         }
         homeAdapter.currentUserId = authViewModel.currentUserId

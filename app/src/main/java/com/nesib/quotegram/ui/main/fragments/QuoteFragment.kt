@@ -155,7 +155,7 @@ class QuoteFragment : BaseFragment<FragmentQuoteBinding>(R.layout.fragment_quote
                 intent.action = Intent.ACTION_SEND
                 intent.type = "text/plain"
                 intent.putExtra(Intent.EXTRA_TEXT, currentQuote!!.quote + "\n\n#Quotegram App")
-                val shareIntent = Intent.createChooser(intent, "Share Quote")
+                val shareIntent = Intent.createChooser(intent, getString(R.string.share_quote))
                 startActivity(shareIntent)
             }
         }

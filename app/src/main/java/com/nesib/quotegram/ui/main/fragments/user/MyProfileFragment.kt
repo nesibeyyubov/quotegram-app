@@ -107,7 +107,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
 
     private fun bindData(user: User) = with(binding) {
         usernameTextView.text = user.username
-        bioTextView.text = if (user.bio!!.isNotEmpty()) user.bio else "No bio"
+        bioTextView.text = if (user.bio?.isNotEmpty() == true) user.bio else ""
         followerCountTextView.text = user.followers!!.size.toFormattedNumber()
         followingCountTextView.text = (user.followingUsers!!.size).toString()
         quoteCountTextView.text = (user.totalQuoteCount ?: 0).toFormattedNumber()
@@ -190,7 +190,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
             intent.action = Intent.ACTION_SEND
             intent.type = "text/plain"
             intent.putExtra(Intent.EXTRA_TEXT, quote.quote + "\n\n#Quotegram App")
-            val shareIntent = Intent.createChooser(intent, "Share Quote")
+            val shareIntent = Intent.createChooser(intent, getString(R.string.share_quote))
             startActivity(shareIntent)
 
         }

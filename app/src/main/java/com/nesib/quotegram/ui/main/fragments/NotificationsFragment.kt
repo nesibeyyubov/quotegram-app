@@ -50,7 +50,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     private fun setupUi() = with(binding) {
         if (!authViewModel.isAuthenticated) {
-            notSignedinContainer.visibility = View.VISIBLE
+            notSignedinContainer.visible()
             loginButton.setOnClickListener {
                 navigateLogin()
             }
@@ -91,9 +91,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         notificationViewModel.notifications.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> with(binding) {
-                    if (paginationProgressBar.visibility == View.VISIBLE) {
-                        paginationProgressBar.invisible()
-                    }
+                    paginationProgressBar.safeInvisible()
                     paginationLoading = false
                     if (currentNotifications?.size == it.data!!.notifications!!.toList().size && !comingBackFromQuote) {
                         paginatingFinished = true

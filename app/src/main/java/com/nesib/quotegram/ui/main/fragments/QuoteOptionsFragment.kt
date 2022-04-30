@@ -85,7 +85,7 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
                     )
                     findNavController().popBackStack()
                     makeSureDialog?.dismiss()
-                    showToast("Deleted quote successfully")
+                    showToast(getString(R.string.quote_deleted_successfully))
                 }
                 is DataState.Fail -> {
                     findNavController().popBackStack()
@@ -97,7 +97,7 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
         reportViewModel.report.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
-                    showToast("Reported successfully!")
+                    showToast(getString(R.string.reported_successfully))
                     makeSureDialog?.dismiss()
                     findNavController().popBackStack()
                 }

@@ -45,7 +45,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(R.layout.fragment
                 val i = Intent(Intent.ACTION_SEND)
                 i.type = "message/rfc822"
                 i.putExtra(Intent.EXTRA_EMAIL, arrayOf(Constants.CONTACT_EMAIL))
-                i.putExtra(Intent.EXTRA_SUBJECT, "Contact with developer")
+                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.contact_with_dev))
                 i.putExtra(Intent.EXTRA_TEXT, contactText)
                 try {
                     startActivity(Intent.createChooser(i, getString(R.string.select_one)))

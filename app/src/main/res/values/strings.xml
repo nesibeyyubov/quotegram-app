@@ -121,9 +121,9 @@
     <string name="txt_get_started">Get Started</string>
     <string name="txt_explore_quotes">Explore Quotes</string>
     <string name="txt_enjoy_sharing">Enjoy Sharing</string>
-    <string name="txt_splash_first">Quotegram is an app that you can share your quotes which had been taken from any book</string>
-    <string name="txt_splash_second">You can find quotes in any genre. You can follow the genres you love to see them in your home page.Also you can follow books,users to get quote from</string>
-    <string name="txt_splash_third">You can share quote both as text an image. You can customize quote image style and download it on your phone</string>
+    <string name="txt_splash_first">Quotegram is an app that you can share your quotes which had been taken from any book or from others.</string>
+    <string name="txt_splash_second">You can find quotes in any genre. You can follow the genres,users you would love to see in your home page.</string>
+    <string name="txt_splash_third">You can share quote both as text an image. You can customize quote image style and download it on your phone.</string>
     <string name="txt_next">Next</string>
     <string name="txt_continue_guest">Continue as guest</string>
 
@@ -148,6 +148,7 @@
 
     <!--  MAIN  -->
     <string name="txt_share">Share</string>
+    <string name="share_quote">Share quote</string>
     <string name="txt_save">Save</string>
     <string name="txt_quotes">Quotes</string>
     <string name="report_quote">Report quote</string>
@@ -167,11 +168,14 @@
     <string name="txt_photo_style">Photo style</string>
     <string name="txt_text_size">Text size</string>
     <string name="txt_update">Update</string>
+    <string name="contact_with_dev">Contact with developer</string>
 
     <string name="action_quote_addad">Quote added !</string>
     <string name="pls_select_genre">Please select a quote genre.</string>
     <string name="image_downloaded_successfully">Image downloaded successfully !</string>
     <string name="image_downloaded">Image downloaded !</string>
+    <string name="quote_deleted_successfully">Quote deleted !</string>
+    <string name="reported_successfully">Quote reported !</string>
     <string name="image_access_denied">Image not saved, because you denied the permission</string>
     <string name="contact_not_empty">Contact field cannot be empty</string>
     <string name="select_one">Select one</string>

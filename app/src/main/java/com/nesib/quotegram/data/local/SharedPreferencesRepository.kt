@@ -49,7 +49,7 @@ class SharedPreferencesRepository @Inject constructor(
         editor.apply()
     }
 
-    fun updateUser(user:UserAuth){
+    fun updateUser(user: UserAuth) {
         editor.putString("username", user.username)
     }
 

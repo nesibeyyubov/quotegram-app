@@ -1,6 +1,5 @@
 package com.nesib.quotegram.di
 
-import com.ihsanbal.logging.LoggingInterceptor
 import com.nesib.quotegram.data.network.AuthApi
 import com.nesib.quotegram.data.network.MainApi
 import com.nesib.quotegram.data.network.MyOkHttpClientInterceptor

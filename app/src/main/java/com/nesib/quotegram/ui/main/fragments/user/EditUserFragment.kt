@@ -18,6 +18,7 @@ import com.nesib.quotegram.models.User
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.UserViewModel
 import com.nesib.quotegram.utils.*
+import com.nesib.quotegram.utils.Constants.MIN_USERNAME_LENGTH
 import com.nesib.quotegram.utils.Constants.TEXT_UPDATED_USER
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -94,8 +95,10 @@ class EditUserFragment : BaseFragment<FragmentEditProfileBinding>(R.layout.fragm
             if (user.username != username || user.fullname != fullName || user.bio != bio) {
                 if (!username.isValidUsername()) {
                     updateProfileErrorTextView.visible()
-                    updateProfileErrorTextView.text =
-                        "Username length must be at least 5 characters"
+                    updateProfileErrorTextView.text = getString(
+                        R.string.error_username,
+                        MIN_USERNAME_LENGTH
+                    )
                     menuItem?.actionView = null
                     return@with
                 }

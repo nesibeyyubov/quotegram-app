@@ -62,7 +62,7 @@ class UserProfileFragment :
 
     private fun bindData(user: User) = with(binding) {
         usernameTextView.text = user.username
-        bioTextView.text = if (user.bio!!.isNotEmpty()) user.bio else "No bio"
+        bioTextView.text = if (user.bio!!.isNotEmpty()) user.bio else ""
         followerCountTextView.text = user.followers!!.size.toFormattedNumber()
         followingCountTextView.text =
             (user.followingUsers!!.size).toFormattedNumber()
@@ -84,7 +84,8 @@ class UserProfileFragment :
 
     private fun toggleFollowButtonStyle(following: Boolean) = with(binding) {
         followButton.setBackgroundResource(if (following) R.drawable.add_quote_from_this_book_bg else R.drawable.follow_button_bg)
-        followButtonTextView.text = if (following) "Following" else "Follow"
+        followButtonTextView.text =
+            if (following) getString(R.string.txt_following) else getString(R.string.txt_follow)
         followButtonTextView.setTextColor(
             if (following) ContextCompat.getColor(
                 requireContext(),

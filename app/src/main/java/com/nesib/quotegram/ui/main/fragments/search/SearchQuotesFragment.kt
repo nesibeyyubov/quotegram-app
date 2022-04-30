@@ -150,9 +150,9 @@ class SearchQuotesFragment :
         followingGenres = authViewModel.getFollowingGenres()
         genres = followingGenres.split(",").toMutableList()
         if (followingGenres.contains(args.genre.toLowerCase(Locale.ROOT))) {
-            menu.findItem(R.id.follow_genre_menu_item).title = "Following"
+            menu.findItem(R.id.follow_genre_menu_item).title = getString(R.string.txt_following)
         } else {
-            menu.findItem(R.id.follow_genre_menu_item).title = "Follow"
+            menu.findItem(R.id.follow_genre_menu_item).title = getString(R.string.txt_follow)
         }
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -162,14 +162,14 @@ class SearchQuotesFragment :
         if (item.itemId == R.id.follow_genre_menu_item) {
             if (!genres.contains(args.genre)) {
                 genres.add(args.genre)
-                item.title = "Following"
+                item.title = getString(R.string.txt_following)
             } else {
                 if (genres.size > 3) {
                     genres.remove(args.genre)
-                    item.title = "Follow"
+                    item.title = getString(R.string.txt_follow)
                 } else {
                     genresChanged = false
-                    showToast("You should at least select $MIN_GENRE_COUNT genres")
+                    showToast(getString(R.string.txt_genre_warning, MIN_GENRE_COUNT))
                 }
             }
             if (genresChanged) {
