@@ -11,7 +11,7 @@
         <item>@string/theme_light</item>
     </string-array>
 
-    <string name="about_text">Quotegram is the app to share your quotes, to explore quotes shared by other users. You can follow users, quote genres to get quotes on your home page.\n\nPlease if you have any suggestions, don\'t hesitate to send me message by above or on play store. Good Quotes !</string>
+    <string name="about_text">Quotegram is the app to share your quotes, to explore quotes shared by other users. You can follow users, quote genres to get quotes on your home page.\n\nPlease if you have any suggestions, don\'t hesitate to send your that to the developer by above. Good quotes !</string>
     <string name="privacy_policy_text"></string>
 
     <!--  Quote Genres  -->

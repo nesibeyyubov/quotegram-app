@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AlertDialog
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +49,7 @@ class HomeAdapter(val dialog: AlertDialog) :
                 } else {
                     userphotoImageView.load(R.drawable.user)
                 }
+
                 quoteTextView.text = quote.quote
 
                 likeCountTextView.text = quote.likes?.size?.toFormattedNumber()

@@ -109,12 +109,12 @@ class UserViewModel @Inject constructor(
 
     }
 
-    fun getUsers(searchQuery: String = "", paginating: Boolean = false,currentPage:Int = 1) =
+    fun getUsers(searchQuery: String = "", paginating: Boolean = false, currentPage: Int = 1) =
         viewModelScope.launch(Dispatchers.IO) {
             if (hasInternetConnection()) {
                 try {
                     _users.postValue(DataState.Loading())
-                    val response = userRepository.getUsers(searchQuery,currentPage)
+                    val response = userRepository.getUsers(searchQuery, currentPage)
                     handleUsersResponse(response, paginating)
                 } catch (e: Exception) {
                     _users.postValue(DataState.Fail())
@@ -166,7 +166,10 @@ class UserViewModel @Inject constructor(
     private fun handleQuotesResponse(response: Response<QuotesResponse>) {
         when (response.code()) {
             CODE_SUCCESS -> {
-                response.body()!!.quotes.forEach { quote -> userQuoteList.add(quote) }
+                response.body()!!.quotes.forEach { quote ->
+                    removeIfHtmlTagsExist(quote)
+                    userQuoteList.add(quote)
+                }
                 _userQuotes.postValue(DataState.Success(QuotesResponse(userQuoteList.toList())))
             }
             CODE_CREATION_SUCCESS -> {
@@ -214,6 +217,14 @@ class UserViewModel @Inject constructor(
         }
     }
 
+    private fun removeIfHtmlTagsExist(quote: Quote) {
+        if (quote.quote?.contains("<br>") == true) {
+            quote.quote = quote.quote?.replaceFirst("<br>", "\n")
+            quote.quote = quote.quote?.replaceFirst("<br>", "\n")
+            quote.quote = quote.quote?.replace("<br>", "")
+        }
+    }
+
     private fun handleUserResponse(
         response: Response<UserResponse>,
         userUpdated: Boolean = false
@@ -223,6 +234,7 @@ class UserViewModel @Inject constructor(
                 if (!userUpdated) {
                     userQuoteList = response.body()!!.user!!.quotes!!.toMutableList()
                 }
+                response.body()?.user?.quotes?.forEach { quote -> removeIfHtmlTagsExist(quote) }
                 return DataState.Success(response.body())
             }
             CODE_CREATION_SUCCESS -> {

@@ -201,8 +201,12 @@ class QuoteViewModel @Inject constructor(
                 // Check when there is not any quote
                 if (quoteList.isEmpty() || forced) {
                     quoteList = response.body()!!.quotes.toMutableList()
+                    quoteList.forEach { quote -> removeIfHtmlTagsExist(quote) }
                 } else {
-                    response.body()!!.quotes.forEach { quote -> quoteList.add(quote) }
+                    response.body()!!.quotes.forEach { quote ->
+                        removeIfHtmlTagsExist(quote)
+                        quoteList.add(quote)
+                    }
                 }
                 _quotes.postValue(DataState.Success(QuotesResponse(quoteList.toList())))
 
@@ -217,6 +221,14 @@ class QuoteViewModel @Inject constructor(
                 )
                 _quotes.postValue(DataState.Fail(message = authFailResponse.message))
             }
+        }
+    }
+
+    private fun removeIfHtmlTagsExist(quote: Quote) {
+        if (quote.quote?.contains("<br>") == true) {
+            quote.quote = quote.quote?.replaceFirst("<br>", "\n")
+            quote.quote = quote.quote?.replaceFirst("<br>", "\n")
+            quote.quote = quote.quote?.replace("<br>", "")
         }
     }
 
