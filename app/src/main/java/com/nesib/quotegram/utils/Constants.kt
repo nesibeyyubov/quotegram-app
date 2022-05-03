@@ -9,7 +9,7 @@ object Constants {
     const val CODE_VALIDATION_FAIL = 422
     const val CODE_AUTHENTICATION_FAIL = 401
     const val CODE_SERVER_ERROR = 500
-    const val API_URL = "https://book-quotes-app1.herokuapp.com/"
+    const val API_URL = "http://164.92.148.254:4000/"
 
     // Quantities
     const val MIN_GENRE_COUNT = 1
