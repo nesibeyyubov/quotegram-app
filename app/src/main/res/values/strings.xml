@@ -19,7 +19,6 @@
     <string name="genre_love">Love</string>
     <string name="genre_life">Life</string>
     <string name="genre_motivation">Motivation</string>
-    <string name="genre_humor">Humor</string>
     <string name="genre_philosophy">Philosophy</string>
     <string name="genre_god">God</string>
     <string name="genre_happiness">Happiness</string>
@@ -34,7 +33,6 @@
     <string name="genre_art">Art</string>
     <string name="genre_business">Business</string>
     <string name="genre_health">Health</string>
-    <string name="genre_productiveness">Productiveness</string>
     <string name="genre_parenting">Parenting</string>
 
     <string-array name="quote_genres">
@@ -50,11 +48,9 @@
         <item>@string/genre_god</item>
         <item>@string/genre_wealth</item>
         <item>@string/genre_happiness</item>
-        <item>@string/genre_humor</item>
         <item>@string/genre_leadership</item>
         <item>@string/genre_motivation</item>
         <item>@string/genre_philosophy</item>
-        <item>@string/genre_productiveness</item>
         <item>@string/genre_religion</item>
         <item>@string/genre_science</item>
         <item>@string/genre_spirituality</item>
@@ -189,6 +185,10 @@
     <string name="title_download">Download</string>
     <string name="title_edit_user">Edit user</string>
     <string name="title_quote">Quote</string>
+    <string name="title_add_quote">Add Quote</string>
+    <string name="title_privacy_policy">Privacy Policy</string>
+
+
 
     <string name="quote_name_validation">Quote length should be between %d characters</string>
     <string name="quote_name_validation_max">Quote length shouldn\'t be more than %d characters</string>

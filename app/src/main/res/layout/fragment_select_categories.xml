@@ -16,12 +16,12 @@
         android:layout_marginTop="20dp"
         android:ellipsize="end"
         android:lines="1"
-        tools:text="Hi,Jane"
         android:textColor="@color/colorPrimaryText"
         android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Hi,Jane" />
 
     <TextView
         android:id="@+id/tv_info"
@@ -71,13 +71,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/genre_motivation" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_humor"
-                style="@style/CustomChipStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/genre_humor" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_philosophy"
@@ -178,13 +171,6 @@
                 android:text="@string/genre_health" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_productiveness"
-                style="@style/CustomChipStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/genre_productiveness" />
-
-            <com.google.android.material.chip.Chip
                 android:id="@+id/chip_parenting"
                 style="@style/CustomChipStyle"
                 android:layout_width="wrap_content"
@@ -202,11 +188,11 @@
         android:layout_marginTop="25dp"
         android:drawableLeft="@drawable/ic_info"
         android:drawablePadding="10dp"
-        tools:text="@string/txt_genre_warning"
         android:textColor="@color/colorSecondaryText"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_info" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_info"
+        tools:text="@string/txt_genre_warning" />
 
     <com.nesib.quotegram.ui.custom_views.ProgressBarButton
         android:id="@+id/pb_button"

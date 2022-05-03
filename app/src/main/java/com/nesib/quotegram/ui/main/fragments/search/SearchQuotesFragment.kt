@@ -164,7 +164,7 @@ class SearchQuotesFragment :
                 genres.add(args.genre)
                 item.title = getString(R.string.txt_following)
             } else {
-                if (genres.size > 3) {
+                if (genres.size > MIN_GENRE_COUNT) {
                     genres.remove(args.genre)
                     item.title = getString(R.string.txt_follow)
                 } else {

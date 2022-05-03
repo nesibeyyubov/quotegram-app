@@ -12,7 +12,7 @@ object Constants {
     const val API_URL = "https://book-quotes-app1.herokuapp.com/"
 
     // Quantities
-    const val MIN_GENRE_COUNT = 3
+    const val MIN_GENRE_COUNT = 1
     const val MAX_QUOTE_LENGTH = 500
     const val MIN_QUOTE_LENGTH = 15
     const val MIN_PASSWORD_LENGTH = 5

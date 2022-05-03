@@ -129,13 +129,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     finish()
                 }
                 R.id.drawer_privacy -> {
-                    try {
-                        val intent = Intent(Intent.ACTION_VIEW)
-                        intent.data = Uri.parse(Constants.PRIVACY_POLICY_URL)
-                        startActivity(intent)
-                    } catch (e: Exception) {
-                        showToast(e.message ?: getString(R.string.smthng_went_wrong))
-                    }
+                    binding.drawerLayout.close()
+                    navController.navigate(R.id.policyWebViewFragment)
                 }
                 R.id.drawer_review -> {
                     binding.drawerLayout.close()
@@ -230,6 +225,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     searchInputContainer.visible()
                     toolbarText.gone()
                 }
+                R.id.addQuoteFragment -> {
+                    binding.toolbarText.text = getString(R.string.title_add_quote)
+                }
                 R.id.editUserFragment -> {
                     binding.toolbarText.text = getString(R.string.title_edit_user)
                 }
@@ -238,6 +236,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 R.id.notificationsFragment -> {
                     binding.toolbarText.text = getString(R.string.title_notifications)
+                }
+                R.id.policyWebViewFragment -> {
+                    binding.toolbarText.text = getString(R.string.title_privacy_policy)
                 }
                 R.id.downloadQuoteFragment -> {
                     binding.toolbarText.text = getString(R.string.title_download)

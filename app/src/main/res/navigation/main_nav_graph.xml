@@ -161,4 +161,8 @@
     <action
         android:id="@+id/action_global_userProfileFragment"
         app:destination="@id/userProfileFragment" />
+    <fragment
+        android:id="@+id/policyWebViewFragment"
+        android:name="com.nesib.quotegram.ui.main.fragments.PolicyWebViewFragment"
+        android:label="PolicyWebViewFragment" />
 </navigation>
