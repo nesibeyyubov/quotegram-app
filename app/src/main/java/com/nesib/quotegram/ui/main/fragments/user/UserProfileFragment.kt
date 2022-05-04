@@ -94,10 +94,15 @@ class UserProfileFragment :
         )
     }
 
+    private fun hideRefreshLayoutProgress() {
+        if (binding.refreshLayout.isRefreshing) binding.refreshLayout.isRefreshing = false
+    }
+
     private fun subscribeObservers() = with(binding) {
         userViewModel.user.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    hideRefreshLayoutProgress()
                     failContainer.safeGone()
                     progressBar.gone()
                     profileContent.visible()
@@ -106,6 +111,7 @@ class UserProfileFragment :
                     bindData(currentUser!!)
                 }
                 is DataState.Fail -> {
+                    hideRefreshLayoutProgress()
                     failContainer.visible()
                     failMessage.text = it.message
                     progressBar.gone()
@@ -154,6 +160,9 @@ class UserProfileFragment :
     }
 
     private fun setupClickListeners() {
+        binding.refreshLayout.setOnRefreshListener {
+            userViewModel.getUser(args.userId, forced = true)
+        }
         binding.followButton.setOnClickListener {
             if (authViewModel.currentUserId == null) {
                 (activity as MainActivity).showAuthenticationDialog()

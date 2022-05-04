@@ -145,7 +145,6 @@ class HomeAdapter(val dialog: AlertDialog) :
     override fun getItemCount() = differ.currentList.size
 
     fun setData(newQuoteList: List<Quote>) {
-        Log.d("mytag", "setData: ${newQuoteList.size}")
         differ.submitList(newQuoteList)
     }
 }

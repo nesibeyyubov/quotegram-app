@@ -71,7 +71,7 @@ class UserViewModel @Inject constructor(
                 try {
                     if (_user.value == null || forced) {
                         _user.postValue(DataState.Loading())
-                        val id = userId ?: sharedPreferencesRepository.getCurrentUser()?.userId!!
+                        val id = userId ?: sharedPreferencesRepository.getCurrentUser().userId!!
                         val response = userRepository.getUser(id)
                         val handledResponse = handleUserResponse(response)
                         _user.postValue(handledResponse)

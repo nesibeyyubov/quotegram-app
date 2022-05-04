@@ -7,32 +7,34 @@
 
     <LinearLayout
         android:id="@+id/failContainer"
-        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:visibility="gone">
+
         <TextView
-            android:textAlignment="center"
             android:id="@+id/failMessage"
-            android:text="Something went wrong...."
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="16sp"
-            android:layout_marginBottom="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Something went wrong...."
+            android:textAlignment="center"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="16sp" />
+
         <TextView
-            android:background="@drawable/add_quote_from_this_book_bg"
             android:id="@+id/tryAgainButton"
-            android:textColor="@color/blue"
-            android:textStyle="bold"
-            android:paddingHorizontal="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/add_quote_from_this_book_bg"
             android:includeFontPadding="false"
+            android:paddingHorizontal="10dp"
             android:paddingVertical="5dp"
             android:text="Try Again"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/blue"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -41,9 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:visibility="invisible"
         android:orientation="vertical"
-        >
+        android:visibility="invisible">
 
         <ImageView
             android:id="@+id/image_login"
@@ -51,8 +52,8 @@
             android:layout_height="100dp"
             android:layout_marginBottom="10dp"
             android:alpha="0.2"
-            app:tint="@color/colorPrimaryText"
-            android:src="@drawable/ic_user" />
+            android:src="@drawable/ic_user"
+            app:tint="@color/colorPrimaryText" />
 
         <TextView
             android:id="@+id/text_not_signed"
@@ -81,232 +82,236 @@
             android:textStyle="bold" />
 
 
-
     </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
-        android:indeterminateDrawable="@drawable/custom_progress_bar"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:visibility="invisible"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        />
+        android:layout_gravity="center_horizontal"
+        android:indeterminateDrawable="@drawable/custom_progress_bar"
+        android:visibility="invisible" />
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/profileContent"
-        android:visibility="invisible"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:padding="@dimen/page_padding"
-        android:scrollbars="none"
-        >
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/profileContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/image_container"
-                android:layout_width="80dp"
-                android:background="@drawable/image_outline"
-                android:layout_height="80dp"
-                android:layout_marginTop="5dp">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/userPhoto_imageView"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_centerInParent="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/user" />
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/usernameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="\@janedoe"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <kr.co.prnd.readmore.ReadMoreTextView
-                android:id="@+id/bioTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:readMoreMaxLine="4"
-                app:readMoreColor="@color/blue"
-                app:readMoreText="...read more"
-                android:text="This is my bio here. This is my bio here"
-                android:textAlignment="center"
-                android:textColor="@color/colorSecondaryText"
-                android:textSize="14sp"
-                 />
+            android:clipToPadding="false"
+            android:padding="@dimen/page_padding"
+            android:scrollbars="none"
+            android:visibility="invisible">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/lineColor" />
+                <RelativeLayout
+                    android:id="@+id/image_container"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/image_outline">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/userPhoto_imageView"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_centerInParent="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/user" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/usernameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="\@janedoe"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <kr.co.prnd.readmore.ReadMoreTextView
+                    android:id="@+id/bioTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="This is my bio here. This is my bio here"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="14sp"
+                    app:readMoreColor="@color/blue"
+                    app:readMoreMaxLine="4"
+                    app:readMoreText="...read more" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="10dp">
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/lineColor" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
 
-                        <TextView
-                            android:id="@+id/quoteCountTextView"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="297"
-                            android:textColor="@color/colorPrimaryText"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <TextView
+                            <TextView
+                                android:id="@+id/quoteCountTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="297"
+                                android:textColor="@color/colorPrimaryText"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Quotes"
+                                android:textColor="@color/colorSecondaryText"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Quotes"
-                            android:textColor="@color/colorSecondaryText"
-                            android:textSize="16sp" />
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/followerCountTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="17k"
+                                android:textColor="@color/colorPrimaryText"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Followers"
+                                android:textColor="@color/colorSecondaryText"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/followingCountTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="125"
+                                android:textColor="@color/colorPrimaryText"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Following"
+                                android:textColor="@color/colorSecondaryText"
+                                android:textSize="16sp" />
+                        </LinearLayout>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/followerCountTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="17k"
-                            android:textColor="@color/colorPrimaryText"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Followers"
-                            android:textColor="@color/colorSecondaryText"
-                            android:textSize="16sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/followingCountTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="125"
-                            android:textColor="@color/colorPrimaryText"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Following"
-                            android:textColor="@color/colorSecondaryText"
-                            android:textSize="16sp" />
-                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/lineColor" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/lineColor" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/editUserButton"
-                android:layout_width="120dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/add_quote_from_this_book_bg"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Edit Profile"
-                    android:textColor="@color/blue"
-                    android:textStyle="bold" />
-            </LinearLayout>
-            <LinearLayout
-                android:paddingTop="50dp"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:visibility="gone"
-                android:id="@+id/noQuoteFoundContainer"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:alpha="0.5"
-                    app:tint="@color/colorSecondaryText"
-                    android:src="@drawable/ic_quote"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"/>
-                <TextView
-                    android:textColor="@color/colorSecondaryText"
-                    android:textSize="15sp"
-                    android:textAlignment="center"
-                    android:text="No qutoes found from\nthis user"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/user_quotes_recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp" />
-
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/paginationProgressBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorBackground"
-                android:visibility="invisible"
-                app:shimmer_base_alpha="0.5">
-
-                <View
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/editUserButton"
+                    android:layout_width="120dp"
                     android:layout_height="30dp"
-                    android:background="@color/fullPostBackgroundColor" />
-            </com.facebook.shimmer.ShimmerFrameLayout>
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/add_quote_from_this_book_bg"
+                    android:gravity="center">
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit Profile"
+                        android:textColor="@color/blue"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/noQuoteFoundContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="50dp"
+                    android:visibility="gone">
 
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:alpha="0.5"
+                        android:src="@drawable/ic_quote"
+                        app:tint="@color/colorSecondaryText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No qutoes found from\nthis user"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorSecondaryText"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/user_quotes_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp" />
+
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/paginationProgressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBackground"
+                    android:visibility="invisible"
+                    app:shimmer_base_alpha="0.5">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:background="@color/fullPostBackgroundColor" />
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

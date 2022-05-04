@@ -61,6 +61,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         userViewModel.user.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    hideRefreshLayoutProgress()
                     failContainer.safeGone()
                     toggleProgressBar(false)
                     currentUser = it.data!!.user!!
@@ -68,6 +69,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
                     bindData(currentUser!!)
                 }
                 is DataState.Fail -> {
+                    hideRefreshLayoutProgress()
                     failMessage.text = it.message
                     failContainer.visible()
                     toggleProgressBar(loading = false, failed = true)
@@ -124,20 +126,27 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         homeAdapter.setData(user.quotes)
     }
 
-    private fun setupClickListeners() {
-        binding.editUserButton.setOnClickListener {
+    private fun hideRefreshLayoutProgress() {
+        if (binding.refreshLayout.isRefreshing) binding.refreshLayout.isRefreshing = false
+    }
+
+    private fun setupClickListeners() = with(binding) {
+        refreshLayout.setOnRefreshListener {
+            userViewModel.getUser(forced = true)
+        }
+        editUserButton.setOnClickListener {
             val action = MyProfileFragmentDirections.actionMyProfileFragmentToEditUserFragment()
             action.user = currentUser
             findNavController().navigate(action)
         }
-        binding.loginButton.setOnClickListener {
+        loginButton.setOnClickListener {
             authViewModel.logout()
             val intent = Intent(requireActivity(), StartActivity::class.java)
             intent.putExtra(TEXT_DIRECT_TO_LOGIN, true)
             startActivity(intent)
             requireActivity().finish()
         }
-        binding.tryAgainButton.setOnClickListener {
+        tryAgainButton.setOnClickListener {
             userViewModel.getUser(forced = true)
         }
     }

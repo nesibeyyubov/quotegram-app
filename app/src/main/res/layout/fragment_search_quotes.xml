@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingHorizontal="@dimen/page_padding"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/page_padding">
 
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchQuotesRecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:paddingBottom="30dp"
-        android:paddingTop="10dp"
-        android:clipToPadding="false"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchQuotesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:clipToPadding="false"
+            android:paddingTop="10dp"
+            android:paddingBottom="30dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerLayout"
-        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="10dp"
+        android:visibility="invisible"
         app:shimmer_base_alpha="0.5">
 
         <LinearLayout
@@ -55,79 +59,87 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <LinearLayout
-        android:visibility="invisible"
-        android:layout_centerInParent="true"
-        android:gravity="center"
         android:id="@+id/noQuoteFoundContainer"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
         android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:visibility="invisible">
+
         <ImageView
-            android:alpha="0.5"
-            app:tint="@color/colorSecondaryText"
-            android:src="@drawable/ic_quote"
             android:layout_width="60dp"
-            android:layout_height="60dp"/>
+            android:layout_height="60dp"
+            android:alpha="0.5"
+            android:src="@drawable/ic_quote"
+            app:tint="@color/colorSecondaryText" />
+
         <LinearLayout
-            android:gravity="center"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
             <TextView
-                android:textColor="@color/colorSecondaryText"
-                android:textSize="18sp"
-                android:text="No qutoes found in "
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:text="No qutoes found in "
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="18sp" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/noQuoteGenreValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="#love"
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="18sp"
-                    android:text="#love"
-                    android:textStyle="bold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textStyle="bold" />
+
                 <TextView
-                    android:textColor="@color/colorSecondaryText"
-                    android:textSize="18sp"
-                    android:text=" genre"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text=" genre"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
-        android:layout_centerInParent="true"
         android:id="@+id/failContainer"
-        android:gravity="center"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
         android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:visibility="gone">
+
         <TextView
-            android:textAlignment="center"
             android:id="@+id/failMessage"
-            android:text="Something went wrong...."
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="16sp"
-            android:layout_marginBottom="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Something went wrong...."
+            android:textAlignment="center"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="16sp" />
+
         <TextView
-            android:background="@drawable/add_quote_from_this_book_bg"
             android:id="@+id/tryAgainButton"
-            android:textColor="@color/blue"
-            android:textStyle="bold"
-            android:paddingHorizontal="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/add_quote_from_this_book_bg"
             android:includeFontPadding="false"
+            android:paddingHorizontal="10dp"
             android:paddingVertical="5dp"
             android:text="Try Again"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/blue"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </RelativeLayout>

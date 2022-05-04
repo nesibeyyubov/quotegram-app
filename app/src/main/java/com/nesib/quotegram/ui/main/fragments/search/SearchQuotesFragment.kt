@@ -51,10 +51,25 @@ class SearchQuotesFragment :
         quoteViewModel.getQuotesByGenre(args.genre)
     }
 
+    private fun hideRefreshLayoutProgress() {
+        if (binding.refreshLayout.isRefreshing) binding.refreshLayout.isRefreshing = false
+    }
+
     private fun setupClickListeners() {
+        binding.refreshLayout.setOnRefreshListener {
+            resetPagination()
+            quoteViewModel.getQuotesByGenre(args.genre, forced = true)
+        }
         binding.tryAgainButton.setOnClickListener {
             quoteViewModel.getQuotesByGenre(args.genre, forced = true)
         }
+    }
+
+    private fun resetPagination() {
+        paginationLoading = false
+        paginatingFinished = false
+        quotesSize = 0
+        currentPage = 1
     }
 
 
@@ -62,6 +77,7 @@ class SearchQuotesFragment :
         quoteViewModel.quotes.observe(viewLifecycleOwner) {
             when (it) {
                 is DataState.Success -> {
+                    hideRefreshLayoutProgress()
                     failContainer.safeGone()
                     shimmerLayout.safeInvisible()
                     paginatingFinished = quotesSize == it.data!!.quotes.size
@@ -70,6 +86,7 @@ class SearchQuotesFragment :
                     paginationLoading = false
                 }
                 is DataState.Fail -> {
+                    hideRefreshLayoutProgress()
                     failMessage.text = it.message
                     failContainer.visible()
                     shimmerLayout.safeInvisible()
@@ -77,11 +94,13 @@ class SearchQuotesFragment :
                     paginationLoading = false
                 }
                 is DataState.Loading -> {
-                    failContainer.safeGone()
-                    if (currentPage == 1) {
-                        shimmerLayout.visible()
-                    } else {
-                        paginationLoading = true
+                    if (!refreshLayout.isRefreshing) {
+                        failContainer.safeGone()
+                        if (currentPage == 1) {
+                            shimmerLayout.visible()
+                        } else {
+                            paginationLoading = true
+                        }
                     }
                 }
             }

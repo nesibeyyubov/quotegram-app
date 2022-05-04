@@ -55,7 +55,7 @@ class QuoteViewModel @Inject constructor(
                     if (_quotes.value == null || page > 1 || forced) {
                         _quotes.postValue(DataState.Loading())
                         val response = mainRepository.getQuotesByGenre(genre, page)
-                        handleQuotesResponse(response)
+                        handleQuotesResponse(response, forced)
                     }
                 } catch (e: Exception) {
                     _quotes.postValue(DataState.Fail())
