@@ -11,6 +11,8 @@ object Constants {
     const val CODE_SERVER_ERROR = 500
     const val API_URL = "http://164.92.148.254:4000/"
 
+    const val ADMIN_ID="60670d9b34d95b1a30dc8c0d"
+
     // Quantities
     const val MIN_GENRE_COUNT = 1
     const val MAX_QUOTE_LENGTH = 500

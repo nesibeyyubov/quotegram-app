@@ -18,6 +18,7 @@ import com.nesib.quotegram.models.Quote
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.QuoteViewModel
 import com.nesib.quotegram.ui.viewmodels.ReportViewModel
+import com.nesib.quotegram.utils.Constants
 import com.nesib.quotegram.utils.Constants.KEY_DELETED_QUOTE
 import com.nesib.quotegram.utils.DataState
 import com.nesib.quotegram.utils.showToast
@@ -56,7 +57,7 @@ class QuoteOptionsFragment : BottomSheetDialogFragment(), View.OnClickListener {
 
     private fun setupUi() {
         if (authViewModel.currentUserId != null) {
-            if (args.quote.creator!!.id == authViewModel.currentUserId) {
+            if (args.quote.creator?.id == authViewModel.currentUserId || authViewModel.currentUserId == Constants.ADMIN_ID) {
                 binding.reportQuote.visibility = View.GONE
                 binding.reportUser.visibility = View.GONE
                 binding.editQuote.setOnClickListener(this)
