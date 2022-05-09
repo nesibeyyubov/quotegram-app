@@ -92,6 +92,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
             googleSignInActivityLauncher.launch(googleSignInIntent)
         }
 
+        skipButton.setOnClickListener {
+            val action =
+                LoginFragmentDirections.actionLoginFragmentToSelectCategoriesFragment(null, null)
+            findNavController().navigate(action)
+        }
     }
 
     private fun startMainActivity() {

@@ -38,20 +38,23 @@ class NotificationViewModel @Inject constructor(
         get() = _clearNotifications
 
 
-    fun getNotifications(page: Int = 1) = viewModelScope.launch(Dispatchers.IO) {
-        try {
-            if (Utils.hasInternetConnection(getApplication<Application>())) {
-                _notifications.postValue(DataState.Loading())
-                val response = mainRepository.getNotifications(page)
-                val handledResponse = handleNotificationsResponse(response,page)
-                _notifications.postValue(handledResponse)
-            } else {
-                _notifications.postValue(DataState.Fail(message = "No internet connection"))
+    fun getNotifications(page: Int = 1, forced: Boolean = false) =
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                if (Utils.hasInternetConnection(getApplication<Application>())) {
+                    if (_notifications.value == null || forced) {
+                        _notifications.postValue(DataState.Loading())
+                        val response = mainRepository.getNotifications(page)
+                        val handledResponse = handleNotificationsResponse(response, page)
+                        _notifications.postValue(handledResponse)
+                    }
+                } else {
+                    _notifications.postValue(DataState.Fail(message = "No internet connection"))
+                }
+            } catch (e: Exception) {
+                _notifications.postValue(DataState.Fail())
             }
-        } catch (e: Exception) {
-            _notifications.postValue(DataState.Fail())
         }
-    }
 
 
     fun clearNotifications() = viewModelScope.launch(Dispatchers.IO) {
@@ -59,7 +62,7 @@ class NotificationViewModel @Inject constructor(
             if (Utils.hasInternetConnection(getApplication<Application>())) {
                 _clearNotifications.postValue(DataState.Loading())
                 val response = mainRepository.clearNotifications()
-                val handledResponse = handleNotificationsResponse(response,page = 1)
+                val handledResponse = handleNotificationsResponse(response, page = 1)
                 _clearNotifications.postValue(handledResponse)
             } else {
                 _clearNotifications.postValue(DataState.Fail(message = "No internet connection"))
@@ -69,21 +72,24 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
-    private fun handleNotificationsResponse(response: Response<NotificationsResponse>,page:Int): DataState<NotificationsResponse> {
+    private fun handleNotificationsResponse(
+        response: Response<NotificationsResponse>,
+        page: Int
+    ): DataState<NotificationsResponse> {
         when (response.code()) {
             CODE_SUCCESS -> {
-                if(page == 1){
+                if (page == 1) {
                     notificationList.clear()
                 }
                 response.body()?.notifications?.forEach { notification ->
                     notificationList.add(notification)
                 }
 
-                    return DataState.Success(
-                        data = NotificationsResponse(
-                            notifications = notificationList
-                        )
+                return DataState.Success(
+                    data = NotificationsResponse(
+                        notifications = notificationList
                     )
+                )
             }
             CODE_AUTHENTICATION_FAIL -> {
                 val authResponse = Utils.toBasicResponse(response)

@@ -11,7 +11,8 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:translationY="-25dp">
 
         <LinearLayout
             android:id="@+id/signupContainer"
@@ -128,5 +129,23 @@
         android:layout_below="@id/scroll_view"
         android:layout_marginTop="15dp"
         app:text="@string/txt_signup_google" />
+
+    <LinearLayout
+        android:id="@+id/skipButton"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/signup_btn_google"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/blue_border_button_bg"
+        android:clickable="true"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_continue_guest"
+            android:textColor="@color/blue"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </RelativeLayout>

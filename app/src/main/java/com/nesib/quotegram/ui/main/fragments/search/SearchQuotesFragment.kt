@@ -17,7 +17,6 @@ import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.HomeAdapter
 import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentSearchQuotesBinding
-import com.nesib.quotegram.models.Quote
 import com.nesib.quotegram.ui.main.MainActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.QuoteViewModel
@@ -28,7 +27,8 @@ import java.util.*
 
 @AndroidEntryPoint
 class SearchQuotesFragment :
-    BaseFragment<FragmentSearchQuotesBinding>(R.layout.fragment_search_quotes) {
+    BaseFragment<FragmentSearchQuotesBinding>(R.layout.fragment_search_quotes),
+    BottomNavReselectListener {
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val quoteViewModel: QuoteViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
@@ -45,10 +45,16 @@ class SearchQuotesFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+        initBottomNavReselectListener()
         setupRecyclerView()
         subscribeObservers()
         setupClickListeners()
         quoteViewModel.getQuotesByGenre(args.genre)
+    }
+
+
+    private fun initBottomNavReselectListener() {
+        (requireActivity() as MainActivity).bottomNavItemReselectListener = this
     }
 
     private fun hideRefreshLayoutProgress() {
@@ -213,4 +219,7 @@ class SearchQuotesFragment :
     }
 
     override fun createBinding(view: View) = FragmentSearchQuotesBinding.bind(view)
+    override fun itemReselected(screen: Screen?) {
+        if (screen == Screen.Search) navigateBack()
+    }
 }

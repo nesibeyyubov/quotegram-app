@@ -45,11 +45,16 @@ class SignupFragment : BaseFragment<FragmentSignupBinding>(R.layout.fragment_sig
             signup()
         }
         signupToLoginBtn.setOnClickListener {
-            findNavController().popBackStack()
+            navigateBack()
         }
         signupBtnGoogle.setOnClickListener {
             val googleSignInIntent = googleSignInClient.signInIntent
             googleSignInActivityLauncher.launch(googleSignInIntent)
+        }
+        skipButton.setOnClickListener {
+            val action =
+                SignupFragmentDirections.actionSignupFragmentToSelectCategoriesFragment(null, null)
+            findNavController().navigate(action)
         }
     }
 

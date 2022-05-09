@@ -36,6 +36,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var authViewModel: AuthViewModel
     private val sharedViewModel: SharedViewModel by viewModels()
 
+    var bottomNavItemReselectListener: BottomNavReselectListener? = null
+
+
     val dialog by lazy {
         val notAuthenticatedBinding = NotAuthenticatedLayoutBinding.bind(
             layoutInflater.inflate(
@@ -201,6 +204,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         bottomNavView.setupWithNavController(navController)
         drawerNavigationView.setupWithNavController(navController)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        bottomNavView.setOnItemReselectedListener {
+            val screen = when (it.itemId) {
+                R.id.homeFragment -> Screen.Home
+                R.id.searchFragment -> Screen.Search
+                R.id.notificationsFragment -> Screen.Notifications
+                R.id.myProfileFragment -> Screen.MyProfile
+                else -> null
+            }
+            bottomNavItemReselectListener?.itemReselected(screen)
+        }
     }
 
     fun showAuthenticationDialog() {
@@ -210,6 +224,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun setupBottomNavChangeListeners() {
         navController.addOnDestinationChangedListener { navController: NavController, navDestination: NavDestination, bundle: Bundle? ->
             currentFocus?.let { Utils.hideKeyboard(it) }
+            bottomNavItemReselectListener = null
             when (navDestination.id) {
                 R.id.homeFragment -> {
                     binding.toolbarText.text = getString(R.string.title_quotes)

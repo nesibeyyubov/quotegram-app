@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import com.nesib.quotegram.R
 
 abstract class BaseFragment<VBinding : ViewBinding>(layoutResource: Int) :
     Fragment(layoutResource) {
@@ -28,6 +29,14 @@ abstract class BaseFragment<VBinding : ViewBinding>(layoutResource: Int) :
 
     fun navigateTo(screenId: Int) {
         findNavController().navigate(screenId)
+    }
+
+    fun navigateBack(){
+        findNavController().popBackStack()
+    }
+
+    fun getCurrentScreen(): Int? {
+        return findNavController().currentDestination?.id
     }
 
 }

@@ -141,7 +141,7 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
                         if (!paginatingFinished && mLayoutManager.findLastCompletelyVisibleItemPosition() == (currentNotifications!!.size - 1) && !paginationLoading) {
                             currentPage++
                             paginationLoading = true
-                            notificationViewModel.getNotifications(currentPage)
+                            notificationViewModel.getNotifications(currentPage, forced = true)
                         }
                     }
                 }

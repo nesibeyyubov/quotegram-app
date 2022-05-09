@@ -4,24 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Layout
-import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.FullPageQuoteAdapter
-import com.nesib.quotegram.adapters.HomeAdapter
 import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentHomeBinding
-import com.nesib.quotegram.models.Quote
 import com.nesib.quotegram.ui.main.MainActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.QuoteViewModel
@@ -29,7 +19,8 @@ import com.nesib.quotegram.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home),
+    BottomNavReselectListener {
     private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
     private val authenticationDialog by lazy { (activity as MainActivity).dialog }
@@ -40,10 +31,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initBottomNavReselectListener()
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
         quoteViewModel.getQuotes()
+    }
+
+    private fun initBottomNavReselectListener() {
+        (requireActivity() as MainActivity).bottomNavItemReselectListener = this
     }
 
     private fun setupClickListeners() {
@@ -138,4 +134,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     override fun createBinding(view: View) = FragmentHomeBinding.bind(view)
+
+    override fun itemReselected(screen: Screen?) {
+        if (screen == Screen.Home) {
+            binding.homeViewPager.setCurrentItem(0, true)
+        }
+    }
 }

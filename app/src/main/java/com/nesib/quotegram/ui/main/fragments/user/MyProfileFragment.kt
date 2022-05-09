@@ -29,7 +29,8 @@ import com.nesib.quotegram.utils.Constants.TEXT_UPDATED_USER
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragment_my_profile) {
+class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragment_my_profile),
+    BottomNavReselectListener {
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val userViewModel: UserViewModel by viewModels()
     private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
@@ -43,11 +44,16 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initBottomNavReselectListener()
         setupClickListeners()
         setupRecyclerView()
         subscribeObservers()
         getUser()
         setFragmentResultListener()
+    }
+
+    private fun initBottomNavReselectListener() {
+        (requireActivity() as MainActivity).bottomNavItemReselectListener = this
     }
 
     private fun getUser() {
@@ -123,6 +129,8 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         }
         if (quotesSize == 0) {
             noQuoteFoundContainer.visible()
+        } else {
+            noQuoteFoundContainer.gone()
         }
         homeAdapter.setData(user.quotes ?: emptyList())
     }
@@ -217,6 +225,9 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
     }
 
     override fun createBinding(view: View) = FragmentMyProfileBinding.bind(view)
+    override fun itemReselected(screen: Screen?) {
+        if (screen == Screen.MyProfile) binding.profileContent.smoothScrollTo(0, 0, 1000)
+    }
 
 
 }

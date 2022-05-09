@@ -16,7 +16,6 @@ class SharedViewModel : ViewModel() {
     val searchTextGenre
         get() = _searchTextGenre
 
-
     fun setChangedText(text: String) {
         when (currentTab) {
             SearchTab.Quotes -> {
@@ -29,5 +28,5 @@ class SharedViewModel : ViewModel() {
 
     }
 
-
 }
+
