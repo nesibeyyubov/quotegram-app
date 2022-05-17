@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/bg_primary_to_transparent_gradient"
+        app:layout_constraintBottom_toBottomOf="@+id/shapeableImageView"
+        app:layout_constraintEnd_toEndOf="@+id/shapeableImageView"
+        app:layout_constraintStart_toStartOf="@id/shapeableImageView"
+        app:layout_constraintTop_toTopOf="@+id/shapeableImageView" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/page_padding" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/page_padding" />
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/shapeableImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="120dp"
+        android:src="@drawable/app_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/RoundedImage" />
+
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Welcome to Quotegram"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/shapeableImageView"
+        app:layout_constraintStart_toStartOf="@+id/shapeableImageView"
+        app:layout_constraintTop_toBottomOf="@+id/shapeableImageView" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Sign in to enjoy all features"
+        android:textAlignment="center"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+
+    <com.nesib.quotegram.ui.custom_views.GoogleButton
+        android:id="@+id/btn_sign_google"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_skip"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left"
+        app:text="@string/txt_signin_google" />
+
+    <LinearLayout
+        android:id="@+id/btn_skip"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/btn_sign_google"
+        android:background="@drawable/blue_border_button_bg"
+        android:clickable="true"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
+        app:layout_constraintStart_toStartOf="@id/guideline_left">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_continue_guest"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

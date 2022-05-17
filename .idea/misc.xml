@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/bg_primary_to_transparent_gradient.xml" value="0.1825" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/bg_ripple_for_text.xml" value="0.183" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/ic_info.xml" value="0.1375" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/light_gray_border_bottom_bg.xml" value="0.183" />
@@ -11,6 +12,7 @@
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/activity_start.xml" value="0.14492753623188406" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/discover_book_item_layout.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_add_quote.xml" value="0.176" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_authorization.xml" value="0.2" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_download_quote.xml" value="0.25275938189845476" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_first.xml" value="0.264" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_home.xml" value="0.23645833333333333" />
