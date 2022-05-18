@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.nesib.quotegram.data.local.SharedPreferencesRepository
@@ -15,8 +14,6 @@ import com.nesib.quotegram.utils.Constants.CODE_CREATION_SUCCESS
 import com.nesib.quotegram.utils.Constants.CODE_SERVER_ERROR
 import com.nesib.quotegram.utils.Constants.CODE_SUCCESS
 import com.nesib.quotegram.utils.Constants.CODE_VALIDATION_FAIL
-import com.nesib.quotegram.utils.Constants.KEY_PASSWORD
-import com.nesib.quotegram.utils.Constants.KEY_USERNAME
 import com.nesib.quotegram.utils.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -65,32 +62,7 @@ class AuthViewModel @Inject constructor(
 
     fun logout() = sharedPreferencesRepository.clearUser()
 
-
-    fun signup(
-        username: String,
-        password: String,
-    ) = viewModelScope.launch(Dispatchers.IO) {
-        if (hasInternetConnection()) {
-            try {
-                _auth.postValue(DataState.Loading())
-                val response = userRepository.signup(username, password)
-                if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
-                    hasSignupError = true
-                }
-                handleResponse(response)
-
-            } catch (e: Exception) {
-                hasSignupError = true
-                _auth.postValue(DataState.Fail())
-            }
-        } else {
-            hasSignupError = true
-            _auth.postValue(DataState.Fail(message = "No internet connection"))
-        }
-
-    }
-
-    fun signupWithGoogle(
+    fun authorizeWithGoogle(
         email: String,
         fullname: String,
         username: String,
@@ -100,31 +72,7 @@ class AuthViewModel @Inject constructor(
             try {
                 _auth.postValue(DataState.Loading())
                 val response =
-                    userRepository.signupWithGoogle(email, fullname, username, profileImage)
-                if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
-                    hasSignupError = true
-                }
-                handleResponse(response)
-            } catch (e: Exception) {
-                hasSignupError = true
-                _auth.postValue(DataState.Fail())
-            }
-        } else {
-            hasSignupError = true
-            _auth.postValue(DataState.Fail(message = "No internet connection"))
-        }
-
-    }
-
-    fun signInWithGoogle(
-        email: String,
-        profileImage: String
-    ) = viewModelScope.launch(Dispatchers.IO) {
-        if (hasInternetConnection()) {
-            try {
-                _auth.postValue(DataState.Loading())
-                val response =
-                    userRepository.signInWithGoogle(email, profileImage)
+                    userRepository.authorizeWithGoogle(email, fullname, username, profileImage)
                 handleResponse(response)
             } catch (e: Exception) {
                 _auth.postValue(DataState.Fail())

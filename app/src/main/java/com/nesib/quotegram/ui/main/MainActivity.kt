@@ -25,7 +25,6 @@ import com.nesib.quotegram.ui.viewmodels.AuthViewModel
 import com.nesib.quotegram.ui.viewmodels.SharedViewModel
 import com.nesib.quotegram.utils.*
 import com.nesib.quotegram.utils.Constants.TEXT_DIRECT_TO_LOGIN
-import com.nesib.quotegram.utils.Constants.TEXT_DIRECT_TO_SIGNUP
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -99,7 +98,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             val drawerMenu = drawerNavigationView.menu
             drawerMenu.findItem(R.id.drawer_login).isVisible = false
-            drawerMenu.findItem(R.id.drawer_signup).isVisible = false
         } else {
             val bottomNavMenu = drawerNavigationView.menu
             bottomNavMenu.findItem(R.id.drawer_logout).isVisible = false
@@ -116,13 +114,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.drawer_logout -> {
                     authViewModel.logout()
                     startActivity(Intent(this@MainActivity, StartActivity::class.java))
-                }
-                R.id.drawer_signup -> {
-                    authViewModel.logout()
-                    val intent = Intent(this, StartActivity::class.java)
-                    intent.putExtra(TEXT_DIRECT_TO_SIGNUP, true)
-                    startActivity(intent)
-                    finish()
                 }
                 R.id.drawer_login -> {
                     authViewModel.logout()

@@ -11,9 +11,6 @@
         android:label="Login"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_loginFragment_to_signupFragment"
-            app:destination="@id/signupFragment" />
-        <action
             android:id="@+id/action_loginFragment_to_selectCategoriesFragment"
             app:destination="@id/selectCategoriesFragment"
             app:enterAnim="@anim/slide_in_from_right"
@@ -23,22 +20,6 @@
         <action
             android:id="@+id/action_loginFragment_to_selectCategoriesFragment2"
             app:destination="@id/selectCategoriesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/signupFragment"
-        android:name="com.nesib.quotegram.ui.on_boarding.fragments.auth.SignupFragment"
-        android:label="Signup"
-        tools:layout="@layout/fragment_signup">
-        <action
-            android:id="@+id/action_signupFragment_to_selectCategoriesFragment"
-            app:destination="@id/selectCategoriesFragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:exitAnim="@anim/slide_out_from_left"
-            app:popEnterAnim="@anim/slide_in_from_left"
-            app:popExitAnim="@anim/slide_out_from_right" />
-        <action
-            android:id="@+id/action_signupFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/selectCategoriesFragment"
@@ -59,13 +40,6 @@
         android:name="com.nesib.quotegram.ui.on_boarding.fragments.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
-        <action
-            android:id="@+id/action_splashFragment_to_signupFragment"
-            app:destination="@id/signupFragment"
-            app:enterAnim="@anim/slide_in_from_right"
-            app:exitAnim="@anim/slide_out_from_left"
-            app:popEnterAnim="@anim/slide_in_from_left"
-            app:popExitAnim="@anim/slide_out_from_right" />
         <action
             android:id="@+id/action_splashFragment_to_loginFragment"
             app:destination="@id/loginFragment"

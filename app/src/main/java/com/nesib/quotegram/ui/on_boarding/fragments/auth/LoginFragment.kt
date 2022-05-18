@@ -14,6 +14,7 @@ import com.google.android.gms.common.api.ApiException
 import com.nesib.quotegram.R
 import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentAuthorizationBinding
+import com.nesib.quotegram.models.UserAuth
 import com.nesib.quotegram.ui.main.MainActivity
 import com.nesib.quotegram.ui.on_boarding.StartActivity
 import com.nesib.quotegram.ui.viewmodels.AuthViewModel
@@ -62,7 +63,7 @@ class LoginFragment : BaseFragment<FragmentAuthorizationBinding>(R.layout.fragme
         val profileImage = account?.photoUrl?.toString()
         if (email != null && username != null) {
             googleSignInClient.signOut()
-            authViewModel.signupWithGoogle(
+            authViewModel.authorizeWithGoogle(
                 email,
                 fullName ?: "",
                 username,
@@ -90,6 +91,15 @@ class LoginFragment : BaseFragment<FragmentAuthorizationBinding>(R.layout.fragme
         }
     }
 
+    private fun navigateToCategories(data: UserAuth) {
+        val action =
+            LoginFragmentDirections.actionLoginFragmentToSelectCategoriesFragment(
+                data.userId,
+                data.username
+            )
+        findNavController().navigate(action)
+    }
+
     private fun startMainActivity() {
         startActivity(Intent(requireActivity(), MainActivity::class.java))
         requireActivity().finish()
@@ -100,7 +110,11 @@ class LoginFragment : BaseFragment<FragmentAuthorizationBinding>(R.layout.fragme
             when (it) {
                 is DataState.Success -> {
                     authViewModel.saveUser()
-                    startMainActivity()
+                    if (it.data?.initialSignIn == true) {
+                        navigateToCategories(it.data)
+                    } else {
+                        startMainActivity()
+                    }
                 }
                 is DataState.Fail -> {
                     btnSignGoogle.hideLoading()

@@ -73,14 +73,9 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(R.layout.fragment_spl
     private fun directToLoginOrSignup() {
         val directToLogin =
             requireActivity().intent.getBooleanExtra(Constants.TEXT_DIRECT_TO_LOGIN, false)
-        val directToSignup =
-            requireActivity().intent.getBooleanExtra(Constants.TEXT_DIRECT_TO_SIGNUP, false)
         if (directToLogin) {
             requireActivity().intent = Intent()
             findNavController().navigate(R.id.loginFragment)
-        } else if (directToSignup) {
-            requireActivity().intent = Intent()
-            findNavController().navigate(R.id.signupFragment)
         }
     }
 

@@ -6,18 +6,8 @@ import retrofit2.http.*
 
 
 interface AuthApi {
-    // Authentication
-    @POST("/auth/login/")
-    suspend fun login(@Body loginBody: Map<String, String>): Response<UserAuth>
-
-    @POST("/auth/signup")
-    suspend fun signup(@Body signupBody: Map<String, String>): Response<UserAuth>
-
-    @POST("/auth/google-login")
-    suspend fun signInWithGoogle(@Body loginBody: Map<String, String>): Response<UserAuth>
-
     @POST("/auth/google-signup")
-    suspend fun signupWithGoogle(@Body signupBody: Map<String, String>): Response<UserAuth>
+    suspend fun authorizeWithGoogle(@Body signupBody: Map<String, String>): Response<UserAuth>
 
     // Users
     @GET("/users/")

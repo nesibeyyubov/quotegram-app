@@ -4,7 +4,6 @@ import com.nesib.quotegram.data.network.AuthApi
 import com.nesib.quotegram.models.*
 import com.nesib.quotegram.utils.Constants.KEY_EMAIL
 import com.nesib.quotegram.utils.Constants.KEY_FULL_NAME
-import com.nesib.quotegram.utils.Constants.KEY_PASSWORD
 import com.nesib.quotegram.utils.Constants.KEY_PROFILE_IMAGE
 import com.nesib.quotegram.utils.Constants.KEY_USERNAME
 import retrofit2.Response
@@ -14,18 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class UserRepository @Inject constructor(val authApi: AuthApi) {
 
-    suspend fun signup(
-        username: String,
-        password: String
-    ): Response<UserAuth> {
-        val map = mapOf(
-            KEY_PASSWORD to password,
-            KEY_USERNAME to username,
-        )
-        return authApi.signup(map)
-    }
-
-    suspend fun signupWithGoogle(
+    suspend fun authorizeWithGoogle(
         email: String,
         fullname: String,
         username: String,
@@ -37,15 +25,8 @@ class UserRepository @Inject constructor(val authApi: AuthApi) {
             KEY_USERNAME to username,
             KEY_PROFILE_IMAGE to profileImage
         )
-        return authApi.signupWithGoogle(map)
+        return authApi.authorizeWithGoogle(map)
     }
-
-    suspend fun signInWithGoogle(email: String, profileImage: String): Response<UserAuth> {
-        val map = mapOf(KEY_EMAIL to email, KEY_PROFILE_IMAGE to profileImage)
-        return authApi.signInWithGoogle(map)
-    }
-
-    suspend fun login(loginBody: Map<String, String>) = authApi.login(loginBody)
 
     suspend fun followOrUnFollowUser(userId: String) = authApi.followOrUnFollowUser(userId)
 

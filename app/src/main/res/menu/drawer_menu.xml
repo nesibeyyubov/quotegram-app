@@ -15,10 +15,6 @@
             android:icon="@drawable/ic_login"
             android:title="Login" />
         <item
-            android:id="@+id/drawer_signup"
-            android:icon="@drawable/ic_signup"
-            android:title="Signup" />
-        <item
             android:id="@+id/drawer_logout"
             android:icon="@drawable/ic_logout"
             android:title="Logout" />

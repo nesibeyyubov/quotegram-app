@@ -27,7 +27,6 @@ object Constants {
     const val KEY_DELETED_QUOTE = "deletedQuote"
     const val KEY_UPDATED_QUOTE = "updatedQuote"
     const val TEXT_DIRECT_TO_LOGIN = "directToLogin"
-    const val TEXT_DIRECT_TO_SIGNUP = "directToSignup"
     const val TEXT_UPDATED_USER = "updatedUser"
 
     // Api Keys
