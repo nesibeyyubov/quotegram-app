@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 import com.nesib.quotegram.R
 
 abstract class BaseFragment<VBinding : ViewBinding>(layoutResource: Int) :
@@ -31,12 +32,16 @@ abstract class BaseFragment<VBinding : ViewBinding>(layoutResource: Int) :
         findNavController().navigate(screenId)
     }
 
-    fun navigateBack(){
+    fun navigateBack() {
         findNavController().popBackStack()
     }
 
     fun getCurrentScreen(): Int? {
         return findNavController().currentDestination?.id
+    }
+
+    fun showSnackBar(message: String) {
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }
 
 }

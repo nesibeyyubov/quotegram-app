@@ -32,7 +32,6 @@ class AuthViewModel @Inject constructor(
     val userRepository: UserRepository,
 ) : AndroidViewModel(application) {
     var hasSignupError = false
-    var hasLoginError = false
     var currentUser: UserAuth? = null
 
     private var _isAuthenticated = false
@@ -67,37 +66,12 @@ class AuthViewModel @Inject constructor(
     fun logout() = sharedPreferencesRepository.clearUser()
 
 
-    fun login(username: String, password: String) =
-        viewModelScope.launch(Dispatchers.IO) {
-            if (hasInternetConnection()) {
-                try {
-                    _auth.postValue(DataState.Loading())
-                    val loginBody =
-                        mapOf(KEY_PASSWORD to password, KEY_USERNAME to username)
-                    val response = userRepository.login(loginBody)
-                    if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
-                        hasLoginError = true
-                    }
-                    handleResponse(response)
-
-                } catch (e: Exception) {
-                    hasLoginError = true
-                    _auth.postValue(DataState.Fail())
-                }
-            } else {
-                hasLoginError = true
-                _auth.postValue(DataState.Fail(message = "No internet connection"))
-            }
-
-        }
-
     fun signup(
         username: String,
         password: String,
     ) = viewModelScope.launch(Dispatchers.IO) {
         if (hasInternetConnection()) {
             try {
-
                 _auth.postValue(DataState.Loading())
                 val response = userRepository.signup(username, password)
                 if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
@@ -151,17 +125,11 @@ class AuthViewModel @Inject constructor(
                 _auth.postValue(DataState.Loading())
                 val response =
                     userRepository.signInWithGoogle(email, profileImage)
-                if (response.code() != CODE_SUCCESS && response.code() != CODE_CREATION_SUCCESS) {
-                    hasLoginError = true
-                }
                 handleResponse(response)
-
             } catch (e: Exception) {
-                hasLoginError = true
                 _auth.postValue(DataState.Fail())
             }
         } else {
-            hasLoginError = true
             _auth.postValue(DataState.Fail(message = "No internet connection"))
         }
 
