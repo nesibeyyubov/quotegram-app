@@ -1,7 +1,9 @@
 package com.nesib.quotegram.ui.main.fragments.search
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,7 +19,7 @@ import java.util.*
 
 @AndroidEntryPoint
 class SelectGenresFragment :
-    BaseFragment<FragmentSelectQuoteGenresBinding>(R.layout.fragment_select_quote_genres) {
+    BaseFragment<FragmentSelectQuoteGenresBinding>() {
     private lateinit var genresAdapter: GenresAdapter
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
     private val sharedViewModel: SharedViewModel by viewModels({ requireActivity() })
@@ -61,5 +63,9 @@ class SelectGenresFragment :
 
     }
 
-    override fun createBinding(view: View) = FragmentSelectQuoteGenresBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSelectQuoteGenresBinding =
+        FragmentSelectQuoteGenresBinding.inflate(inflater, container, false)
 }

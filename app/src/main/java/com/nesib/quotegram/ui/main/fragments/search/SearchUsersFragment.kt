@@ -3,7 +3,9 @@ package com.nesib.quotegram.ui.main.fragments.search
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -24,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SearchUsersFragment :
-    BaseFragment<FragmentSearchUsersBinding>(R.layout.fragment_search_users) {
+    BaseFragment<FragmentSearchUsersBinding>() {
     private val searchAdapter by lazy { SearchUserAdapter() }
     private val userViewModel: UserViewModel by viewModels({ requireParentFragment() })
     private val sharedViewModel: SharedViewModel by viewModels({ requireActivity() })
@@ -105,6 +107,9 @@ class SearchUsersFragment :
         }
     }
 
-    override fun createBinding(view: View) = FragmentSearchUsersBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSearchUsersBinding = FragmentSearchUsersBinding.inflate(inflater,container,false)
 
 }

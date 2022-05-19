@@ -3,10 +3,7 @@ package com.nesib.quotegram.ui.main.fragments.user
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -32,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class UserProfileFragment :
-    BaseFragment<FragmentUserProfileBinding>(R.layout.fragment_user_profile) {
+    BaseFragment<FragmentUserProfileBinding>() {
 
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val userViewModel: UserViewModel by viewModels()
@@ -264,7 +261,10 @@ class UserProfileFragment :
         return super.onOptionsItemSelected(item)
     }
 
-    override fun createBinding(view: View) = FragmentUserProfileBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentUserProfileBinding = FragmentUserProfileBinding.inflate(inflater, container, false)
 
 
 }

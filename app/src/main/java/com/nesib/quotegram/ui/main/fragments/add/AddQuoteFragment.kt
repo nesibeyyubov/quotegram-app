@@ -1,7 +1,9 @@
 package com.nesib.quotegram.ui.main.fragments.add
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -25,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>(R.layout.fragment_add_quote) {
+class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>() {
     private val args by navArgs<AddQuoteFragmentArgs>()
     private val quoteViewModel: QuoteViewModel by viewModels({ requireActivity() })
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
@@ -167,5 +169,8 @@ class AddQuoteFragment : BaseFragment<FragmentAddQuoteBinding>(R.layout.fragment
         super.onDestroyView()
     }
 
-    override fun createBinding(view: View) = FragmentAddQuoteBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentAddQuoteBinding = FragmentAddQuoteBinding.inflate(inflater,container,false)
 }

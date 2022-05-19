@@ -2,7 +2,9 @@ package com.nesib.quotegram.ui.on_boarding.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -17,7 +19,7 @@ import com.nesib.quotegram.utils.Constants
 import com.nesib.quotegram.utils.gone
 import com.nesib.quotegram.utils.visible
 
-class SplashFragment : BaseFragment<FragmentSplashBinding>(R.layout.fragment_splash) {
+class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         directToLoginOrSignup()
@@ -79,5 +81,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>(R.layout.fragment_spl
         }
     }
 
-    override fun createBinding(view: View) = FragmentSplashBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSplashBinding = FragmentSplashBinding.inflate(inflater, container, false)
 }

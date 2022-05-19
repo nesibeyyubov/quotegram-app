@@ -1,10 +1,7 @@
 package com.nesib.quotegram.ui.main.fragments.user
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -23,7 +20,7 @@ import com.nesib.quotegram.utils.Constants.TEXT_UPDATED_USER
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class EditUserFragment : BaseFragment<FragmentEditProfileBinding>(R.layout.fragment_edit_profile) {
+class EditUserFragment : BaseFragment<FragmentEditProfileBinding>() {
     private val args by navArgs<EditUserFragmentArgs>()
     private val userViewModel: UserViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
@@ -117,5 +114,8 @@ class EditUserFragment : BaseFragment<FragmentEditProfileBinding>(R.layout.fragm
 
     }
 
-    override fun createBinding(view: View) = FragmentEditProfileBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentEditProfileBinding = FragmentEditProfileBinding.inflate(inflater, container, false)
 }

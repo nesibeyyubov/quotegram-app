@@ -3,7 +3,9 @@ package com.nesib.quotegram.ui.main.fragments.user
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -29,7 +31,7 @@ import com.nesib.quotegram.utils.Constants.TEXT_UPDATED_USER
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragment_my_profile),
+class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(),
     BottomNavReselectListener {
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val userViewModel: UserViewModel by viewModels()
@@ -224,7 +226,11 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(R.layout.fragme
         })
     }
 
-    override fun createBinding(view: View) = FragmentMyProfileBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentMyProfileBinding = FragmentMyProfileBinding.inflate(inflater, container, false)
+
     override fun itemReselected(screen: Screen?) {
         if (screen == Screen.MyProfile) binding.profileContent.smoothScrollTo(0, 0, 1000)
     }

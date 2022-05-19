@@ -35,7 +35,7 @@ import java.io.OutputStream
 
 
 class DownloadQuoteFragment :
-    BaseFragment<FragmentDownloadQuoteBinding>(R.layout.fragment_download_quote) {
+    BaseFragment<FragmentDownloadQuoteBinding>() {
     private var photoBitmap: Bitmap? = null
     private var imageUri: Uri? = null
     private var imageFileName: String? = ""
@@ -246,7 +246,10 @@ class DownloadQuoteFragment :
         return super.onOptionsItemSelected(item)
     }
 
-    override fun createBinding(view: View) = FragmentDownloadQuoteBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentDownloadQuoteBinding = FragmentDownloadQuoteBinding.inflate(inflater,container,false)
 
 
 }

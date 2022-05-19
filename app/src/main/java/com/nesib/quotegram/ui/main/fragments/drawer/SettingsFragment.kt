@@ -3,7 +3,9 @@ package com.nesib.quotegram.ui.main.fragments.drawer
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
@@ -20,7 +22,7 @@ import javax.inject.Named
 
 
 @AndroidEntryPoint
-class SettingsFragment : BaseFragment<FragmentSettingsBinding>(R.layout.fragment_settings) {
+class SettingsFragment : BaseFragment<FragmentSettingsBinding>() {
 
     @Inject
     @Named("themeSharedPreferences")
@@ -110,5 +112,8 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(R.layout.fragment
         }
     }
 
-    override fun createBinding(view: View) = FragmentSettingsBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSettingsBinding = FragmentSettingsBinding.inflate(inflater, container, false)
 }

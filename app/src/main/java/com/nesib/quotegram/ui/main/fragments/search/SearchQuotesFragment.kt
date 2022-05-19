@@ -3,10 +3,7 @@ package com.nesib.quotegram.ui.main.fragments.search
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -27,7 +24,7 @@ import java.util.*
 
 @AndroidEntryPoint
 class SearchQuotesFragment :
-    BaseFragment<FragmentSearchQuotesBinding>(R.layout.fragment_search_quotes),
+    BaseFragment<FragmentSearchQuotesBinding>(),
     BottomNavReselectListener {
     private val homeAdapter by lazy { HomeAdapter((activity as MainActivity).dialog) }
     private val quoteViewModel: QuoteViewModel by viewModels()
@@ -218,7 +215,11 @@ class SearchQuotesFragment :
         return text
     }
 
-    override fun createBinding(view: View) = FragmentSearchQuotesBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSearchQuotesBinding = FragmentSearchQuotesBinding.inflate(inflater,container,false)
+
     override fun itemReselected(screen: Screen?) {
         if (screen == Screen.Search) navigateBack()
     }

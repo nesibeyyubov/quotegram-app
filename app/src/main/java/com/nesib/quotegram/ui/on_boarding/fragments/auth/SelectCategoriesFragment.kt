@@ -2,7 +2,9 @@ package com.nesib.quotegram.ui.on_boarding.fragments.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -19,7 +21,7 @@ import com.nesib.quotegram.utils.invisible
 import java.util.*
 
 class SelectCategoriesFragment :
-    BaseFragment<FragmentSelectCategoriesBinding>(R.layout.fragment_select_categories) {
+    BaseFragment<FragmentSelectCategoriesBinding>() {
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
     private val args by navArgs<SelectCategoriesFragmentArgs>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,5 +80,8 @@ class SelectCategoriesFragment :
         }
     }
 
-    override fun createBinding(view: View) = FragmentSelectCategoriesBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentSelectCategoriesBinding = FragmentSelectCategoriesBinding.inflate(inflater,container,false)
 }

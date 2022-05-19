@@ -2,7 +2,9 @@ package com.nesib.quotegram.ui.on_boarding.fragments.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
@@ -24,7 +26,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<FragmentAuthorizationBinding>(R.layout.fragment_authorization) {
+class LoginFragment : BaseFragment<FragmentAuthorizationBinding>() {
 
     @Inject
     lateinit var googleSignInClient: GoogleSignInClient
@@ -127,5 +129,9 @@ class LoginFragment : BaseFragment<FragmentAuthorizationBinding>(R.layout.fragme
         }
     }
 
-    override fun createBinding(view: View) = FragmentAuthorizationBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentAuthorizationBinding =
+        FragmentAuthorizationBinding.inflate(inflater, container, false)
 }

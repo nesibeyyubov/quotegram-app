@@ -2,7 +2,9 @@ package com.nesib.quotegram.ui.main.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,7 +25,7 @@ import com.nesib.quotegram.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class QuoteFragment : BaseFragment<FragmentQuoteBinding>(R.layout.fragment_quote),
+class QuoteFragment : BaseFragment<FragmentQuoteBinding>(),
     View.OnClickListener {
     private val quoteViewModel: QuoteViewModel by viewModels()
     private val args: QuoteFragmentArgs by navArgs()
@@ -162,7 +164,10 @@ class QuoteFragment : BaseFragment<FragmentQuoteBinding>(R.layout.fragment_quote
 
     }
 
-    override fun createBinding(view: View) = FragmentQuoteBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentQuoteBinding = FragmentQuoteBinding.inflate(inflater, container, false)
 
 
 }

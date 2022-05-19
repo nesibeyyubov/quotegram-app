@@ -2,10 +2,7 @@ package com.nesib.quotegram.ui.main.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -13,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.NotificationAdapter
+import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentNotificationsBinding
 import com.nesib.quotegram.models.Notification
 import com.nesib.quotegram.ui.on_boarding.StartActivity
@@ -23,8 +21,7 @@ import com.nesib.quotegram.utils.Constants.TEXT_DIRECT_TO_LOGIN
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
-    private lateinit var binding: FragmentNotificationsBinding
+class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
     private val notificationAdapter by lazy { NotificationAdapter() }
     private val notificationViewModel: NotificationViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels({ requireActivity() })
@@ -40,7 +37,6 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentNotificationsBinding.bind(view)
         setHasOptionsMenu(true)
         setupUi()
         setupRecyclerView()
@@ -175,4 +171,9 @@ class NotificationsFragment : Fragment(R.layout.fragment_notifications) {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentNotificationsBinding.inflate(inflater, container, false)
 }

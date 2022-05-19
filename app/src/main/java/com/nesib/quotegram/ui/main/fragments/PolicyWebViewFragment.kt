@@ -1,7 +1,9 @@
 package com.nesib.quotegram.ui.main.fragments
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.nesib.quotegram.R
 import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentPolicyWebviewBinding
@@ -10,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PolicyWebViewFragment :
-    BaseFragment<FragmentPolicyWebviewBinding>(R.layout.fragment_policy_webview) {
+    BaseFragment<FragmentPolicyWebviewBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -18,5 +20,9 @@ class PolicyWebViewFragment :
     }
 
 
-    override fun createBinding(view: View) = FragmentPolicyWebviewBinding.bind(view)
+    override fun createBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentPolicyWebviewBinding =
+        FragmentPolicyWebviewBinding.inflate(inflater, container, false)
 }
