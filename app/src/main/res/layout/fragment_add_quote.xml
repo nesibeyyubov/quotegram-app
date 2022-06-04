@@ -66,9 +66,9 @@
                 android:gravity="start"
                 android:hint="Your quote here..."
                 android:imeOptions="actionDone"
+                android:textSize="14sp"
                 android:minHeight="120dp"
                 android:padding="10dp"
-                android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@+id/genre_spinner_container"
                 tools:layout_editor_absoluteX="18dp" />
 

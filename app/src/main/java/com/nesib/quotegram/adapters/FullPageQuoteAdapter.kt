@@ -18,6 +18,12 @@ import com.nesib.quotegram.utils.toFormattedNumber
 
 class FullPageQuoteAdapter(val dialog: AlertDialog) :
     RecyclerView.Adapter<FullPageQuoteAdapter.ViewHolder>() {
+
+    companion object {
+        const val BG_IMAGE = 1
+        const val BG_COLOR = 0
+    }
+
     var currentUserId: String? = null
 
     var OnUserClickListener: ((String) -> Unit)? = null
@@ -88,8 +94,6 @@ class FullPageQuoteAdapter(val dialog: AlertDialog) :
                     } else {
                         dialog.show()
                     }
-
-
                 }
                 R.id.username_textView, R.id.userPhotoImageView -> OnUserClickListener?.invoke(
                     differ.currentList[adapterPosition].creator!!.id
@@ -128,9 +132,14 @@ class FullPageQuoteAdapter(val dialog: AlertDialog) :
         holder.bindData()
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (differ.currentList[position].backgroundUrl != null) BG_IMAGE else BG_COLOR
+    }
+
     override fun getItemCount() = differ.currentList.size
 
     fun setData(newQuoteList: List<Quote>) {
         differ.submitList(newQuoteList)
     }
 }
+

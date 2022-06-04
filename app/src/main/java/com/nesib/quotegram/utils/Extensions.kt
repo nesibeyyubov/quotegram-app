@@ -1,6 +1,7 @@
 package com.nesib.quotegram.utils
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -19,6 +20,10 @@ fun Context.showToast(message: String) {
 
 fun Fragment.showToast(message: String) {
     Toast.makeText(this.requireContext(), message, Toast.LENGTH_SHORT).show()
+}
+
+fun Int.dp(): Float {
+    return this * Resources.getSystem().displayMetrics.density
 }
 
 fun NavDestination.isRootScreen(): Boolean {

@@ -5,6 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/iv_quote_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.7"
+        android:background="@color/colorQuoteOverlay"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <TextView
         android:id="@+id/quoteTextView"
         android:layout_width="0dp"
@@ -12,10 +31,10 @@
         android:layout_marginBottom="55dp"
         android:fontFamily="sans-serif-light"
         android:includeFontPadding="false"
-        android:paddingHorizontal="5dp"
+        android:paddingHorizontal="@dimen/page_padding"
         android:paddingVertical="65dp"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimaryText"
+        android:textColor="@color/colorQuoteText"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,6 +47,7 @@
         android:id="@+id/linearLayout3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
@@ -55,7 +75,8 @@
                 android:background="?attr/actionBarItemBackground"
                 android:padding="5dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_like" />
+                android:src="@drawable/ic_like"
+                app:tint="@color/colorQuoteText" />
 
             <TextView
                 android:id="@+id/likeCountTextView"
@@ -64,7 +85,7 @@
                 android:layout_marginTop="-4dp"
                 android:includeFontPadding="false"
                 android:text="Like"
-                android:textColor="@color/colorPrimaryText" />
+                android:textColor="@color/colorQuoteText" />
 
         </LinearLayout>
 
@@ -82,7 +103,8 @@
                 android:background="?attr/actionBarItemBackground"
                 android:padding="5dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_share" />
+                android:src="@drawable/ic_share"
+                app:tint="@color/colorQuoteText" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -90,7 +112,7 @@
                 android:layout_marginTop="-4dp"
                 android:includeFontPadding="false"
                 android:text="@string/txt_share"
-                android:textColor="@color/colorPrimaryText" />
+                android:textColor="@color/colorQuoteText" />
 
         </LinearLayout>
 
@@ -108,7 +130,8 @@
                 android:background="?attr/actionBarItemBackground"
                 android:padding="5dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_download" />
+                android:src="@drawable/ic_download"
+                app:tint="@color/colorQuoteText" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -116,7 +139,7 @@
                 android:layout_marginTop="-4dp"
                 android:includeFontPadding="false"
                 android:text="@string/txt_save"
-                android:textColor="@color/colorPrimaryText" />
+                android:textColor="@color/colorQuoteText" />
 
         </LinearLayout>
 
@@ -128,8 +151,10 @@
             android:background="?attr/actionBarItemBackground"
             android:padding="5dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_more" />
+            android:src="@drawable/ic_more"
+            app:tint="@color/colorQuoteText" />
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -63,4 +63,8 @@
     <color name="colorPrimaryOnLight">#3C3C3C</color>
     <color name="colorSecondaryOnLight">#878787</color>
 
+    <!--  Quote colors  -->
+    <color name="colorQuoteOverlay">@color/black</color>
+    <color name="colorQuoteText">@color/gray_300</color>
+
 </resources>
