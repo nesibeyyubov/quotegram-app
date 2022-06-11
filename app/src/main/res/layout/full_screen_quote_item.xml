@@ -10,12 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <View
+        android:id="@+id/quote_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.7"
         android:background="@color/colorQuoteOverlay"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +60,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
                     homeViewPager.safeVisible()
                     quotesSize = it.data?.quotes?.size ?: 0
                     homeAdapter.setData(it.data!!.quotes)
+                    Log.d("mytag", "${it.data.quotes}")
                     if (refreshLayout.isRefreshing) {
                         refreshLayout.isRefreshing = false
                         Handler(Looper.getMainLooper()).postDelayed({

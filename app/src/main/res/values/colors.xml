@@ -15,6 +15,8 @@
     <color name="black_300">#212121</color>
     <color name="black_400">#141414</color>
 
+    <color name="black_a_70">#B3000000</color>
+
     <!-- General -->
     <color name="blue">#24A0FF</color>
     <color name="blue_light">#3B24A0FF</color>
@@ -68,8 +70,9 @@
     <color name="colorSecondaryOnLight">#878787</color>
 
 
-    <!--  Quote colors  -->
-    <color name="colorQuoteOverlay">@color/white</color>
-    <color name="colorQuoteText">@color/black_400</color>
+    <!-- Quote colors -->
+    <color name="colorQuoteOverlay">#B3FFFFFF</color>
+    <color name="colorQuoteText">@color/black</color>
+
 
 </resources>

@@ -190,6 +190,6 @@
 
 
 
-    <string name="quote_name_validation">Quote length should be between %d characters</string>
+    <string name="quote_name_validation">Quote length should be at least %d characters</string>
     <string name="quote_name_validation_max">Quote length shouldn\'t be more than %d characters</string>
 </resources>

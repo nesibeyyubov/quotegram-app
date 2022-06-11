@@ -14,7 +14,9 @@ import com.nesib.quotegram.databinding.FullPostLayoutBinding
 import com.nesib.quotegram.databinding.FullScreenQuoteItemBinding
 import com.nesib.quotegram.models.Quote
 import com.nesib.quotegram.utils.Constants.API_URL
+import com.nesib.quotegram.utils.gone
 import com.nesib.quotegram.utils.toFormattedNumber
+import com.nesib.quotegram.utils.visible
 
 class FullPageQuoteAdapter(val dialog: AlertDialog) :
     RecyclerView.Adapter<FullPageQuoteAdapter.ViewHolder>() {
@@ -45,22 +47,26 @@ class FullPageQuoteAdapter(val dialog: AlertDialog) :
             binding.shareBtn.setOnClickListener(this)
         }
 
-        fun bindData() {
+        fun bindData() = with(binding) {
             val quote = differ.currentList[adapterPosition]
-            binding.apply {
-                if (quote.creator?.profileImage != "" && quote.creator?.profileImage != null) {
-                    userPhotoImageView.load(quote.creator?.profileImage)
-                } else {
-                    userPhotoImageView.load(R.drawable.user)
-                }
-                quoteTextView.text = quote.quote
+            if (quote.creator?.profileImage != "" && quote.creator?.profileImage != null) {
+                userPhotoImageView.load(quote.creator?.profileImage)
+            } else {
+                userPhotoImageView.load(R.drawable.user)
+            }
+            quoteTextView.text = quote.quote
 
-                likeCountTextView.text = quote.likes?.size?.toFormattedNumber()
-                if (quote.liked) {
-                    likeBtn.setImageResource(R.drawable.ic_like_blue)
-                } else {
-                    likeBtn.setImageResource(R.drawable.ic_like)
-                }
+            likeCountTextView.text = quote.likes?.size?.toFormattedNumber()
+            if (quote.liked) {
+                likeBtn.setImageResource(R.drawable.ic_like_blue)
+            } else {
+                likeBtn.setImageResource(R.drawable.ic_like)
+            }
+            if (quote.backgroundUrl != "" && quote.backgroundUrl != null) {
+                ivQuoteBg.load(quote.backgroundUrl)
+                quoteOverlay.visible()
+            } else {
+                quoteOverlay.gone()
             }
         }
 

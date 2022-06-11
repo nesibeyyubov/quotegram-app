@@ -11,7 +11,7 @@ object Constants {
     const val CODE_SERVER_ERROR = 500
     const val API_URL = "http://164.92.148.254:4000/"
 
-    const val ADMIN_ID="60670d9b34d95b1a30dc8c0d"
+    const val ADMIN_ID = "60670d9b34d95b1a30dc8c0d"
 
     // Quantities
     const val MIN_GENRE_COUNT = 1
@@ -32,11 +32,16 @@ object Constants {
     // Api Keys
     const val KEY_QUOTE = "quote"
     const val KEY_GENRE = "genre"
+    const val KEY_QUOTE_BG = "backgroundUrl"
     const val KEY_PASSWORD = "password"
     const val KEY_USERNAME = "username"
     const val KEY_FULL_NAME = "fullname"
     const val KEY_PROFILE_IMAGE = "profileImage"
     const val KEY_EMAIL = "email"
+
+
+    const val UNSPLASH_ACCESS_KEY = "En1kAv1tbhSxJdEPpZyVcTwhOTR5bjL99hfvl2VgmGg"
+    const val UNSPLASH_SECRET_KEY = "BEhlGxlMJ1tcIrOSkU1yOJKgCYowcb1oMRSrql4XXrg"
 
 
     const val CONTACT_EMAIL = "app.quotegram@gmail.com"

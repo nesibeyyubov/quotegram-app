@@ -16,7 +16,11 @@ class ProgressBarButton @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) :
     LinearLayout(context, attributeSet, defStyleAttr) {
-    private var text: String = ""
+    var text: String = ""
+        set(value) {
+            field = value
+            binding.tvNext.text = value
+        }
 
     private var binding: LayoutProgressBarButtonBinding = LayoutProgressBarButtonBinding.bind(
         LayoutInflater.from(this.context)
@@ -29,12 +33,8 @@ class ProgressBarButton @JvmOverloads constructor(
         val attributes =
             context.theme.obtainStyledAttributes(attributeSet, R.styleable.ProgressBarButton, 0, 0)
         text = attributes.getString(R.styleable.ProgressBarButton_text) ?: ""
-        initUi()
     }
 
-    private fun initUi() = with(binding) {
-        tvNext.text = text
-    }
 
     fun showLoading() = with(binding) {
         root.isEnabled = false

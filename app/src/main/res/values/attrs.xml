@@ -3,10 +3,14 @@
     <attr name="text" format="string" />
 
     <declare-styleable name="ProgressBarButton">
-        <attr name="text"/>
+        <attr name="text" />
     </declare-styleable>
 
-    <declare-styleable name="GoogleButton" >
-        <attr name="text"/>
+    <declare-styleable name="GoogleButton">
+        <attr name="text" />
+    </declare-styleable>
+
+    <declare-styleable name="OutlinedButton">
+        <attr name="text" />
     </declare-styleable>
 </resources>
