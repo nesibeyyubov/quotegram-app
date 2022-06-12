@@ -90,10 +90,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             quoteViewModel.getQuotes(forced = true)
         }
         homeAdapter.onDownloadClickListener = { quote ->
-            val action = HomeFragmentDirections.actionGlobalDownloadQuoteFragment(
-                quote.quote,
-                ""
-            )
+            val action = HomeFragmentDirections.actionGlobalDownloadQuoteFragment(quote)
             findNavController().navigate(action)
         }
         homeAdapter.onShareClickListener = { quote ->

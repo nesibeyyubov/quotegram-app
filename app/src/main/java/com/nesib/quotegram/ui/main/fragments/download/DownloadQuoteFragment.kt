@@ -23,12 +23,16 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
 import com.nesib.quotegram.R
 import com.nesib.quotegram.adapters.ColorBoxAdapter
 import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentDownloadQuoteBinding
 import com.nesib.quotegram.databinding.RationaleDialogLayoutBinding
+import com.nesib.quotegram.utils.Constants
+import com.nesib.quotegram.utils.safeGone
 import com.nesib.quotegram.utils.showToast
+import com.nesib.quotegram.utils.visible
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
@@ -85,11 +89,11 @@ class DownloadQuoteFragment :
                 )
             }
         }
-        binding.colorRecyclerView.apply {
-            adapter = colorAdapter
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        }
+//        binding.colorRecyclerView.apply {
+//            adapter = colorAdapter
+//            layoutManager =
+//                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//        }
 
     }
 
@@ -97,27 +101,52 @@ class DownloadQuoteFragment :
         requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
 
     private fun setupUi() = with(binding) {
-        textSizeSlider.value = 18f
-        if (args.quoteText!!.length in 181..239) {
-            textSizeSlider.valueTo = 18.toFloat()
-            textSizeSlider.value = 16f
+        val quote = args.quote ?: return@with
+        if (quote.quote == null) return@with
+//        textSizeSlider.value = 18f
+//        when (quote.quote?.length) {
+//            in 181..239 -> {
+//                textSizeSlider.valueTo = 18.toFloat()
+//                textSizeSlider.value = 16f
+//            }
+//            in 240..300 -> {
+//                textSizeSlider.valueTo = 16.toFloat()
+//                textSizeSlider.value = 14f
+//            }
+//            in 300..Constants.MAX_QUOTE_LENGTH -> {
+//                textSizeSlider.valueTo = 14.toFloat()
+//                textSizeSlider.value = 12f
+//            }
+//        }
+        if (quote.backgroundUrl != null && quote.backgroundUrl != "") {
+            ivQuoteBg.load(quote.backgroundUrl)
+            quoteOverlay.visible()
+        } else {
+            quoteOverlay.safeGone()
         }
-        if (args.quoteText!!.length in 240..300) {
-            textSizeSlider.valueTo = 16.toFloat()
-            textSizeSlider.value = 14f
-        }
-        if (args.quoteText!!.length > 300) {
-            textSizeSlider.valueTo = 14.toFloat()
-            textSizeSlider.value = 12f
-        }
-        quoteText.text = args.quoteText
+        quoteText.text = quote.quote
     }
 
     private fun setupClickListeners() = with(binding) {
-        textSizeSlider.addOnChangeListener { slider, value, fromUser ->
-            sliderValueText.text = value.toInt().toString()
-            quoteText.setTextSize(TypedValue.COMPLEX_UNIT_SP, value)
+        singleSelectBottomView.onTextClick = {
+            styleContainer.visible()
+            tvHeader.text = "Change text size"
+            textSizeSlider.visible()
         }
+        singleSelectBottomView.onImageClick = {
+            styleContainer.visible()
+            tvHeader.text = "Change background image"
+            groupImage.visible()
+        }
+        singleSelectBottomView.onColorClick = {
+            styleContainer.visible()
+            rvColors.visible()
+            tvHeader.text = "Change background color"
+        }
+//        textSizeSlider.addOnChangeListener { slider, value, fromUser ->
+//            sliderValueText.text = value.toInt().toString()
+//            quoteText.setTextSize(TypedValue.COMPLEX_UNIT_SP, value)
+//        }
     }
 
     private fun takeScreenshot() {
@@ -249,7 +278,8 @@ class DownloadQuoteFragment :
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentDownloadQuoteBinding = FragmentDownloadQuoteBinding.inflate(inflater,container,false)
+    ): FragmentDownloadQuoteBinding =
+        FragmentDownloadQuoteBinding.inflate(inflater, container, false)
 
 
 }

@@ -197,10 +197,7 @@ class MyProfileFragment : BaseFragment<FragmentMyProfileBinding>(),
             findNavController().navigate(action)
         }
         homeAdapter.onDownloadClickListener = { quote ->
-            val action = MyProfileFragmentDirections.actionGlobalDownloadQuoteFragment(
-                quote.quote,
-                ""
-            )
+            val action = MyProfileFragmentDirections.actionGlobalDownloadQuoteFragment(quote)
             findNavController().navigate(action)
         }
         homeAdapter.onShareClickListener = { quote ->

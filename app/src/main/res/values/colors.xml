@@ -17,6 +17,8 @@
 
     <color name="black_a_70">#B3000000</color>
 
+    <color name="color_contrary">@color/white</color>
+
     <!-- General -->
     <color name="blue">#24A0FF</color>
     <color name="blue_light">#3B24A0FF</color>

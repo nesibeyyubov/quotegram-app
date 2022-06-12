@@ -113,12 +113,8 @@
         android:label="DownloadQuoteFragment"
         tools:layout="@layout/fragment_download_quote">
         <argument
-            android:name="quoteText"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="quoteAuthor"
-            app:argType="string"
+            android:name="quote"
+            app:argType="com.nesib.quotegram.models.Quote"
             app:nullable="true" />
     </fragment>
     <action

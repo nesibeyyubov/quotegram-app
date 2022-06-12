@@ -24,6 +24,8 @@
     <color name="orange_light">#FFAA00</color>
     <color name="transparent">@android:color/transparent</color>
 
+    <color name="color_contrary">@color/black</color>
+
 
     <!--  Light theme  -->
     <color name="colorBackground">@color/black_400</color>

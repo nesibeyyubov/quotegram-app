@@ -143,10 +143,7 @@ class QuoteFragment : BaseFragment<FragmentQuoteBinding>(),
 
             }
             binding.downloadButton.id -> {
-                val action = QuoteFragmentDirections.actionGlobalDownloadQuoteFragment(
-                    currentQuote?.quote,
-                    ""
-                )
+                val action = QuoteFragmentDirections.actionGlobalDownloadQuoteFragment(currentQuote)
                 findNavController().navigate(action)
             }
             binding.tryAgainButton.id -> {

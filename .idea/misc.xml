@@ -3,21 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/add_edittext_bg.xml" value="0.225" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/bg_background_to_transparent.xml" value="0.225" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/bg_outlined.xml" value="0.225" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/bg_outlined_transparent.xml" value="0.225" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/bg_primary_to_transparent_gradient.xml" value="0.1825" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/bg_ripple_for_text.xml" value="0.183" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/blue_border_button_bg.xml" value="0.225" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/bottom_navigation_bg.xml" value="0.225" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/follow_button_bg.xml" value="0.225" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/following_button_bg.xml" value="0.225" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/full_post_bg.xml" value="0.225" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/ic_info.xml" value="0.1375" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/image_outline.xml" value="0.225" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/light_gray_border_bottom_bg.xml" value="0.183" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/ripple_light_bg.xml" value="0.225" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/font/fonts.xml" value="0.25462962962962965" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/activity_main.xml" value="0.152" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/activity_start.xml" value="0.14492753623188406" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/discover_book_item_layout.xml" value="0.23645833333333333" />
-        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_add_quote.xml" value="0.2" />
-        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_add_quote_2.xml" value="0.152" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_add_quote.xml" value="0.176" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_add_quote_2.xml" value="0.2" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_authorization.xml" value="0.152" />
-        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_download_quote.xml" value="0.25275938189845476" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_download_quote.xml" value="0.264" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_first.xml" value="0.264" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_home.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/fragment_last.xml" value="0.23645833333333333" />
@@ -40,11 +48,12 @@
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/full_post_layout.xml" value="0.176" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/full_post_shimmer_layout.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/full_quote_item_color.xml" value="0.23645833333333333" />
-        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/full_screen_quote_item.xml" value="0.152" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/full_screen_quote_item.xml" value="0.2" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/genre_item_layout.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/grid_quote_layout.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/item_splash_layout.xml" value="0.16799999999999998" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/layout_google_button.xml" value="0.23645833333333333" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/layout_outlined_button.xml" value="0.4" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/layout_progress_bar_button.xml" value="0.264" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/progress_bar_layout.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/quote_from_book_layout.xml" value="0.536" />
@@ -55,6 +64,7 @@
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/search_book_layout.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/search_user_layout.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/select_book_layout.xml" value="0.23645833333333333" />
+        <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/layout/single_select_bottom_view.xml" value="0.264" />
         <entry key="..\:/Users/EyyubovNQ/AndroidStudioProjects/quotegram-app/app/src/main/res/menu/drawer_menu.xml" value="0.14074074074074075" />
         <entry key="..\:/Users/neyyu/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/full_quote_icon_outline.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/neyyu/AndroidStudioProjects/quotegram-app/app/src/main/res/drawable/ripple_card_bg.xml" value="0.20260416666666667" />

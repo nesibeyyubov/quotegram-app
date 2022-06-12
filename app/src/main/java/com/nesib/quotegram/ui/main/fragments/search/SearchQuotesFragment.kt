@@ -112,10 +112,7 @@ class SearchQuotesFragment :
 
     private fun setupRecyclerView() {
         homeAdapter.onDownloadClickListener = { quote ->
-            val action = SearchQuotesFragmentDirections.actionGlobalDownloadQuoteFragment(
-                quote.quote,
-                ""
-            )
+            val action = SearchQuotesFragmentDirections.actionGlobalDownloadQuoteFragment(quote)
             findNavController().navigate(action)
         }
         homeAdapter.onShareClickListener = { quote ->
@@ -218,7 +215,7 @@ class SearchQuotesFragment :
     override fun createBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentSearchQuotesBinding = FragmentSearchQuotesBinding.inflate(inflater,container,false)
+    ): FragmentSearchQuotesBinding = FragmentSearchQuotesBinding.inflate(inflater, container, false)
 
     override fun itemReselected(screen: Screen?) {
         if (screen == Screen.Search) navigateBack()

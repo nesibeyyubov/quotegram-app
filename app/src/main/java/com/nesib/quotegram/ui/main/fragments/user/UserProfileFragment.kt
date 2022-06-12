@@ -200,10 +200,7 @@ class UserProfileFragment :
             findNavController().navigate(action)
         }
         homeAdapter.onDownloadClickListener = { quote ->
-            val action = UserProfileFragmentDirections.actionGlobalDownloadQuoteFragment(
-                quote.quote,
-                ""
-            )
+            val action = UserProfileFragmentDirections.actionGlobalDownloadQuoteFragment(quote)
             findNavController().navigate(action)
         }
         homeAdapter.onShareClickListener = { quote ->
