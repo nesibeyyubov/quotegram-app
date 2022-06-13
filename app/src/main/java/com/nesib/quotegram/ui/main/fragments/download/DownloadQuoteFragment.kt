@@ -1,6 +1,7 @@
 package com.nesib.quotegram.ui.main.fragments.download
 
 import android.app.*
+import android.app.Activity.RESULT_OK
 import android.content.ContentValues
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
@@ -13,6 +14,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -29,17 +31,21 @@ import com.nesib.quotegram.adapters.ColorBoxAdapter
 import com.nesib.quotegram.base.BaseFragment
 import com.nesib.quotegram.databinding.FragmentDownloadQuoteBinding
 import com.nesib.quotegram.databinding.RationaleDialogLayoutBinding
-import com.nesib.quotegram.utils.Constants
-import com.nesib.quotegram.utils.safeGone
-import com.nesib.quotegram.utils.showToast
-import com.nesib.quotegram.utils.visible
+import com.nesib.quotegram.ui.custom_views.SingleSelectBottomView
+import com.nesib.quotegram.utils.*
+import com.unsplash.pickerandroid.photopicker.UnsplashPhotoPicker
+import com.unsplash.pickerandroid.photopicker.data.UnsplashPhoto
+import com.unsplash.pickerandroid.photopicker.presentation.UnsplashPickerActivity
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class DownloadQuoteFragment :
     BaseFragment<FragmentDownloadQuoteBinding>() {
+    private var quoteBackgroundUrl: String? = null
     private var photoBitmap: Bitmap? = null
     private var imageUri: Uri? = null
     private var imageFileName: String? = ""
@@ -47,6 +53,13 @@ class DownloadQuoteFragment :
     private val photoStyleColors =
         listOf("#1B1B1B", "#F2F2F2", "#DCEBFE", "#C7FFCE", "#FFD1EA", "#FFF9AB")
     private val colorAdapter by lazy { ColorBoxAdapter(photoStyleColors) }
+
+    companion object {
+        const val REQUEST_PICK_IMAGE = 123
+    }
+
+    @Inject
+    lateinit var imagePicker: UnsplashPhotoPicker
 
     private val rationaleDialog: AlertDialog by lazy {
         val dBinding = RationaleDialogLayoutBinding.inflate(layoutInflater, null, false)
@@ -63,25 +76,28 @@ class DownloadQuoteFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        this.quoteBackgroundUrl = args.quote?.backgroundUrl
         setHasOptionsMenu(true)
         setupClickListeners()
         setupUi()
         setupRecyclerView()
     }
 
-    private fun setupRecyclerView() {
+    private fun setupRecyclerView() = with(binding) {
         colorAdapter.onColorBoxClickedListener = { view, color ->
+            ivQuoteBg.setImageDrawable(null)
+            quoteOverlay.safeGone()
             view.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.scale_anim))
-            binding.photoContainer.setBackgroundColor(Color.parseColor(color))
+            photoContainer.setBackgroundColor(Color.parseColor(color))
             if (photoStyleColors.indexOf(color) == 0) {
-                binding.quoteText.setTextColor(
+                quoteText.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.colorPrimaryOnDark
                     )
                 )
             } else {
-                binding.quoteText.setTextColor(
+                quoteText.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.black
@@ -89,11 +105,11 @@ class DownloadQuoteFragment :
                 )
             }
         }
-//        binding.colorRecyclerView.apply {
-//            adapter = colorAdapter
-//            layoutManager =
-//                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//        }
+        binding.rvColors.apply {
+            adapter = colorAdapter
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
 
     }
 
@@ -103,25 +119,38 @@ class DownloadQuoteFragment :
     private fun setupUi() = with(binding) {
         val quote = args.quote ?: return@with
         if (quote.quote == null) return@with
-//        textSizeSlider.value = 18f
-//        when (quote.quote?.length) {
-//            in 181..239 -> {
-//                textSizeSlider.valueTo = 18.toFloat()
-//                textSizeSlider.value = 16f
-//            }
-//            in 240..300 -> {
-//                textSizeSlider.valueTo = 16.toFloat()
-//                textSizeSlider.value = 14f
-//            }
-//            in 300..Constants.MAX_QUOTE_LENGTH -> {
-//                textSizeSlider.valueTo = 14.toFloat()
-//                textSizeSlider.value = 12f
-//            }
-//        }
-        if (quote.backgroundUrl != null && quote.backgroundUrl != "") {
-            ivQuoteBg.load(quote.backgroundUrl)
+        textSizeSlider.value = 18f
+        when (quote.quote?.length) {
+            in 181..239 -> {
+                textSizeSlider.valueTo = 18.toFloat()
+                textSizeSlider.value = 16f
+            }
+            in 240..300 -> {
+                textSizeSlider.valueTo = 16.toFloat()
+                textSizeSlider.value = 14f
+            }
+            in 300..Constants.MAX_QUOTE_LENGTH -> {
+                textSizeSlider.valueTo = 14.toFloat()
+                textSizeSlider.value = 12f
+            }
+        }
+        if ((quote.backgroundUrl != null && quote.backgroundUrl != "") || quoteBackgroundUrl != null) {
+            initQuoteBackground()
             quoteOverlay.visible()
+            quoteText.setTextColor(getColor(R.color.gray_300))
+            ivQuoteSelectedBg.setOnClickListener { view ->
+                view.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        requireContext(),
+                        R.anim.scale_anim
+                    )
+                )
+                ivQuoteBg.load(quoteBackgroundUrl)
+                quoteText.setTextColor(getColor(R.color.gray_300))
+                quoteOverlay.safeVisible()
+            }
         } else {
+            ivQuoteSelectedBg.gone()
             quoteOverlay.safeGone()
         }
         quoteText.text = quote.quote
@@ -129,24 +158,64 @@ class DownloadQuoteFragment :
 
     private fun setupClickListeners() = with(binding) {
         singleSelectBottomView.onTextClick = {
-            styleContainer.visible()
-            tvHeader.text = "Change text size"
-            textSizeSlider.visible()
+            onSelectBottomNavItemClicked(SingleSelectBottomView.Item.Text)
         }
         singleSelectBottomView.onImageClick = {
-            styleContainer.visible()
-            tvHeader.text = "Change background image"
-            groupImage.visible()
+            onSelectBottomNavItemClicked(SingleSelectBottomView.Item.Image)
         }
         singleSelectBottomView.onColorClick = {
-            styleContainer.visible()
-            rvColors.visible()
-            tvHeader.text = "Change background color"
+            onSelectBottomNavItemClicked(SingleSelectBottomView.Item.Color)
         }
-//        textSizeSlider.addOnChangeListener { slider, value, fromUser ->
-//            sliderValueText.text = value.toInt().toString()
-//            quoteText.setTextSize(TypedValue.COMPLEX_UNIT_SP, value)
-//        }
+        ibCloseStyle.setOnClickListener {
+            singleSelectBottomView.setState(SingleSelectBottomView.Item.None)
+            resetStyleOptionsVisibility()
+        }
+
+        singleSelectBottomView.onSameItemClick = {
+            resetStyleOptionsVisibility()
+        }
+        textSizeSlider.addOnChangeListener { slider, value, fromUser ->
+            quoteText.setTextSize(TypedValue.COMPLEX_UNIT_SP, value)
+        }
+
+        changeBg.setOnClickListener {
+            startActivityForResult(
+                UnsplashPickerActivity.getStartingIntent(
+                    requireContext(),
+                    false
+                ),
+                REQUEST_PICK_IMAGE
+            )
+        }
+    }
+
+    private fun onSelectBottomNavItemClicked(item: SingleSelectBottomView.Item) = with(binding) {
+        resetStyleOptionsVisibility()
+        when (item) {
+            SingleSelectBottomView.Item.Color -> {
+                styleContainer.visible()
+                rvColors.visible()
+                tvHeader.text = "Change background color"
+            }
+            SingleSelectBottomView.Item.Image -> {
+                styleContainer.visible()
+                tvHeader.text = "Change background image"
+                llImageChooser.visible()
+            }
+            SingleSelectBottomView.Item.Text -> {
+                styleContainer.visible()
+                tvHeader.text = "Change text size"
+                textSizeSlider.visible()
+            }
+            SingleSelectBottomView.Item.None -> {}
+        }
+    }
+
+    private fun resetStyleOptionsVisibility() = with(binding) {
+        llImageChooser.safeGone()
+        rvColors.safeGone()
+        textSizeSlider.safeGone()
+        styleContainer.safeGone()
     }
 
     private fun takeScreenshot() {
@@ -273,6 +342,24 @@ class DownloadQuoteFragment :
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_PICK_IMAGE && resultCode == RESULT_OK) {
+            val images =
+                data?.getParcelableArrayListExtra<UnsplashPhoto>(UnsplashPickerActivity.EXTRA_PHOTOS)
+            if (images != null && images.size > 0) {
+                quoteBackgroundUrl = images[0].urls.small
+                binding.ivQuoteSelectedBg.visible()
+                initQuoteBackground()
+            }
+        }
+    }
+
+    private fun initQuoteBackground() = with(binding) {
+        ivQuoteBg.load(quoteBackgroundUrl)
+        ivQuoteSelectedBg.load(quoteBackgroundUrl)
     }
 
     override fun createBinding(

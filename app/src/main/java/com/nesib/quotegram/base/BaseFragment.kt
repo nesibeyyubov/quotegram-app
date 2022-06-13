@@ -46,6 +46,8 @@ abstract class BaseFragment<VBinding : ViewBinding> :
         return findNavController().currentDestination?.id
     }
 
+    fun getColor(color: Int) = ContextCompat.getColor(requireContext(), color)
+
     fun showSnackBar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
     }

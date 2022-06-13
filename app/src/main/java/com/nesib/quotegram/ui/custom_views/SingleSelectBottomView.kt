@@ -21,6 +21,7 @@ class SingleSelectBottomView @JvmOverloads constructor(
     var onImageClick = {}
     var onTextClick = {}
     var onColorClick = {}
+    var onSameItemClick = {}
 
 
     private val items by lazy {
@@ -42,22 +43,40 @@ class SingleSelectBottomView @JvmOverloads constructor(
         initClickListeners()
     }
 
+    private fun sameItemClicked() {
+        setState(Item.None)
+        onSameItemClick()
+    }
+
     private fun initClickListeners() = with(binding) {
         itemColor.setOnClickListener {
-            setState(Item.Color)
-            onColorClick()
+            if (selectedState == Item.Color) {
+                sameItemClicked()
+            } else {
+                setState(Item.Color)
+                onColorClick()
+            }
         }
         itemImage.setOnClickListener {
-            setState(Item.Image)
-            onImageClick()
+            if (selectedState == Item.Image) {
+                sameItemClicked()
+            } else {
+                setState(Item.Image)
+                onImageClick()
+            }
+
         }
         itemTextStyle.setOnClickListener {
-            setState(Item.Text)
-            onTextClick()
+            if (selectedState == Item.Text) {
+                sameItemClicked()
+            } else {
+                setState(Item.Text)
+                onTextClick()
+            }
         }
     }
 
-    private fun setState(state: Item) {
+    fun setState(state: Item) {
         selectedState = state
         setSelectedStyle()
     }

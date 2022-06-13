@@ -44,7 +44,7 @@
                 android:id="@+id/quote_overlay"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@color/colorQuoteOverlay"
+                android:background="@color/black_a_70"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +61,7 @@
                 android:lineHeight="23dp"
                 android:padding="12dp"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimaryOnDark"
+                android:textColor="@color/gray_300"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/appContainer"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -130,10 +130,19 @@
         android:layout_marginHorizontal="10dp"
         android:background="@color/color_contrary"
         android:padding="10dp"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/ib_close_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/actionBarItemBackground"
+            android:src="@drawable/ic_close"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_header"
@@ -171,37 +180,34 @@
             app:trackColor="@color/blue"
             app:trackHeight="2dp" />
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group_image"
+        <LinearLayout
+            android:id="@+id/ll_image_chooser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="iv_quote_selected_bg,change_bg" />
-
-        <ImageView
-            android:id="@+id/iv_quote_selected_bg"
-            android:layout_width="80dp"
-            android:layout_height="120dp"
             android:layout_marginTop="10dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/quote_bg_test"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_header" />
+            app:layout_constraintTop_toBottomOf="@id/tv_header">
 
-        <TextView
-            android:id="@+id/change_bg"
-            android:layout_width="80dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/bg_outlined_contrary"
-            android:clickable="true"
-            android:gravity="center"
-            android:text="Change"
-            android:textColor="@color/blue"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_quote_selected_bg"
-            app:layout_constraintStart_toEndOf="@+id/iv_quote_selected_bg"
-            app:layout_constraintTop_toTopOf="@+id/iv_quote_selected_bg" />
+            <ImageView
+                android:id="@+id/iv_quote_selected_bg"
+                android:layout_width="80dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_header" />
 
+            <TextView
+                android:id="@+id/change_bg"
+                android:layout_width="80dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_outlined_contrary"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="Change"
+                android:textColor="@color/blue" />
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
