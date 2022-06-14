@@ -43,6 +43,15 @@ class SingleSelectBottomView @JvmOverloads constructor(
         initClickListeners()
     }
 
+    fun reset() {
+        val default = ContextCompat.getColor(context, R.color.colorPrimaryText)
+        selectedState = Item.None
+        items.forEach {
+            it.setTextColor(default)
+            it.compoundDrawables[1]?.setTint(default)
+        }
+    }
+
     private fun sameItemClicked() {
         setState(Item.None)
         onSameItemClick()

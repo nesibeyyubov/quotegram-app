@@ -145,7 +145,7 @@ class DownloadQuoteFragment :
                         R.anim.scale_anim
                     )
                 )
-                ivQuoteBg.load(quoteBackgroundUrl)
+                initQuoteBackground()
                 quoteText.setTextColor(getColor(R.color.gray_300))
                 quoteOverlay.safeVisible()
             }
@@ -357,8 +357,16 @@ class DownloadQuoteFragment :
         }
     }
 
+    override fun onDestroyView() {
+        binding.singleSelectBottomView.reset()
+        super.onDestroyView()
+    }
+
     private fun initQuoteBackground() = with(binding) {
-        ivQuoteBg.load(quoteBackgroundUrl)
+        ivQuoteBg.load(quoteBackgroundUrl) {
+            allowHardware(false)
+            bitmapConfig(Bitmap.Config.ARGB_8888)
+        }
         ivQuoteSelectedBg.load(quoteBackgroundUrl)
     }
 

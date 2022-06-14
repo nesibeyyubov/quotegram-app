@@ -130,6 +130,7 @@
         android:layout_marginHorizontal="10dp"
         android:background="@color/color_contrary"
         android:padding="10dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
