@@ -14,7 +14,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -22,7 +21,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
@@ -40,6 +38,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import java.lang.Exception
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -135,9 +134,7 @@ class DownloadQuoteFragment :
             }
         }
         if ((quote.backgroundUrl != null && quote.backgroundUrl != "") || quoteBackgroundUrl != null) {
-            initQuoteBackground()
-            quoteOverlay.visible()
-            quoteText.setTextColor(getColor(R.color.gray_300))
+            loadQuoteBackground()
             ivQuoteSelectedBg.setOnClickListener { view ->
                 view.startAnimation(
                     AnimationUtils.loadAnimation(
@@ -145,9 +142,7 @@ class DownloadQuoteFragment :
                         R.anim.scale_anim
                     )
                 )
-                initQuoteBackground()
-                quoteText.setTextColor(getColor(R.color.gray_300))
-                quoteOverlay.safeVisible()
+                loadQuoteBackground()
             }
         } else {
             ivQuoteSelectedBg.gone()
@@ -193,19 +188,16 @@ class DownloadQuoteFragment :
         resetStyleOptionsVisibility()
         when (item) {
             SingleSelectBottomView.Item.Color -> {
-                styleContainer.visible()
-                rvColors.visible()
-                tvHeader.text = "Change background color"
+                listOf(styleContainer, rvColors).visible()
+                tvHeader.text = getString(R.string.change_background_color)
             }
             SingleSelectBottomView.Item.Image -> {
-                styleContainer.visible()
-                tvHeader.text = "Change background image"
-                llImageChooser.visible()
+                listOf(styleContainer, llImageChooser).visible()
+                tvHeader.text = getString(R.string.change_background_image)
             }
             SingleSelectBottomView.Item.Text -> {
-                styleContainer.visible()
-                tvHeader.text = "Change text size"
-                textSizeSlider.visible()
+                listOf(styleContainer, textSizeSlider).visible()
+                tvHeader.text = getString(R.string.change_txt_size)
             }
             SingleSelectBottomView.Item.None -> {}
         }
@@ -219,24 +211,30 @@ class DownloadQuoteFragment :
     }
 
     private fun takeScreenshot() {
-        val view = binding.photoContainer
-        photoBitmap = Bitmap.createBitmap(
-            view.width,
-            view.height,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(photoBitmap!!)
-        view.draw(canvas)
+        try {
+            val view = binding.photoContainer
+            photoBitmap = Bitmap.createBitmap(
+                view.width,
+                view.height,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(photoBitmap!!)
+            view.draw(canvas)
 
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestStoragePermission()
-        } else {
-            saveMediaToStorage(photoBitmap!!)
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestStoragePermission()
+            } else {
+                saveMediaToStorage(photoBitmap!!)
+            }
+        } catch (e: Exception) {
+            showToast(getString(R.string.smthng_went_wrong) + e.message)
         }
+
+
     }
 
     private fun saveMediaToStorage(bitmap: Bitmap) {
@@ -351,7 +349,6 @@ class DownloadQuoteFragment :
                 data?.getParcelableArrayListExtra<UnsplashPhoto>(UnsplashPickerActivity.EXTRA_PHOTOS)
             if (images != null && images.size > 0) {
                 quoteBackgroundUrl = images[0].urls.small
-                binding.ivQuoteSelectedBg.visible()
                 initQuoteBackground()
             }
         }
@@ -362,12 +359,28 @@ class DownloadQuoteFragment :
         super.onDestroyView()
     }
 
-    private fun initQuoteBackground() = with(binding) {
+    private fun loadQuoteBackground() = with(binding) {
+        ivQuoteSelectedBg.visible()
         ivQuoteBg.load(quoteBackgroundUrl) {
             allowHardware(false)
             bitmapConfig(Bitmap.Config.ARGB_8888)
         }
         ivQuoteSelectedBg.load(quoteBackgroundUrl)
+        quoteText.setTextColor(getColor(R.color.colorQuoteText))
+        quoteOverlay.visible()
+    }
+
+    private fun initQuoteBackground() = with(binding) {
+        loadQuoteBackground()
+        ivQuoteSelectedBg.setOnClickListener { view ->
+            view.startAnimation(
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    R.anim.scale_anim
+                )
+            )
+            loadQuoteBackground()
+        }
     }
 
     override fun createBinding(

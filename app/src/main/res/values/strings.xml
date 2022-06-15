@@ -133,13 +133,7 @@
     <string name="txt_signup_google">Sign up with Google</string>
     <string name="txt_signin_google">Sign in with Google</string>
     <string name="txt_select_genre">Please select a quote genre you want to get quote from</string>
-    <string name="txt_genre_warning">You should select at least %d genres</string>
     <string name="txt_continue">Continue</string>
-
-    <string name="error_empty_username">Username can\'t be empty</string>
-    <string name="error_username">Username should at least be %d characters</string>
-    <string name="error_password">Password should at least be %d characters</string>
-    <string name="error_empty_password">Password shouldn\'t be empty</string>
 
 
     <!--  MAIN  -->
@@ -176,6 +170,10 @@
     <string name="contact_not_empty">Contact field cannot be empty</string>
     <string name="select_one">Select one</string>
 
+    <string name="change_background_color">Change background color</string>
+    <string name="change_background_image">Change background image</string>
+    <string name="change_txt_size">Change text size</string>
+
     <!--  TOOLBAR  -->
     <string name="title_quotes">Quotes</string>
     <string name="title_notifications">Notifications</string>
@@ -189,7 +187,14 @@
     <string name="title_privacy_policy">Privacy Policy</string>
 
 
-
+    <!--  Validation  -->
     <string name="quote_name_validation">Quote length should be at least %d characters</string>
     <string name="quote_name_validation_max">Quote length shouldn\'t be more than %d characters</string>
+    <string name="error_empty_username">Username can\'t be empty</string>
+    <string name="error_username">Username should at least be %d characters</string>
+    <string name="error_password">Password should at least be %d characters</string>
+    <string name="error_empty_password">Password shouldn\'t be empty</string>
+    <string name="txt_genre_warning">You should select at least %d genres</string>
+
+
 </resources>
