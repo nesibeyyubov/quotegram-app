@@ -9,7 +9,7 @@ object Constants {
     const val CODE_VALIDATION_FAIL = 422
     const val CODE_AUTHENTICATION_FAIL = 401
     const val CODE_SERVER_ERROR = 500
-    const val API_URL = "http://164.92.148.254:4000/"
+    const val API_URL = "https://quotegram-app.herokuapp.com/"
 
     const val ADMIN_ID = "60670d9b34d95b1a30dc8c0d"
 
