@@ -30,6 +30,7 @@
         <activity android:name="com.nesib.quotegram.ui.main.MainActivity" />
         <activity
             android:theme="@style/SplashTheme"
+            android:exported="true"
             android:name="com.nesib.quotegram.ui.on_boarding.StartActivity"
             android:label="@string/app_name">
             <intent-filter>
